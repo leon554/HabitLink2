@@ -82,3 +82,22 @@
         scrollbar-width: none;  /* Firefox */
   }
 }
+
+input[type="range"].slider-thumb::-webkit-slider-thumb {
+  appearance: none;
+  height: 16px;
+  width: 16px;
+  background-color: #4ade80; /* Tailwind green-400 */
+  border-radius: 100%;
+  cursor: pointer;
+  border: none;
+}
+
+input[type="range"].slider-thumb::-moz-range-thumb {
+  height: 16px;
+  width: 16px;
+  background-color: #4ade80;
+  border-radius: 9999px;
+  cursor: pointer;
+  border: none;
+}

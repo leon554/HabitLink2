@@ -4,3 +4,12 @@ export enum SignUpResponses{
     UserExists,
     EmailSent
 }
+export interface HabitType{
+    id: string
+    user_id: string
+    name: string
+    description: string
+    completionDays: string
+    icon: string
+    type: string
+}

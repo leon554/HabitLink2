@@ -4,6 +4,9 @@ import { IoInformationCircleOutline } from "react-icons/io5";
 import { AlertContext } from "./Alert/AlertProvider";
 import { UserContext } from "./UserProvider";
 import { AiOutlineLoading } from "react-icons/ai";
+import Switch from "./Switch";
+import TimeInput from "./TimeInput";
+import { div } from "motion/react-client";
 
 
 
@@ -13,7 +16,9 @@ export default function Create() {
     const [compDays, setCompDays] = useState({mon: false, teu: false, wed: false, thu: false, fri: false, sat: false, sun: false})
     const [selectedEmojiIndex, setSelectedEmojiIndex] = useState(-1)
     const [selectedTypeIndex, setSelectedTypeIndex] = useState(-1)
+    const [weekly, setWeekly] = useState(false)
     const [name, setName] = useState("")
+    const [value, setValue] = useState(0)
     const [description, setDescription] = useState("")
     const habitEmojis = ["💪","📖","🧘","📝","🥗","🚰","😴","📚","🏃","🧹","🛏️","🪥","💻","🎨","🎵","☀️","📅","💸","📵","🧼","🧊","🏋️","🧠","🎯","👣","🍎","🚭","🍵","🌿","🕯️","👨‍🍳","🚿","🪑","🐶","🤝"];
     const habitTypes = ["Normal", "Time Based", "Distance Based", "Iteration Based"]
@@ -88,7 +93,37 @@ export default function Create() {
                             <p className="text-stone-400 text-sm self-center mt-2 mb-3 font-mono">days per week</p>
                         </div>
                     </div>
+
+                    <div className="flex items-center gap-2 mb-2 max-md:w-[70%] w-full">
+                        <p className="text-[16px]  text-stone-100">Habit Type </p> 
+                        <IoInformationCircleOutline size={14} color="#f5f5f4" className="hover:cursor-pointer" onClick={() => {
+                            alert("Normal: e.g. go to the gym its yes no \n Time Based: e.g Plank can log 13s \n Distance Based: e.g Walking you walked 12km \n Itteration Based: E.g drink 3 cups of water a day")
+                        }}/>
+                    </div>
+                    <div className="flex flex-wrap gap-2 justify-stretch mb-6 max-md:w-[70%] w-full">
+                        {habitTypes.map((h, i) => {
+                        return(
+                            <button className={`${selectedTypeIndex == i ? "outline-0 bg-green-400 text-stone-900" : "bg-stone-800 outline-1"} rounded-md outline-stone-600 p-1 grow-1 hover:cursor-pointer hover:bg-green-400 hover:outline-0 text-stone-400 text-sm hover:text-stone-900`}
+                                onClick={() => setSelectedTypeIndex(i)} key={i}>
+                                {h}
+                            </button>
+                        )
+                    })}
+                    </div>
+                    <div className="max-md:w-[70%] mb-6 w-full">
+                        <p className="text-[16px]  text-stone-100 mb-2">Target</p>
+                        <div className="flex gap-2 justify-between mb-4">
+                            <p className="text-stone-400 text-sm">
+                                Weekly Goal
+                            </p>
+                            <Switch setStatus={setWeekly} ticked={weekly}/> 
+                        </div>
+                        {habitTypes[selectedTypeIndex] == "Time Based" ? 
+                            <TimeInput setDuration={setValue} moreHours={weekly}/> 
+                        : ""}
+                    </div>
                 </div>
+
                 <div className="w-[70%]  font-mono mb-7  ">
                     <p className="text-[16px]  text-stone-100 mb-2">Habit Emoji</p>
                     <div className="flex flex-wrap gap-2 justify-stretch mb-6">
@@ -101,22 +136,7 @@ export default function Create() {
                             )
                         })}
                     </div>
-                    <div className="flex items-center gap-2 mb-2">
-                        <p className="text-[16px]  text-stone-100">Habit Type </p> 
-                        <IoInformationCircleOutline size={14} color="#f5f5f4" className="hover:cursor-pointer" onClick={() => {
-                            alert("Normal: e.g. go to the gym its yes no \n Time Based: e.g Plank can log 13s \n Distance Based: e.g Walking you walked 12km \n Itteration Based: E.g drink 3 cups of water a day")
-                        }}/>
-                    </div>
-                    <div className="flex flex-wrap gap-2 justify-stretch mb-0">
-                        {habitTypes.map((h, i) => {
-                        return(
-                            <button className={`${selectedTypeIndex == i ? "outline-0 bg-green-400 text-stone-900" : "bg-stone-800 outline-1"} rounded-md outline-stone-600 p-1 grow-1 hover:cursor-pointer hover:bg-green-400 hover:outline-0 text-stone-400 text-sm hover:text-stone-900`}
-                                onClick={() => setSelectedTypeIndex(i)} key={i}>
-                                {h}
-                            </button>
-                        )
-                    })}
-                    </div>
+                    
                     <button className=" w-full rounded-md p-1 bg-green-400 mb-6 font-mono hover:cursor-pointer mt-7 flex justify-center h-8 items-center"
                         onClick={() => createHabit()}>
                         {user.loading ? <AiOutlineLoading className="animate-spin" /> : "Create Habit"}
