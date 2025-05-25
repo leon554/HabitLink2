@@ -1,38 +1,73 @@
-import {useState } from "react";
+import {useContext, useState } from "react";
 import NumericInput from "./NumericInput";
+import { IoInformationCircleOutline } from "react-icons/io5";
+import { AlertContext } from "./Alert/AlertProvider";
+import { UserContext } from "./UserProvider";
+import { AiOutlineLoading } from "react-icons/ai";
 
 
 
-export default function Log() {
+
+export default function Create() {
     const [compsPerWeek, setCompsPerWeek] = useState(0)
     const [compDays, setCompDays] = useState({mon: false, teu: false, wed: false, thu: false, fri: false, sat: false, sun: false})
     const [selectedEmojiIndex, setSelectedEmojiIndex] = useState(-1)
+    const [selectedTypeIndex, setSelectedTypeIndex] = useState(-1)
+    const [name, setName] = useState("")
+    const [description, setDescription] = useState("")
     const habitEmojis = ["💪","📖","🧘","📝","🥗","🚰","😴","📚","🏃","🧹","🛏️","🪥","💻","🎨","🎵","☀️","📅","💸","📵","🧼","🧊","🏋️","🧠","🎯","👣","🍎","🚭","🍵","🌿","🕯️","👨‍🍳","🚿","🪑","🐶","🤝"];
+    const habitTypes = ["Normal", "Time Based", "Distance Based", "Iteration Based"]
 
+    const {alert} = useContext(AlertContext)
+    const user = useContext(UserContext)
 
+    async function createHabit(){
+        //add check if everything is filled in
+        console.log("sdjhsdsj")
+        const completionDaysString = (compsPerWeek == 0) ? getCompDaysString() : `${compsPerWeek}`
+         console.log("sdjhsdsj1")
+        await user.createHabit(name, description, completionDaysString, habitEmojis[selectedEmojiIndex], habitTypes[selectedTypeIndex])
+         console.log("sdjhsdsj2")
+    }
+    function getCompDaysString(){
+        let data = ""
+        Object.values(compDays).forEach(v => {
+            data += (v) ? "1" : "0"
+        })
+        return data
+    }
     
     return (
-        <div className="bg-stone-800 max-md:max-w-[400px]  max-w-[900px] mt-10 w-[95%] flex justify-center rounded-md flex-col items-center pb-5 font-mono">
+        <div className="bg-stone-800 max-md:max-w-[400px]  max-w-[900px] mt-20 w-[95%] flex justify-center rounded-md flex-col items-center pb-5 font-mono">
             <p className="font-mono text-stone-200 font-semibold text-2xl mt-8 mb-8">
                 Create New Habit
             </p>
-            <div className="flex w-full md:gap-10 md:pl-10 md:pr-10 max-md:flex-col max-md:items-center">
+            <div className="flex w-full md:gap-10 md:pl-10 md:pr-10 max-md:flex-col max-md:items-center items-start">
                 <div className="w-full flex justify-center flex-col items-center ">
                     <div className="max-md:w-[70%] w-full font-mono mb-5">
                         <p className="text-[16px]  text-stone-100 mb-2">Habit Name</p>
                         <input type="text" 
                         placeholder="Enter habit name"
+                        value={name}
+                        onChange={e => setName(e.target.value)}
                         className="outline-1 text-[12px] rounded-md w-full border-0  outline-stone-600 text-sm p-1.5 text-gray-200 mb-1" />
                     </div>
                     <div className="max-md:w-[70%] w-full font-mono mb-5">
                         <p className="text-[16px]  text-stone-100 mb-2">Habit Description</p>
                         <textarea
                         placeholder="Enter habit description"
+                        value={description}
+                        onChange={e => setDescription(e.target.value)}
                         className="outline-1 text-[12px] h-20 rounded-md resize-none w-full border-0  outline-stone-600 text-sm p-1.5 text-gray-200" />
                     </div>
                     <div className="max-md:w-[70%] w-full font-mono  flex justify-center flex-col items-stretch ">
                         <div>
-                            <p className="text-[16px]  text-stone-100 mb-2">Completion Days</p>
+                            <div className="flex items-center gap-2 mb-2">
+                                <p className="text-[16px]  text-stone-100">Completion Days </p> 
+                                <IoInformationCircleOutline size={14} color="#f5f5f4" className="hover:cursor-pointer" onClick={() => {
+                                    alert("You can either choose specific days of the week to complete your habit, or set a target number of completions per week, regardless of which days they fall on.")
+                                }}/>
+                            </div>
                             <div className=" flex justify-stretch gap-2">
                                 {Object.entries(compDays).map((e, i) => {
                                     return(
@@ -56,7 +91,7 @@ export default function Log() {
                 </div>
                 <div className="w-[70%]  font-mono mb-7  ">
                     <p className="text-[16px]  text-stone-100 mb-2">Habit Emoji</p>
-                    <div className="flex flex-wrap gap-2 justify-stretch">
+                    <div className="flex flex-wrap gap-2 justify-stretch mb-6">
                         {habitEmojis.map((h, i) => {
                             return(
                                 <button className={`${selectedEmojiIndex == i ? "outline-0 bg-green-400" : "bg-stone-800 outline-1"} rounded-md outline-stone-600 p-1 grow-1 hover:cursor-pointer hover:bg-green-400 hover:outline-0`}
@@ -66,8 +101,25 @@ export default function Log() {
                             )
                         })}
                     </div>
-                    <button className=" w-full rounded-md p-1 bg-green-400 mb-6 font-mono hover:cursor-pointer mt-7">
-                        Create Habit
+                    <div className="flex items-center gap-2 mb-2">
+                        <p className="text-[16px]  text-stone-100">Habit Type </p> 
+                        <IoInformationCircleOutline size={14} color="#f5f5f4" className="hover:cursor-pointer" onClick={() => {
+                            alert("Normal: e.g. go to the gym its yes no \n Time Based: e.g Plank can log 13s \n Distance Based: e.g Walking you walked 12km \n Itteration Based: E.g drink 3 cups of water a day")
+                        }}/>
+                    </div>
+                    <div className="flex flex-wrap gap-2 justify-stretch mb-0">
+                        {habitTypes.map((h, i) => {
+                        return(
+                            <button className={`${selectedTypeIndex == i ? "outline-0 bg-green-400 text-stone-900" : "bg-stone-800 outline-1"} rounded-md outline-stone-600 p-1 grow-1 hover:cursor-pointer hover:bg-green-400 hover:outline-0 text-stone-400 text-sm hover:text-stone-900`}
+                                onClick={() => setSelectedTypeIndex(i)} key={i}>
+                                {h}
+                            </button>
+                        )
+                    })}
+                    </div>
+                    <button className=" w-full rounded-md p-1 bg-green-400 mb-6 font-mono hover:cursor-pointer mt-7 flex justify-center h-8 items-center"
+                        onClick={() => createHabit()}>
+                        {user.loading ? <AiOutlineLoading className="animate-spin" /> : "Create Habit"}
                     </button>
                 </div>
             </div>

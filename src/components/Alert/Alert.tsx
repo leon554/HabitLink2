@@ -6,7 +6,7 @@ export default function Alert() {
   const AlertData = useContext(AlertContext);
   return (
     <>
-      <div className={`bg-black w-full h-full absolute top-0 z-49 ${AlertData.showing ? "opacity-65" : "opacity-0"}`} style={{
+      <div className={`bg-black w-full h-full fixed  top-0 z-49 ${AlertData.showing ? "opacity-65" : "opacity-0"}`} style={{
         display: AlertData.showing ? "" : "none"
       }}></div>
       <AnimatePresence>
@@ -16,7 +16,7 @@ export default function Alert() {
             animate={{ y: 0 }}
             exit={{ y: -200 }}
             transition={{ duration: 0.5 }}
-            className=" flex flex-col items-center gap-2 z-50 absolute top-1 left-1/2 transform -translate-x-1/2 p-4 bg-stone-800  rounded-md max-w-100 w-[80%]">
+            className=" flex fixed flex-col items-center gap-2 z-50 top-1 left-1/2 transform -translate-x-1/2 p-4 bg-stone-800  rounded-md max-w-100 w-[80%]">
             <h1 className="text-lg font-semibold text-stone-200 font-mono">{AlertData.title}</h1>
             <h1 className="text-md text-stone-400 text-center font-mono">
               {AlertData.message}

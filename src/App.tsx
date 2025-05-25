@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard"
 import AuthProvider from "./components/Session/AuthProvider"
 import LogPage from "./pages/LogPage"
 import CreatePage from "./pages/CreatePage"
+import UserProvider from "./components/UserProvider"
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
       <Router>
         <AlertProvider>
         <AuthProvider>
+        <UserProvider>
           <Routes>
             <Route element={<Layout/>}>
               <Route path="/auth" element={<AuthPage/>}/>
@@ -24,6 +26,7 @@ function App() {
               <Route path="create" element={<CreatePage/>}/>
             </Route>
           </Routes>
+          </UserProvider>
         </AuthProvider>
         </AlertProvider>
       </Router>
