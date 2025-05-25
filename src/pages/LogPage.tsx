@@ -1,9 +1,9 @@
-
+import Log from "../components/Log";
 
 export default function LogPage() {
-  return (
-    <div>
-      <h1 className="text-white">Log page</h1>
-    </div>
-  )
+    return (
+      <div className="flex justify-center mb-5">
+          <Log/>
+      </div>
+    )
 }

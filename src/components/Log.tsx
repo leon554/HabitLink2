@@ -1,0 +1,76 @@
+import {useState } from "react";
+import NumericInput from "./NumericInput";
+
+
+
+export default function Log() {
+    const [compsPerWeek, setCompsPerWeek] = useState(0)
+    const [compDays, setCompDays] = useState({mon: false, teu: false, wed: false, thu: false, fri: false, sat: false, sun: false})
+    const [selectedEmojiIndex, setSelectedEmojiIndex] = useState(-1)
+    const habitEmojis = ["💪","📖","🧘","📝","🥗","🚰","😴","📚","🏃","🧹","🛏️","🪥","💻","🎨","🎵","☀️","📅","💸","📵","🧼","🧊","🏋️","🧠","🎯","👣","🍎","🚭","🍵","🌿","🕯️","👨‍🍳","🚿","🪑","🐶","🤝"];
+
+
+    
+    return (
+        <div className="bg-stone-800 max-md:max-w-[400px]  max-w-[900px] mt-10 w-[95%] flex justify-center rounded-md flex-col items-center pb-5 font-mono">
+            <p className="font-mono text-stone-200 font-semibold text-2xl mt-8 mb-8">
+                Create New Habit
+            </p>
+            <div className="flex w-full md:gap-10 md:pl-10 md:pr-10 max-md:flex-col max-md:items-center">
+                <div className="w-full flex justify-center flex-col items-center ">
+                    <div className="max-md:w-[70%] w-full font-mono mb-5">
+                        <p className="text-[16px]  text-stone-100 mb-2">Habit Name</p>
+                        <input type="text" 
+                        placeholder="Enter habit name"
+                        className="outline-1 text-[12px] rounded-md w-full border-0  outline-stone-600 text-sm p-1.5 text-gray-200 mb-1" />
+                    </div>
+                    <div className="max-md:w-[70%] w-full font-mono mb-5">
+                        <p className="text-[16px]  text-stone-100 mb-2">Habit Description</p>
+                        <textarea
+                        placeholder="Enter habit description"
+                        className="outline-1 text-[12px] h-20 rounded-md resize-none w-full border-0  outline-stone-600 text-sm p-1.5 text-gray-200" />
+                    </div>
+                    <div className="max-md:w-[70%] w-full font-mono  flex justify-center flex-col items-stretch ">
+                        <div>
+                            <p className="text-[16px]  text-stone-100 mb-2">Completion Days</p>
+                            <div className=" flex justify-stretch gap-2">
+                                {Object.entries(compDays).map((e, i) => {
+                                    return(
+                                        <button className={`${e[1] ? "bg-green-400" : "bg-stone-800" }  ${e[1] ? "text-stone-900" : "text-stone-400" } ${e[1] ? "outline-0" : "outline-1" } grow-1 pl-2 pr-2 rounded-md outline-stone-600 text-stone-400 hover:cursor-pointer   ease-in-out duration-75`}
+                                            onClick={() => {setCompDays(prev => ({...prev, [e[0]]: !e[1]})); setCompsPerWeek(0)}}
+                                            key={i}>
+                                            {e[0][0].toUpperCase()}
+                                        </button>
+                                    )
+                                })}
+                            </div>
+                        </div>
+                        <div className="flex items-center  gap-3 mt-2 mb-5 ">
+                            <p className="text-stone-400 text-sm font-mono">Or</p>
+                            <div onClick={() => setCompDays({mon: false, teu: false, wed: false, thu: false, fri: false, sat: false, sun: false})}>
+                                <NumericInput value={compsPerWeek} setValue={setCompsPerWeek} increment={1} min={0} max={7}/>
+                            </div>
+                            <p className="text-stone-400 text-sm self-center mt-2 mb-3 font-mono">days per week</p>
+                        </div>
+                    </div>
+                </div>
+                <div className="w-[70%]  font-mono mb-7  ">
+                    <p className="text-[16px]  text-stone-100 mb-2">Habit Emoji</p>
+                    <div className="flex flex-wrap gap-2 justify-stretch">
+                        {habitEmojis.map((h, i) => {
+                            return(
+                                <button className={`${selectedEmojiIndex == i ? "outline-0 bg-green-400" : "bg-stone-800 outline-1"} rounded-md outline-stone-600 p-1 grow-1 hover:cursor-pointer hover:bg-green-400 hover:outline-0`}
+                                    onClick={() => setSelectedEmojiIndex(i)} key={i}>
+                                    {h}
+                                </button>
+                            )
+                        })}
+                    </div>
+                    <button className=" w-full rounded-md p-1 bg-green-400 mb-6 font-mono hover:cursor-pointer mt-7">
+                        Create Habit
+                    </button>
+                </div>
+            </div>
+        </div>
+    )
+}
