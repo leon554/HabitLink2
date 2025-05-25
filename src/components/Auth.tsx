@@ -1,7 +1,8 @@
 import { useContext, useState } from "react"
 import { AlertContext } from "./Alert/AlertProvider"
-import { supabase } from "../supabase-client"
 import { AiOutlineLoading } from "react-icons/ai";
+import { AuthContext } from "./Session/AuthProvider";
+import { SignUpResponses } from "../utils/types";
 
 interface FormProps{
     name: string
@@ -12,47 +13,33 @@ interface FormProps{
 export default function Auth() {
     const [formData, setFormData] = useState<FormProps>({name: "", email: "", password: "", confirmPassword: ""})
     const [login, setLogin] = useState(false)
-    const [loading, setLoading] = useState(false)
-    const alertData = useContext(AlertContext)
 
+    const auth = useContext(AuthContext)
+    const {alert} = useContext(AlertContext)
 
     const submit = async () => {
-        setLoading(true)
         if(login){
             await logIn()
         }else{
             await signUp()
         }
-        setLoading(false)
     }
+
     const logIn = async () => {
-        const {error} = await supabase.auth.signInWithPassword({email: formData.email, password: formData.password})
-        if(error){
-            alertData.alert("Log In Error: " + error)
-        }
+       await auth.login(formData.email, formData.password)
     }
+
     const signUp = async () => {
         if(formData.password != formData.confirmPassword){
-            alertData.alert("Passwords do not match")
+            alert("Passwords do not match")
             return
         }
         if(formData.email == "" || formData.name == ""){
-            alertData.alert("Some fields have no values")
+            alert("Some fields have no values")
         }
 
-        const {error, data} = await supabase.auth.signUp({email: formData.email, password: formData.password})
-        
-        if(error){
-            alertData.alert("Sign Up Error: " + error.message)
-            return
-        }
-        if(data.user?.identities?.length === 0){
-            alertData.alert("User allready exists please log in")
-            setLogin(true)
-        }else{
-            alertData.alert("Confirmation email sent")
-        }
-        
+        const response = await auth.signup(formData.name, formData.email, formData.password)
+        if(response == SignUpResponses.UserExists) setLogin(true)
     }
 
     return (
@@ -105,7 +92,7 @@ export default function Auth() {
                     </div>: ""}
                     <button className="flex justify-center bg-green-400 rounded-md p-1 text-stone-800 mt-1.5 hover:cursor-pointer hover:text-stone-950 duration-400 ease-in-out hover:bg-green-300 h-8 items-center"
                     type="submit">
-                        {loading ? <AiOutlineLoading className="animate-spin" /> : (login? "Log In" : "Sign Up")}
+                        {auth.loading ? <AiOutlineLoading className="animate-spin" /> : (login? "Log In" : "Sign Up")}
                     </button>
                     <div className="flex justify-center mt-1.5 mb-8">
                         <p className="text-[13px] text-stone-400">

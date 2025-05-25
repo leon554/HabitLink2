@@ -1,0 +1,147 @@
+import type { Session, User } from "@supabase/supabase-js";
+import { createContext, useContext, useEffect, useState } from "react";
+import { supabase } from "../../supabase-client";
+import { AlertContext } from "../Alert/AlertProvider";
+import { SignUpResponses } from "../../utils/types";
+import { useNavigate } from "react-router-dom";
+
+
+interface AuthType{
+    session: Session| null
+    user: User | null
+    loading: boolean
+    login: (email: string, password: string) => Promise<void>
+    signup: (name: string, email: string, password: string) => Promise<SignUpResponses>
+    logout: () => Promise<void>
+    getUserId: () => null|string
+}
+const initialValues: AuthType = {
+    session: null,
+    user: null,
+    loading: false,
+    login: async (_: string, _1: string) => {},
+    signup: async (_: string, _1: string, _2: string) => Promise.resolve(SignUpResponses.SignUpError),
+    logout: async() => {},
+    getUserId: () => null
+}
+
+export const AuthContext = createContext<AuthType>(initialValues)
+
+interface Props {
+  children: React.ReactNode;
+}
+
+export default function AuthProvider(props: Props) {
+    const [session, setSession] = useState<null|Session>(null)
+    const [user, setUser] = useState<null|User>(null)
+    const [loading, setLoading] = useState(false)
+   
+   
+    const {alert} = useContext(AlertContext)
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        fetchSession()
+        const {data: authListener} = supabase.auth.onAuthStateChange(async (_event, session) => {
+            setSession(session)
+            navigateUser(session)
+        })
+
+        return () => {
+            authListener.subscription.unsubscribe()
+        }
+    }, [])
+    async function fetchSession(){
+        const currentSession = await supabase.auth.getSession()
+        setSession(currentSession.data.session)
+        
+        await navigateUser(currentSession.data.session)
+    }
+    async function navigateUser(session: Session|null){
+        if(!session) {navigate("/"); return}
+
+        const { data, error} = await supabase.auth.getUser()
+        if(error){
+            alert("User does not exists in DB: " + error.message)
+            await supabase.auth.signOut()
+            navigate("/")
+            return
+        }
+        setUser(data.user)
+        await createUserEntry(data.user)
+        navigate("/dashboard"); return
+    }
+    async function createUserEntry(data: User){
+        const exists = await checkIfUserEntryExists(data)
+        if(exists) return
+
+        const { error } = await supabase
+            .from('users')
+            .insert([
+                { email: data.email, name: data.user_metadata.name, premuimUser: false, user_id: data.id},
+            ])
+        if(error){
+            alert("insert error: " + error.message)
+        }
+    }
+    async function checkIfUserEntryExists(data: User){
+        let { data: users, error } = await supabase
+            .from('users')
+            .select('email')
+            .eq("email", data.email)
+        if(error){
+            alert("Fetch Error: " + error.message)
+        }
+        return (users?.length == 0)? false : true
+    }
+
+    async function login(email: string, password: string){
+        setLoading(true)
+        const {error} = await supabase.auth.signInWithPassword({email, password})
+        setLoading(false)
+
+        if(error){
+            alert("Log In Error: " + error.message)
+        }
+    }
+    async function signup(name: string, email: string, password: string) {
+        setLoading(true)
+        const {error, data} = await supabase.auth.signUp({email, password, options: {data: {name}}})
+        setLoading(false)
+
+        if(error){
+            alert("Sign Up Error: " + error.message)
+            return SignUpResponses.SignUpError
+        }
+        if(data.user?.identities?.length === 0){
+            alert("User allready exists please log in")
+            return SignUpResponses.UserExists
+        }else{
+            alert("Confirmation email sent")
+            return SignUpResponses.EmailSent
+        }
+    }
+    async function logout(){
+        setLoading(true)
+        await supabase.auth.signOut()
+        setLoading(false)
+    }
+    function getUserId(){
+        if(!session) return null
+        return session.user.id
+    }
+
+    return (
+        <AuthContext.Provider value={{
+            session,
+            user,
+            loading,
+            signup,
+            login,
+            logout,
+            getUserId
+        }}>
+            {props.children}
+        </AuthContext.Provider>
+    )
+}
