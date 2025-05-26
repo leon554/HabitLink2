@@ -6,10 +6,15 @@ import { HabitTypeE } from "../../utils/types";
 import TimeInput from "../InputComponents/TimeInput";
 import AmountInput from "../InputComponents/NumberInput";
 import DistanceInput from "../InputComponents/DistanceInput";
+import { UserContext } from "../UserProvider";
+import { AiOutlineLoading } from "react-icons/ai";
+import { AlertContext } from "../Alert/AlertProvider";
 
 
 export default function HabitInputBox() {
   const inputData = useContext(HabitInputContext);
+  const {alert} = useContext(AlertContext)
+  const {loading} = useContext(UserContext)
   const [value, setValue] = useState(0)
   
   useEffect(() => {
@@ -44,12 +49,14 @@ export default function HabitInputBox() {
             </div>
             <div className="flex justify-stretch  w-full gap-3">
               <button
-                className="mt-2 grow-4 bg-green-400 text-stone-800 font-mono p-1 rounded-md pl-2 pr-2 hover:cursor-pointer "
-                onClick={() => {
+                className="mt-2 grow-4 bg-green-400 text-stone-800 font-mono p-1 rounded-md pl-2 pr-2 hover:cursor-pointer flex justify-center items-center"
+                onClick={async () => {
+                  if(!inputData.callbackRef.current) return
+                  await inputData.callbackRef.current(value);
+                  alert("Succes, Well Done! 🎉🎉🎉")
                   inputData.setShowing(false);
-                  console.log(inputData.showing);
                 }}>
-                Submit
+                {loading ? <AiOutlineLoading className="animate-spin" /> : "Submit"}
               </button>
               <button
                 className="mt-2 grow-1 bg-green-400 text-stone-800 font-mono p-1 rounded-md pl-2 pr-2 hover:cursor-pointer"

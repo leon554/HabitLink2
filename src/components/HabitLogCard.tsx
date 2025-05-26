@@ -1,6 +1,7 @@
 import { useContext } from 'react'
 import { HabitTypeE, type HabitType } from '../utils/types'
 import { HabitInputContext } from './InputBox/HabitInputProvider'
+import { UserContext } from './UserProvider'
 
 
 interface HabitProps{
@@ -8,12 +9,17 @@ interface HabitProps{
 }
 export default function HabitLogCard({habit: h}: HabitProps) {
     
-    const {alert} = useContext(HabitInputContext)
-    //fix habit input context to have a call back on refactor
+    const HIC = useContext(HabitInputContext)
+    const UC = useContext(UserContext)
+
     function HandleClick(){
         if(h.type != HabitTypeE.Normal){
-            alert("", h.type as HabitTypeE, h.weeklyTarget)
+            HIC.callbackRef.current = handleSubmit
+            HIC.alert("", h.type as HabitTypeE, h.weeklyTarget)
         }
+    }
+    async function handleSubmit(value: number){
+        await UC.CompleHabit(h.id, value)
     }
     return (
         <div className='bg-stone-800 rounded-md w-[90%] max-w-[600px] font-mono flex justify-between items-center'>

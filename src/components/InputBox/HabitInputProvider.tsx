@@ -1,5 +1,5 @@
 
-import { createContext, useState } from "react"
+import { createContext, useState, useRef} from "react"
 import { HabitTypeE } from "../../utils/types"
 
 interface InputType{
@@ -12,8 +12,9 @@ interface InputType{
   weekly: boolean
   setMessage: (message: string) => void
   alert: (message: string, type: HabitTypeE, weekly: boolean) => void
+  callbackRef: React.RefObject<((value: number) => Promise<void>) | null>
 }
-const initialInputValues = {
+const initialInputValues: InputType = {
   showing: false,
   setShowing: () => null,
   title: "",
@@ -22,7 +23,8 @@ const initialInputValues = {
   weekly: false,
   type: HabitTypeE.Normal,
   setMessage: () => null,
-  alert: () => null
+  alert: () => null,
+  callbackRef: { current: null }
 }
 
 export const HabitInputContext = createContext<InputType>(initialInputValues)
@@ -36,8 +38,9 @@ export default function HabitInputProvider(props: Props) {
   const [title, setTitle] = useState("")
   const [weekly, setWeekly] = useState(false)
   const [type, setType] = useState(HabitTypeE.Normal)
+  const callbackRef = useRef<(value: number) => Promise<void>>(null);
 
-  function alert(message: string, type: HabitTypeE, weekly: boolean){
+  async function alert(message: string, type: HabitTypeE, weekly: boolean){
     setMessage(message)
     setTitle("Enter Data")
     setWeekly(weekly)
@@ -54,7 +57,8 @@ export default function HabitInputProvider(props: Props) {
       setTitle: setTitle,
       alert: alert,
       type,
-      weekly
+      weekly,
+      callbackRef
     }}>
           
         {props.children}

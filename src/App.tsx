@@ -15,10 +15,10 @@ function App() {
   return (
     <>
       <Router>
-        <AlertProvider>
-        <HabitInputProvider>
         <AuthProvider>
         <UserProvider>
+        <AlertProvider>
+        <HabitInputProvider>
 
           <Routes>
             <Route element={<Layout/>}>
@@ -29,10 +29,11 @@ function App() {
               <Route path="create" element={<CreatePage/>}/>
             </Route>
           </Routes>
-          </UserProvider>
-        </AuthProvider>
+          
         </HabitInputProvider>
         </AlertProvider>
+        </UserProvider>
+        </AuthProvider>
       </Router>
     </>
   )

@@ -8,12 +8,14 @@ import type { HabitType } from "../utils/types";
 interface UserType{
     createHabit: (name: string, description: string, completionDays:string, emoji: string, type: string, weeklyTarget: boolean, target: number) => Promise<void>
     habits: HabitType[]
-    loading: boolean
+    loading: boolean,
+    CompleHabit: (habitId: string, value: number) => Promise<void>
 }
 const initialValues: UserType = {
     createHabit: () => Promise.resolve(undefined),
     habits: [],
-    loading: false
+    loading: false,
+    CompleHabit: () => Promise.resolve(undefined)
 }
 
 export const UserContext = createContext<UserType>(initialValues)
@@ -66,11 +68,27 @@ export default function UserProvider(props: Props) {
         setLoading(false)
         setHabits(habits as HabitType[])
     }
+
+    async function CompleHabit(habitId: string, value: number){
+        const userid = auth.getUserId()
+
+        setLoading(true)
+        const { error } = await supabase
+            .from('habitCompletions')
+            .insert([
+                { habitId, data: value, date: Date.now(), user_id: userid},
+            ])
+        if(error){
+            alert("Habit Completion Error: " + error)
+        }
+        setLoading(false)
+    }
     return (
         <UserContext.Provider value={{
             createHabit,
             habits,
-            loading
+            loading,
+            CompleHabit
         }}>
             {props.children}
         </UserContext.Provider>
