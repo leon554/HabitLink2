@@ -1,12 +1,13 @@
 import {useContext, useState } from "react";
-import NumericInput from "./NumericInput";
+import NumericInput from "./InputComponents/NumericInput";
 import { IoInformationCircleOutline } from "react-icons/io5";
 import { AlertContext } from "./Alert/AlertProvider";
 import { UserContext } from "./UserProvider";
 import { AiOutlineLoading } from "react-icons/ai";
-import Switch from "./Switch";
-import TimeInput from "./TimeInput";
-import { div } from "motion/react-client";
+import Switch from "./InputComponents/Switch";
+import TimeInput from "./InputComponents/TimeInput";
+import DistanceInput from "./InputComponents/DistanceInput";
+import NumberInput from "./InputComponents/NumberInput";
 
 
 
@@ -18,7 +19,9 @@ export default function Create() {
     const [selectedTypeIndex, setSelectedTypeIndex] = useState(-1)
     const [weekly, setWeekly] = useState(false)
     const [name, setName] = useState("")
-    const [value, setValue] = useState(0)
+    const [time, setTime] = useState(0)
+    const [distance, setDistance] = useState(0)
+    const [amount, setAmount] = useState(0)
     const [description, setDescription] = useState("")
     const habitEmojis = ["💪","📖","🧘","📝","🥗","🚰","😴","📚","🏃","🧹","🛏️","🪥","💻","🎨","🎵","☀️","📅","💸","📵","🧼","🧊","🏋️","🧠","🎯","👣","🍎","🚭","🍵","🌿","🕯️","👨‍🍳","🚿","🪑","🐶","🤝"];
     const habitTypes = ["Normal", "Time Based", "Distance Based", "Iteration Based"]
@@ -31,7 +34,7 @@ export default function Create() {
         console.log("sdjhsdsj")
         const completionDaysString = (compsPerWeek == 0) ? getCompDaysString() : `${compsPerWeek}`
          console.log("sdjhsdsj1")
-        await user.createHabit(name, description, completionDaysString, habitEmojis[selectedEmojiIndex], habitTypes[selectedTypeIndex])
+        await user.createHabit(name, description, completionDaysString, habitEmojis[selectedEmojiIndex], habitTypes[selectedTypeIndex], weekly, getTarget())
          console.log("sdjhsdsj2")
     }
     function getCompDaysString(){
@@ -41,7 +44,17 @@ export default function Create() {
         })
         return data
     }
-    
+    function getTarget(){
+        let target = 0
+        if(habitTypes[selectedTypeIndex] == "Time Based"){
+            target = time
+        }else if(habitTypes[selectedTypeIndex] == "Distance Based"){
+            target = distance
+        }else if(habitTypes[selectedTypeIndex] == "Iteration Based"){
+            target = amount
+        }
+        return target
+    }
     return (
         <div className="bg-stone-800 max-md:max-w-[400px]  max-w-[900px] mt-20 w-[95%] flex justify-center rounded-md flex-col items-center pb-5 font-mono">
             <p className="font-mono text-stone-200 font-semibold text-2xl mt-8 mb-8">
@@ -110,7 +123,7 @@ export default function Create() {
                         )
                     })}
                     </div>
-                    <div className="max-md:w-[70%] mb-6 w-full">
+                    {habitTypes[selectedTypeIndex] != "Normal" &&  habitTypes[selectedTypeIndex] != undefined? <div className="max-md:w-[70%] mb-6 w-full">
                         <p className="text-[16px]  text-stone-100 mb-2">Target</p>
                         <div className="flex gap-2 justify-between mb-4">
                             <p className="text-stone-400 text-sm">
@@ -119,9 +132,13 @@ export default function Create() {
                             <Switch setStatus={setWeekly} ticked={weekly}/> 
                         </div>
                         {habitTypes[selectedTypeIndex] == "Time Based" ? 
-                            <TimeInput setDuration={setValue} moreHours={weekly}/> 
-                        : ""}
-                    </div>
+                            <TimeInput setDuration={setTime} moreHours={weekly}/> 
+                        : habitTypes[selectedTypeIndex] == "Distance Based" ? 
+                            <DistanceInput setDistance={setDistance} distance={distance} moreDistance={weekly}/>
+                        : 
+                            <NumberInput setAmount={setAmount} amount={amount} moreamount={weekly}/>
+                        }
+                    </div> : ""}
                 </div>
 
                 <div className="w-[70%]  font-mono mb-7  ">

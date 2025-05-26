@@ -10,23 +10,19 @@ export default function TimeInput(p: TimeProps) {
         return str.trim() !== '' && !isNaN(Number(str));
     }
     function setValue(value: string, key: string){
-        if(!isNumber(value)){
-            setTime(p => ({...p, [key]: 0}))
+        if (!isNumber(value)) {
+            value = "0";
         }
-        const num = Number(value)
-        const max = key == "h" ? p.moreHours ? 60 : 24 : 60
-        if(num >= 0 && num <= max){
-            setTime(p => ({...p, [key]: num}))
-        }
-        else if(num < 0){
-            setTime(p => ({...p, [key]: 0}))
-        }else{
-            setTime(p => ({...p, [key]: max}))
-        }
-        p.setDuration(getTotalSeconds())
-    }
-    function getTotalSeconds(){
-        return time.s + (time.m * 60) + (time.h * 60 * 60)
+
+        const num = Number(value);
+        const max = key === "h" ? (p.moreHours ? 60 : 24) : 60;
+        const clamped = Math.max(0, Math.min(num, max));
+        
+        const newTime = { ...time, [key]: clamped };
+        setTime(newTime);
+
+        const totalSeconds = (newTime.h * 3600) + (newTime.m * 60);
+        p.setDuration(totalSeconds);
     }
     return (
         <div className="flex font-mono p-1 gap-2 rounded-md text-sm outline-1 outline-stone-500 justify-stretch">

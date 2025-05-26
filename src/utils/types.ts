@@ -12,4 +12,12 @@ export interface HabitType{
     completionDays: string
     icon: string
     type: string
+    weeklyTarget: boolean,
+    target: boolean
+}
+export enum HabitTypeE{
+    Normal = "Normal",
+    Time_Based = "Time Based",
+    Distance_Based = "Distance Based",
+    Iteration_Based = "Iteration Based"
 }

@@ -8,6 +8,7 @@ import AuthProvider from "./components/Session/AuthProvider"
 import LogPage from "./pages/LogPage"
 import CreatePage from "./pages/CreatePage"
 import UserProvider from "./components/UserProvider"
+import HabitInputProvider from "./components/InputBox/HabitInputProvider"
 
 function App() {
 
@@ -15,8 +16,10 @@ function App() {
     <>
       <Router>
         <AlertProvider>
+        <HabitInputProvider>
         <AuthProvider>
         <UserProvider>
+
           <Routes>
             <Route element={<Layout/>}>
               <Route path="/auth" element={<AuthPage/>}/>
@@ -28,6 +31,7 @@ function App() {
           </Routes>
           </UserProvider>
         </AuthProvider>
+        </HabitInputProvider>
         </AlertProvider>
       </Router>
     </>

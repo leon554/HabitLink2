@@ -6,7 +6,7 @@ import type { HabitType } from "../utils/types";
 
 
 interface UserType{
-    createHabit: (name: string, description: string, completionDays:string, emoji: string, type: string) => Promise<void>
+    createHabit: (name: string, description: string, completionDays:string, emoji: string, type: string, weeklyTarget: boolean, target: number) => Promise<void>
     habits: HabitType[]
     loading: boolean
 }
@@ -34,14 +34,14 @@ export default function UserProvider(props: Props) {
         getHabits()
     }, [auth.session?.user])
 
-    async function createHabit(name: string, description: string, completionDays:string, emoji: string, type: string){
+    async function createHabit(name: string, description: string, completionDays:string, emoji: string, type: string, weeklyTarget: boolean, target: number){
         setLoading(true)
         const userid = auth.getUserId()
 
         const { error } = await supabase
             .from('habits')
             .insert([
-                { name,  description, icon: emoji, type, completionDays, user_id: userid},
+                { name,  description, icon: emoji, type, completionDays, user_id: userid, weeklyTarget, target},
             ])
         if(error){
             alert("Habit creation error: " + error.message)
