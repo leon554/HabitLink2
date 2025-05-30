@@ -1,10 +1,11 @@
 import { useContext} from "react"
 import { Link } from "react-router-dom"
 import { AuthContext } from "./Session/AuthProvider"
+import { AiOutlineLoading } from "react-icons/ai";
 
 
 export default function Navbar() {
-    const {session, logout} = useContext(AuthContext)
+    const {session, logout, loading} = useContext(AuthContext)
 
     
     return (
@@ -14,7 +15,7 @@ export default function Navbar() {
                     HabitLink
                 </p>
             </div>
-            <div>
+            <div className="flex">
                 { !session ? <>
                     <Link to={"/auth"}>
                         <button className="h-13 pl-4 pr-4 font-medium text-sm font-mono text-gray-300 text-md hover:bg-green-400 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer">
@@ -42,7 +43,7 @@ export default function Navbar() {
                         </Link>
                         <button className="h-13 pl-4 pr-4 font-medium text-sm font-mono text-gray-300 text-md hover:bg-green-400 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer"
                             onClick={logout}>
-                            Log Out
+                            {loading? <AiOutlineLoading className="animate-spin"/> : "Log Out"}
                         </button>
                     </>
                 }

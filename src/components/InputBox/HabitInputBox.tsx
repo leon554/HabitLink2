@@ -61,8 +61,7 @@ export default function HabitInputBox() {
               <button
                 className="mt-2 grow-1 bg-green-400 text-stone-800 font-mono p-1 rounded-md pl-2 pr-2 hover:cursor-pointer"
                 onClick={() => {
-                  inputData.setShowing(false);
-                  console.log(inputData.showing);
+                  inputData.setShowing(false)
                 }}>
                 Exit
               </button>
