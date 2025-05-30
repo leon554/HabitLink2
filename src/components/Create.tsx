@@ -36,7 +36,7 @@ export default function Create() {
          console.log("sdjhsdsj1")
         await user.createHabit(name, description, completionDaysString, habitEmojis[selectedEmojiIndex], habitTypes[selectedTypeIndex], weekly, getTarget())
          console.log("sdjhsdsj2")
-        alert("Succefully Created Habit!")
+        alert("Succefully Created Habit!") 
     }
     function getCompDaysString(){
         let data = ""

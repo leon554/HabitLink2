@@ -51,6 +51,7 @@ export default function AuthProvider(props: Props) {
             authListener.subscription.unsubscribe()
         }
     }, [])
+    
     async function fetchSession(){
         const currentSession = await supabase.auth.getSession()
         setSession(currentSession.data.session)
@@ -61,6 +62,7 @@ export default function AuthProvider(props: Props) {
         if(!session) {navigate("/"); return}
 
         const { data, error} = await supabase.auth.getUser()
+
         if(error){
             alert("User does not exists in DB: " + error.message)
             await supabase.auth.signOut()
@@ -102,6 +104,8 @@ export default function AuthProvider(props: Props) {
 
         if(error){
             alert("Log In Error: " + error.message)
+        }else{
+            alert("Succes")
         }
     }
     async function signup(name: string, email: string, password: string) {

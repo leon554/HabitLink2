@@ -17,7 +17,8 @@ export default function Auth() {
     const auth = useContext(AuthContext)
     const {alert} = useContext(AlertContext)
 
-    const submit = async () => {
+    const submit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
         if(login){
             await logIn()
         }else{
@@ -54,7 +55,7 @@ export default function Auth() {
                     Start your improvement journey today
                 </p>
                 </div>
-                <form className=" w-[80%] flex flex-col gap-3 text-gray-300 font-mono" onSubmit={submit}>
+                <form className=" w-[80%] flex flex-col gap-3 text-gray-300 font-mono" onSubmit={e => submit(e)}>
                     {!login ? <div>
                         <p className="mb-1.5">Name</p>
                         <input type="text" 

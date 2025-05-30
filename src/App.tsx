@@ -15,9 +15,9 @@ function App() {
   return (
     <>
       <Router>
+        <AlertProvider>
         <AuthProvider>
         <UserProvider>
-        <AlertProvider>
         <HabitInputProvider>
 
           <Routes>
@@ -31,9 +31,9 @@ function App() {
           </Routes>
           
         </HabitInputProvider>
-        </AlertProvider>
         </UserProvider>
         </AuthProvider>
+        </AlertProvider>
       </Router>
     </>
   )
