@@ -41,10 +41,9 @@ export default function AuthProvider(props: Props) {
     const navigate = useNavigate()
 
     useEffect(() => {
-        fetchSession()
         const {data: authListener} = supabase.auth.onAuthStateChange(async (_event, session) => {
+            console.log("Event: " + _event + ", Session: " + session)
             setSession(session)
-            navigateUser(session)
         })
 
         return () => {
@@ -52,11 +51,14 @@ export default function AuthProvider(props: Props) {
         }
     }, [])
     
-    async function fetchSession(){
-        const currentSession = await supabase.auth.getSession()
-        setSession(currentSession.data.session)
-        await navigateUser(currentSession.data.session)
-    }
+    useEffect(() => {
+        if (session) {
+            navigateUser(session)
+        } else {
+            navigate("/")
+        }
+    }, [session])
+
     async function navigateUser(session: Session|null){
         if(!session) {navigate("/"); return}
 
