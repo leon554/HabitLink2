@@ -66,7 +66,7 @@ export default function HabitLogCard({habit: h}: HabitProps) {
         <div className='bg-stone-800 rounded-md w-[100%] max-w-[600px] font-mono overflow-auto'>
             <div className='flex justify-between items-center '>
                 <p className='text-stone-200 p-3 pt-4 pb-4 text-lg'>
-                    {h.icon} {h.name} 
+                    {h.icon} {h.name} {CompUtil.isCompleteableToday(h.completionDays, UC.habitsCompletions.get(h.id)) ? "Completable" : ""}
                 </p>
                 <div className='flex gap-2'>
                     

@@ -8,7 +8,7 @@ export default function LogPage() {
     return (
         <div className="flex flex-col items-center">
             <div className="w-[90%] flex flex-col items-start max-w-[600px]">
-                <div className="bg-stone-900 rounded-md w-full p-4 flex justify-center items-center mt-24">
+                <div className="bg-stone-800 rounded-md w-full p-4 flex justify-center items-center mt-24">
                     <p className="text-stone-200 font-mono text-2xl font-normal text-center">
                         Log Your Habits
                     </p>

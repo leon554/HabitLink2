@@ -19,6 +19,14 @@ export namespace CompUtil{
             .reduce((a, c) => a += Number(c.data), 0)
         return Number(sum)
     }
+    export function hasCompletionToday(completions: HabitCompletionType[]){
+        if(!completions) return false
+        return completions.some(c => dateUtils.isDatesSameDay(new Date(Number(c.date)), new Date()))
+    }
+    export function getCompletionsThisWeek(completions: HabitCompletionType[]){
+        if(!completions) return 0
+        return completions.filter(c => dateUtils.isDateInCurrentWeek(new Date(Number(c.date)))).length
+    }
 
     export function pretifyData(data: string, type: HabitTypeE){
         if(type == HabitTypeE.Distance_Based){
@@ -41,4 +49,21 @@ export namespace CompUtil{
 
         return `${hours}h ${mins}m`
     }
+
+    export function isCompleteableToday(completionDays: string, completions: HabitCompletionType[]|undefined){
+        if(completionDays.length == 1){
+            if(!completions) return true
+            const allreadyComps = getCompletionsThisWeek(completions)
+            return allreadyComps < Number(completionDays) 
+        }else{
+            const currentDay = (new Date()).getDay()
+            const index = currentDay - 1 < 0 ? 6 : currentDay - 1
+            if(!completions){
+                return completionDays.charAt(index) == "1"
+            }
+            return completionDays.charAt(index) == "1" && !hasCompletionToday(completions)
+        }
+    }
+
+
 }
