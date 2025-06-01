@@ -13,7 +13,15 @@ export interface HabitType{
     icon: string
     type: string
     weeklyTarget: boolean,
-    target: boolean
+    target: string
+}
+export interface HabitCompletionType{
+    id: string
+    created_at: string
+    habitId: string
+    data: number
+    date: number
+    user_id: string
 }
 export enum HabitTypeE{
     Normal = "Normal",

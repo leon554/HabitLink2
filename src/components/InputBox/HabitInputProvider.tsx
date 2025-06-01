@@ -10,8 +10,9 @@ interface InputType{
   message: string
   type: HabitTypeE
   weekly: boolean
+  max: number | undefined
   setMessage: (message: string) => void
-  alert: (message: string, type: HabitTypeE, weekly: boolean) => void
+  alert: (message: string, type: HabitTypeE, weekly: boolean, max: number) => void
   callbackRef: React.RefObject<((value: number) => Promise<void>) | null>
 }
 const initialInputValues: InputType = {
@@ -21,6 +22,7 @@ const initialInputValues: InputType = {
   setTitle: () => null,
   message: "",
   weekly: false,
+  max: undefined,
   type: HabitTypeE.Normal,
   setMessage: () => null,
   alert: () => null,
@@ -38,13 +40,15 @@ export default function HabitInputProvider(props: Props) {
   const [title, setTitle] = useState("")
   const [weekly, setWeekly] = useState(false)
   const [type, setType] = useState(HabitTypeE.Normal)
+  const [max, setMax] = useState<number| undefined>(undefined)
   const callbackRef = useRef<(value: number) => Promise<void>>(null);
 
-  async function alert(message: string, type: HabitTypeE, weekly: boolean){
+  async function alert(message: string, type: HabitTypeE, weekly: boolean, max: number){
     setMessage(message)
     setTitle("Enter Data")
     setWeekly(weekly)
     setType(type)
+    setMax(max)
     setShowing(true)
   }
   return (
@@ -58,7 +62,8 @@ export default function HabitInputProvider(props: Props) {
       alert: alert,
       type,
       weekly,
-      callbackRef
+      callbackRef,
+      max
     }}>
           
         {props.children}

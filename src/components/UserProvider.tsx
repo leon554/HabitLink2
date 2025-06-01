@@ -2,20 +2,25 @@ import { createContext, useContext, useEffect, useState } from "react"
 import { AuthContext } from "./Session/AuthProvider";
 import { supabase } from "../supabase-client";
 import { AlertContext } from "./Alert/AlertProvider";
-import type { HabitType } from "../utils/types";
+import {type HabitCompletionType, type HabitType } from "../utils/types";
+import { dateUtils } from "../utils/dateUtils";
 
 
 interface UserType{
     createHabit: (name: string, description: string, completionDays:string, emoji: string, type: string, weeklyTarget: boolean, target: number) => Promise<void>
-    habits: HabitType[]
+    habits: Map<string, HabitType>
+    habitsCompletions: Map<string, HabitCompletionType[]>,
     loading: boolean,
-    CompleHabit: (habitId: string, value: number) => Promise<void>
+    compleHabit: (habitId: string, value: number) => Promise<void>,
+    removeTodaysHabitCompletion: (habitId: string) => Promise<void>
 }
 const initialValues: UserType = {
     createHabit: () => Promise.resolve(undefined),
-    habits: [],
+    habits: new Map<string, HabitType>(),
+    habitsCompletions: new Map<string, HabitCompletionType[]>(),
     loading: false,
-    CompleHabit: () => Promise.resolve(undefined)
+    compleHabit: () => Promise.resolve(undefined),
+    removeTodaysHabitCompletion: () => Promise.resolve(undefined)
 }
 
 export const UserContext = createContext<UserType>(initialValues)
@@ -25,7 +30,8 @@ interface Props {
 }
 export default function UserProvider(props: Props) {
     const [loading, setLoading] = useState(false)
-    const [habits, setHabits] = useState<HabitType[]>([])
+    const [habits, setHabits] = useState<Map<string, HabitType>>(new Map<string, HabitType>())
+    const [habitsCompletions, setHabitsCompletions] = useState<Map<string, HabitCompletionType[]>>(new Map<string, HabitCompletionType[]>())
 
     const auth = useContext(AuthContext)
     const {alert} = useContext(AlertContext)
@@ -34,6 +40,7 @@ export default function UserProvider(props: Props) {
         const userid = auth.getUserId()
         if(!userid) return
         getHabits()
+        getHabitsCompletions()
     }, [auth.session?.user])
 
     async function createHabit(name: string, description: string, completionDays:string, emoji: string, type: string, weeklyTarget: boolean, target: number){
@@ -58,18 +65,66 @@ export default function UserProvider(props: Props) {
     async function getHabits(){
         setLoading(true)
         const userid = auth.getUserId()
-        let { data: habits, error } = await supabase
+        let { data: habitsData, error } = await supabase
             .from('habits')
             .select('*')
             .eq("user_id", userid)
         if(error){
             alert("Habit fetch error: " + error.message)
         }
+        const habits = habitsData as HabitType[]
+        const habitMap = new Map<string, HabitType>()
+        habits.forEach(h => {
+            if(habitMap.has(h.id)) {alert("Duplicate habits skipped"); return}
+            habitMap.set(h.id, h)
+            
+        })
+        setHabits(habitMap)
         setLoading(false)
-        setHabits(habits as HabitType[])
     }
 
-    async function CompleHabit(habitId: string, value: number){
+    async function getHabitsCompletions() {
+        setLoading(true)
+        const userid = auth.getUserId()
+
+        let { data: habitsCompletionsData, error } = await supabase
+            .from('habitCompletions')
+            .select('*')
+            .eq("user_id", userid)
+        if(error){
+            alert("Habit completion fetch error: " + error.message)
+        }
+        const habitCompletionsTemp = habitsCompletionsData as HabitCompletionType[]
+        const habitCompletionsMap = new Map<string, HabitCompletionType[]>()
+        habitCompletionsTemp.forEach(h => {
+            if(!habitCompletionsMap.has(h.habitId)){
+                habitCompletionsMap.set(h.habitId, [])
+            }
+            habitCompletionsMap.get(h.habitId)!.push(h)
+        })
+        setHabitsCompletions(habitCompletionsMap)
+        setLoading(false)
+    }
+    async function removeTodaysHabitCompletion(habitId: string){
+        setLoading(true)
+        const completions = habitsCompletions.get(habitId)
+        if(!completions) return 
+
+        const completionsToBeDeleted = completions.filter(c => dateUtils.isDatesSameDay(new Date(Number(c.date)), new Date()))
+        const idsToBeDeleted =completionsToBeDeleted.map(c => Number(c.id))
+
+        const { error } = await supabase
+            .from('habitCompletions')
+            .delete()
+            .in('id', idsToBeDeleted)
+
+        if(error){
+            alert("Deletion Error: " + error.message)
+        }
+        await getHabitsCompletions()
+        setLoading(false)
+    }
+    async function compleHabit(habitId: string, value: number){
         const userid = auth.getUserId()
 
         setLoading(true)
@@ -81,14 +136,18 @@ export default function UserProvider(props: Props) {
         if(error){
             alert("Habit Completion Error: " + error)
         }
+        await getHabitsCompletions()
         setLoading(false)
     }
+
     return (
         <UserContext.Provider value={{
             createHabit,
             habits,
+            habitsCompletions,
             loading,
-            CompleHabit
+            compleHabit: compleHabit,
+            removeTodaysHabitCompletion
         }}>
             {props.children}
         </UserContext.Provider>

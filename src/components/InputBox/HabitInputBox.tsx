@@ -42,9 +42,9 @@ export default function HabitInputBox() {
                     <TimeInput setDuration={setValue} moreHours={inputData.weekly}/> 
                 : 
                 inputData.type == HabitTypeE.Distance_Based ? 
-                    <DistanceInput distance={value} setDistance={setValue} moreDistance={inputData.weekly}/>
+                    <DistanceInput distance={value} setDistance={setValue} moreDistance={inputData.weekly} max={inputData.max}/>
                 :
-                    <AmountInput amount={value} setAmount={setValue} moreamount={inputData.weekly}/> 
+                    <AmountInput amount={value} setAmount={setValue} moreamount={inputData.weekly} max={inputData.max}/> 
                 }
             </div>
             <div className="flex justify-stretch  w-full gap-3">

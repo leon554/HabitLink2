@@ -3,6 +3,7 @@ interface DistanceProps{
     setDistance: (distance: number) => void
     distance: number
     moreDistance: boolean
+    max?: number
 }
 export default function DistanceInput(p: DistanceProps) {
    
@@ -15,7 +16,7 @@ export default function DistanceInput(p: DistanceProps) {
                 <input
                     type="range"
                     min="0"
-                    max={p.moreDistance ? "700" : "200"}
+                    max={p.max ?  p.max: p.moreDistance ? "700" : "200"}
                     value={p.distance}
                     onChange={e => p.setDistance(Number(e.target.value))}
                     className="w-full h-2 bg-stone-700 rounded-lg appearance-none cursor-pointer slider-thumb mr-1"

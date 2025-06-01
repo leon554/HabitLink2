@@ -55,7 +55,6 @@ export default function AuthProvider(props: Props) {
     async function fetchSession(){
         const currentSession = await supabase.auth.getSession()
         setSession(currentSession.data.session)
-        
         await navigateUser(currentSession.data.session)
     }
     async function navigateUser(session: Session|null){
@@ -73,6 +72,7 @@ export default function AuthProvider(props: Props) {
         await createUserEntry(data.user)
         navigate("/dashboard"); return
     }
+    
     async function createUserEntry(data: User){
         const exists = await checkIfUserEntryExists(data)
         if(exists) return
