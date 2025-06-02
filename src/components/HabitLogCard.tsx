@@ -10,8 +10,9 @@ import { CompUtil } from '../utils/completionsUtil';
 
 interface HabitProps{
     habit: HabitType
+    detailed: boolean
 }
-export default function HabitLogCard({habit: h}: HabitProps) {
+export default function HabitLogCard({habit: h, detailed}: HabitProps) {
     const [loading, setLoading] = useState(false)
 
     const HIC = useContext(HabitInputContext)
@@ -51,18 +52,18 @@ export default function HabitLogCard({habit: h}: HabitProps) {
             const date = new Date(Number(c.date))
             return dateUtils.isDatesSameDay(date, currentDate)
         })
-        if(!h.weeklyTarget) return CompUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id)) > Number(h.target)
+
+        if(!h.weeklyTarget && h.completionDays.length != 1) return CompUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id)) > Number(h.target)
         return isToday
     }
     function getLoadingColor(){
         return isCompletedToday() && isNormalHabit() ? "text-stone-800" : "text-stone-200"
     }
 
-    //{CompUtil.isCompleteableToday(h.completionDays, UC.habitsCompletions.get(h.id)) ? "Completable" : ""}
     return (
         <div className='bg-stone-800 rounded-md w-[100%] max-w-[600px] font-mono overflow-auto'>
             <div className='flex justify-between items-center '>
-                <p className='text-stone-200 p-3 pt-4 pb-2 text-lg'>
+                <p className='text-stone-200 p-3 pt-3 pb-2 text-lg'>
                     {h.icon} {h.name} 
                 </p>
                 <div className='flex gap-2'>
@@ -76,7 +77,8 @@ export default function HabitLogCard({habit: h}: HabitProps) {
                     </button>
                 </div>
             </div>
-            {!isNormalHabit() ?
+            {detailed ? 
+            !isNormalHabit()?
                 <div className='ml-4 mr-3 mb-3 flex  gap-2 flex-col'>
                     <div className='w-full'>
                         {h.weeklyTarget ? 
@@ -122,7 +124,8 @@ export default function HabitLogCard({habit: h}: HabitProps) {
                 <p className='text-stone-400 font-mono text-[11px]'>
                    {CompUtil.isCompleteableToday(h.completionDays, UC.habitsCompletions.get(h.id)) ? "| Due Today" : ""}
                 </p>
-            </div>}
+            </div>: ""}
+            {}
         </div>
     )
 }
