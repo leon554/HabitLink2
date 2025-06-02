@@ -8,7 +8,11 @@ export default function Alert() {
     <>
       <div className={`bg-black w-full h-full fixed  top-0 z-49 ${AlertData.showing ? "opacity-65" : "opacity-0"}`} style={{
         display: AlertData.showing ? "" : "none"
-      }}></div>
+      }}
+      onClick={() => AlertData.setShowing(false)}
+      >
+
+      </div>
       <AnimatePresence>
         {AlertData.showing == true && (
           <motion.div

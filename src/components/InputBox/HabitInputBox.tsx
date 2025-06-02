@@ -24,7 +24,10 @@ export default function HabitInputBox() {
     <>
       <div className={`bg-black w-full h-full fixed  top-0 z-49 ${inputData.showing ? "opacity-65" : "opacity-0"}`} style={{
         display: inputData.showing ? "" : "none"
-      }}></div>
+      }}
+      onClick={() => inputData.setShowing(false)}>
+
+      </div>
       <AnimatePresence>
         {inputData.showing == true && (
           <motion.div

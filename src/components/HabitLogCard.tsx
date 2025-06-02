@@ -6,6 +6,7 @@ import { AiOutlineLoading } from "react-icons/ai";
 import { dateUtils } from '../utils/dateUtils'
 import ProgressBar from './InputComponents/ProgressBar';
 import { CompUtil } from '../utils/completionsUtil';
+import { FaCheck } from "react-icons/fa6";
 
 
 interface HabitProps{
@@ -57,7 +58,7 @@ export default function HabitLogCard({habit: h, detailed}: HabitProps) {
         return isToday
     }
     function getLoadingColor(){
-        return isCompletedToday() && isNormalHabit() ? "text-stone-800" : "text-stone-200"
+        return isCompletedToday() && isNormalHabit() ? "text-green-500" : "text-stone-500"
     }
 
     return (
@@ -68,12 +69,12 @@ export default function HabitLogCard({habit: h, detailed}: HabitProps) {
                 </p>
                 <div className='flex gap-2'>
                     
-                    <button className={`outline-stone-500 h-7 flex justify-center 
+                    <button className={`h-7 flex justify-center 
                         items-center rounded-md p-2 mr-3 w-7 text-stone-200 
                         text-2xl hover:cursor-pointer
-                        ease-in-out duration-150 ${isCompletedToday() ? "bg-green-400 outline-0 w-8 h-8 " : " outline-1 hover:outline-stone-400  active:bg-stone-800"}`}
+                        ease-in-out duration-150 ${isCompletedToday() ? "outline-green-400 outline-1  " : "outline-stone-500  outline-1 hover:outline-stone-400  active:bg-stone-800"}`}
                         onClick={HandleClick}>
-                        {loading ? <AiOutlineLoading className={`animate-spin ${getLoadingColor()}`}/> : ""}
+                        {loading ? <AiOutlineLoading className={`animate-spin ${getLoadingColor()}`}/> : <FaCheck className={`${isCompletedToday() ? "text-green-400" : "text-stone-500" }`}/>}
                     </button>
                 </div>
             </div>
