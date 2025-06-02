@@ -51,40 +51,34 @@ export default function HabitLogCard({habit: h}: HabitProps) {
             const date = new Date(Number(c.date))
             return dateUtils.isDatesSameDay(date, currentDate)
         })
+        if(!h.weeklyTarget) return CompUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id)) > Number(h.target)
         return isToday
     }
     function getLoadingColor(){
         return isCompletedToday() && isNormalHabit() ? "text-stone-800" : "text-stone-200"
     }
-    function isNonNormalHabitComplete(){
-        if(h.weeklyTarget){
-            return CompUtil.getCompletionValueSumWeek(UC.habitsCompletions.get(h.id)) > Number(h.target)
-        }
-        return CompUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id)) > Number(h.target)
-    }
+
+    //{CompUtil.isCompleteableToday(h.completionDays, UC.habitsCompletions.get(h.id)) ? "Completable" : ""}
     return (
         <div className='bg-stone-800 rounded-md w-[100%] max-w-[600px] font-mono overflow-auto'>
             <div className='flex justify-between items-center '>
-                <p className='text-stone-200 p-3 pt-4 pb-4 text-lg'>
-                    {h.icon} {h.name} {CompUtil.isCompleteableToday(h.completionDays, UC.habitsCompletions.get(h.id)) ? "Completable" : ""}
+                <p className='text-stone-200 p-3 pt-4 pb-2 text-lg'>
+                    {h.icon} {h.name} 
                 </p>
                 <div className='flex gap-2'>
                     
                     <button className={`outline-stone-500 h-7 flex justify-center 
                         items-center rounded-md p-2 mr-3 w-7 text-stone-200 
                         text-2xl hover:cursor-pointer
-                        ease-in-out duration-150 ${(isCompletedToday() && isNormalHabit()) || isNonNormalHabitComplete() ? "bg-green-400 outline-0 w-8 h-8 " : " outline-1 hover:outline-stone-400  active:bg-stone-800"}`}
+                        ease-in-out duration-150 ${isCompletedToday() ? "bg-green-400 outline-0 w-8 h-8 " : " outline-1 hover:outline-stone-400  active:bg-stone-800"}`}
                         onClick={HandleClick}>
                         {loading ? <AiOutlineLoading className={`animate-spin ${getLoadingColor()}`}/> : ""}
                     </button>
                 </div>
             </div>
             {!isNormalHabit() ?
-                <div className='ml-4 mr-3 mb-3 flex items-center gap-2'>
-                    <p className='text-stone-600 font-mono text-xs bg-green-400 rounded-full pl-1 pr-1 font-extrabold'>
-                        {h.weeklyTarget ? "W" : "D"}
-                    </p>
-                    <div className='grow-2'>
+                <div className='ml-4 mr-3 mb-3 flex  gap-2 flex-col'>
+                    <div className='w-full'>
                         {h.weeklyTarget ? 
                         <div className=''>
                             <ProgressBar 
@@ -100,21 +94,35 @@ export default function HabitLogCard({habit: h}: HabitProps) {
                                 current={CompUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))}/>
                         </div>}
                     </div>
-                    <div className='flex items-center gap-2 w-fit'>   
-                        <p className='text-stone-400 font-mono text-xs'>
-                            {Math.round(CompUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))/Number(h.target)*100*100)/100}%
+                    <div className='flex items-center gap-2 mt-1 flex-wrap justify-stretch'>   
+                        <p className='text-stone-400 whitespace-nowrap  font-mono text-[11px]'>
+                            {Math.round(CompUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))/Number(h.target)*100*100)/100}% |
                         </p>
-                        <p className='text-stone-400 font-mono text-xs'>
-                            | Goal: {CompUtil.pretifyData(h.target, h.type as HabitTypeE)}
+                        <p className='text-stone-400 whitespace-nowrap overflow-ellipsis font-mono text-[11px] bg-stone-600 rounded-full pl-1 pr-1 font-extrabold'>
+                          {h.weeklyTarget ? "W" : "D"} 
                         </p>
-                        <p className='text-stone-400 font-mono text-xs'>
-                            | Current: {h.weeklyTarget ? 
+                        <p className='text-stone-400 whitespace-nowrap overflow-ellipsis font-mono text-[11px]'>
+                             [{h.weeklyTarget ? 
                                 CompUtil.pretifyData(`${CompUtil.getCompletionValueSumWeek(UC.habitsCompletions.get(h.id))}`, h.type as HabitTypeE): 
-                                CompUtil.pretifyData(`${CompUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))}`, h.type as HabitTypeE)}
+                                CompUtil.pretifyData(`${CompUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))}`, h.type as HabitTypeE)}]/[{CompUtil.pretifyData(h.target, h.type as HabitTypeE)}]
+                        </p>
+                        <p className='text-stone-400 whitespace-nowrap overflow-ellipsis font-mono text-[11px]'>
+                            | {CompUtil.getCompletionDaysString(h.completionDays)}
+                        </p>
+                        <p className='text-stone-400 whitespace-nowrap overflow-ellipsis font-mono text-[11px]'>
+                            {CompUtil.isCompleteableToday(h.completionDays, UC.habitsCompletions.get(h.id)) ? "| Due Today" : ""}
                         </p>
                     </div>
                 </div>
-            : ""}
+            : 
+            <div className='ml-4 mr-3 mb-3 flex  gap-2 '>
+                <p className='text-stone-400 font-mono text-[11px]'>
+                    Completions Days: {CompUtil.getCompletionDaysString(h.completionDays)}
+                </p>
+                <p className='text-stone-400 font-mono text-[11px]'>
+                   {CompUtil.isCompleteableToday(h.completionDays, UC.habitsCompletions.get(h.id)) ? "| Due Today" : ""}
+                </p>
+            </div>}
         </div>
     )
 }

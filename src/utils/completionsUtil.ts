@@ -54,6 +54,8 @@ export namespace CompUtil{
         if(completionDays.length == 1){
             if(!completions) return true
             const allreadyComps = getCompletionsThisWeek(completions)
+            const compToday = completions.some(c => dateUtils.isDatesSameDay(new Date(Number(c.date)), new Date()))
+            if(compToday) return false
             return allreadyComps < Number(completionDays) 
         }else{
             const currentDay = (new Date()).getDay()
@@ -64,6 +66,17 @@ export namespace CompUtil{
             return completionDays.charAt(index) == "1" && !hasCompletionToday(completions)
         }
     }
-
+    export function getCompletionDaysString(completionDays: string){
+        if(completionDays.length == 1){
+            return `${completionDays}x Week`
+        }else{
+            let output = ""
+            const mappedValues = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]
+            completionDays.split('').forEach((c, i) => {
+                if(c === "1") output += mappedValues[i] + " "
+            })
+            return output.trim()
+        }
+    }
 
 }

@@ -3,11 +3,11 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "../../supabase-client";
 import { AlertContext } from "../Alert/AlertProvider";
 import { SignUpResponses } from "../../utils/types";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 
 interface AuthType{
-    session: Session| null
+    session: Session| null | undefined
     user: User | null
     loading: boolean
     login: (email: string, password: string) => Promise<void>
@@ -16,7 +16,7 @@ interface AuthType{
     getUserId: () => null|string
 }
 const initialValues: AuthType = {
-    session: null,
+    session: undefined,
     user: null,
     loading: false,
     login: async (_: string, _1: string) => {},
@@ -32,13 +32,15 @@ interface Props {
 }
 
 export default function AuthProvider(props: Props) {
-    const [session, setSession] = useState<null|Session>(null)
+    const [session, setSession] = useState<null|Session|undefined>(undefined)
     const [user, setUser] = useState<null|User>(null)
     const [loading, setLoading] = useState(false)
-   
-   
+    const protectedPaths = ["/dashboard", "/log", "/create"]
+    
+
     const {alert} = useContext(AlertContext)
     const navigate = useNavigate()
+    const location = useLocation()
 
     useEffect(() => {
         const {data: authListener} = supabase.auth.onAuthStateChange(async (_event, session) => {
@@ -52,15 +54,12 @@ export default function AuthProvider(props: Props) {
     }, [])
     
     useEffect(() => {
-        if (session) {
-            navigateUser(session)
-        } else {
-            navigate("/")
-        }
+        if(session === undefined) return
+        navigateUser(session)
     }, [session])
 
     async function navigateUser(session: Session|null){
-        if(!session) {navigate("/"); return}
+        if(!session) {navigate("/auth"); return}
 
         const { data, error} = await supabase.auth.getUser()
 
@@ -70,9 +69,18 @@ export default function AuthProvider(props: Props) {
             navigate("/")
             return
         }
+
         setUser(data.user)
         await createUserEntry(data.user)
-        navigate("/dashboard"); return
+
+        const currentPath = location.pathname
+        console.log(currentPath)
+
+        if(protectedPaths.includes(currentPath)){
+            navigate(currentPath)
+            return
+        }
+        navigate("/dashboard"); 
     }
     
     async function createUserEntry(data: User){

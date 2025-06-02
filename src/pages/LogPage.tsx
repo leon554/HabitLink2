@@ -1,6 +1,7 @@
 import { useContext } from "react"
 import { UserContext } from "../components/UserProvider"
 import HabitLogCard from "../components/HabitLogCard"
+import { HabitTypeE } from "../utils/types"
 
 export default function LogPage() {
     const user = useContext(UserContext)
@@ -15,11 +16,22 @@ export default function LogPage() {
                 </div>
                 <div className="flex w-[100%] flex-col scroll-smooth  no-scrollbar gap-2 items-center mt-2 mb-10 max-h-[72vh] rounded-md overflow-y-scroll">
                     {Array.from(user.habits.values()).map((h, i) => {
-                        return(
-                            <div className="w-full  ">
-                                <HabitLogCard habit={h} key={i}/>
-                            </div>
-                        )
+                        if(h.type === HabitTypeE.Normal){
+                            return(
+                                <div className="w-full  ">
+                                    <HabitLogCard habit={h} key={i}/>
+                                </div>
+                            )
+                        }
+                    })}
+                    {Array.from(user.habits.values()).map((h, i) => {
+                        if(h.type !== HabitTypeE.Normal){
+                            return(
+                                <div className="w-full  ">
+                                    <HabitLogCard habit={h} key={i}/>
+                                </div>
+                            )
+                        }
                     })}
                 </div>
             </div>
