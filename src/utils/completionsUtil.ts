@@ -1,5 +1,5 @@
 import { dateUtils } from "./dateUtils";
-import { HabitTypeE, type HabitCompletionType } from "./types";
+import { HabitTypeE, type HabitCompletionType, type HabitType } from "./types";
 
 export namespace CompUtil{
 
@@ -50,21 +50,33 @@ export namespace CompUtil{
         return `${hours}h ${mins}m`
     }
 
-    export function isCompleteableToday(completionDays: string, completions: HabitCompletionType[]|undefined){
-        if(completionDays.length == 1){
+    export function isCompleteableToday(habit: HabitType, completions: HabitCompletionType[]|undefined){
+        if(habit.completionDays.length == 1){
             if(!completions) return true
-            const allreadyComps = getCompletionsThisWeek(completions)
-            const compToday = completions.some(c => dateUtils.isDatesSameDay(new Date(Number(c.date)), new Date()))
-            if(compToday) return false
-            return allreadyComps < Number(completionDays) 
+            const completionsThisWeek = getCompletionsThisWeek(completions)
+            
+            const compsToday = completions.filter(c => dateUtils.isDatesSameDay(new Date(Number(c.date)), new Date()))
+            if(compsToday.length >= 1 && habit.weeklyTarget) return false
+            if(getCompletionDataSum(compsToday) >= Number(habit.target)) return false
+
+            return completionsThisWeek < Number(habit.completionDays) 
         }else{
             const currentDay = (new Date()).getDay()
             const index = currentDay - 1 < 0 ? 6 : currentDay - 1
             if(!completions){
-                return completionDays.charAt(index) == "1"
+                return habit.completionDays.charAt(index) == "1"
             }
-            return completionDays.charAt(index) == "1" && !hasCompletionToday(completions)
+
+            if(habit.weeklyTarget){
+                return habit.completionDays.charAt(index) == "1" && !hasCompletionToday(completions)
+            }else{
+                const compsToday = completions.filter(c => dateUtils.isDatesSameDay(new Date(Number(c.date)), new Date()))
+                return habit.completionDays.charAt(index) == "1" && getCompletionDataSum(compsToday) < Number(habit.target)
+            }
         }
+    }
+    function getCompletionDataSum(completions: HabitCompletionType[]){
+        return completions.reduce((sum, cur) => sum + cur.data, 0)
     }
     export function getCompletionDaysString(completionDays: string){
         if(completionDays.length == 1){

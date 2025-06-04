@@ -7,6 +7,7 @@ import { dateUtils } from '../utils/dateUtils'
 import ProgressBar from './InputComponents/ProgressBar';
 import { CompUtil } from '../utils/completionsUtil';
 import { FaCheck } from "react-icons/fa6";
+import { FaHourglassHalf } from "react-icons/fa";
 
 
 interface HabitProps{
@@ -54,7 +55,7 @@ export default function HabitLogCard({habit: h, detailed}: HabitProps) {
             return dateUtils.isDatesSameDay(date, currentDate)
         })
 
-        if(!h.weeklyTarget && h.completionDays.length != 1) return CompUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id)) > Number(h.target)
+        if(!h.weeklyTarget) return CompUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id)) > Number(h.target)
         return isToday
     }
     function getLoadingColor(){
@@ -112,8 +113,8 @@ export default function HabitLogCard({habit: h, detailed}: HabitProps) {
                         <p className='text-stone-400 whitespace-nowrap overflow-ellipsis font-mono text-[11px]'>
                             | {CompUtil.getCompletionDaysString(h.completionDays)}
                         </p>
-                        <p className='text-stone-400 whitespace-nowrap overflow-ellipsis font-mono text-[11px]'>
-                            {CompUtil.isCompleteableToday(h.completionDays, UC.habitsCompletions.get(h.id)) ? "| Due Today" : ""}
+                        <p className='text-stone-400 whitespace-nowrap overflow-ellipsis font-mono text-[9px]'>
+                            {CompUtil.isCompleteableToday(h, UC.habitsCompletions.get(h.id)) ? <FaHourglassHalf /> : ""}
                         </p>
                     </div>
                 </div>
@@ -122,8 +123,8 @@ export default function HabitLogCard({habit: h, detailed}: HabitProps) {
                 <p className='text-stone-400 font-mono text-[11px]'>
                     Completions Days: {CompUtil.getCompletionDaysString(h.completionDays)}
                 </p>
-                <p className='text-stone-400 font-mono text-[11px]'>
-                   {CompUtil.isCompleteableToday(h.completionDays, UC.habitsCompletions.get(h.id)) ? "| Due Today" : ""}
+                <p className='text-stone-400 font-mono text-[9px] flex items-center'>
+                   {CompUtil.isCompleteableToday(h, UC.habitsCompletions.get(h.id)) ? <FaHourglassHalf /> : ""}
                 </p>
             </div>: ""}
             {}
