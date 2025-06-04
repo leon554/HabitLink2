@@ -109,19 +109,20 @@ export namespace HabitUtil{
             return getCompRateFixedDays(habit, completions)
         }
     }
+
     function getCompRateAnyDays(habit: HabitType, completions: HabitCompletionType[]){
         const { completionDays: weeklyTarget,  creationDate: startDate} = habit
         const endDate = new Date()
 
-        const weeks = eachWeekOfInterval({start: startDate, end: endDate})
-        
+        const weeks = eachWeekOfInterval({start: new Date(Number(startDate)), end: endDate})
+
         const compsPerWeek: number[] = []
         for(let i = 0; i < weeks.length; i++){
             const compsThisWeek = completions.filter(c => dateUtils.isDateInWeek(new Date(Number(c.date)), weeks[i]))
             
             if(i == weeks.length - 1){
                 let completableDays = (new Date()).getDay() + 1
-                completableDays -= (isSameWeek(startDate, new Date())) ? new Date(Number(startDate)).getDay() : 0
+                completableDays -= (isSameWeek(new Date(Number(startDate)), new Date())) ? new Date(Number(startDate)).getDay() : 0
                
                 if(compsThisWeek.length < completableDays){
                     const effectiveDays = Math.min(completableDays, Number(weeklyTarget));
@@ -139,35 +140,60 @@ export namespace HabitUtil{
         const ratesPerWeek = compsPerWeek.map(c => Math.min(c, Number(weeklyTarget))/Number(weeklyTarget))
         return Util.avgNumArr(ratesPerWeek)
     }
+
     function getCompRateFixedDays(habit: HabitType, completions: HabitCompletionType[]){
         const { completionDays: compDays,  creationDate: startDate} = habit
         const endDate = new Date()
 
-        const weeks = eachWeekOfInterval({start: startDate, end: endDate})
+        const weeks = eachWeekOfInterval({start: new Date(Number(startDate)), end: endDate})
 
         const compsPerWeek: number[] = []
-        for(const week of weeks){
-            const compsThisWeek = completions.filter(c => dateUtils.isDateInWeek(new Date(Number(c.date)), week))
-            
+        for(let i = 0; i < weeks.length; i++){
+            const compsThisWeek = completions.filter(c => dateUtils.isDateInWeek(new Date(Number(c.date)), weeks[i]))
             const compWeekDays = getCompDays(compDays)
 
             const completionCount = compWeekDays.map(d => {
-                const compvalue = getCompletionValueSumDay(compsThisWeek, add(week, {days: d}))
-                sub(week, {days: d})
+                const compvalue = getCompletionValueSumDay(compsThisWeek, add(weeks[i], {days: d}))
+                sub(weeks[i], {days: d})
                 return compvalue >= Number(habit.target)
             }).filter(didComplete => didComplete == true)
             
             compsPerWeek.push(completionCount.length)
         }
-        const ratesPerWeek = compsPerWeek.map(c => c/getNumCompDays(compDays))
+        const ratesPerWeek = compsPerWeek.map((c, i) => {
+            if(i != compsPerWeek.length - 1){
+                return c/getNumCompDays(compDays)
+            }else{
+                let completableDays = getCompletableDaysThisWeek(compDays) 
+                completableDays = (isSameWeek(new Date(Number(startDate)), new Date())) ? 
+                    getCompletableDaysHabitCreationSameWeek(compDays, new Date(Number(startDate))) :
+                    completableDays
+                console.log(completableDays)
+                return c/completableDays
+            }
+        })
         return Util.avgNumArr(ratesPerWeek)
     }
-    function getCompDays(completionDays: string){
-        const rawDays = completionDays.split("").map((_, i) => i)
-        return rawDays.map(i => i - 1 < 0 ? 6 : i - 1)
+
+    function getCompDays(completionDays: string) {
+        const reorderMap = [1, 2, 3, 4, 5, 6, 0];
+        return completionDays.split("")
+            .map((v, i) => { return {index: reorderMap[i], value: v}})
+            .filter(v => v.value == "1")
+            .map(v => v.index)
+    }
+    function getCompletableDaysThisWeek(completionDays: string){
+        const compDays = getCompDays(completionDays)
+        const currentDay = (new Date()).getDay()
+        return compDays.filter(d => d <= currentDay).length
+    }
+    function getCompletableDaysHabitCreationSameWeek(completionDays: string, creationDate: Date){
+        const compDays = getCompDays(completionDays)
+        const currentDay = (new Date()).getDay()
+        return compDays.filter(d => d <= currentDay && d >= creationDate.getDay()).length
     }
     function getNumCompDays(completionDays: string){
-        return completionDays.split("").filter(d => d == "1").length
+        return completionDays.length
     }
 
 }

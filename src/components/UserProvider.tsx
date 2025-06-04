@@ -55,7 +55,7 @@ export default function UserProvider(props: Props) {
         const { error } = await supabase
             .from('habits')
             .insert([
-                { name,  description, icon: emoji, type, completionDays, user_id: userid, weeklyTarget, target, creationDate: new Date()},
+                { name,  description, icon: emoji, type, completionDays, user_id: userid, weeklyTarget, target, creationDate: Date.now()},
             ])
         if(error){
             alert("Habit creation error: " + error.message)
