@@ -9,6 +9,7 @@ import LogPage from "./pages/LogPage"
 import CreatePage from "./pages/CreatePage"
 import UserProvider from "./components/UserProvider"
 import HabitInputProvider from "./components/InputBox/HabitInputProvider"
+import StatsPage from "./pages/StatsPage"
 
 function App() {
 
@@ -27,6 +28,7 @@ function App() {
               <Route path="dashboard" element={<Dashboard/>}/>
               <Route path="log" element={<LogPage/>}/>
               <Route path="create" element={<CreatePage/>}/>
+              <Route path="stats" element={<StatsPage/>}/>
             </Route>
           </Routes>
           

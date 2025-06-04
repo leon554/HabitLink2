@@ -1,7 +1,9 @@
 import { useContext} from "react"
 import { Link } from "react-router-dom"
 import { AuthContext } from "./Session/AuthProvider"
+import { LuLogOut } from "react-icons/lu";
 import { AiOutlineLoading } from "react-icons/ai";
+
 
 
 export default function Navbar() {
@@ -36,6 +38,11 @@ export default function Navbar() {
                                 Log
                             </button>
                         </Link>
+                         <Link to={"/stats"}>
+                            <button className="h-13 pl-4 pr-4 font-medium text-sm font-mono text-gray-300 text-md hover:bg-green-400 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer">
+                                Stats
+                            </button>
+                        </Link>
                         <Link to={"/create"}>
                             <button className="h-13 pl-4 pr-4 font-medium text-sm font-mono text-gray-300 text-md hover:bg-green-400 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer">
                                 Create
@@ -43,7 +50,7 @@ export default function Navbar() {
                         </Link>
                         <button className="h-13 pl-4 pr-4 font-medium text-sm font-mono text-gray-300 text-md hover:bg-green-400 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer"
                             onClick={logout}>
-                            {loading? <AiOutlineLoading className="animate-spin"/> : "Log Out"}
+                            {loading? <AiOutlineLoading className="animate-spin"/> : <LuLogOut />}
                         </button>
                     </>
                 }

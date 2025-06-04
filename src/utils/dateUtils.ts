@@ -7,9 +7,23 @@ export namespace dateUtils{
     }
     export function isDateInCurrentWeek(date: Date) {
         const now = new Date();
-
+        
         const startOfWeek = new Date(now);
         startOfWeek.setDate(now.getDate() - now.getDay());
+        startOfWeek.setHours(0, 0, 0, 0);
+        
+        const endOfWeek = new Date(startOfWeek);
+        endOfWeek.setDate(startOfWeek.getDate() + 6);
+        endOfWeek.setHours(23, 59, 59, 999);
+
+        const targetDate = new Date(date);
+
+        return targetDate >= startOfWeek && targetDate <= endOfWeek;
+    }
+     export function isDateInWeek(date: Date, week: Date) {
+        
+        const startOfWeek = new Date(week);
+        startOfWeek.setDate(week.getDate() - week.getDay());
         startOfWeek.setHours(0, 0, 0, 0);
         
         const endOfWeek = new Date(startOfWeek);

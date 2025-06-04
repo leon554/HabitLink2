@@ -5,9 +5,10 @@ import { UserContext } from './UserProvider'
 import { AiOutlineLoading } from "react-icons/ai";
 import { dateUtils } from '../utils/dateUtils'
 import ProgressBar from './InputComponents/ProgressBar';
-import { CompUtil } from '../utils/completionsUtil';
+import { HabitUtil } from '../utils/HabitUtil';
 import { FaCheck } from "react-icons/fa6";
 import { FaHourglassHalf } from "react-icons/fa";
+import { Util } from '../utils/util';
 
 
 interface HabitProps{
@@ -55,7 +56,7 @@ export default function HabitLogCard({habit: h, detailed}: HabitProps) {
             return dateUtils.isDatesSameDay(date, currentDate)
         })
 
-        if(!h.weeklyTarget) return CompUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id)) > Number(h.target)
+        if(!h.weeklyTarget) return HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id)) > Number(h.target)
         return isToday
     }
     function getLoadingColor(){
@@ -66,7 +67,7 @@ export default function HabitLogCard({habit: h, detailed}: HabitProps) {
         <div className='bg-stone-800 rounded-md w-[100%] max-w-[600px] font-mono overflow-auto'>
             <div className='flex justify-between items-center '>
                 <p className='text-stone-200 p-3 pt-3 pb-2 text-lg'>
-                    {h.icon} {h.name} 
+                    {h.icon} {Util.capitilizeFirst(h.name)} 
                 </p>
                 <div className='flex gap-2'>
                     
@@ -88,43 +89,43 @@ export default function HabitLogCard({habit: h, detailed}: HabitProps) {
                             <ProgressBar 
                                 min={0} 
                                 max={Number(h.target)} 
-                                current={CompUtil.getCompletionValueSumWeek(UC.habitsCompletions.get(h.id))}/>
+                                current={HabitUtil.getCompletionValueSumWeek(UC.habitsCompletions.get(h.id))}/>
                         </div>
                         : 
                         <div className=''>
                             <ProgressBar 
                                 min={0} 
                                 max={Number(h.target)} 
-                                current={CompUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))}/>
+                                current={HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))}/>
                         </div>}
                     </div>
                     <div className='flex items-center gap-2 mt-1 flex-wrap justify-stretch'>   
                         <p className='text-stone-400 whitespace-nowrap  font-mono text-[11px]'>
-                            {Math.round(CompUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))/Number(h.target)*100*100)/100}% |
+                            {Math.round(HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))/Number(h.target)*100*100)/100}% |
                         </p>
                         <p className='text-stone-400 whitespace-nowrap overflow-ellipsis font-mono text-[11px] bg-stone-600 rounded-full pl-1 pr-1 font-extrabold'>
                           {h.weeklyTarget ? "W" : "D"} 
                         </p>
                         <p className='text-stone-400 whitespace-nowrap overflow-ellipsis font-mono text-[11px]'>
                              [{h.weeklyTarget ? 
-                                CompUtil.pretifyData(`${CompUtil.getCompletionValueSumWeek(UC.habitsCompletions.get(h.id))}`, h.type as HabitTypeE): 
-                                CompUtil.pretifyData(`${CompUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))}`, h.type as HabitTypeE)}]/[{CompUtil.pretifyData(h.target, h.type as HabitTypeE)}]
+                                HabitUtil.pretifyData(`${HabitUtil.getCompletionValueSumWeek(UC.habitsCompletions.get(h.id))}`, h.type as HabitTypeE): 
+                                HabitUtil.pretifyData(`${HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))}`, h.type as HabitTypeE)}]/[{HabitUtil.pretifyData(h.target, h.type as HabitTypeE)}]
                         </p>
                         <p className='text-stone-400 whitespace-nowrap overflow-ellipsis font-mono text-[11px]'>
-                            | {CompUtil.getCompletionDaysString(h.completionDays)}
+                            | {HabitUtil.getCompletionDaysString(h.completionDays)}
                         </p>
                         <p className='text-stone-400 whitespace-nowrap overflow-ellipsis font-mono text-[9px]'>
-                            {CompUtil.isCompleteableToday(h, UC.habitsCompletions.get(h.id)) ? <FaHourglassHalf /> : ""}
+                            {HabitUtil.isCompleteableToday(h, UC.habitsCompletions.get(h.id)) ? <FaHourglassHalf /> : ""}
                         </p>
                     </div>
                 </div>
             : 
             <div className='ml-4 mr-3 mb-3 flex  gap-2 '>
                 <p className='text-stone-400 font-mono text-[11px]'>
-                    Completions Days: {CompUtil.getCompletionDaysString(h.completionDays)}
+                    Completions Days: {HabitUtil.getCompletionDaysString(h.completionDays)}
                 </p>
                 <p className='text-stone-400 font-mono text-[9px] flex items-center'>
-                   {CompUtil.isCompleteableToday(h, UC.habitsCompletions.get(h.id)) ? <FaHourglassHalf /> : ""}
+                   {HabitUtil.isCompleteableToday(h, UC.habitsCompletions.get(h.id)) ? <FaHourglassHalf /> : ""}
                 </p>
             </div>: ""}
             {}

@@ -4,7 +4,7 @@ import HabitLogCard from "../components/HabitLogCard"
 import { HabitTypeE } from "../utils/types"
 import Switch from "../components/InputComponents/Switch"
 import { IoSettingsOutline } from "react-icons/io5";
-import { CompUtil } from "../utils/completionsUtil"
+import { HabitUtil } from "../utils/HabitUtil"
 
 export default function LogPage() {
     const [showDetails, setShowDetails] = useState(true)
@@ -57,14 +57,14 @@ export default function LogPage() {
             : ""}
             <div className="w-[90%] max-w-[600px] flex flex-col gap-2 overflow-auto no-scrollbar rounded-md">
                 {Array.from(user.habits.values()).map((h, i) =>
-                    h.type === HabitTypeE.Normal && (!showDue || CompUtil.isCompleteableToday(h, user.habitsCompletions.get(h.id))) ? (
+                    h.type === HabitTypeE.Normal && (!showDue || HabitUtil.isCompleteableToday(h, user.habitsCompletions.get(h.id))) ? (
                         <div className="w-full" key={`normal-${i}`}>
                             <HabitLogCard habit={h} detailed={showDetails}/>
                         </div>
                     ) : null
                 )}
                 {Array.from(user.habits.values()).map((h, i) =>
-                    h.type !== HabitTypeE.Normal && !showNormal && (!showDue || CompUtil.isCompleteableToday(h, user.habitsCompletions.get(h.id))) ? (
+                    h.type !== HabitTypeE.Normal && !showNormal && (!showDue || HabitUtil.isCompleteableToday(h, user.habitsCompletions.get(h.id))) ? (
                         <div className="w-full" key={`alt-${i}`}>
                             <HabitLogCard habit={h} detailed={showDetails}/>
                         </div>

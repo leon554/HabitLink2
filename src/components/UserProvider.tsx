@@ -11,6 +11,8 @@ interface UserType{
     habits: Map<string, HabitType>
     habitsCompletions: Map<string, HabitCompletionType[]>,
     loading: boolean,
+    currentHabit: HabitType | null
+    setCurrentHabit: (currentHabit: HabitType | null) => void
     compleHabit: (habitId: string, value: number) => Promise<void>,
     removeTodaysHabitCompletion: (habitId: string) => Promise<void>
 }
@@ -19,6 +21,8 @@ const initialValues: UserType = {
     habits: new Map<string, HabitType>(),
     habitsCompletions: new Map<string, HabitCompletionType[]>(),
     loading: false,
+    currentHabit: null,
+    setCurrentHabit: () => null,
     compleHabit: () => Promise.resolve(undefined),
     removeTodaysHabitCompletion: () => Promise.resolve(undefined)
 }
@@ -30,6 +34,7 @@ interface Props {
 }
 export default function UserProvider(props: Props) {
     const [loading, setLoading] = useState(false)
+    const [currentHabit, setCurrentHabit] = useState<HabitType|null>(null)
     const [habits, setHabits] = useState<Map<string, HabitType>>(new Map<string, HabitType>())
     const [habitsCompletions, setHabitsCompletions] = useState<Map<string, HabitCompletionType[]>>(new Map<string, HabitCompletionType[]>())
 
@@ -50,7 +55,7 @@ export default function UserProvider(props: Props) {
         const { error } = await supabase
             .from('habits')
             .insert([
-                { name,  description, icon: emoji, type, completionDays, user_id: userid, weeklyTarget, target},
+                { name,  description, icon: emoji, type, completionDays, user_id: userid, weeklyTarget, target, creationDate: new Date()},
             ])
         if(error){
             alert("Habit creation error: " + error.message)
@@ -146,6 +151,8 @@ export default function UserProvider(props: Props) {
             habits,
             habitsCompletions,
             loading,
+            currentHabit,
+            setCurrentHabit,
             compleHabit: compleHabit,
             removeTodaysHabitCompletion
         }}>

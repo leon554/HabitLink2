@@ -13,7 +13,8 @@ export interface HabitType{
     icon: string
     type: string
     weeklyTarget: boolean,
-    target: string
+    target: string,
+    creationDate: string
 }
 export interface HabitCompletionType{
     id: string
