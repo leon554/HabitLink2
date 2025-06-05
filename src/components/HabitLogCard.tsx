@@ -50,13 +50,13 @@ export default function HabitLogCard({habit: h, detailed}: HabitProps) {
         const completions = UC.habitsCompletions.get(h.id)
         if(!completions) return false
 
-        const currentDate = new Date
+        const currentDate = new Date()
         const isToday = completions.some(c => {
             const date = new Date(Number(c.date))
             return dateUtils.isDatesSameDay(date, currentDate)
         })
 
-        if(!h.weeklyTarget) return HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id)) >= Number(h.target)
+        if(!h.weeklyTarget && h.type != HabitTypeE.Normal) return HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id)) >= Number(h.target)
         return isToday
     }
     function getLoadingColor(){

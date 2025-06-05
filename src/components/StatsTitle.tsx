@@ -30,9 +30,14 @@ export default function StatsTitle() {
                     <ProgressBar min={0} max={1} current={0}/>
                 </div>
                 <div>
-                    <p className="text-lg mb-1">
-                        Completion Rate
-                    </p>
+                    <div className="flex items-center justify-between">
+                        <p className="text-lg mb-1">
+                            Completion Rate
+                        </p>
+                        <p className="mb-1">
+                            {Math.round(compRate * 100)}%
+                        </p>
+                    </div>
                     <ProgressBar min={0} max={1} current={compRate}/>
                 </div>
             </div>
