@@ -4,7 +4,7 @@ import { Util } from "../utils/util"
 import { HiOutlineSwitchHorizontal } from "react-icons/hi";
 import ProgressBar from "./InputComponents/ProgressBar";
 import { HabitUtil } from "../utils/HabitUtil";
-
+import Select from "./InputComponents/Select";
 
 export default function StatsTitle() {
 
@@ -17,10 +17,13 @@ export default function StatsTitle() {
                 <h1 className="text-stone-500">
                     {Util.capitilizeFirst(HC.currentHabit?.name)}
                 </h1>
-                <p className="text-stone-500 hover:cursor-pointer"
-                onClick={() => HC.setCurrentHabit(null)}>
-                   <HiOutlineSwitchHorizontal />
-                </p>
+                <div className="text-stone-500 hover:cursor-pointer flex relative">
+                   <Select habits={Array.from(HC.habits.values())} 
+                                            selectedHabit={HC.currentHabit} 
+                                            setSelectedHabit={HC.setCurrentHabit}
+                                            setText={HiOutlineSwitchHorizontal}
+                                            style="outline-0 p-0 justify-end flex"/>
+                </div>
             </div>
             <div className="flex justify-center mt-4 flex-col gap-3">
                 <div>
