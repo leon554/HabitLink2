@@ -28,7 +28,7 @@ export default function HabitLogCard({habit: h, detailed}: HabitProps) {
     async function HandleClick(){
         if(h.type != HabitTypeE.Normal){
             HIC.callbackRef.current = handleSubmit
-            HIC.alert("", h.type as HabitTypeE, h.weeklyTarget, Number(h.target))
+            HIC.alert("", h.type as HabitTypeE, Number(h.target))
         }else{
             setLoading(true)
             if(isCompletedToday()){
@@ -56,7 +56,7 @@ export default function HabitLogCard({habit: h, detailed}: HabitProps) {
             return dateUtils.isDatesSameDay(date, currentDate)
         })
 
-        if(!h.weeklyTarget && h.type != HabitTypeE.Normal) return HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id)) >= Number(h.target)
+        if(h.type != HabitTypeE.Normal) return HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id)) >= Number(h.target)
         return isToday
     }
     function getLoadingColor(){
@@ -84,32 +84,19 @@ export default function HabitLogCard({habit: h, detailed}: HabitProps) {
             !isNormalHabit()?
                 <div className='ml-4 mr-3 mb-3 flex  gap-2 flex-col'>
                     <div className='w-full'>
-                        {h.weeklyTarget ? 
-                        <div className=''>
-                            <ProgressBar 
-                                min={0} 
-                                max={Number(h.target)} 
-                                current={HabitUtil.getCompletionValueSumWeek(UC.habitsCompletions.get(h.id))}/>
-                        </div>
-                        : 
                         <div className=''>
                             <ProgressBar 
                                 min={0} 
                                 max={Number(h.target)} 
                                 current={HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))}/>
-                        </div>}
+                        </div>
                     </div>
                     <div className='flex items-center gap-2 mt-1 flex-wrap justify-stretch'>   
                         <p className='text-stone-400 whitespace-nowrap  font-mono text-[11px]'>
                             {Math.round(HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))/Number(h.target)*100*100)/100}% |
                         </p>
-                        <p className='text-stone-400 whitespace-nowrap overflow-ellipsis font-mono text-[11px] bg-stone-600 rounded-full pl-1 pr-1 font-extrabold'>
-                          {h.weeklyTarget ? "W" : "D"} 
-                        </p>
                         <p className='text-stone-400 whitespace-nowrap overflow-ellipsis font-mono text-[11px]'>
-                             [{h.weeklyTarget ? 
-                                HabitUtil.pretifyData(`${HabitUtil.getCompletionValueSumWeek(UC.habitsCompletions.get(h.id))}`, h.type as HabitTypeE): 
-                                HabitUtil.pretifyData(`${HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))}`, h.type as HabitTypeE)}]/[{HabitUtil.pretifyData(h.target, h.type as HabitTypeE)}]
+                             [{HabitUtil.pretifyData(`${HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))}`, h.type as HabitTypeE)}]/[{HabitUtil.pretifyData(h.target, h.type as HabitTypeE)}]
                         </p>
                         <p className='text-stone-400 whitespace-nowrap overflow-ellipsis font-mono text-[11px]'>
                             | {HabitUtil.getCompletionDaysString(h.completionDays)}

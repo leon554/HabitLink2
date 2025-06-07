@@ -2,7 +2,6 @@ import { useState } from "react"
 
 interface TimeProps{
     setDuration: (timer: number) => void
-    moreHours: boolean
 }
 export default function TimeInput(p: TimeProps) {
     const [time, setTime] = useState({h:0, m:0, s:0})
@@ -15,7 +14,7 @@ export default function TimeInput(p: TimeProps) {
         }
 
         const num = Number(value);
-        const max = key === "h" ? (p.moreHours ? 60 : 24) : 60;
+        const max = key === "h" ? 24 : 60;
         const clamped = Math.max(0, Math.min(num, max));
         
         const newTime = { ...time, [key]: clamped };
@@ -33,7 +32,7 @@ export default function TimeInput(p: TimeProps) {
                 <input
                     type="range"
                     min="0"
-                    max={p.moreHours ? "60" : "24"}
+                    max="24"
                     value={time.h}
                     onChange={e => setValue(e.target.value , "h")}
                     className="w-full h-2 bg-stone-700 rounded-lg appearance-none cursor-pointer slider-thumb "

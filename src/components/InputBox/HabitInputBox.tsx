@@ -40,14 +40,14 @@ export default function HabitInputBox() {
             <h1 className="text-md text-stone-400 text-center font-mono">
               {inputData.message}
             </h1>
-            <div>
+            <div className=" w-full">
                 {inputData.type == HabitTypeE.Time_Based ? 
-                    <TimeInput setDuration={setValue} moreHours={inputData.weekly}/> 
+                    <TimeInput setDuration={setValue} /> 
                 : 
                 inputData.type == HabitTypeE.Distance_Based ? 
-                    <DistanceInput distance={value} setDistance={setValue} moreDistance={inputData.weekly} max={inputData.max}/>
+                    <DistanceInput distance={value} setDistance={setValue} max={inputData.max}/>
                 :
-                    <AmountInput amount={value} setAmount={setValue} moreamount={inputData.weekly} max={inputData.max}/> 
+                    <AmountInput amount={value} setAmount={setValue} max={inputData.max}/> 
                 }
             </div>
             <div className="flex justify-stretch  w-full gap-3">

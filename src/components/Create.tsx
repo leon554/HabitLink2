@@ -4,7 +4,6 @@ import { IoInformationCircleOutline } from "react-icons/io5";
 import { AlertContext } from "./Alert/AlertProvider";
 import { UserContext } from "./UserProvider";
 import { AiOutlineLoading } from "react-icons/ai";
-import Switch from "./InputComponents/Switch";
 import TimeInput from "./InputComponents/TimeInput";
 import DistanceInput from "./InputComponents/DistanceInput";
 import NumberInput from "./InputComponents/NumberInput";
@@ -17,7 +16,6 @@ export default function Create() {
     const [compDays, setCompDays] = useState({mon: false, teu: false, wed: false, thu: false, fri: false, sat: false, sun: false})
     const [selectedEmojiIndex, setSelectedEmojiIndex] = useState(-1)
     const [selectedTypeIndex, setSelectedTypeIndex] = useState(-1)
-    const [weekly, setWeekly] = useState(false)
     const [name, setName] = useState("")
     const [time, setTime] = useState(0)
     const [distance, setDistance] = useState(0)
@@ -31,12 +29,20 @@ export default function Create() {
 
     async function createHabit(){
         //add check if everything is filled in
-        console.log("sdjhsdsj")
         const completionDaysString = (compsPerWeek == 0) ? getCompDaysString() : `${compsPerWeek}`
-         console.log("sdjhsdsj1")
-        await user.createHabit(name, description, completionDaysString, habitEmojis[selectedEmojiIndex], habitTypes[selectedTypeIndex], weekly, getTarget())
-         console.log("sdjhsdsj2")
-        alert("Succefully Created Habit!") 
+        await user.createHabit(name, description, completionDaysString, habitEmojis[selectedEmojiIndex], habitTypes[selectedTypeIndex], getTarget())
+        resetValues()
+    }
+    function resetValues(){
+        setCompsPerWeek(0);
+        setCompDays({ mon: false, teu: false, wed: false, thu: false, fri: false, sat: false, sun: false});
+        setSelectedEmojiIndex(-1);
+        setSelectedTypeIndex(-1);
+        setName("");
+        setTime(0);
+        setDistance(0);
+        setAmount(0);
+        setDescription("");
     }
     function getCompDaysString(){
         let data = ""
@@ -125,19 +131,14 @@ export default function Create() {
                     })}
                     </div>
                     {habitTypes[selectedTypeIndex] != "Normal" &&  habitTypes[selectedTypeIndex] != undefined? <div className="max-md:w-[70%] mb-6 w-full">
-                        <p className="text-[16px]  text-stone-100 mb-2">Target</p>
-                        <div className="flex gap-2 justify-between mb-4">
-                            <p className="text-stone-400 text-sm">
-                                Weekly Goal
-                            </p>
-                            <Switch setStatus={setWeekly} ticked={weekly}/> 
-                        </div>
+                        <p className="text-[16px]  text-stone-100 mb-2">Daily Goal</p>
+                        
                         {habitTypes[selectedTypeIndex] == "Time Based" ? 
-                            <TimeInput setDuration={setTime} moreHours={weekly}/> 
+                            <TimeInput setDuration={setTime}/> 
                         : habitTypes[selectedTypeIndex] == "Distance Based" ? 
-                            <DistanceInput setDistance={setDistance} distance={distance} moreDistance={weekly}/>
+                            <DistanceInput setDistance={setDistance} distance={distance} />
                         : 
-                            <NumberInput setAmount={setAmount} amount={amount} moreamount={weekly}/>
+                            <NumberInput setAmount={setAmount} amount={amount} />
                         }
                     </div> : ""}
                 </div>

@@ -12,7 +12,6 @@ export interface HabitType{
     completionDays: string
     icon: string
     type: string
-    weeklyTarget: boolean,
     target: string,
     creationDate: string
 }

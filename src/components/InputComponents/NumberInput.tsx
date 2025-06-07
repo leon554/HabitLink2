@@ -3,7 +3,6 @@
 interface amountProps{
     setAmount: (amount: number) => void
     amount: number
-    moreamount: boolean
     max?: number
 }
 export default function AmountInput(p: amountProps) {
@@ -17,7 +16,7 @@ export default function AmountInput(p: amountProps) {
                 <input
                     type="range"
                     min="0"
-                    max={p.max ? p.max: p.moreamount ? "500" : "50"}
+                    max={p.max ? p.max : "50"}
                     value={p.amount}
                     onChange={e => p.setAmount(Number(e.target.value))}
                     className="w-full h-2 bg-stone-700 rounded-lg appearance-none cursor-pointer slider-thumb mr-1"

@@ -7,7 +7,7 @@ import { dateUtils } from "../utils/dateUtils";
 
 
 interface UserType{
-    createHabit: (name: string, description: string, completionDays:string, emoji: string, type: string, weeklyTarget: boolean, target: number) => Promise<void>
+    createHabit: (name: string, description: string, completionDays:string, emoji: string, type: string, target: number) => Promise<void>
     habits: Map<string, HabitType>
     habitsCompletions: Map<string, HabitCompletionType[]>,
     loading: boolean,
@@ -48,14 +48,14 @@ export default function UserProvider(props: Props) {
         getHabitsCompletions()
     }, [auth.session?.user])
 
-    async function createHabit(name: string, description: string, completionDays:string, emoji: string, type: string, weeklyTarget: boolean, target: number){
+    async function createHabit(name: string, description: string, completionDays:string, emoji: string, type: string, target: number){
         setLoading(true)
         const userid = auth.getUserId()
 
         const { error } = await supabase
             .from('habits')
             .insert([
-                { name,  description, icon: emoji, type, completionDays, user_id: userid, weeklyTarget, target, creationDate: Date.now()},
+                { name,  description, icon: emoji, type, completionDays, user_id: userid, target, creationDate: Date.now()},
             ])
         if(error){
             alert("Habit creation error: " + error.message)

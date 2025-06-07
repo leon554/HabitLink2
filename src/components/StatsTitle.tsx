@@ -10,7 +10,9 @@ export default function StatsTitle() {
 
     const HC = useContext(UserContext)
     const compRate = HabitUtil.getCompletionRate(HC.currentHabit, HC.currentHabit ? HC.habitsCompletions.get(HC.currentHabit?.id) : undefined)
-
+    const strength = HabitUtil.getStrength(HC.currentHabit, HC.currentHabit ? HC.habitsCompletions.get(HC.currentHabit?.id) : undefined)
+    const streak = HabitUtil.getStreak(HC.currentHabit, HC.currentHabit ? HC.habitsCompletions.get(HC.currentHabit?.id) : undefined)
+    const completions = HC.currentHabit ? HC.habitsCompletions.get(HC.currentHabit?.id)?.length : undefined
     return (
         <div className="bg-stone-800 rounded-md text-stone-300 font-mono w-[90%] max-w-[600px] p-4 pt-2 pb-5">
             <div className="flex items-center justify-between">
@@ -27,10 +29,15 @@ export default function StatsTitle() {
             </div>
             <div className="flex justify-center mt-4 flex-col gap-3">
                 <div>
-                    <p className="text-lg mb-1">
-                        Strength
-                    </p>
-                    <ProgressBar min={0} max={1} current={0}/>
+                    <div className="flex items-center justify-between">
+                        <p className="text-lg mb-1">
+                            Strength
+                        </p>
+                        <p className="mb-1">
+                                {Math.round(strength)}%
+                        </p>
+                    </div>
+                    <ProgressBar min={0} max={100} current={strength}/>
                 </div>
                 <div>
                     <div className="flex items-center justify-between">
@@ -43,6 +50,8 @@ export default function StatsTitle() {
                     </div>
                     <ProgressBar min={0} max={1} current={compRate}/>
                 </div>
+                <p>Streak: {streak}</p>
+                <p>Completions: {completions}</p>
             </div>
         </div>
     )
