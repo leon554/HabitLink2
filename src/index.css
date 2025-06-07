@@ -33,8 +33,8 @@
   --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.723 0.219 149.579);
-    background-color: #c5cfc7;
-    background-image: radial-gradient(circle, rgba(0, 0, 0, 0.2) 10%, rgba(0, 0, 0, 0) 10%);
+    background-color: #1b1b1b;
+    background-image: radial-gradient(circle, rgba(212, 212, 212, 0.2) 10%, rgba(184, 184, 184, 0) 10%);
     background-size: 20px 20px;
 }
 
