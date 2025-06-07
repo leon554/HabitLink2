@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import { HabitTypeE, type HabitType } from '../utils/types'
 import { HabitInputContext } from './InputBox/HabitInputProvider'
-import { UserContext } from './UserProvider'
+import { UserContext } from './Providers/UserProvider'
 import { AiOutlineLoading } from "react-icons/ai";
 import { dateUtils } from '../utils/dateUtils'
 import ProgressBar from './InputComponents/ProgressBar';
@@ -66,11 +66,20 @@ export default function HabitLogCard({habit: h, detailed}: HabitProps) {
     return (
         <div className='bg-stone-800 rounded-md w-[100%] max-w-[600px] font-mono overflow-auto'>
             <div className='flex justify-between items-center '>
-                <p className='text-stone-200 p-3 pt-3 pb-2 text-lg'>
+                <p className={`text-stone-200 p-3 pt-3 ${detailed ? "pb-2" : ""} text-lg`}>
                     {h.icon} {Util.capitilizeFirst(h.name)} 
                 </p>
-                <div className='flex gap-2'>
-                    
+                <div className='flex gap-4 items-center'>
+                    <div className='flex items-center gap-1'>
+                        {!detailed && !isNormalHabit()? 
+                        <p className='text-stone-400 font-mono text-[11px] '>
+                                [{HabitUtil.pretifyData(`${HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))}`, h.type as HabitTypeE)}]/[{HabitUtil.pretifyData(h.target, h.type as HabitTypeE)}]
+                        </p> : ""}
+                        {!detailed ? 
+                        <p className='text-stone-400 font-mono text-[9px] pb-0.5'>
+                                {HabitUtil.isCompleteableToday(h, UC.habitsCompletions.get(h.id)) ? <FaHourglassHalf /> : ""}
+                        </p>: ""}
+                    </div>
                     <button className={`h-7 flex justify-center 
                         items-center rounded-md p-2 mr-3 w-7 text-stone-200 
                         text-2xl hover:cursor-pointer
@@ -92,16 +101,16 @@ export default function HabitLogCard({habit: h, detailed}: HabitProps) {
                         </div>
                     </div>
                     <div className='flex items-center gap-2 mt-1 flex-wrap justify-stretch'>   
-                        <p className='text-stone-400 whitespace-nowrap  font-mono text-[11px]'>
+                        <p className='text-stone-400  font-mono text-[11px]'>
                             {Math.round(HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))/Number(h.target)*100*100)/100}% |
                         </p>
-                        <p className='text-stone-400 whitespace-nowrap overflow-ellipsis font-mono text-[11px]'>
+                        <p className='text-stone-400 font-mono text-[11px]'>
                              [{HabitUtil.pretifyData(`${HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))}`, h.type as HabitTypeE)}]/[{HabitUtil.pretifyData(h.target, h.type as HabitTypeE)}]
                         </p>
-                        <p className='text-stone-400 whitespace-nowrap overflow-ellipsis font-mono text-[11px]'>
+                        <p className='text-stone-400 font-mono text-[11px]'>
                             | {HabitUtil.getCompletionDaysString(h.completionDays)}
                         </p>
-                        <p className='text-stone-400 whitespace-nowrap overflow-ellipsis font-mono text-[9px]'>
+                        <p className='text-stone-400 font-mono text-[9px]'>
                             {HabitUtil.isCompleteableToday(h, UC.habitsCompletions.get(h.id)) ? <FaHourglassHalf /> : ""}
                         </p>
                     </div>

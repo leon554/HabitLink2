@@ -1,6 +1,6 @@
 import { useContext} from "react"
 import { Link } from "react-router-dom"
-import { AuthContext } from "./Session/AuthProvider"
+import { AuthContext } from "./Providers/AuthProvider"
 import { LuLogOut } from "react-icons/lu";
 import { AiOutlineLoading } from "react-icons/ai";
 

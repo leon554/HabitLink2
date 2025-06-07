@@ -2,7 +2,7 @@ import {useContext, useState } from "react";
 import NumericInput from "./InputComponents/NumericInput";
 import { IoInformationCircleOutline } from "react-icons/io5";
 import { AlertContext } from "./Alert/AlertProvider";
-import { UserContext } from "./UserProvider";
+import { UserContext } from "./Providers/UserProvider";
 import { AiOutlineLoading } from "react-icons/ai";
 import TimeInput from "./InputComponents/TimeInput";
 import DistanceInput from "./InputComponents/DistanceInput";

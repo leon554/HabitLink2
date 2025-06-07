@@ -1,7 +1,7 @@
 import { useContext, useState } from "react"
 import { AlertContext } from "./Alert/AlertProvider"
 import { AiOutlineLoading } from "react-icons/ai";
-import { AuthContext } from "./Session/AuthProvider";
+import { AuthContext } from "./Providers/AuthProvider";
 import { SignUpResponses } from "../utils/types";
 
 interface FormProps{

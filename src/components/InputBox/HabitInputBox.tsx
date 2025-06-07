@@ -6,7 +6,7 @@ import { HabitTypeE } from "../../utils/types";
 import TimeInput from "../InputComponents/TimeInput";
 import AmountInput from "../InputComponents/NumberInput";
 import DistanceInput from "../InputComponents/DistanceInput";
-import { UserContext } from "../UserProvider";
+import { UserContext } from "../Providers/UserProvider";
 import { AiOutlineLoading } from "react-icons/ai";
 import { AlertContext } from "../Alert/AlertProvider";
 

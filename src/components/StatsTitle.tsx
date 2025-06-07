@@ -1,5 +1,5 @@
 import { useContext } from "react"
-import { UserContext } from "./UserProvider"
+import { UserContext } from "./Providers/UserProvider"
 import { Util } from "../utils/util"
 import { HiOutlineSwitchHorizontal } from "react-icons/hi";
 import ProgressBar from "./InputComponents/ProgressBar";

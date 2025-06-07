@@ -1,9 +1,9 @@
 import { createContext, useContext, useEffect, useState } from "react"
-import { AuthContext } from "./Session/AuthProvider";
-import { supabase } from "../supabase-client";
-import { AlertContext } from "./Alert/AlertProvider";
-import {type HabitCompletionType, type HabitType } from "../utils/types";
-import { dateUtils } from "../utils/dateUtils";
+import { AuthContext } from "./AuthProvider";
+import { supabase } from "../../supabase-client";
+import { AlertContext } from "../Alert/AlertProvider";
+import {type HabitCompletionType, type HabitType } from "../../utils/types";
+import { dateUtils } from "../../utils/dateUtils";
 
 
 interface UserType{

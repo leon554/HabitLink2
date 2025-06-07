@@ -1,6 +1,6 @@
 import { useContext} from "react";
 import Select from "../components/InputComponents/Select";
-import { UserContext } from "../components/UserProvider";
+import { UserContext } from "../components/Providers/UserProvider";
 import StatsTitle from "../components/StatsTitle";
 
 
