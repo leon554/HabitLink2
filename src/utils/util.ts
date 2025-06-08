@@ -8,4 +8,19 @@ export namespace Util{
         const sum = arr.reduce((s, c) => s + c, 0)
         return sum/arr.length
     }
+    export function pretifyNumber(num: number): string {
+        if (num >= 1_000_000_000) {
+            return (num / 1_000_000_000).toFixed(num % 1_000_000_000 === 0 ? 0 : 1) + "b";
+        } else if (num >= 1_000_000) {
+            return (num / 1_000_000).toFixed(num % 1_000_000 === 0 ? 0 : 1) + "m";
+        } else if (num >= 1_000) {
+            return (num / 1_000).toFixed(num % 1_000 === 0 ? 0 : 1) + "k";
+        } else {
+            return num.toString();
+        }
+    }
+    export function secondsToHours(seconds: number): number {
+        console.log(seconds)
+        return Math.round((seconds / 3600) * 100) / 100;
+    }
 }

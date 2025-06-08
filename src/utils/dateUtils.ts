@@ -20,7 +20,14 @@ export namespace dateUtils{
 
         return targetDate >= startOfWeek && targetDate <= endOfWeek;
     }
-     export function isDateInWeek(date: Date, week: Date) {
+    export function getStartOfWeekDate(){
+        const now = new Date();
+        const startOfWeek = new Date(now);
+        startOfWeek.setDate(now.getDate() - now.getDay());
+        startOfWeek.setHours(0, 0, 0, 0);
+        return startOfWeek
+    }
+    export function isDateInWeek(date: Date, week: Date) {
         
         const startOfWeek = new Date(week);
         startOfWeek.setDate(week.getDate() - week.getDay());
