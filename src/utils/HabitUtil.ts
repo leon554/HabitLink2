@@ -118,18 +118,25 @@ export namespace HabitUtil{
 
         const weeks = eachWeekOfInterval({start: creationDate, end: endDate})
         const mostRecentWeek = weeks.length - 1
+        const creationWeek = 0
 
         const completionRatesPerWeek: number[] = []
         for(let i = 0; i < weeks.length; i++){
             let completionsThisWeek = completions.filter(c => dateUtils.isDateInWeek(new Date(Number(c.date)), weeks[i]))
             let completableDaysAmt = Number(weeklyTarget)
             
+            if(i == creationWeek){
+                completableDaysAmt = 7 - creationDate.getDay()
+            }
+
             if(habit.type != HabitTypeE.Normal){
                 const completionAmt = getValidCompsInWeekDailyTarget(completionsThisWeek, Number(habit.target), weeks[i])
                 completableDaysAmt = (i == mostRecentWeek) ? completionAmt : completableDaysAmt
+                completableDaysAmt = Math.max(1, completableDaysAmt)
                 completionRatesPerWeek.push(Math.min(completionAmt, weeklyTarget)/completableDaysAmt)
             }else{
                 completableDaysAmt = (i == mostRecentWeek) ? completionsThisWeek.length : completableDaysAmt
+                completableDaysAmt = Math.max(1, completableDaysAmt)
                 completionRatesPerWeek.push(Math.min(completionsThisWeek.length, completableDaysAmt) / completableDaysAmt)
             }
 
@@ -144,6 +151,7 @@ export namespace HabitUtil{
 
         const weeks = eachWeekOfInterval({start: creationDate, end: endDate})
         const mostRecentWeek = weeks.length - 1
+        const creationWeek = 0
         
         const completionRatesPerWeek: number[] = []
         for(let i = 0; i < weeks.length; i++){
@@ -152,10 +160,13 @@ export namespace HabitUtil{
             let completableDays = compDaysIndexs.length
 
             if(i == mostRecentWeek){
-                completableDays = getCompletableNumDaysThisWeek(compDays) + 1
+                completableDays = getCompletableNumDaysThisWeek(compDays)
                 completableDays = (isSameWeek(creationDate, new Date())) ? 
                 getCompletableNumDaysCreationSameWeek(compDays, creationDate) :
                 completableDays
+            }
+            else if(i == creationWeek){
+                completableDays = getCompletableNumDaysCreationSameWeek(compDays, creationDate, false) 
             }
 
             const completionCount = compDaysIndexs.map(d => {
@@ -188,10 +199,14 @@ export namespace HabitUtil{
         const currentDay = (new Date()).getDay()
         return compDays.filter(d => d <= currentDay)
     }
-    function getCompletableNumDaysCreationSameWeek(completionDays: string, creationDate: Date){
+    function getCompletableNumDaysCreationSameWeek(completionDays: string, creationDate: Date, partialWeek: boolean = true){
         const compDays = getCompDays(completionDays)
         const currentDay = (new Date()).getDay()
-        return compDays.filter(d => d <= currentDay && d >= creationDate.getDay()).length
+        if(partialWeek){
+            return compDays.filter(d => d <= currentDay && d >= creationDate.getDay()).length
+        }else{
+            return compDays.filter(d => d >= creationDate.getDay()).length
+        }
     }
     function getCompletableDaysCreationSameWeek(completionDays: string, creationDate: Date){
         const compDays = getCompDays(completionDays)
@@ -299,21 +314,32 @@ export namespace HabitUtil{
 
         const weeks = eachWeekOfInterval({start: creationDate, end: endDate}).reverse()
         const mostRecentWeek = 0
+        const creationWeek = weeks.length - 1
 
         let streak: number = 0
         for(let i = 0; i < weeks.length; i++){
             let completionsThisWeek = completions.filter(c => dateUtils.isDateInWeek(new Date(Number(c.date)), weeks[i]))
 
+            let completableDays = weeklyTarget
             let completionAmt = completionsThisWeek.length
             if(habit.type != HabitTypeE.Normal){
                 const validCompletionAmt = getValidCompsInWeekDailyTarget(completionsThisWeek, Number(habit.target), weeks[i])
                 completionAmt = validCompletionAmt
             }
+            
+            if(i == mostRecentWeek){
+                streak += completionAmt
+                continue
+            }
+            if(i == creationWeek){
+                const completableAmt = 7 - creationDate.getDay()
+                return (completionAmt >= completableAmt) ? streak + completableAmt : streak
+            }
 
-            if(Math.min(completionAmt, weeklyTarget) >= weeklyTarget){
-                streak += weeklyTarget 
+            if(Math.min(completionAmt, completableDays) >= completableDays){
+                streak += completableDays 
             }else{
-                return (i == mostRecentWeek) ? completionAmt : streak
+                return streak
             }
         }    
         return streak
@@ -326,7 +352,7 @@ export namespace HabitUtil{
 
         const weeks = eachWeekOfInterval({start: creationDate, end: endDate}).reverse()
         const mostRecentWeek = 0
-        
+        const creationWeek = weeks.length - 1
         let streak: number = 0
         for(let i = 0; i < weeks.length; i++){
             const completionsThisWeek = completions.filter(c => dateUtils.isDateInWeek(new Date(Number(c.date)), weeks[i]))
@@ -338,20 +364,28 @@ export namespace HabitUtil{
                 getCompletableDaysCreationSameWeek(compDays, creationDate) :
                 compDaysIndexs
             }
+            if(i == creationWeek){
+                compDaysIndexs = compDaysIndexs.filter(i => i >= creationDate.getDay() )
+            }
 
 
-            for(const d of compDaysIndexs){
+            for(let index = 0; index < compDaysIndexs.length; index++){
                 if(habit.type != HabitTypeE.Normal){
-                    const compSumForDay = getCompletionValueSumDay(completionsThisWeek, add(weeks[i], {days: d}))
+                    let compSumForDay = getCompletionValueSumDay(completionsThisWeek, add(weeks[i], {days: compDaysIndexs[index]}))
                     if(compSumForDay >= Number(habit.target)){
                         streak++
                     }else{
+                        if(index == 0) continue
+                        compSumForDay = getCompletionValueSumDay(completionsThisWeek, add(weeks[i], {days: compDaysIndexs[index - 1]}))
+                        if(compSumForDay < Number(habit.target)) continue
                         return streak
                     }
                 }else{
-                    if(completionsThisWeek.some(c => (new Date(Number(c.date))).getDay() == d)){
+                    if(completionsThisWeek.some(c => (new Date(Number(c.date))).getDay() == compDaysIndexs[index])){
                         streak++
                     }else{
+                        if(index == 0) continue
+                        if(completionsThisWeek.some(c => (new Date(Number(c.date))).getDay() == compDaysIndexs[index - 1])) continue
                         return streak
                     }
                 }

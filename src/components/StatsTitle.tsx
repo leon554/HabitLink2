@@ -13,6 +13,7 @@ export default function StatsTitle() {
     const currentHabitCompletions = HC.currentHabit ? HC.habitsCompletions.get(HC.currentHabit?.id) : undefined
     const compRate = HabitUtil.getCompletionRate(HC.currentHabit, currentHabitCompletions)
     const strength = HabitUtil.getStrength(HC.currentHabit, currentHabitCompletions)
+    const streak = HabitUtil.getStreak(HC.currentHabit, currentHabitCompletions)
     
     return (
         <div className="bg-stone-800 rounded-md text-stone-300 font-mono w-[90%] max-w-[600px] p-6 pt-3 pb-4">
@@ -31,6 +32,7 @@ export default function StatsTitle() {
             <div className="flex justify-evenly mt-7  gap-3 ">                
                 <CircularProgressBar value={compRate*100} text="Consistency"/>
                 <CircularProgressBar value={Math.round(strength)} text="Strength"/>
+                <p>{streak}</p>
             </div>
         </div>
     )
