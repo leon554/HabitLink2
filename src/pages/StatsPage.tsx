@@ -20,23 +20,10 @@ export default function StatsPage() {
     const {validComps, partialComps} = HabitUtil.getCompletions(HC.currentHabit, currentHabitCompletions)
     const entries = HC.currentHabit ? HC.habitsCompletions.get(HC.currentHabit.id)?.length : 0
     const dataSum = HabitUtil.getHabitDataSumString(currentHabitCompletions, HC.currentHabit?.type as HabitTypeE)
-    const [rank, setRank] = useState(getRank())
+    const [rank, setRank] = useState(HabitUtil.getRank(strength))
 
-    function getRank(){
-        if(strength <= 10){
-            return `src/tiers/tier1.svg`
-        }else if(strength <= 20){
-            return "src/tiers/tier2.svg"
-        }else if(strength <= 40){
-            return "src/tiers/tier3.svg"
-        }else if(strength <= 80){
-            return "src/tiers/tier4.svg"
-        }else{
-            return "src/tiers/tier5.svg"
-        }
-    }
     useEffect(() => {
-        setRank(getRank())
+        setRank(HabitUtil.getRank(strength))
     }, [strength])
     return (
         <div className="flex justify-center">
@@ -53,7 +40,7 @@ export default function StatsPage() {
             <div className="w-full flex justify-center gap-4 "> 
                 <div className="mt-20 gap-3 flex flex-col items-center w-[90%] max-w-[600px]">
                     <div className="rounded-md bg-stone-800 w-full p-4 flex justify-between items-center">
-                        <img src={rank} alt="" className=""/>
+                        <img src={rank} alt="" className="w-7"/>
                         <p className="text-xl text-center font-mono text-stone-300">
                             {Util.capitilizeFirst(HC.currentHabit?.name)} Statistics
                         </p>

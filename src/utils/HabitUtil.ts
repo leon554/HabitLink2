@@ -457,4 +457,17 @@ export namespace HabitUtil{
 
 
     }
+    export function getRank(strength: number){
+        if(strength <= 10){
+            return `src/tiers/tier1.svg`
+        }else if(strength <= 20){
+            return "src/tiers/tier2.svg"
+        }else if(strength <= 40){
+            return "src/tiers/tier3.svg"
+        }else if(strength <= 80){
+            return "src/tiers/tier4.svg"
+        }else{
+            return "src/tiers/tier5.svg"
+        }
+    }
 }
