@@ -11,7 +11,7 @@ export default function Navbar() {
 
     
     return (
-        <div className="bg-stone-800 flex justify-between h-13 items-stretch p-0 fixed top-0 left-0 w-full">
+        <div className="bg-stone-800 flex justify-between h-13 items-stretch p-0 fixed top-0 left-0 w-full z-10">
             <div className="flex items-center">
                 <p className="ml-4 text-gray-100 font-mono text-xl">
                     HabitLink

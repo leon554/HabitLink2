@@ -27,6 +27,16 @@ export namespace dateUtils{
         startOfWeek.setHours(0, 0, 0, 0);
         return startOfWeek
     }
+    export function getEndOfWeekDate() {
+        const now = new Date();
+        const endOfWeek = new Date(now);
+
+        const daysUntilSaturday = (6 - now.getDay() + 7) % 7;
+        endOfWeek.setDate(now.getDate() + daysUntilSaturday);
+        endOfWeek.setHours(23, 59, 59, 999);
+
+        return endOfWeek;
+    }
     export function daysLeftInWeek(){
         return 6 - (new Date()).getDay()
     }

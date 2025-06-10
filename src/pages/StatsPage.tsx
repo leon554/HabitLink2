@@ -7,6 +7,7 @@ import Summary from "../components/StatsComponents/Summary";
 import { Util } from "../utils/util";
 import { HiOutlineSwitchHorizontal } from "react-icons/hi";
 import CompletionThisWeek from "../components/StatsComponents/CompletionThisWeek";
+import CompletionsMonth from "../components/StatsComponents/CompletionsMonth";
 
 
 export default function StatsPage() {
@@ -24,7 +25,7 @@ export default function StatsPage() {
                             setSelectedHabit={HC.setCurrentHabit}/>
                 </div>
             : 
-            <div className="w-full flex justify-center gap-4 "> 
+            <div className="w-full flex justify-center gap-4 mb-15"> 
                 <div className="mt-20 gap-3 flex flex-col items-center w-[90%] max-w-[600px]">
                     <div className="rounded-md bg-stone-800 w-full p-4 flex justify-between items-center">
                         <img src={HC.habitRanks.get(HC.currentHabit.id)} alt="" className="w-7"/>
@@ -43,6 +44,7 @@ export default function StatsPage() {
                     <Summary habitType={HC.currentHabit.type} validComps={HC.currenthabitStats.validComps} partialComps={HC.currenthabitStats.partialComps} streak={HC.currenthabitStats.streak}
                         entries={HC.currenthabitStats.entries ? HC.currenthabitStats.entries : 0} missedComps={Math.max(HC.currenthabitStats.missedSessions - 1, 0)} dataSum={HC.currenthabitStats.dataSum}/>
                     <CompletionThisWeek/>
+                    <CompletionsMonth/>
                 </div>
             </div>
             }

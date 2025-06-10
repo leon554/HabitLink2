@@ -403,7 +403,7 @@ export namespace HabitUtil{
                     }else{
                         if(index == 0) continue
                         compSumForDay = getCompletionValueSumDay(completionsThisWeek, add(weeks[i], {days: compDaysIndexs[index - 1]}))
-                        if(compSumForDay < Number(habit.target)) continue
+                        if(compSumForDay < Number(habit.target)  && index == (new Date()).getDay()) continue
                         return streak
                     }
                 }else{
@@ -411,7 +411,8 @@ export namespace HabitUtil{
                         streak++
                     }else{
                         if(index == 0) continue
-                        if(completionsThisWeek.some(c => (new Date(Number(c.date))).getDay() == compDaysIndexs[index - 1])) continue
+                        if(completionsThisWeek.some(c => (new Date(Number(c.date))).getDay() == compDaysIndexs[index - 1])
+                            && index == (new Date()).getDay()) continue
                         return streak
                     }
                 }
@@ -474,6 +475,31 @@ export namespace HabitUtil{
 
 
     }
+     export function getCompletionDaysThisPeriod(habit: HabitType|null, completions: HabitCompletionType[]|undefined){
+        const output = Array(112).fill(null).map(() => ({day: new Date(), done: false, complete: false}));
+        if(!habit || !completions) return output
+
+        let date = dateUtils.getEndOfWeekDate()
+        output.forEach(o => {
+            o.day = date
+
+            if(habit.completionDays.length != 1 && date.getTime() >= Number(habit.creationDate) && date.getTime() < (new Date()).getTime()){
+                const compDays = getCompDays(habit.completionDays)
+                o.complete = compDays.includes(date.getDay())
+            }
+
+            if(habit.type == HabitTypeE.Normal){
+                o.done = (completions.some(c => dateUtils.isDatesSameDay(date, new Date(Number(c.date))))) ? true : false
+            }else{
+                const compSum = getCompletionValueSumDay(completions, date)
+                o.done = (compSum >= Number(habit.target)) ? true : false
+            }
+            date = sub(date, {days:1})
+        })
+        return output
+    }
+
+
     export function getRank(strength: number){
         if(strength <= 10){
             return `src/tiers/tier1.svg`
