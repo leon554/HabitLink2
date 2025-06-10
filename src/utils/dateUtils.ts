@@ -27,6 +27,9 @@ export namespace dateUtils{
         startOfWeek.setHours(0, 0, 0, 0);
         return startOfWeek
     }
+    export function daysLeftInWeek(){
+        return 6 - (new Date()).getDay()
+    }
     export function isDateInWeek(date: Date, week: Date) {
         
         const startOfWeek = new Date(week);

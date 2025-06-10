@@ -4,7 +4,6 @@ import { UserContext } from "../components/Providers/UserProvider";
 import ConsistencyPanel from "../components/StatsComponents/ConsistencyPanel";
 import Summary from "../components/StatsComponents/Summary";
 import { HabitUtil } from "../utils/HabitUtil";
-import type { HabitTypeE } from "../utils/types";
 import { Util } from "../utils/util";
 import { HiOutlineSwitchHorizontal } from "react-icons/hi";
 import CompletionThisWeek from "../components/StatsComponents/CompletionThisWeek";
@@ -13,18 +12,11 @@ import CompletionThisWeek from "../components/StatsComponents/CompletionThisWeek
 export default function StatsPage() {
     const HC = useContext(UserContext)
 
-    const currentHabitCompletions = HC.currentHabit ? HC.habitsCompletions.get(HC.currentHabit?.id) : undefined
-    const {compRate, missedSessions} = HabitUtil.getCompletionRate(HC.currentHabit, currentHabitCompletions)
-    const strength = HabitUtil.getStrength(HC.currentHabit, currentHabitCompletions)
-    const streak = HabitUtil.getStreak(HC.currentHabit, currentHabitCompletions)
-    const {validComps, partialComps} = HabitUtil.getCompletions(HC.currentHabit, currentHabitCompletions)
-    const entries = HC.currentHabit ? HC.habitsCompletions.get(HC.currentHabit.id)?.length : 0
-    const dataSum = HabitUtil.getHabitDataSumString(currentHabitCompletions, HC.currentHabit?.type as HabitTypeE)
-    const [rank, setRank] = useState(HabitUtil.getRank(strength))
+    const [rank, setRank] = useState(HabitUtil.getRank(HC.currenthabitStats.strength))
 
     useEffect(() => {
-        setRank(HabitUtil.getRank(strength))
-    }, [strength])
+        setRank(HabitUtil.getRank(HC.currenthabitStats.strength))
+    }, [HC.currenthabitStats.strength])
     return (
         <div className="flex justify-center">
             {!HC.currentHabit ?
@@ -52,9 +44,9 @@ export default function StatsPage() {
                                                     style="outline-0 p-0 justify-end flex "/>
                         </div>
                     </div>
-                    <ConsistencyPanel compRate={compRate} strength={strength}/>
-                    <Summary habitType={HC.currentHabit.type} validComps={validComps} partialComps={partialComps} streak={streak}
-                        entries={entries ? entries : 0} missedComps={Math.max(missedSessions - 1, 0)} dataSum={dataSum}/>
+                    <ConsistencyPanel compRate={HC.currenthabitStats.compRate} strength={HC.currenthabitStats.strength}/>
+                    <Summary habitType={HC.currentHabit.type} validComps={HC.currenthabitStats.validComps} partialComps={HC.currenthabitStats.partialComps} streak={HC.currenthabitStats.streak}
+                        entries={HC.currenthabitStats.entries ? HC.currenthabitStats.entries : 0} missedComps={Math.max(HC.currenthabitStats.missedSessions - 1, 0)} dataSum={HC.currenthabitStats.dataSum}/>
                     <CompletionThisWeek/>
                 </div>
             </div>

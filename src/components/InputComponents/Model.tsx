@@ -1,0 +1,19 @@
+import type { ReactNode } from "react"
+
+interface Props{
+    open: boolean
+    onClose: () => void
+    children: ReactNode
+}
+export default function Model({open, onClose, children}: Props) {
+    return (
+        <div className={`fixed inset-0  transition-colors 
+            ${open ? "visible bg-black/60" : "invisible"} `}
+            onClick={onClose}>
+            <div className="bg-stone-800 fixed rounded-md flex justify-center items-center max-w-100 w-[80%] top-1/4 left-1/2 transform -translate-x-1/2"
+                onClick={e => e.stopPropagation()}>
+                {children}  
+            </div>
+        </div>
+    )
+}

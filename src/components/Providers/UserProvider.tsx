@@ -4,6 +4,8 @@ import { supabase } from "../../supabase-client";
 import { AlertContext } from "../Alert/AlertProvider";
 import {type HabitCompletionType, type HabitType } from "../../utils/types";
 import { dateUtils } from "../../utils/dateUtils";
+import { HabitUtil } from "../../utils/HabitUtil";
+import { HabitTypeE } from "../../utils/types";
 
 
 interface UserType{
@@ -15,6 +17,16 @@ interface UserType{
     setCurrentHabit: (currentHabit: HabitType | null) => void
     compleHabit: (habitId: string, value: number) => Promise<void>,
     removeTodaysHabitCompletion: (habitId: string) => Promise<void>
+    currenthabitStats : {
+        compRate: number
+        partialComps: number
+        validComps: number
+        missedSessions: number
+        strength: number
+        streak: number
+        entries: number | undefined
+        dataSum: string
+    }
 }
 const initialValues: UserType = {
     createHabit: () => Promise.resolve(undefined),
@@ -24,7 +36,17 @@ const initialValues: UserType = {
     currentHabit: null,
     setCurrentHabit: () => null,
     compleHabit: () => Promise.resolve(undefined),
-    removeTodaysHabitCompletion: () => Promise.resolve(undefined)
+    removeTodaysHabitCompletion: () => Promise.resolve(undefined),
+    currenthabitStats : {
+        compRate: 0,
+        partialComps: 0,
+        validComps: 0,
+        missedSessions: 0,
+        strength: 0,
+        streak: 0,
+        entries: 0,
+        dataSum: ""
+    }
 }
 
 export const UserContext = createContext<UserType>(initialValues)
@@ -38,6 +60,15 @@ export default function UserProvider(props: Props) {
     const [habits, setHabits] = useState<Map<string, HabitType>>(new Map<string, HabitType>())
     const [habitsCompletions, setHabitsCompletions] = useState<Map<string, HabitCompletionType[]>>(new Map<string, HabitCompletionType[]>())
 
+    const currentHabitCompletions = currentHabit ? habitsCompletions.get(currentHabit?.id) : undefined
+    const {compRate, missedSessions} = HabitUtil.getCompletionRate(currentHabit, currentHabitCompletions)
+    const strength = HabitUtil.getStrength(currentHabit, currentHabitCompletions)
+    const streak = HabitUtil.getStreak(currentHabit, currentHabitCompletions)
+    const {validComps, partialComps} = HabitUtil.getCompletions(currentHabit, currentHabitCompletions)
+    const entries = currentHabit ? habitsCompletions.get(currentHabit.id)?.length : 0
+    const dataSum = HabitUtil.getHabitDataSumString(currentHabitCompletions, currentHabit?.type as HabitTypeE)
+
+
     const auth = useContext(AuthContext)
     const {alert} = useContext(AlertContext)
 
@@ -47,6 +78,7 @@ export default function UserProvider(props: Props) {
         getHabits()
         getHabitsCompletions()
     }, [auth.session?.user])
+
 
     async function createHabit(name: string, description: string, completionDays:string, emoji: string, type: string, target: number){
         setLoading(true)
@@ -66,7 +98,6 @@ export default function UserProvider(props: Props) {
         alert("Succefully Added Habit")
         setLoading(false)
     }
-
     async function getHabits(){
         setLoading(true)
         const userid = auth.getUserId()
@@ -87,7 +118,6 @@ export default function UserProvider(props: Props) {
         setHabits(habitMap)
         setLoading(false)
     }
-
     async function getHabitsCompletions() {
         setLoading(true)
         const userid = auth.getUserId()
@@ -154,7 +184,8 @@ export default function UserProvider(props: Props) {
             currentHabit,
             setCurrentHabit,
             compleHabit: compleHabit,
-            removeTodaysHabitCompletion
+            removeTodaysHabitCompletion,
+            currenthabitStats: {compRate, missedSessions, streak, entries, strength,validComps, partialComps,dataSum}
         }}>
             {props.children}
         </UserContext.Provider>

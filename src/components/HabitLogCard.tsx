@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from 'react'
 import { HabitTypeE, type HabitType } from '../utils/types'
-import { HabitInputContext } from './InputBox/HabitInputProvider'
 import { UserContext } from './Providers/UserProvider'
 import { AiOutlineLoading } from "react-icons/ai";
 import { dateUtils } from '../utils/dateUtils'
@@ -9,6 +8,10 @@ import { HabitUtil } from '../utils/HabitUtil';
 import { FaCheck } from "react-icons/fa6";
 import { FaHourglassHalf } from "react-icons/fa";
 import { Util } from '../utils/util';
+import Model from './InputComponents/Model';
+import HabitLogPopUp from './HabitLogPopUp';
+import { AlertContext } from './Alert/AlertProvider';
+
 
 
 interface HabitProps{
@@ -17,8 +20,10 @@ interface HabitProps{
 }
 export default function HabitLogCard({habit: h, detailed}: HabitProps) {
     const [loading, setLoading] = useState(false)
+    const [open, setOpen] = useState(false)
+    const [value, setValue] = useState<number>(0)
 
-    const HIC = useContext(HabitInputContext)
+    const {alert} =  useContext(AlertContext)
     const UC = useContext(UserContext)
 
     useEffect(() => {
@@ -27,8 +32,7 @@ export default function HabitLogCard({habit: h, detailed}: HabitProps) {
 
     async function HandleClick(){
         if(h.type != HabitTypeE.Normal){
-            HIC.callbackRef.current = handleSubmit
-            HIC.alert("", h.type as HabitTypeE, Number(h.target))
+            setOpen(true)
         }else{
             setLoading(true)
             if(isCompletedToday()){
@@ -87,6 +91,13 @@ export default function HabitLogCard({habit: h, detailed}: HabitProps) {
                         onClick={HandleClick}>
                         {loading ? <AiOutlineLoading className={`animate-spin ${getLoadingColor()}`}/> : <FaCheck className={`${isCompletedToday() ? "text-green-400" : "text-stone-500" }`}/>}
                     </button>
+                    <Model open={open} onClose={() => setOpen(false)}>
+                        <HabitLogPopUp habit={h} onExit={() => setOpen(false)} value={value} setValue={setValue}
+                            onSubmit={async () => {
+                                await handleSubmit(value)
+                                alert("Succes, Well Done! 🎉🎉🎉")
+                            }} />
+                    </Model>
                 </div>
             </div>
             {detailed ? 

@@ -8,7 +8,6 @@ import AuthProvider from "./components/Providers/AuthProvider"
 import LogPage from "./pages/LogPage"
 import CreatePage from "./pages/CreatePage"
 import UserProvider from "./components/Providers/UserProvider"
-import HabitInputProvider from "./components/InputBox/HabitInputProvider"
 import StatsPage from "./pages/StatsPage"
 import SettingsProvider from "./components/Providers/SettingsProvider"
 
@@ -21,7 +20,6 @@ function App() {
         <AlertProvider>
         <AuthProvider>
         <UserProvider>
-        <HabitInputProvider>
 
           <Routes>
             <Route element={<Layout/>}>
@@ -34,7 +32,6 @@ function App() {
             </Route>
           </Routes>
           
-        </HabitInputProvider>
         </UserProvider>
         </AuthProvider>
         </AlertProvider>
