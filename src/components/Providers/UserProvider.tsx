@@ -14,6 +14,7 @@ interface UserType{
     habitsCompletions: Map<string, HabitCompletionType[]>,
     loading: boolean,
     currentHabit: HabitType | null
+    habitRanks: Map<string, string>
     setCurrentHabit: (currentHabit: HabitType | null) => void
     compleHabit: (habitId: string, value: number) => Promise<void>,
     removeTodaysHabitCompletion: (habitId: string) => Promise<void>
@@ -34,6 +35,7 @@ const initialValues: UserType = {
     habitsCompletions: new Map<string, HabitCompletionType[]>(),
     loading: false,
     currentHabit: null,
+    habitRanks: new Map<string, string>(),
     setCurrentHabit: () => null,
     compleHabit: () => Promise.resolve(undefined),
     removeTodaysHabitCompletion: () => Promise.resolve(undefined),
@@ -45,7 +47,7 @@ const initialValues: UserType = {
         strength: 0,
         streak: 0,
         entries: 0,
-        dataSum: ""
+        dataSum: "",
     }
 }
 
@@ -58,6 +60,7 @@ export default function UserProvider(props: Props) {
     const [loading, setLoading] = useState(false)
     const [currentHabit, setCurrentHabit] = useState<HabitType|null>(null)
     const [habits, setHabits] = useState<Map<string, HabitType>>(new Map<string, HabitType>())
+    const [habitRanks, setHabitRanks] = useState<Map<string, string>>(new Map<string, string>())
     const [habitsCompletions, setHabitsCompletions] = useState<Map<string, HabitCompletionType[]>>(new Map<string, HabitCompletionType[]>())
 
     const currentHabitCompletions = currentHabit ? habitsCompletions.get(currentHabit?.id) : undefined
@@ -79,6 +82,12 @@ export default function UserProvider(props: Props) {
         getHabitsCompletions()
     }, [auth.session?.user])
 
+    useEffect(() => {
+        habits.forEach(h => {
+            const strength = HabitUtil.getStrength(h, habitsCompletions.get(h.id))
+            setHabitRanks(prev => prev.set(h.id, HabitUtil.getRank(strength)))
+        })
+    }, [habitsCompletions])
 
     async function createHabit(name: string, description: string, completionDays:string, emoji: string, type: string, target: number){
         setLoading(true)
@@ -185,7 +194,8 @@ export default function UserProvider(props: Props) {
             setCurrentHabit,
             compleHabit: compleHabit,
             removeTodaysHabitCompletion,
-            currenthabitStats: {compRate, missedSessions, streak, entries, strength,validComps, partialComps,dataSum}
+            currenthabitStats: {compRate, missedSessions, streak, entries, strength,validComps, partialComps,dataSum},
+            habitRanks
         }}>
             {props.children}
         </UserContext.Provider>

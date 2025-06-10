@@ -11,20 +11,21 @@ import { Util } from '../utils/util';
 import Model from './InputComponents/Model';
 import HabitLogPopUp from './HabitLogPopUp';
 import { AlertContext } from './Alert/AlertProvider';
+import { SettingsContext } from './Providers/SettingsProvider';
 
 
 
 interface HabitProps{
     habit: HabitType
-    detailed: boolean
 }
-export default function HabitLogCard({habit: h, detailed}: HabitProps) {
+export default function HabitLogCard({habit: h}: HabitProps) {
     const [loading, setLoading] = useState(false)
     const [open, setOpen] = useState(false)
     const [value, setValue] = useState<number>(0)
 
     const {alert} =  useContext(AlertContext)
     const UC = useContext(UserContext)
+    const {settings} = useContext(SettingsContext)
 
     useEffect(() => {
         isCompletedToday()
@@ -69,17 +70,19 @@ export default function HabitLogCard({habit: h, detailed}: HabitProps) {
 
     return (
         <div className='bg-stone-800 rounded-md w-[100%] max-w-[600px] font-mono overflow-auto'>
-            <div className='flex justify-between items-center '>
-                <p className={`text-stone-200 p-3 pt-3 ${detailed ? "pb-2" : ""} text-lg`}>
-                    {h.icon} {Util.capitilizeFirst(h.name)} 
+            <div className='flex justify-between items-center'>
+                <p className={`text-stone-200 p-3 pt-3 ${settings.showDetails ? "pb-2" : ""} text-lg flex gap-2.5 items-center`}>
+                    {settings.showRanks ? 
+                    <img src={UC.habitRanks.get(h.id)} alt="" className="w-4.5"/>
+                    : h.icon} {Util.capitilizeFirst(h.name)} 
                 </p>
                 <div className='flex gap-4 items-center'>
                     <div className='flex items-center gap-1'>
-                        {!detailed && !isNormalHabit()? 
+                        {!settings.showDetails && !isNormalHabit()? 
                         <p className='text-stone-400 font-mono text-[11px] '>
                                 [{HabitUtil.pretifyData(`${HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))}`, h.type as HabitTypeE)}]/[{HabitUtil.pretifyData(h.target, h.type as HabitTypeE)}]
                         </p> : ""}
-                        {!detailed ? 
+                        {!settings.showDetails ? 
                         <p className='text-stone-400 font-mono text-[9px] pb-0.5'>
                                 {HabitUtil.isCompleteableToday(h, UC.habitsCompletions.get(h.id)) ? <FaHourglassHalf /> : ""}
                         </p>: ""}
@@ -100,7 +103,7 @@ export default function HabitLogCard({habit: h, detailed}: HabitProps) {
                     </Model>
                 </div>
             </div>
-            {detailed ? 
+            {settings.showDetails ? 
             !isNormalHabit()?
                 <div className='ml-4 mr-3 mb-3 flex  gap-2 flex-col'>
                     <div className='w-full'>

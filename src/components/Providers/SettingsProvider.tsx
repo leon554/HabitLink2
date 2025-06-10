@@ -5,11 +5,13 @@ interface Settings{
     showDetails: boolean
     showNormal: boolean
     showDue: boolean
+    showRanks: boolean
 }
 const initialSettings: Settings = {
     showDetails: true,
     showNormal: false,
-    showDue: false
+    showDue: false,
+    showRanks: false
 }
 interface SettingsType{
   settings: Settings 

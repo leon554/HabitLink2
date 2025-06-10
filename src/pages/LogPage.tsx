@@ -57,6 +57,13 @@ export default function LogPage() {
                             <Switch setStatus={(b: boolean) => setSettings({...settings, showDue: b})} 
                                 ticked={settings.showDue} />
                         </div>
+                         <div className="flex items-center w-full gap-3 ">
+                            <p className="text-stone-400 font-mono text-sm">
+                                Show ranks:
+                            </p>
+                            <Switch setStatus={(b: boolean) => setSettings({...settings, showRanks: b})} 
+                                ticked={settings.showRanks} />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -65,14 +72,14 @@ export default function LogPage() {
                 {Array.from(user.habits.values()).map((h, i) =>
                     h.type === HabitTypeE.Normal && (!settings.showDue || HabitUtil.isCompleteableToday(h, user.habitsCompletions.get(h.id))) ? (
                         <div className="w-full" key={`normal-${i}`}>
-                            <HabitLogCard habit={h} detailed={settings.showDetails}/>
+                            <HabitLogCard habit={h} />
                         </div>
                     ) : null
                 )}
                 {Array.from(user.habits.values()).map((h, i) =>
                     h.type !== HabitTypeE.Normal && !settings.showNormal && (!settings.showDue || HabitUtil.isCompleteableToday(h, user.habitsCompletions.get(h.id))) ? (
                         <div className="w-full" key={`alt-${i}`}>
-                            <HabitLogCard habit={h} detailed={settings.showDetails}/>
+                            <HabitLogCard habit={h} />
                         </div>
                     ) : null
                 )}       
