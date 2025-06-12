@@ -200,7 +200,7 @@ export namespace HabitUtil{
                 
             }).filter(didComplete => didComplete)
 
-            missedSessions += completableDays - completionCount.length
+            missedSessions += completableDays + 1 - completionCount.length
             completionRatesPerWeek.push(completionCount.length/completableDays)
         }
         return {compRate: Util.avgNumArr(completionRatesPerWeek), missedSessions}
@@ -347,12 +347,14 @@ export namespace HabitUtil{
 
             let completableDays = weeklyTarget
             let completionAmt = completionsThisWeek.length
+
             if(habit.type != HabitTypeE.Normal){
                 const validCompletionAmt = getValidCompsInWeekDailyTarget(completionsThisWeek, Number(habit.target), weeks[i])
                 completionAmt = validCompletionAmt
             }
             
             if(i == mostRecentWeek){
+                if(completionAmt + dateUtils.daysLeftInWeek() < weeklyTarget) return 0
                 streak += completionAmt
                 continue
             }
@@ -475,28 +477,31 @@ export namespace HabitUtil{
 
 
     }
-     export function getCompletionDaysThisPeriod(habit: HabitType|null, completions: HabitCompletionType[]|undefined){
-        const output = Array(112).fill(null).map(() => ({day: new Date(), done: false, complete: false}));
-        if(!habit || !completions) return output
+    export function getCompletionDaysThisPeriod(habit: HabitType|null, completions: HabitCompletionType[]|undefined){
+        let output = Array(113).fill(null).map(() => ({day: new Date(), done: false, complete: false})) 
+        if(!habit || !completions) return []
 
+        type compDaysType = {day: Date, done: boolean, complete: boolean}
+        let subarrs: compDaysType[][] = [] 
         let date = dateUtils.getEndOfWeekDate()
-        output.forEach(o => {
-            o.day = date
-
-            if(habit.completionDays.length != 1 && date.getTime() >= Number(habit.creationDate) && date.getTime() < (new Date()).getTime()){
+        for(let i = 0; i < output.length; i++){
+            output[i].day = date
+            
+            if(habit.completionDays.length != 1 && date.getTime() >= Number(habit.creationDate) && date.getTime() < add((new Date()), {days: 1}).getTime()){
                 const compDays = getCompDays(habit.completionDays)
-                o.complete = compDays.includes(date.getDay())
+                output[i].complete = compDays.includes(date.getDay())
             }
-
+            
             if(habit.type == HabitTypeE.Normal){
-                o.done = (completions.some(c => dateUtils.isDatesSameDay(date, new Date(Number(c.date))))) ? true : false
+                output[i].done = (completions.some(c => dateUtils.isDatesSameDay(date, new Date(Number(c.date))))) ? true : false
             }else{
                 const compSum = getCompletionValueSumDay(completions, date)
-                o.done = (compSum >= Number(habit.target)) ? true : false
+                output[i].done = (compSum >= Number(habit.target)) ? true : false
             }
             date = sub(date, {days:1})
-        })
-        return output
+            if(i % 7 == 0 && i >= 7) subarrs.push(output.slice(i - 7, i)) 
+        }
+        return subarrs.reverse()
     }
 
 
@@ -512,5 +517,10 @@ export namespace HabitUtil{
         }else{
             return "src/tiers/tier5.svg"
         }
+    }
+    export function reverseSubsection<T>(arr: T[], start: number, end: number) {
+        const reversed = arr.slice(start, end + 1).reverse();
+        arr.splice(start, end - start + 1, ...reversed);
+        return arr;
     }
 }

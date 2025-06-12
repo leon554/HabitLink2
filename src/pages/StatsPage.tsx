@@ -12,7 +12,7 @@ import CompletionsMonth from "../components/StatsComponents/CompletionsMonth";
 
 export default function StatsPage() {
     const HC = useContext(UserContext)
-
+    //make habit calander so its from sunday first rown down
     return (
         <div className="flex justify-center">
             {!HC.currentHabit ?
