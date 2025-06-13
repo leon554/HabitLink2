@@ -1,21 +1,21 @@
 import { useRef, useState } from "react";
-import type { HabitType } from "../../utils/types";
+import type { GoalType, HabitType } from "../../utils/types";
 import { Util } from "../../utils/util";
 
 
-interface SelectProps {
-  habits: HabitType[];
-  selectedHabit: HabitType | null;
-  setSelectedHabit: (habit: HabitType) => void;
+interface SelectProps<T> {
+  items: T[];
+  selectedItem: T | null;
+  setSelectedItem: (item: T) => void;
   setText?: string | React.ElementType
   style?: string
 }
-export default function Select(props: SelectProps) {
+export default function Select<T extends HabitType | GoalType>(props: SelectProps<T>) {
     const focusElement = useRef<null|HTMLButtonElement>(null)
     const [clicked, setClicked] = useState(false)
 
-    function setHabit(h: HabitType) {
-        props.setSelectedHabit(h);
+    function setItem(h: T) {
+        props.setSelectedItem(h);
         if(focusElement.current != null){
         focusElement.current.blur()
         }
@@ -27,17 +27,17 @@ export default function Select(props: SelectProps) {
         >
             {props.setText ? 
             <props.setText/>
-            :props.selectedHabit == null
+            :props.selectedItem == null
             ? "Select Habit"
-            : Util.capitilizeFirst(props.selectedHabit.name)}
+            : Util.capitilizeFirst(props.selectedItem.name)}
             <div className="absolute top-full rounded-md p-3 mt-2  flex flex-col justify-start items-start scale-0 origin-top duration-200 bg-stone-800  z-20 w-fit outline-1" style={{
             scale: clicked ? 1 : 0
             }}>
-            {props.habits && props.habits.map((h) => {
+            {props.items && props.items.map((h) => {
                 return (
                 <p
                     className="hover:bg-green-400 font-mono w-full flex justify-start p-1 rounded-md transition duration-100 ease-in-out hover:cursor-pointer text-nowrap hover:text-stone-800"
-                    onClick={() => setHabit(h)}
+                    onClick={() => setItem(h)}
                 >
                     {Util.capitilizeFirst(h.name)}
                 </p>

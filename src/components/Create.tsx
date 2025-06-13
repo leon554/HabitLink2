@@ -7,11 +7,15 @@ import { AiOutlineLoading } from "react-icons/ai";
 import TimeInput from "./InputComponents/TimeInput";
 import DistanceInput from "./InputComponents/DistanceInput";
 import NumberInput from "./InputComponents/NumberInput";
+import { State } from "../pages/CreatePage";
 
 
 
+interface Props{
+    setState: (state: State) => void
+}
 
-export default function Create() {
+export default function Create(p: Props) {
     const [compsPerWeek, setCompsPerWeek] = useState(0)
     const [compDays, setCompDays] = useState({mon: false, teu: false, wed: false, thu: false, fri: false, sat: false, sun: false})
     const [selectedEmojiIndex, setSelectedEmojiIndex] = useState(-1)
@@ -63,13 +67,14 @@ export default function Create() {
         return target
     }
     return (
-        <div className="bg-stone-800 max-md:max-w-[400px]  max-w-[900px] mt-20 w-[95%] flex justify-center rounded-md flex-col items-center pb-5 font-mono">
-            <p className="font-mono text-stone-200 font-semibold text-2xl mt-8 mb-8">
+        <div className="bg-stone-800 w-[90%]  max-w-[900px] mt-20 max-md:max-w-[500px] relative flex justify-center rounded-md flex-col items-center pb-5 font-mono p-4">
+            <p className="font-mono text-stone-200 font-semibold text-2xl mt-6 mb-8">
                 Create New Habit
             </p>
+            <p className="hover:cursor-pointer absolute top-2 right-3 text-stone-500 font-mono" onClick={() => p.setState(State.choose)}>x</p>
             <div className="flex w-full md:gap-10 md:pl-10 md:pr-10 max-md:flex-col max-md:items-center items-start">
                 <div className="w-full flex justify-center flex-col items-center ">
-                    <div className="max-md:w-[70%] w-full font-mono mb-5">
+                    <div className="w-[90%] max-w-[450px]  font-mono mb-5">
                         <p className="text-[16px]  text-stone-100 mb-2">Habit Name</p>
                         <input type="text" 
                         placeholder="Enter habit name"
@@ -77,7 +82,7 @@ export default function Create() {
                         onChange={e => setName(e.target.value)}
                         className="outline-1 text-[12px] rounded-md w-full border-0  outline-stone-600 text-sm p-1.5 text-gray-200 mb-1" />
                     </div>
-                    <div className="max-md:w-[70%] w-full font-mono mb-5">
+                    <div className="w-[90%] max-w-[450px]  font-mono mb-5">
                         <p className="text-[16px]  text-stone-100 mb-2">Habit Description</p>
                         <textarea
                         placeholder="Enter habit description"
@@ -85,7 +90,7 @@ export default function Create() {
                         onChange={e => setDescription(e.target.value)}
                         className="outline-1 text-[12px] h-20 rounded-md resize-none w-full border-0  outline-stone-600 text-sm p-1.5 text-gray-200" />
                     </div>
-                    <div className="max-md:w-[70%] w-full font-mono  flex justify-center flex-col items-stretch ">
+                    <div className="w-[90%] max-w-[450px] font-mono  flex justify-center flex-col items-stretch ">
                         <div>
                             <div className="flex items-center gap-2 mb-2">
                                 <p className="text-[16px]  text-stone-100">Completion Days </p> 
@@ -114,13 +119,13 @@ export default function Create() {
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-2 mb-2 max-md:w-[70%] w-full">
+                    <div className="flex items-center gap-2 mb-2 w-[90%] max-w-[450px]">
                         <p className="text-[16px]  text-stone-100">Habit Type </p> 
                         <IoInformationCircleOutline size={14} color="#f5f5f4" className="hover:cursor-pointer" onClick={() => {
                             alert("Normal: e.g. go to the gym its yes no \n Time Based: e.g Plank can log 13s \n Distance Based: e.g Walking you walked 12km \n Itteration Based: E.g drink 3 cups of water a day")
                         }}/>
                     </div>
-                    <div className="flex flex-wrap gap-2 justify-stretch mb-6 max-md:w-[70%] w-full">
+                    <div className="flex flex-wrap gap-2 justify-stretch mb-6 w-[90%] max-w-[450px]">
                         {habitTypes.map((h, i) => {
                         return(
                             <button className={`${selectedTypeIndex == i ? "outline-0 bg-green-400 text-stone-900" : "bg-stone-800 outline-1"} rounded-md outline-stone-600 p-1 grow-1 hover:cursor-pointer hover:bg-green-400 hover:outline-0 text-stone-400 text-sm hover:text-stone-900`}
@@ -143,7 +148,7 @@ export default function Create() {
                     </div> : ""}
                 </div>
 
-                <div className="w-[70%]  font-mono mb-7  ">
+                <div className="w-[90%] max-w-[450px]  font-mono mb-7  ">
                     <p className="text-[16px]  text-stone-100 mb-2">Habit Emoji</p>
                     <div className="flex flex-wrap gap-2 justify-stretch mb-6">
                         {habitEmojis.map((h, i) => {

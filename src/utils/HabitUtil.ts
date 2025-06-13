@@ -91,6 +91,7 @@ export namespace HabitUtil{
 
     export function getCompletionDaysString(completionDays: string){
         if(completionDays.length == 1){
+            
             return `${completionDays}x Week`
         }else{
             let output = ""
@@ -140,7 +141,7 @@ export namespace HabitUtil{
                 if(completionAmt + dateUtils.daysLeftInWeek() < weeklyTarget && i == mostRecentWeek){
                     const missedDaysThisWeek = weeklyTarget - (completionAmt + dateUtils.daysLeftInWeek())
                     completableDaysAmt += missedDaysThisWeek 
-                    missedSessions += missedDaysThisWeek + 1
+                    missedSessions += missedDaysThisWeek 
                 }else{
                     missedSessions += completableDaysAmt - Math.min(completionAmt, weeklyTarget)
                 }
@@ -153,7 +154,7 @@ export namespace HabitUtil{
                 if(completionsThisWeek.length + dateUtils.daysLeftInWeek() < weeklyTarget && i == mostRecentWeek){
                     const missedDaysThisWeek = weeklyTarget - (completionsThisWeek.length + dateUtils.daysLeftInWeek())
                     completableDaysAmt += missedDaysThisWeek 
-                    missedSessions += missedDaysThisWeek + 1
+                    missedSessions += missedDaysThisWeek
                 }else{
                     missedSessions += completableDaysAmt - Math.min(completionsThisWeek.length, weeklyTarget)
                 }
@@ -174,12 +175,14 @@ export namespace HabitUtil{
         const mostRecentWeek = weeks.length - 1
         const creationWeek = 0
         
+        console.log(weeks)
         const completionRatesPerWeek: number[] = []
         let missedSessions = 0
         for(let i = 0; i < weeks.length; i++){
             const completionsThisWeek = completions.filter(c => dateUtils.isDateInWeek(new Date(Number(c.date)), weeks[i]))
             const compDaysIndexs = getCompDays(compDays)
             let completableDays = compDaysIndexs.length
+            console.log(completableDays)
 
             if(i == mostRecentWeek){
                 completableDays = getCompletableNumDaysThisWeek(compDays)
@@ -199,10 +202,13 @@ export namespace HabitUtil{
                 return completionsThisWeek.some(c => (new Date(Number(c.date))).getDay() == d)
                 
             }).filter(didComplete => didComplete)
-
-            missedSessions += completableDays + 1 - completionCount.length
+            console.log(completableDays)
+            console.log("compcount: " + completionCount.length)
+            missedSessions += completableDays - completionCount.length
+            console.log("missed: " + missedSessions)
             completionRatesPerWeek.push(completionCount.length/completableDays)
         }
+        console.log("missed: " + missedSessions)
         return {compRate: Util.avgNumArr(completionRatesPerWeek), missedSessions}
     }
 
@@ -478,15 +484,16 @@ export namespace HabitUtil{
 
     }
     export function getCompletionDaysThisPeriod(habit: HabitType|null, completions: HabitCompletionType[]|undefined){
-        let output = Array(113).fill(null).map(() => ({day: new Date(), done: false, complete: false})) 
+        let output = Array(113).fill(null).map(() => ({day: new Date(), done: false, complete: false, habitCreation: false})) 
         if(!habit || !completions) return []
 
-        type compDaysType = {day: Date, done: boolean, complete: boolean}
+        type compDaysType = {day: Date, done: boolean, complete: boolean, habitCreation: boolean}
         let subarrs: compDaysType[][] = [] 
         let date = dateUtils.getEndOfWeekDate()
         for(let i = 0; i < output.length; i++){
             output[i].day = date
             
+            if(dateUtils.isDatesSameDay(date, new Date(Number(habit.creationDate)))) output[i].habitCreation = true
             if(habit.completionDays.length != 1 && date.getTime() >= Number(habit.creationDate) && date.getTime() < add((new Date()), {days: 1}).getTime()){
                 const compDays = getCompDays(habit.completionDays)
                 output[i].complete = compDays.includes(date.getDay())

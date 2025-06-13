@@ -22,7 +22,6 @@ export default function AmountInput(p: amountProps) {
                     className="w-full h-2 bg-stone-700 rounded-lg appearance-none cursor-pointer slider-thumb mr-1"
                 />
             </div>
-            
         </div>
     )
 }

@@ -14,7 +14,7 @@ export default function CompletionsMonth() {
     const days = ["S", "M", "T", "W", "T", "F", "S"]
 
     return (
-        <div className="w-full bg-stone-800 rounded-md font-mono relative text-stone-300 justify-center p-7 pt-5 pb-7 flex flex-col items-center gap-4">
+        <div className="w-full bg-stone-800  rounded-md font-mono relative text-stone-300 justify-center p-7 pt-5 pb-7 flex flex-col items-center gap-4">
             <div className="w-full flex justify-center items-center">
                 <p className="text-lg text-center">
                     Completions Past 16 Weeks
@@ -23,9 +23,9 @@ export default function CompletionsMonth() {
             <IoInformationCircleOutline size={14} color="#57534E" className="hover:cursor-pointer absolute top-3 right-3" onClick={() => {
                 setOpen(true)
             }}/>
-            <div>
-                <div className=" w-full max-w-[400px] mr-1.5 flex gap-1.5">
-                    <div className="flex flex-col gap-1.5 mr-0.5">
+            <div className="w-full">
+                <div className=" w-full mr-1.5 flex gap-1.5  justify-center">
+                    <div className="flex flex-col gap-1.5 mr-0.5 ">
                         {Array(7).fill(null).map((_, i) => {
                             return(
                                 <p className="h-4 flex items-center text-xs text-stone-500">
@@ -36,21 +36,27 @@ export default function CompletionsMonth() {
                     </div>
                     {compDays.map((d, i) => {
                         return(
-                            <div key={i} className="flex flex-col gap-1.5 items-center">
+                            <div key={i} className="flex flex-col items-center gap-1.5">
                                 {d.reverse().map(v => {
                                     return(
-                                        <p className={`w-4 h-4 rounded-sm ${dateUtils.isDatesSameDay(v.day , new Date()) ? 
-                                            v.done ? "bg-green-400 rounded-xl" : "outline-1 outline-green-400" :
-                                            v.done ?
-                                            "bg-green-400" : 
+                                        <p className={`w-4 h-4 ${dateUtils.isDatesSameDay(v.day , new Date()) ? 
+                                            v.done ? "bg-green-400 rounded-xl" : "outline-1 outline-green-400 rounded-sm" :
+                                            v.habitCreation ? 
+                                            v.done ? 
+                                            "rounded-none bg-green-400" :
                                             v.complete ? 
-                                            "bg-red-400" : 
-                                            "outline-1 outline-stone-700"}`}>
+                                            "rounded-none bg-red-400" :
+                                            "outline-1 rounded-none outline-green-500" : 
+                                            v.done ?
+                                            "bg-green-400 rounded-sm" : 
+                                            v.complete ? 
+                                            "bg-red-400 rounded-sm" : 
+                                            "outline-1 outline-stone-700 rounded-sm"}`}>
 
                                         </p>
                                     )
                                 })}
-                                <p className="text-xs text-stone-500 text-center">
+                                <p className="text-xs text-stone-500 text-center w-[15px]">
                                     {16 - i}
                                 </p>
                             </div>
@@ -69,6 +75,9 @@ export default function CompletionsMonth() {
                     </p>
                     <p className="text-stone-400 text-sm">
                         Each column represents a week starting with Sunday at the top of the column
+                    </p>
+                    <p className="text-stone-400 text-sm text-justify">
+                        Below is a legend for what each symbol represents:
                     </p>
                     <div className="flex justify-between mt-5 items-start">
                         <div className="flex flex-col justify-center items-center gap-1.5 w-12">
@@ -94,8 +103,33 @@ export default function CompletionsMonth() {
                             <p className="text-stone-400 text-xs text-center">
                                 Missed Day
                             </p>
+                        </div> 
+                    </div>
+                    <div className="flex justify-between mt-5 items-start">
+                        <div className="flex flex-col justify-center items-center gap-1.5 w-12">
+                            <div className="w-4 h-4 border-1 border-green-400 rounded-none"></div>
+                            <p className="text-stone-400 text-xs text-center">
+                                Habit creation day
+                            </p>
                         </div>
-                        
+                         <div className="flex flex-col justify-center items-center gap-1.5 w-12">
+                            <div className="w-4 h-4 bg-green-400 "></div>
+                            <p className="text-stone-400 text-xs text-center">
+                                Habit creation day with completion
+                            </p>
+                        </div>
+                        <div className="flex flex-col justify-center items-center gap-1.5 w-12">
+                            <div className="w-4 h-4 bg-red-400"></div>
+                            <p className="text-stone-400 text-xs text-center">
+                                Habit creation day with missed completion
+                            </p>
+                        </div>
+                        <div className="flex flex-col justify-center items-center gap-1.5 w-12">
+                            <div className="w-4 h-4 outline-1 outline-stone-700 rounded-sm"></div>
+                            <p className="text-stone-400 text-xs text-center">
+                                Empty day
+                            </p>
+                        </div> 
                     </div>
                     <button className="bg-green-400 rounded-md text-stone-800 font-mono py-1 mt-5 hover:cursor-pointer"
                         onClick={() => setOpen(false)}>

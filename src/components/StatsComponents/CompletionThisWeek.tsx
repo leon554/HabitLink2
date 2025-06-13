@@ -21,7 +21,7 @@ export default function CompletionThisWeek() {
                 {compDays.map((d, i) => {
                     return(
                         <div key={i}>
-                            <p className={` ${d.done ? "bg-green-400 text-stone-900" : d.complete ? "bg-stone-700 text-stone-400" : "text-stone-400"} p-1 rounded-md px-3`}>
+                            <p className={` ${d.done ? "bg-green-400 text-stone-900" : d.complete ? "bg-stone-700 text-stone-400" : "text-stone-400 outline-1 outline-stone-700"} p-1 rounded-md px-3`}>
                                 {d.day.toUpperCase()}
                             </p>
                         </div>

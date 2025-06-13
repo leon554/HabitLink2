@@ -29,26 +29,31 @@ export default function Navbar() {
                     </Link></> : 
                     <>
                         <Link to={"/dashboard"}>
-                            <button className="h-13 pl-4 pr-4 font-medium text-sm font-mono text-gray-300 text-md hover:bg-green-400 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer">
+                            <button className="h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 font-medium text-sm font-mono text-gray-300 text-md hover:bg-green-400 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer">
                                 Home
                             </button>
                         </Link>
                         <Link to={"/log"}>
-                            <button className="h-13 pl-4 pr-4 font-medium text-sm font-mono text-gray-300 text-md hover:bg-green-400 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer">
+                            <button className="h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 font-medium text-sm font-mono text-gray-300 text-md hover:bg-green-400 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer">
                                 Log
                             </button>
                         </Link>
                          <Link to={"/stats"}>
-                            <button className="h-13 pl-4 pr-4 font-medium text-sm font-mono text-gray-300 text-md hover:bg-green-400 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer">
+                            <button className="h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 font-medium text-sm font-mono text-gray-300 text-md hover:bg-green-400 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer">
                                 Stats
                             </button>
                         </Link>
+                        <Link to={"/goals"}>
+                            <button className="h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 font-medium text-sm font-mono text-gray-300 text-md hover:bg-green-400 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer">
+                                Goals
+                            </button>
+                        </Link>
                         <Link to={"/create"}>
-                            <button className="h-13 pl-4 pr-4 font-medium text-sm font-mono text-gray-300 text-md hover:bg-green-400 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer">
+                            <button className="h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 font-medium text-sm font-mono text-gray-300 text-md hover:bg-green-400 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer">
                                 Create
                             </button>
                         </Link>
-                        <button className="h-13 pl-4 pr-4 font-medium text-sm font-mono text-gray-300 text-md hover:bg-green-400 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer"
+                        <button className="h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 font-medium text-sm font-mono text-gray-300 text-md hover:bg-green-400 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer"
                             onClick={logout}>
                             {loading? <AiOutlineLoading className="animate-spin"/> : <LuLogOut />}
                         </button>

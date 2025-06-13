@@ -5,7 +5,7 @@ interface Props{
 }
 export default function InfoBox(p: Props) {
     return (
-        <div className="outline-1 flex flex-col items-center justify-center rounded-md outline-stone-600  grow-1">
+        <div className="flex flex-col items-center justify-center rounded-md bg-stone-700/30 grow-1">
             <p className="text-xl mt-3 mb-1.5 text-stone-400">
                 {p.value}
             </p>

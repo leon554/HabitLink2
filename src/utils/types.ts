@@ -29,3 +29,17 @@ export enum HabitTypeE{
     Distance_Based = "Distance Based",
     Iteration_Based = "Iteration Based"
 }
+export interface GoalType{
+    id: string
+    created_at: string
+    name: string,
+    description?: string
+    type: string
+    startValue: number
+    targetValue: number
+    currentValue: number
+    user_id: string
+    habits: string
+    completionDate: number
+
+}

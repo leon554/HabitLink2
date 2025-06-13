@@ -10,6 +10,7 @@ import CreatePage from "./pages/CreatePage"
 import UserProvider from "./components/Providers/UserProvider"
 import StatsPage from "./pages/StatsPage"
 import SettingsProvider from "./components/Providers/SettingsProvider"
+import GoalsPage from "./pages/GoalsPage"
 
 function App() {
 
@@ -29,6 +30,7 @@ function App() {
               <Route path="log" element={<LogPage/>}/>
               <Route path="create" element={<CreatePage/>}/>
               <Route path="stats" element={<StatsPage/>}/>
+              <Route path="goals" element={<GoalsPage/>}/>
             </Route>
           </Routes>
           

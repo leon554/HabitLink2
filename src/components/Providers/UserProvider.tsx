@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react"
 import { AuthContext } from "./AuthProvider";
 import { supabase } from "../../supabase-client";
 import { AlertContext } from "../Alert/AlertProvider";
-import {type HabitCompletionType, type HabitType } from "../../utils/types";
+import {type GoalType, type HabitCompletionType, type HabitType } from "../../utils/types";
 import { dateUtils } from "../../utils/dateUtils";
 import { HabitUtil } from "../../utils/HabitUtil";
 import { HabitTypeE } from "../../utils/types";
@@ -10,11 +10,15 @@ import { HabitTypeE } from "../../utils/types";
 
 interface UserType{
     createHabit: (name: string, description: string, completionDays:string, emoji: string, type: string, target: number) => Promise<void>
+    createGoal: (name: string, description: string, type: string, startValue: number, goalValue: number, habitIds: number[], completionDate: Date) => Promise<void>
     habits: Map<string, HabitType>
     habitsCompletions: Map<string, HabitCompletionType[]>,
     loading: boolean,
     currentHabit: HabitType | null
+    currentGaol: GoalType | null
+    goals: Map<string, GoalType>
     habitRanks: Map<string, string>
+    setCurrentGoal: (currentGaol: GoalType | null) => void
     setCurrentHabit: (currentHabit: HabitType | null) => void
     compleHabit: (habitId: string, value: number) => Promise<void>,
     removeTodaysHabitCompletion: (habitId: string) => Promise<void>
@@ -31,11 +35,15 @@ interface UserType{
 }
 const initialValues: UserType = {
     createHabit: () => Promise.resolve(undefined),
+    createGoal: () => Promise.resolve(undefined),
     habits: new Map<string, HabitType>(),
+    goals: new Map<string, GoalType>(),
     habitsCompletions: new Map<string, HabitCompletionType[]>(),
     loading: false,
     currentHabit: null,
+    currentGaol: null,
     habitRanks: new Map<string, string>(),
+    setCurrentGoal: () => null,
     setCurrentHabit: () => null,
     compleHabit: () => Promise.resolve(undefined),
     removeTodaysHabitCompletion: () => Promise.resolve(undefined),
@@ -59,7 +67,9 @@ interface Props {
 export default function UserProvider(props: Props) {
     const [loading, setLoading] = useState(false)
     const [currentHabit, setCurrentHabit] = useState<HabitType|null>(null)
+    const [currentGaol, setCurrentGoal] = useState<GoalType|null>(null)
     const [habits, setHabits] = useState<Map<string, HabitType>>(new Map<string, HabitType>())
+    const [goals, setGaols] = useState<Map<string, GoalType>>(new Map<string, GoalType>())
     const [habitRanks, setHabitRanks] = useState<Map<string, string>>(new Map<string, string>())
     const [habitsCompletions, setHabitsCompletions] = useState<Map<string, HabitCompletionType[]>>(new Map<string, HabitCompletionType[]>())
 
@@ -79,6 +89,7 @@ export default function UserProvider(props: Props) {
         const userid = auth.getUserId()
         if(!userid) return
         getHabits()
+        getGoals()
         getHabitsCompletions()
     }, [auth.session?.user])
 
@@ -105,6 +116,49 @@ export default function UserProvider(props: Props) {
         }
         await getHabits()
         alert("Succefully Added Habit")
+        setLoading(false)
+    }
+    async function createGoal(name: string, description: string, type: string, startValue: number, goalValue: number, habitIds: number[], completionDate: Date){
+        setLoading(true)
+        const userid = auth.getUserId()
+        const habitString = habitIds.join(",");
+
+        const { error } = await supabase
+            .from('goals')
+            .insert([
+                { name, description, type,  startValue, targetValue: goalValue, currentValue: startValue, user_id:userid, habits: habitString, completionDate: completionDate.getTime()},
+            ])
+        
+        if(error){
+            alert("Gaol creation error: " + error.message)
+            setLoading(false)
+            return
+        }
+        await getGoals()
+        alert("Succefully Added Goal")
+        setLoading(false)
+    }
+    async function getGoals(){
+        setLoading(true)
+        const userid = auth.getUserId()
+
+        let { data: goalData, error } = await supabase
+            .from('goals')
+            .select('*')
+            .eq("user_id", userid)
+    
+        if(error){
+            alert("Goal fetch error: " + error.message)
+        }
+        console.log(goalData)
+        const goals = goalData as GoalType[]
+        const goalMap = new Map<string, GoalType>()
+        goals.forEach(h => {
+            if(goalMap.has(h.id)) {alert("Duplicate Goal skipped"); return}
+            goalMap.set(h.id, h)
+            
+        })
+        setGaols(goalMap)
         setLoading(false)
     }
     async function getHabits(){
@@ -187,9 +241,13 @@ export default function UserProvider(props: Props) {
     return (
         <UserContext.Provider value={{
             createHabit,
+            createGoal,
             habits,
+            goals,
             habitsCompletions,
             loading,
+            currentGaol,
+            setCurrentGoal,
             currentHabit,
             setCurrentHabit,
             compleHabit: compleHabit,
