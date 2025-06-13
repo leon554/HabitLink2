@@ -1,6 +1,6 @@
 ## HabitLink 2
 
-HabitLink will be a complete habit tracking and goal setting webapp with complex statistics such as correlation tracking between habits provinddg valauble insights into how habits affect each other
+HabitLink will be a complete habit tracking and goal setting webapp with complex statistics such as correlation tracking between habits providing valauble insights into how habits affect each other.
 
 #### Tech Stack
 This project uses SupaBase, React, Typescript and Tailwind
