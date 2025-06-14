@@ -42,4 +42,12 @@ export namespace Util{
 
         return `${ Math.floor(mins/60)}h ${mins % 60}m`
     }
+    export function fetchMapItems<T>(ids: string[], map: Map<number, T>){
+        let values: T[] = []
+        ids.forEach(id => {
+            const value = map.get(Number(id))
+            if(value !== undefined) values.push(value)
+        })
+        return values
+    }
 }

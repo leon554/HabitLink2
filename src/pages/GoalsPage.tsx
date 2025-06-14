@@ -4,6 +4,8 @@ import Select from "../components/InputComponents/Select"
 import { HiOutlineSwitchHorizontal } from "react-icons/hi"
 import GoalProgress from "../components/goalComponenets/GoalProgress"
 import CountDown from "../components/goalComponenets/CountDown"
+import AssociatedHabits from "../components/goalComponenets/AssociatedHabits"
+import AvgConsistency from "../components/goalComponenets/AvgConsistency"
 
 
 export default function GoalsPage() {
@@ -11,7 +13,7 @@ export default function GoalsPage() {
     const HC = useContext(UserContext)
 
     return (
-        <div className="w-full flex justify-center">
+        <div className="w-full flex justify-center mb-10">
             {!HC.currentGaol ?
                 <div className="w-[90%] max-w-[600px] mt-20 bg-stone-800 text-stone-300 font-mono rounded-md p-4 flex justify-center flex-col items-center">
                     <p className="text-2xl mb-5 mt-1">
@@ -48,6 +50,8 @@ export default function GoalsPage() {
                 </div>
                 <CountDown/>
                 <GoalProgress/>
+                <AvgConsistency/>
+                <AssociatedHabits/>
             </div>}
         </div>
     )

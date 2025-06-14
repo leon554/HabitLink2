@@ -11,13 +11,15 @@ import { HabitTypeE } from "../../utils/types";
 interface UserType{
     createHabit: (name: string, description: string, completionDays:string, emoji: string, type: string, target: number) => Promise<void>
     createGoal: (name: string, description: string, type: string, startValue: number, goalValue: number, habitIds: number[], completionDate: Date) => Promise<void>
-    habits: Map<string, HabitType>
+    habits: Map<number, HabitType>
     habitsCompletions: Map<string, HabitCompletionType[]>,
     loading: boolean,
     currentHabit: HabitType | null
     currentGaol: GoalType | null
     goals: Map<string, GoalType>
     habitRanks: Map<string, string>
+    habitComps: Map<number, string>
+    habitStrengths: Map<string, string>
     setCurrentGoal: (currentGaol: GoalType | null) => void
     setCurrentHabit: (currentHabit: HabitType | null) => void
     compleHabit: (habitId: string, value: number) => Promise<void>,
@@ -37,13 +39,15 @@ interface UserType{
 const initialValues: UserType = {
     createHabit: () => Promise.resolve(undefined),
     createGoal: () => Promise.resolve(undefined),
-    habits: new Map<string, HabitType>(),
+    habits: new Map<number, HabitType>(),
     goals: new Map<string, GoalType>(),
     habitsCompletions: new Map<string, HabitCompletionType[]>(),
     loading: false,
     currentHabit: null,
     currentGaol: null,
     habitRanks: new Map<string, string>(),
+    habitComps: new Map<number, string>(),
+    habitStrengths: new Map<string, string>(),
     setCurrentGoal: () => null,
     setCurrentHabit: () => null,
     compleHabit: () => Promise.resolve(undefined),
@@ -70,9 +74,11 @@ export default function UserProvider(props: Props) {
     const [loading, setLoading] = useState(false)
     const [currentHabit, setCurrentHabit] = useState<HabitType|null>(null)
     const [currentGaol, setCurrentGoal] = useState<GoalType|null>(null)
-    const [habits, setHabits] = useState<Map<string, HabitType>>(new Map<string, HabitType>())
+    const [habits, setHabits] = useState<Map<number, HabitType>>(new Map<number, HabitType>())
     const [goals, setGaols] = useState<Map<string, GoalType>>(new Map<string, GoalType>())
     const [habitRanks, setHabitRanks] = useState<Map<string, string>>(new Map<string, string>())
+    const [habitComps, setHabitComps] = useState<Map<number, string>>(new Map<number, string>())
+    const [habitStrengths, setHabitStrengths] = useState<Map<string, string>>(new Map<string, string>())
     const [habitsCompletions, setHabitsCompletions] = useState<Map<string, HabitCompletionType[]>>(new Map<string, HabitCompletionType[]>())
 
     const currentHabitCompletions = currentHabit ? habitsCompletions.get(currentHabit?.id) : undefined
@@ -98,7 +104,11 @@ export default function UserProvider(props: Props) {
     useEffect(() => {
         habits.forEach(h => {
             const strength = HabitUtil.getStrength(h, habitsCompletions.get(h.id))
+            const {compRate: Rate} = HabitUtil.getCompletionRate(h, habitsCompletions.get(h.id))
+
             setHabitRanks(prev => prev.set(h.id, HabitUtil.getRank(strength)))
+            setHabitStrengths(prev => prev.set(h.id, `${strength}`))
+            setHabitComps(prev => prev.set(Number(h.id), `${Rate}`))
         })
     }, [habitsCompletions])
 
@@ -199,10 +209,11 @@ export default function UserProvider(props: Props) {
             alert("Habit fetch error: " + error.message)
         }
         const habits = habitsData as HabitType[]
-        const habitMap = new Map<string, HabitType>()
+        const habitMap = new Map<number, HabitType>()
         habits.forEach(h => {
-            if(habitMap.has(h.id)) {alert("Duplicate habits skipped"); return}
-            habitMap.set(h.id, h)
+            if(habitMap.has(Number(h.id))) {alert("Duplicate habits skipped"); return}
+            console.log("hid: " + h.id)
+            habitMap.set(Number(h.id), h)
             
         })
         setHabits(habitMap)
@@ -281,7 +292,9 @@ export default function UserProvider(props: Props) {
             removeTodaysHabitCompletion,
             updateCurrentValueGoal,
             currenthabitStats: {compRate, missedSessions, streak, entries, strength,validComps, partialComps,dataSum},
-            habitRanks
+            habitRanks,
+            habitComps,
+            habitStrengths
         }}>
             {props.children}
         </UserContext.Provider>
