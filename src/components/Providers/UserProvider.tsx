@@ -22,6 +22,7 @@ interface UserType{
     setCurrentHabit: (currentHabit: HabitType | null) => void
     compleHabit: (habitId: string, value: number) => Promise<void>,
     removeTodaysHabitCompletion: (habitId: string) => Promise<void>
+    updateCurrentValueGoal: (value: number, add: boolean) => Promise<void>
     currenthabitStats : {
         compRate: number
         partialComps: number
@@ -47,6 +48,7 @@ const initialValues: UserType = {
     setCurrentHabit: () => null,
     compleHabit: () => Promise.resolve(undefined),
     removeTodaysHabitCompletion: () => Promise.resolve(undefined),
+    updateCurrentValueGoal: () => Promise.resolve(undefined),
     currenthabitStats : {
         compRate: 0,
         partialComps: 0,
@@ -161,6 +163,31 @@ export default function UserProvider(props: Props) {
         setGaols(goalMap)
         setLoading(false)
     }
+    async function updateCurrentValueGoal(value: number, add: boolean){
+        setLoading(true)
+        if(!currentGaol) {alert("Update Error: current goal is not defined"); return }
+
+        const { data, error } = await supabase
+            .from('goals')
+            .update({ currentValue: `${add ? currentGaol?.currentValue + value : value}` })
+            .eq('id', currentGaol.id)
+            .select()
+
+        if(error){
+            alert("Update error: " + error)
+            setLoading(false); return
+        }
+        if(goals.has(currentGaol.id)){
+            const updatedGoal = { ...(data[0] as GoalType) };
+            const newGoals = new Map(goals); 
+            newGoals.set(currentGaol.id, updatedGoal);
+            setGaols(newGoals);
+            setCurrentGoal(updatedGoal)
+        }
+        else{alert("Goal doesnt exist")}
+        setLoading(false)
+        
+    }
     async function getHabits(){
         setLoading(true)
         const userid = auth.getUserId()
@@ -252,6 +279,7 @@ export default function UserProvider(props: Props) {
             setCurrentHabit,
             compleHabit: compleHabit,
             removeTodaysHabitCompletion,
+            updateCurrentValueGoal,
             currenthabitStats: {compRate, missedSessions, streak, entries, strength,validComps, partialComps,dataSum},
             habitRanks
         }}>

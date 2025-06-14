@@ -80,7 +80,7 @@ export default function HabitLogCard({habit: h}: HabitProps) {
                     <div className='flex items-center gap-1'>
                         {!settings.showDetails && !isNormalHabit()? 
                         <p className='text-stone-400 font-mono text-[11px] '>
-                                [{HabitUtil.pretifyData(`${HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))}`, h.type as HabitTypeE)}]/[{HabitUtil.pretifyData(h.target, h.type as HabitTypeE)}]
+                                [{Util.pretifyData(`${HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))}`, h.type as HabitTypeE)}]/[{Util.pretifyData(h.target, h.type as HabitTypeE)}]
                         </p> : ""}
                         {!settings.showDetails ? 
                         <p className='text-stone-400 font-mono text-[9px] pb-0.5'>
@@ -119,7 +119,7 @@ export default function HabitLogCard({habit: h}: HabitProps) {
                             {Math.round(HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))/Number(h.target)*100*100)/100}% |
                         </p>
                         <p className='text-stone-400 font-mono text-[11px]'>
-                             [{HabitUtil.pretifyData(`${HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))}`, h.type as HabitTypeE)}]/[{HabitUtil.pretifyData(h.target, h.type as HabitTypeE)}]
+                             [{Util.pretifyData(`${HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))}`, h.type as HabitTypeE)}]/[{Util.pretifyData(h.target, h.type as HabitTypeE)}]
                         </p>
                         <p className='text-stone-400 font-mono text-[11px]'>
                             | {HabitUtil.getCompletionDaysString(h.completionDays)}

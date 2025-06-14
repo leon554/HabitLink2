@@ -38,23 +38,6 @@ export namespace HabitUtil{
         return completions.filter(c => dateUtils.isDateInCurrentWeek(new Date(Number(c.date))))
     }
 
-    export function pretifyData(data: string, type: HabitTypeE){
-        if(type == HabitTypeE.Distance_Based){
-            return `${Number(data)}km`
-        }
-        if(type == HabitTypeE.Time_Based){
-            return secondsToString(Number(data))
-        }
-        return Number(data)
-    }
-
-    function secondsToString(time: number){
-        let mins = time/60
-        if(mins < 60) return `${Math.round(mins)}m`
-
-        return `${ Math.floor(mins/60)}h ${mins % 60}m`
-    }
-
     export function isCompleteableToday(habit: HabitType, completions: HabitCompletionType[]|undefined){
         if(habit.completionDays.length == 1){
             if(!completions) return true
@@ -156,7 +139,7 @@ export namespace HabitUtil{
                     completableDaysAmt += missedDaysThisWeek 
                     missedSessions += missedDaysThisWeek
                 }else{
-                    missedSessions += completableDaysAmt - Math.min(completionsThisWeek.length, weeklyTarget)
+                    missedSessions += completableDaysAmt - completionsThisWeek.length
                 }
 
                 completionRatesPerWeek.push(Math.min(completionsThisWeek.length, completableDaysAmt) / completableDaysAmt)
@@ -175,14 +158,13 @@ export namespace HabitUtil{
         const mostRecentWeek = weeks.length - 1
         const creationWeek = 0
         
-        console.log(weeks)
         const completionRatesPerWeek: number[] = []
         let missedSessions = 0
         for(let i = 0; i < weeks.length; i++){
             const completionsThisWeek = completions.filter(c => dateUtils.isDateInWeek(new Date(Number(c.date)), weeks[i]))
             const compDaysIndexs = getCompDays(compDays)
             let completableDays = compDaysIndexs.length
-            console.log(completableDays)
+            
 
             if(i == mostRecentWeek){
                 completableDays = getCompletableNumDaysThisWeek(compDays)
@@ -202,13 +184,9 @@ export namespace HabitUtil{
                 return completionsThisWeek.some(c => (new Date(Number(c.date))).getDay() == d)
                 
             }).filter(didComplete => didComplete)
-            console.log(completableDays)
-            console.log("compcount: " + completionCount.length)
             missedSessions += completableDays - completionCount.length
-            console.log("missed: " + missedSessions)
             completionRatesPerWeek.push(completionCount.length/completableDays)
         }
-        console.log("missed: " + missedSessions)
         return {compRate: Util.avgNumArr(completionRatesPerWeek), missedSessions}
     }
 

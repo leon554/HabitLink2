@@ -1,3 +1,5 @@
+import { HabitTypeE } from "./types"
+
 export namespace Util{
 
     export function capitilizeFirst(value: string | undefined){
@@ -22,5 +24,22 @@ export namespace Util{
     export function secondsToHours(seconds: number): number {
         console.log(seconds)
         return Math.round((seconds / 3600) * 100) / 100;
+    }
+    export function pretifyData(data: string | undefined | number, type: HabitTypeE | undefined){
+        if(data == undefined || !HabitTypeE) return "Loading..."
+        if(type == HabitTypeE.Distance_Based){
+            return `${Number(data)}km`
+        }
+        if(type == HabitTypeE.Time_Based){
+            return secondsToString(Number(data))
+        }
+        return Number(data)
+    }
+
+    function secondsToString(time: number){
+        let mins = time/60
+        if(mins < 60) return `${Math.round(mins)}m`
+
+        return `${ Math.floor(mins/60)}h ${mins % 60}m`
     }
 }
