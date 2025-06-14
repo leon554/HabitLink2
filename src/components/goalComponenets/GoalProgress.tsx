@@ -1,10 +1,10 @@
 import { useContext, useState} from "react";
-import FullCircleProgressBar from "./InputComponents/FullCircleProgressBar";
-import { UserContext } from "./Providers/UserProvider";
-import { Util } from "../utils/util";
-import type { HabitTypeE } from "../utils/types";
-import Model from "./InputComponents/Model";
-import { AlertContext } from "./Alert/AlertProvider";
+import FullCircleProgressBar from "../InputComponents/FullCircleProgressBar";
+import { UserContext } from "../Providers/UserProvider";
+import { Util } from "../../utils/util";
+import type { HabitTypeE } from "../../utils/types";
+import Model from "../InputComponents/Model";
+import { AlertContext } from "../Alert/AlertProvider";
 import { AiOutlineLoading } from "react-icons/ai";
 
 

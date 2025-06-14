@@ -2,7 +2,8 @@ import { useContext } from "react"
 import { UserContext } from "../components/Providers/UserProvider"
 import Select from "../components/InputComponents/Select"
 import { HiOutlineSwitchHorizontal } from "react-icons/hi"
-import GoalProgress from "../components/GoalProgress"
+import GoalProgress from "../components/goalComponenets/GoalProgress"
+import CountDown from "../components/goalComponenets/CountDown"
 
 
 export default function GoalsPage() {
@@ -29,7 +30,7 @@ export default function GoalsPage() {
                     </div>
                 </div>
             :
-            <div className="w-full flex flex-col items-center gap-5">
+            <div className="w-full flex flex-col items-center gap-3">
                 <div className="w-[90%] max-w-[600px] mt-20 p-10 relative bg-stone-800 text-stone-300 font-mono rounded-md flex justify-center flex-col items-center gap-2">
                     <p className="text-3xl font-semibold">
                         {HC.currentGaol.name}
@@ -45,6 +46,7 @@ export default function GoalsPage() {
                                                 style="outline-0 p-0 justify-end flex "/>
                     </div>
                 </div>
+                <CountDown/>
                 <GoalProgress/>
             </div>}
         </div>
