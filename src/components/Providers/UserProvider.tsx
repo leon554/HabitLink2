@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react"
 import { AuthContext } from "./AuthProvider";
 import { supabase } from "../../supabase-client";
 import { AlertContext } from "../Alert/AlertProvider";
-import {type GoalType, type HabitCompletionType, type HabitType } from "../../utils/types";
+import {type GaolCompletionType, type GoalType, type HabitCompletionType, type HabitType } from "../../utils/types";
 import { dateUtils } from "../../utils/dateUtils";
 import { HabitUtil } from "../../utils/HabitUtil";
 import { HabitTypeE } from "../../utils/types";
@@ -10,21 +10,22 @@ import { HabitTypeE } from "../../utils/types";
 
 interface UserType{
     createHabit: (name: string, description: string, completionDays:string, emoji: string, type: string, target: number) => Promise<void>
-    createGoal: (name: string, description: string, type: string, startValue: number, goalValue: number, habitIds: number[], completionDate: Date) => Promise<void>
+    createGoal: (name: string, description: string, type: string, startValue: number, goalValue: number, habitIds: number[], completionDate: Date, linkedHabitId: number) => Promise<void>
     habits: Map<number, HabitType>
-    habitsCompletions: Map<string, HabitCompletionType[]>,
+    habitsCompletions: Map<number, HabitCompletionType[]>,
     loading: boolean,
     currentHabit: HabitType | null
     currentGaol: GoalType | null
-    goals: Map<string, GoalType>
-    habitRanks: Map<string, string>
-    habitComps: Map<number, string>
-    habitStrengths: Map<string, string>
+    goals: Map<number, GoalType>
+    habitRanks: Map<number, string>
+    habitComps: Map<number, number>
+    habitStrengths: Map<number, number>
     setCurrentGoal: (currentGaol: GoalType | null) => void
     setCurrentHabit: (currentHabit: HabitType | null) => void
     compleHabit: (habitId: string, value: number) => Promise<void>,
-    removeTodaysHabitCompletion: (habitId: string) => Promise<void>
-    updateCurrentValueGoal: (value: number, add: boolean) => Promise<void>
+    removeTodaysHabitCompletion: (habitId: number) => Promise<void>
+    addGoalCompletion: (value: number) => Promise<void>
+    goalCompletions: Map<number, GaolCompletionType[]>
     currenthabitStats : {
         compRate: number
         partialComps: number
@@ -40,19 +41,20 @@ const initialValues: UserType = {
     createHabit: () => Promise.resolve(undefined),
     createGoal: () => Promise.resolve(undefined),
     habits: new Map<number, HabitType>(),
-    goals: new Map<string, GoalType>(),
-    habitsCompletions: new Map<string, HabitCompletionType[]>(),
+    goals: new Map<number, GoalType>(),
+    habitsCompletions: new Map<number, HabitCompletionType[]>(),
     loading: false,
     currentHabit: null,
     currentGaol: null,
-    habitRanks: new Map<string, string>(),
-    habitComps: new Map<number, string>(),
-    habitStrengths: new Map<string, string>(),
+    habitRanks: new Map<number, string>(),
+    habitComps: new Map<number, number>(),
+    habitStrengths: new Map<number, number>(),
     setCurrentGoal: () => null,
     setCurrentHabit: () => null,
     compleHabit: () => Promise.resolve(undefined),
     removeTodaysHabitCompletion: () => Promise.resolve(undefined),
-    updateCurrentValueGoal: () => Promise.resolve(undefined),
+    addGoalCompletion: () => Promise.resolve(undefined),
+    goalCompletions: new Map<number, GaolCompletionType[]>(),
     currenthabitStats : {
         compRate: 0,
         partialComps: 0,
@@ -75,18 +77,20 @@ export default function UserProvider(props: Props) {
     const [currentHabit, setCurrentHabit] = useState<HabitType|null>(null)
     const [currentGaol, setCurrentGoal] = useState<GoalType|null>(null)
     const [habits, setHabits] = useState<Map<number, HabitType>>(new Map<number, HabitType>())
-    const [goals, setGaols] = useState<Map<string, GoalType>>(new Map<string, GoalType>())
-    const [habitRanks, setHabitRanks] = useState<Map<string, string>>(new Map<string, string>())
-    const [habitComps, setHabitComps] = useState<Map<number, string>>(new Map<number, string>())
-    const [habitStrengths, setHabitStrengths] = useState<Map<string, string>>(new Map<string, string>())
-    const [habitsCompletions, setHabitsCompletions] = useState<Map<string, HabitCompletionType[]>>(new Map<string, HabitCompletionType[]>())
+    const [goals, setGaols] = useState<Map<number, GoalType>>(new Map<number, GoalType>())
+    const [habitRanks, setHabitRanks] = useState<Map<number, string>>(new Map<number, string>())
+    const [habitComps, setHabitComps] = useState<Map<number, number>>(new Map<number, number>())
+    const [habitStrengths, setHabitStrengths] = useState<Map<number, number>>(new Map<number, number>())
 
-    const currentHabitCompletions = currentHabit ? habitsCompletions.get(currentHabit?.id) : undefined
+    const [habitsCompletions, setHabitsCompletions] = useState<Map<number, HabitCompletionType[]>>(new Map<number, HabitCompletionType[]>())
+    const [goalCompletions, setGoalCompletions] = useState<Map<number, GaolCompletionType[]>>(new Map<number, GaolCompletionType[]>())
+
+    const currentHabitCompletions = currentHabit ? habitsCompletions.get(Number(currentHabit?.id)) : undefined
     const {compRate, missedSessions} = HabitUtil.getCompletionRate(currentHabit, currentHabitCompletions)
     const strength = HabitUtil.getStrength(currentHabit, currentHabitCompletions)
     const streak = HabitUtil.getStreak(currentHabit, currentHabitCompletions)
     const {validComps, partialComps} = HabitUtil.getCompletions(currentHabit, currentHabitCompletions)
-    const entries = currentHabit ? habitsCompletions.get(currentHabit.id)?.length : 0
+    const entries = currentHabit ? habitsCompletions.get(Number(currentHabit.id))?.length : 0
     const dataSum = HabitUtil.getHabitDataSumString(currentHabitCompletions, currentHabit?.type as HabitTypeE)
 
 
@@ -99,6 +103,7 @@ export default function UserProvider(props: Props) {
         getHabits()
         getGoals()
         getHabitsCompletions()
+        getGoalsCompletions()
     }, [auth.session?.user])
 
     useEffect(() => {
@@ -106,9 +111,9 @@ export default function UserProvider(props: Props) {
             const strength = HabitUtil.getStrength(h, habitsCompletions.get(h.id))
             const {compRate: Rate} = HabitUtil.getCompletionRate(h, habitsCompletions.get(h.id))
 
-            setHabitRanks(prev => prev.set(h.id, HabitUtil.getRank(strength)))
-            setHabitStrengths(prev => prev.set(h.id, `${strength}`))
-            setHabitComps(prev => prev.set(Number(h.id), `${Rate}`))
+            setHabitRanks(prev => prev.set(h.id, HabitUtil.getRank(Number(strength))))
+            setHabitStrengths(prev => prev.set(h.id, strength))
+            setHabitComps(prev => prev.set(Number(h.id), Rate))
         })
     }, [habitsCompletions])
 
@@ -130,7 +135,7 @@ export default function UserProvider(props: Props) {
         alert("Succefully Added Habit")
         setLoading(false)
     }
-    async function createGoal(name: string, description: string, type: string, startValue: number, goalValue: number, habitIds: number[], completionDate: Date){
+    async function createGoal(name: string, description: string, type: string, startValue: number, goalValue: number, habitIds: number[], completionDate: Date, linkedHabitId: number){
         setLoading(true)
         const userid = auth.getUserId()
         const habitString = habitIds.join(",");
@@ -138,7 +143,7 @@ export default function UserProvider(props: Props) {
         const { error } = await supabase
             .from('goals')
             .insert([
-                { name, description, type,  startValue, targetValue: goalValue, currentValue: startValue, user_id:userid, habits: habitString, completionDate: completionDate.getTime()},
+                { name, description, type,  startValue, targetValue: goalValue, user_id:userid, habits: habitString, completionDate: completionDate.getTime(), linkedHabit: linkedHabitId},
             ])
         
         if(error){
@@ -162,9 +167,8 @@ export default function UserProvider(props: Props) {
         if(error){
             alert("Goal fetch error: " + error.message)
         }
-        console.log(goalData)
         const goals = goalData as GoalType[]
-        const goalMap = new Map<string, GoalType>()
+        const goalMap = new Map<number, GoalType>()
         goals.forEach(h => {
             if(goalMap.has(h.id)) {alert("Duplicate Goal skipped"); return}
             goalMap.set(h.id, h)
@@ -173,28 +177,48 @@ export default function UserProvider(props: Props) {
         setGaols(goalMap)
         setLoading(false)
     }
-    async function updateCurrentValueGoal(value: number, add: boolean){
+    async function getGoalsCompletions(){
         setLoading(true)
-        if(!currentGaol) {alert("Update Error: current goal is not defined"); return }
+        const userid = auth.getUserId()
 
         const { data, error } = await supabase
-            .from('goals')
-            .update({ currentValue: `${add ? currentGaol?.currentValue + value : value}` })
-            .eq('id', currentGaol.id)
-            .select()
-
+            .from('GoalCompletions')
+            .select('*')
+            .eq("user_id", userid)
         if(error){
-            alert("Update error: " + error)
-            setLoading(false); return
+            alert("Goal completion fetch error: " + error.message)
         }
-        if(goals.has(currentGaol.id)){
-            const updatedGoal = { ...(data[0] as GoalType) };
-            const newGoals = new Map(goals); 
-            newGoals.set(currentGaol.id, updatedGoal);
-            setGaols(newGoals);
-            setCurrentGoal(updatedGoal)
+        
+        const completions = data as GaolCompletionType[]
+        const goalCompletionsMap = new Map<number, GaolCompletionType[]>()
+        completions.forEach(g => {
+            if(!goalCompletionsMap.has(g.goalId)){
+                goalCompletionsMap.set(g.goalId, [])
+            }
+            goalCompletionsMap.get(g.goalId)!.push(g)
+        })
+        setGoalCompletions(goalCompletionsMap)
+        setLoading(false)
+
+    }
+    async function addGoalCompletion(value: number){
+        setLoading(true)
+        if(!currentGaol) {alert("Goal completion error: current goal is not defined"); return }
+        const userid = auth.getUserId()
+
+        const { data, error } = await supabase
+        .from('GoalCompletions')
+        .insert([
+            { data: value, date: new Date().getTime(), goalId: currentGaol.id , user_id: userid},
+        ])
+        .select()
+        if(error){
+            alert("Goal completion error: " + error.message)
+            setLoading(false)
+            return
         }
-        else{alert("Goal doesnt exist")}
+        console.log(data)
+        goalCompletions.get(Number(currentGaol.id))?.push(data[0] as GaolCompletionType)
         setLoading(false)
         
     }
@@ -231,7 +255,7 @@ export default function UserProvider(props: Props) {
             alert("Habit completion fetch error: " + error.message)
         }
         const habitCompletionsTemp = habitsCompletionsData as HabitCompletionType[]
-        const habitCompletionsMap = new Map<string, HabitCompletionType[]>()
+        const habitCompletionsMap = new Map<number, HabitCompletionType[]>()
         habitCompletionsTemp.forEach(h => {
             if(!habitCompletionsMap.has(h.habitId)){
                 habitCompletionsMap.set(h.habitId, [])
@@ -241,7 +265,7 @@ export default function UserProvider(props: Props) {
         setHabitsCompletions(habitCompletionsMap)
         setLoading(false)
     }
-    async function removeTodaysHabitCompletion(habitId: string){
+    async function removeTodaysHabitCompletion(habitId: number){
         setLoading(true)
         const completions = habitsCompletions.get(habitId)
         if(!completions) return 
@@ -290,7 +314,8 @@ export default function UserProvider(props: Props) {
             setCurrentHabit,
             compleHabit: compleHabit,
             removeTodaysHabitCompletion,
-            updateCurrentValueGoal,
+            addGoalCompletion,
+            goalCompletions,
             currenthabitStats: {compRate, missedSessions, streak, entries, strength,validComps, partialComps,dataSum},
             habitRanks,
             habitComps,

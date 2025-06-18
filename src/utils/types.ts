@@ -5,20 +5,28 @@ export enum SignUpResponses{
     EmailSent
 }
 export interface HabitType{
-    id: string
+    id: number
     user_id: string
     name: string
     description: string
     completionDays: string
     icon: string
     type: string
-    target: string,
-    creationDate: string
+    target: number,
+    creationDate: number
 }
 export interface HabitCompletionType{
-    id: string
+    id: number
     created_at: string
-    habitId: string
+    habitId: number
+    data: number
+    date: number
+    user_id: string
+}
+export interface GaolCompletionType{
+    id: number
+    created_at: string
+    goalId: number
     data: number
     date: number
     user_id: string
@@ -30,16 +38,16 @@ export enum HabitTypeE{
     Iteration_Based = "Iteration Based"
 }
 export interface GoalType{
-    id: string
+    id: number
     created_at: string
     name: string,
     description?: string
     type: string
     startValue: number
     targetValue: number
-    currentValue: number
     user_id: string
     habits: string
     completionDate: number
+    linkedHabit: number
 
 }

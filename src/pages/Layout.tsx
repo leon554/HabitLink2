@@ -9,7 +9,7 @@ export default function Layout() {
         <>
             <Alert/>
             <Navbar/>
-            <main>
+            <main className="">
                 <Outlet/>
             </main>
         </>

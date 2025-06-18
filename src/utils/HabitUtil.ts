@@ -353,7 +353,7 @@ export namespace HabitUtil{
             }
             
             if(i == mostRecentWeek){
-                if(completionAmt + dateUtils.daysLeftInWeek() + 1 < weeklyTarget) return 0
+                if(completionAmt + dateUtils.daysLeftInWeek()  < weeklyTarget) return 0
 
                 streak += completionAmt
                 continue

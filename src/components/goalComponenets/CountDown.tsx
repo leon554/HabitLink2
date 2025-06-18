@@ -23,7 +23,7 @@ export default function CountDown() {
     async function updateCurrentValue(){
         if(value == "") {alert("Enter something"); return}
         if(isNaN(Number(value))) {alert("Your input should only contain numbers"); setValue(""); return }
-        await HC.updateCurrentValueGoal(Number(value), true)
+        await HC.addGoalCompletion(Number(value))
         setOpen(false)
     } 
 
@@ -39,14 +39,19 @@ export default function CountDown() {
                 </p>
                 <p className="text-3xl text-green-400">]</p>
             </div>
-            <div className="flex gap-3 justify-stretch mt-3">
-                    <button className="bg-green-400 text-sm flex-grow-10 text-stone-800 p-1 px-3 rounded-md hover:cursor-pointer hover:rounded-lg transition-all duration-150 ease-in-out"
-                        onClick={() => {
-                            setOpen(true)
-                        }}>
-                        Log Progress
-                    </button>
-            </div>
+            {!HC.currentGaol?.linkedHabit ? 
+                <div className="flex gap-3 justify-stretch mt-3">
+                        <button className="bg-green-400 text-sm flex-grow-10 text-stone-800 p-1 px-3 rounded-md hover:cursor-pointer hover:rounded-lg transition-all duration-150 ease-in-out"
+                            onClick={() => {
+                                setOpen(true)
+                            }}>
+                            Log Progress
+                        </button>
+                </div>
+            : 
+            <p className="text-stone-400 mt-1">
+                Log your linked habit
+            </p>}
             <Model open={open} onClose={() => setOpen(false)} top={true}>
                 <div className="flex flex-col items-center m-5 gap-4 w-full">
                     <p className="text-lg">Enter Value</p>

@@ -7,15 +7,11 @@ import { AiOutlineLoading } from "react-icons/ai";
 import TimeInput from "./InputComponents/TimeInput";
 import DistanceInput from "./InputComponents/DistanceInput";
 import NumberInput from "./InputComponents/NumberInput";
-import { State } from "../pages/CreatePage";
 
 
 
-interface Props{
-    setState: (state: State) => void
-}
 
-export default function Create(p: Props) {
+export default function Create() {
     const [compsPerWeek, setCompsPerWeek] = useState(0)
     const [compDays, setCompDays] = useState({mon: false, teu: false, wed: false, thu: false, fri: false, sat: false, sun: false})
     const [selectedEmojiIndex, setSelectedEmojiIndex] = useState(-1)
@@ -67,11 +63,11 @@ export default function Create(p: Props) {
         return target
     }
     return (
-        <div className="bg-stone-800 w-[90%]  max-w-[900px] mt-20 max-md:max-w-[500px] relative flex justify-center rounded-md flex-col items-center pb-5 font-mono p-4">
+        <div className="bg-stone-800  max-w-[900px]  max-md:max-w-[500px] relative flex justify-center rounded-md flex-col items-center pb-4 font-mono p-4">
             <p className="font-mono text-stone-200 font-semibold text-2xl mt-6 mb-8">
                 Create New Habit
             </p>
-            <p className="hover:cursor-pointer absolute top-2 right-3 text-stone-500 font-mono" onClick={() => p.setState(State.choose)}>x</p>
+            
             <div className="flex w-full md:gap-10 md:pl-10 md:pr-10 max-md:flex-col max-md:items-center items-start">
                 <div className="w-full flex justify-center flex-col items-center ">
                     <div className="w-[90%] max-w-[450px]  font-mono mb-5">
@@ -135,7 +131,8 @@ export default function Create(p: Props) {
                         )
                     })}
                     </div>
-                    {habitTypes[selectedTypeIndex] != "Normal" &&  habitTypes[selectedTypeIndex] != undefined? <div className="max-md:w-[70%] mb-6 w-full">
+                    {habitTypes[selectedTypeIndex] != "Normal" &&  habitTypes[selectedTypeIndex] != undefined? 
+                    <div className="w-[90%] mb-6  max-w-[450px]">
                         <p className="text-[16px]  text-stone-100 mb-2">Daily Goal</p>
                         
                         {habitTypes[selectedTypeIndex] == "Time Based" ? 

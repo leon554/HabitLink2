@@ -1,13 +1,15 @@
-import { useContext} from "react"
+import { useContext, useState} from "react"
 import { Link } from "react-router-dom"
 import { AuthContext } from "./Providers/AuthProvider"
 import { LuLogOut } from "react-icons/lu";
 import { AiOutlineLoading } from "react-icons/ai";
+import Model from "./InputComponents/Model";
 
 
 
 export default function Navbar() {
     const {session, logout, loading} = useContext(AuthContext)
+    const [createShow, setCreatShow] = useState(false)
 
     
     return (
@@ -48,11 +50,31 @@ export default function Navbar() {
                                 Goals
                             </button>
                         </Link>
-                        <Link to={"/create"}>
-                            <button className="h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 font-medium text-sm font-mono text-gray-300 text-md hover:bg-green-400 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer">
-                                Create
-                            </button>
-                        </Link>
+                        
+                        <button className="h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 font-medium text-sm font-mono text-gray-300 text-md hover:bg-green-400 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer"
+                            onClick={() => setCreatShow(true)}>
+                            Create
+                        </button>
+                        <Model open={createShow} onClose={() => setCreatShow(false)} blur={false} positionX={20} positionY={110} fit={false}>
+                            <div className="text-stone-300 text-[13px] font-mono gap-1 flex flex-col p-2 outline-1 outline-stone-600 bg-stone-800 rounded-md">
+                                <Link to={"/create"}>
+                                    <button
+                                    className="w-full hover:bg-green-400 px-3 p-2 rounded-md hover:text-stone-800 hover:cursor-pointer transition-colors ease-in-out duration-150"
+                                    onClick={() => setCreatShow(false)}
+                                    >
+                                    New Habit
+                                    </button>
+                                </Link>
+                                <Link to={"/creategoal"}>
+                                    <button
+                                    className="w-full hover:bg-green-400 px-3 p-2 rounded-md hover:text-stone-800 hover:cursor-pointer transition-colors ease-in-out duration-150"
+                                    onClick={() => setCreatShow(false)}
+                                    >
+                                    New Goal
+                                    </button>
+                                </Link>
+                            </div>
+                        </Model>
                         <button className="h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 font-medium text-sm font-mono text-gray-300 text-md hover:bg-green-400 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer"
                             onClick={logout}>
                             {loading? <AiOutlineLoading className="animate-spin"/> : <LuLogOut />}
