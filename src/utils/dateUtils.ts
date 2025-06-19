@@ -37,8 +37,11 @@ export namespace dateUtils{
 
         return endOfWeek;
     }
-    export function daysLeftInWeek(){
+    export function daysLeftInWeekExToday(){
         return 6 - (new Date()).getDay()
+    }
+    export function daysLeftInWeekIncToday(){
+        return 7 - (new Date()).getDay()
     }
     export function isDateInWeek(date: Date, week: Date) {
         
