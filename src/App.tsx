@@ -12,11 +12,37 @@ import StatsPage from "./pages/StatsPage"
 import SettingsProvider from "./components/Providers/SettingsProvider"
 import GoalsPage from "./pages/GoalsPage"
 import CreateGaolPage from "./pages/CreateGaolPage"
+import { useState, useEffect} from "react"
 
 function App() {
+  const [dark, setDark] = useState(true)
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+      setDark(true);
+      document.documentElement.classList.add("dark");
+    } else {
+      setDark(false);
+      document.documentElement.classList.remove("dark");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (dark) {
+      document.documentElement.style.backgroundColor = "#1f1f1f"; // Dark background
+      document.documentElement.classList.add("dark")
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.style.backgroundColor = "#ffffff"; // Light background
+      document.documentElement.classList.remove("dark")
+      localStorage.setItem("theme", "light");
+    }
+    
+  }, [dark]);
 
   return (
-    <>
+    <div className="">
       <Router>
         <SettingsProvider>
         <AlertProvider>
@@ -41,7 +67,13 @@ function App() {
         </AlertProvider>
         </SettingsProvider>
       </Router>
-    </>
+      <button
+      className="fixed z-50 bottom-3 right-3 bg-panel1 dark:bg-panel1 p-1 px-2 rounded-lg hover:cursor-pointer outline-1 dark:outline-border"
+        onClick={() => setDark(!dark)}
+      >
+        {dark ? "☀️" : "🌙"}
+      </button>
+    </div>
   )
 }
 

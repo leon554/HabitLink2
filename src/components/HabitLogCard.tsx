@@ -70,9 +70,9 @@ export default function HabitLogCard({habit: h}: HabitProps) {
     }
 
     return (
-        <div className='bg-gray-100 border-1 rounded-2xl w-[100%] max-w-[600px] font-mono overflow-auto'>
+        <div className='bg-panel1 dark:bg-panel1 dark:border-border border-border border-1 rounded-2xl w-[100%] max-w-[600px] font-mono overflow-auto'>
             <div className='flex justify-between items-center'>
-                <p className={`text-gray-800 p-3 pt-3 ${settings.showDetails ? "pb-2" : ""} text-lg flex gap-2.5 items-center`}>
+                <p className={`text-title dark:text-title p-3 pt-3 ${settings.showDetails ? "pb-2" : ""} text-lg flex gap-2.5 items-center`}>
                     {settings.showRanks ? 
                     <img src={UC.habitRanks.get(h.id)} alt="" className="w-4.5"/>
                     : h.icon} {Util.capitilizeFirst(h.name)} 
@@ -80,20 +80,20 @@ export default function HabitLogCard({habit: h}: HabitProps) {
                 <div className='flex gap-4 items-center'>
                     <div className='flex items-center gap-1'>
                         {!settings.showDetails && !isNormalHabit()? 
-                        <p className='text-gray-700 font-mono text-[11px] '>
+                        <p className='text-subtext1 dark:text-subtext2 font-mono text-[11px] '>
                                 [{Util.pretifyData(`${HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))}`, h.type as HabitTypeE)}]/[{Util.pretifyData(h.target, h.type as HabitTypeE)}]
                         </p> : ""}
                         {!settings.showDetails ? 
-                        <p className='text-gray-700 font-mono text-[9px] pb-0.5'>
+                        <p className='text-subtext1 dark:text-subtext2 font-mono text-[9px] pb-0.5'>
                                 {HabitUtil.isCompleteableToday(h, UC.habitsCompletions.get(h.id)) ? <FaHourglassHalf /> : ""}
                         </p>: ""}
                     </div>
                     <button className={`h-7 flex justify-center 
-                        items-center rounded-md p-2 mr-3 w-7 text-gray-700
+                        items-center rounded-md p-2 mr-3 w-7 text-subtext1
                         text-2xl hover:cursor-pointer
-                        ease-in-out duration-150 ${isCompletedToday() ? "outline-blue-500 outline-1  " : "outline-gray-700  outline-1 hover:outline-stone-400  active:bg-stone-800"}`}
+                        ease-in-out duration-150 ${isCompletedToday() ? "dark:outline-highlight outline-highlight outline-1  " : "outline-subtext1  outline-1 hover:outline-stone-400  active:bg-stone-800"}`}
                         onClick={HandleClick}>
-                        {loading ? <AiOutlineLoading className={`animate-spin ${getLoadingColor()}`}/> : <FaCheck className={`${isCompletedToday() ? "text-blue-400" : "text-stone-500" }`}/>}
+                        {loading ? <AiOutlineLoading className={`animate-spin ${getLoadingColor()}`}/> : <FaCheck className={`${isCompletedToday() ? "dark:text-highlight text-highlight" : "text-stone-500" }`}/>}
                     </button>
                     <Model open={open} onClose={() => setOpen(false)}>
                         <HabitLogPopUp habit={h} onExit={() => setOpen(false)} value={value} setValue={setValue}
@@ -116,26 +116,26 @@ export default function HabitLogCard({habit: h}: HabitProps) {
                         </div>
                     </div>
                     <div className='flex items-center gap-2 mt-1 flex-wrap justify-stretch'>   
-                        <p className='text-gray-600  font-mono text-[11px]'>
+                        <p className='text-subtext2 dark:text-subtext2  font-mono text-[11px]'>
                             {Math.round(HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))/Number(h.target)*100*100)/100}% |
                         </p>
-                        <p className='text-gray-600 font-mono text-[11px]'>
+                        <p className='text-subtext2 dark:text-subtext2 font-mono text-[11px]'>
                              [{Util.pretifyData(`${HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))}`, h.type as HabitTypeE)}]/[{Util.pretifyData(h.target, h.type as HabitTypeE)}]
                         </p>
-                        <p className='text-gray-600 font-mono text-[11px]'>
+                        <p className='text-subtext2 dark:text-subtext2 font-mono text-[11px]'>
                             | {HabitUtil.getCompletionDaysString(h.completionDays)}
                         </p>
-                        <p className='text-gray-600 font-mono text-[9px]'>
+                        <p className='text-subtext2 dark:text-subtext2 font-mono text-[9px]'>
                             {HabitUtil.isCompleteableToday(h, UC.habitsCompletions.get(h.id)) ? <FaHourglassHalf /> : ""}
                         </p>
                     </div>
                 </div>
             : 
             <div className='ml-4 mr-3 mb-3 flex  gap-2 '>
-                <p className='text-gray-600 font-mono text-[11px]'>
+                <p className='text-subtext2 dark:text-subtext2 font-mono text-[11px]'>
                     Completions Days: {HabitUtil.getCompletionDaysString(h.completionDays)}
                 </p>
-                <p className='text-gray-600 font-mono text-[9px] flex items-center'>
+                <p className='text-subtext2 dark:text-subtext2 font-mono text-[9px] flex items-center'>
                    {HabitUtil.isCompleteableToday(h, UC.habitsCompletions.get(h.id)) ? <FaHourglassHalf /> : ""}
                 </p>
             </div>: ""}
