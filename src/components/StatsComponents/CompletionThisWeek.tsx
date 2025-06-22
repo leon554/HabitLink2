@@ -28,6 +28,11 @@ export default function CompletionThisWeek() {
                     )
                 })}
             </div>
+            <div>
+                <p className="text-stone-500 text-xs">
+                    Due: {HabitUtil.getCompletionDaysString(HC.currentHabit?.completionDays ?? "")}
+                </p>
+            </div>
         </div>
     )
 }

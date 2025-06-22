@@ -48,6 +48,6 @@ export interface GoalType{
     user_id: string
     habits: string
     completionDate: number
-    linkedHabit: number
+    linkedHabit: number | null
 
 }

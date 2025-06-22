@@ -42,12 +42,28 @@ export namespace Util{
 
         return `${ Math.floor(mins/60)}h ${mins % 60}m`
     }
-    export function fetchMapItems<T>(ids: string[], map: Map<number, T>){
+    export function fetchMapItems<T>(ids: number[], map: Map<number, T>){
         let values: T[] = []
         ids.forEach(id => {
             const value = map.get(Number(id))
             if(value !== undefined) values.push(value)
         })
         return values
+    }
+    export function calculateProgress(startVal: number, currentVal: number, goalVal: number){
+        console.log(startVal, goalVal, currentVal)
+        if(goalVal > startVal){
+            return (currentVal - startVal)/(goalVal - startVal)
+        }
+        else{
+            return Math.abs(startVal - currentVal)/Math.abs(goalVal-startVal)
+        }
+    }
+    export function updateMapArray<K, V>(originalMap: Map<K, V[]>, key: K, newItem: V): Map<K, V[]> {
+        const currentArray = originalMap.get(key) ?? [];
+        const updatedArray = [...currentArray, newItem];
+        const newMap = new Map(originalMap);
+        newMap.set(key, updatedArray);
+        return newMap;
     }
 }

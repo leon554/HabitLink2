@@ -7,8 +7,8 @@ import ProgressPanel from "./ProgressPanel"
 export default function AvgConsistency() {
 
     const HC = useContext(UserContext)
-    const habits = Util.fetchMapItems<HabitType>(HC.currentGaol?.habits.split(",") ?? [], HC.habits)
-    const concistencies = Util.fetchMapItems<string>(habits.map(h => h.id), HC.habitComps)
+    const habits = Util.fetchMapItems<HabitType>(HC.currentGaol?.habits.split(",").map(i => Number(i)) ?? [], HC.habits)
+    const concistencies = Util.fetchMapItems<number>(habits.map(h => h.id), HC.habitComps)
     const avg = Util.avgNumArr(concistencies.map(p => Number(p) * 100))
 
     return (

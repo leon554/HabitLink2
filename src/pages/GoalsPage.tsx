@@ -1,4 +1,4 @@
-import { useContext } from "react"
+import { useContext} from "react"
 import { UserContext } from "../components/Providers/UserProvider"
 import Select from "../components/InputComponents/Select"
 import { HiOutlineSwitchHorizontal } from "react-icons/hi"
@@ -6,11 +6,31 @@ import GoalProgress from "../components/goalComponenets/GoalProgress"
 import CountDown from "../components/goalComponenets/CountDown"
 import AssociatedHabits from "../components/goalComponenets/AssociatedHabits"
 import AvgConsistency from "../components/goalComponenets/AvgConsistency"
+import { Util } from "../utils/util"
+import { HabitTypeE } from "../utils/types"
 
 
 export default function GoalsPage() {
 
     const HC = useContext(UserContext)
+    const startValue = HC.currentGaol?.startValue ?? 0
+    const currenValue = getCurrentValue() ?? startValue
+    const targetValue = HC.currentGaol?.targetValue ?? 0
+    const isGoalFinished =  Util.calculateProgress(startValue, currenValue, targetValue) >= 1;
+
+    function getCurrentValue(){
+        if(!HC.currentGaol?.linkedHabit){
+            return HC.goalCompletions.get(Number(HC.currentGaol?.id))?.sort((a, b) => b.date - a.date)[0].data
+        }else{
+            const startTime = new Date(HC.currentGaol.created_at).getTime()
+            const linkedHabitId = HC.currentGaol.linkedHabit
+            const completions = HC.habitsCompletions.get(linkedHabitId)
+            const validComps = completions?.filter(c => new Date(Number(c.date)).getTime() > startTime)
+            return validComps?.reduce((s, c) => s += c.data, 0) ?? 0
+        }
+    }
+
+
 
     return (
         <div className="w-full flex justify-center mb-10">
@@ -48,8 +68,18 @@ export default function GoalsPage() {
                                                 style="outline-0 p-0 justify-end flex "/>
                     </div>
                 </div>
-                <CountDown/>
+                {!isGoalFinished? 
+                    <CountDown/> :
+                    <div className="bg-stone-800 w-[90%] max-w-[600px] rounded-md p-5 flex justify-center font-mono text-stone-300">
+                        <p className="text-center">
+                            🎉 Congratulations! You’ve completed your goal — amazing work and well done! 💪
+                        </p>
+                    </div>
+                }
+                {HC.currentGaol.type == HabitTypeE.Normal ? 
+                 "" : 
                 <GoalProgress/>
+                 }
                 <AvgConsistency/>
                 <AssociatedHabits/>
             </div>}

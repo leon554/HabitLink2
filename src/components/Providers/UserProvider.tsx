@@ -6,11 +6,12 @@ import {type GaolCompletionType, type GoalType, type HabitCompletionType, type H
 import { dateUtils } from "../../utils/dateUtils";
 import { HabitUtil } from "../../utils/HabitUtil";
 import { HabitTypeE } from "../../utils/types";
+import { Util } from "../../utils/util";
 
 
 interface UserType{
     createHabit: (name: string, description: string, completionDays:string, emoji: string, type: string, target: number) => Promise<void>
-    createGoal: (name: string, description: string, type: string, startValue: number, goalValue: number, habitIds: number[], completionDate: Date, linkedHabitId: number) => Promise<void>
+    createGoal: (name: string, description: string, type: string, startValue: number, goalValue: number, habitIds: number[], completionDate: Date, linkedHabitId: number | null) => Promise<void>
     habits: Map<number, HabitType>
     habitsCompletions: Map<number, HabitCompletionType[]>,
     loading: boolean,
@@ -135,7 +136,7 @@ export default function UserProvider(props: Props) {
         alert("Succefully Added Habit")
         setLoading(false)
     }
-    async function createGoal(name: string, description: string, type: string, startValue: number, goalValue: number, habitIds: number[], completionDate: Date, linkedHabitId: number){
+    async function createGoal(name: string, description: string, type: string, startValue: number, goalValue: number, habitIds: number[], completionDate: Date, linkedHabitId: number| null){
         setLoading(true)
         const userid = auth.getUserId()
         const habitString = habitIds.join(",");
@@ -217,8 +218,8 @@ export default function UserProvider(props: Props) {
             setLoading(false)
             return
         }
-        console.log(data)
-        goalCompletions.get(Number(currentGaol.id))?.push(data[0] as GaolCompletionType)
+        const updatedGoalComps = Util.updateMapArray(goalCompletions, Number(currentGaol.id), data[0] as GaolCompletionType)
+        setGoalCompletions(updatedGoalComps)
         setLoading(false)
         
     }

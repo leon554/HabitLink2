@@ -3,6 +3,7 @@ import { UserContext } from "../Providers/UserProvider"
 import { AlertContext } from "../Alert/AlertProvider"
 import Model from "../InputComponents/Model"
 import { AiOutlineLoading } from "react-icons/ai"
+import { HabitTypeE } from "../../utils/types"
 
 export default function CountDown() {
     const [open, setOpen] = useState(false)
@@ -25,10 +26,14 @@ export default function CountDown() {
         if(isNaN(Number(value))) {alert("Your input should only contain numbers"); setValue(""); return }
         await HC.addGoalCompletion(Number(value))
         setOpen(false)
-    } 
+    }
+    async function completeGoal(){
+        await HC.addGoalCompletion(1)
+        alert(`Well done you completed you goal with ${formatTime(timeLeft)} left 🎉🎉🎉🎉🎉`)
+    }
 
     return (
-        <div className='text-stone-300 bg-stone-800 w-[90%] max-w-[600px] p-5 py-8 flex gap-1 flex-col items-center font-mono'>
+        <div className='text-stone-300 bg-stone-800 w-[90%] max-w-[600px] p-5 py-8 flex gap-1 flex-col items-center font-mono rounded-md'>
             <p className="text-stone-400">
                 Times Running Out!
             </p>
@@ -39,7 +44,13 @@ export default function CountDown() {
                 </p>
                 <p className="text-3xl text-green-400">]</p>
             </div>
-            {!HC.currentGaol?.linkedHabit ? 
+            {HC.currentGaol?.type == HabitTypeE.Normal ?
+                <button className="bg-green-400 text-sm flex-grow-10  mt-3 text-stone-800 p-1 px-3 rounded-md hover:cursor-pointer hover:rounded-lg transition-all duration-150 ease-in-out"
+                 onClick={() => completeGoal()}>
+                    Complete Goal
+                </button>
+            :
+            !HC.currentGaol?.linkedHabit ? 
                 <div className="flex gap-3 justify-stretch mt-3">
                         <button className="bg-green-400 text-sm flex-grow-10 text-stone-800 p-1 px-3 rounded-md hover:cursor-pointer hover:rounded-lg transition-all duration-150 ease-in-out"
                             onClick={() => {

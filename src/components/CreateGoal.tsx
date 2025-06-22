@@ -6,6 +6,7 @@ import Model from "./InputComponents/Model";
 import { AiOutlineLoading } from "react-icons/ai";
 import { add } from "date-fns";
 import { FaLink } from "react-icons/fa";
+import { HabitTypeE } from "../utils/types";
 
 
 export default function CreateGoal() {
@@ -25,8 +26,18 @@ export default function CreateGoal() {
 
     async function submit(){
         const type = (linkedID == -1) ? habitTypes[selectedTypeIndex] : HC.habits.get(linkedID)?.type
+        let goalVal = Number(goalValue)
+        let startVal = Number(startValue)
+
+        if(isNaN(goalVal) || isNaN(startVal)) {alert("Start and goal values must be a number"); return}
         if(!type) {alert("Error linked habit type is undefined"); return}
-        await HC.createGoal(name, description, type, Number(startValue), Number(goalValue), selectHabits, add(new Date(), {days: days}), linkedID)
+
+        if(type == HabitTypeE.Normal) {
+            goalVal = 1
+            startVal = 0
+        }
+        if(linkedID != -1) selectHabits.push(linkedID)
+        await HC.createGoal(name, description, type, startVal, goalVal, selectHabits, add(new Date(), {days: days}), linkedID == -1 ? null : linkedID)
         setName(""); setDescription(""); setSelectedTypeIndex(-1); setStartValue(""); setGoalValue(""); setSelectedHabits([]); setDays(1)
     }
 

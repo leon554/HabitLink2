@@ -10,7 +10,7 @@ export default function AssociatedHabits() {
 
     const HC = useContext(UserContext)
     const navigate = useNavigate()
-    const habits = Util.fetchMapItems<HabitType>(HC.currentGaol?.habits.split(",") ?? [], HC.habits)
+    const habits = Util.fetchMapItems<HabitType>(HC.currentGaol?.habits.split(",").map(i => Number(i)) ?? [], HC.habits)
 
     return (
         <div className="text-stone-300 font-mono w-[90%] max-w-[600px] bg-stone-800 p-5 rounded-md gap-4 flex flex-col items-center">
@@ -18,7 +18,7 @@ export default function AssociatedHabits() {
                 Associated Habits
             </p>
             <div className="w-full flex flex-col gap-2">
-                {[...habits, HC.habits.get(HC.currentGaol?.linkedHabit ?? -1) ?? null].map(h => {
+                {[...habits].map(h => {
                     if(h){
                         return(
                             <div key={h.id} className="flex items-center gap-3 outline-1 outline-stone-700 w-full p-3 rounded-md justify-between hover:cursor-pointer" 

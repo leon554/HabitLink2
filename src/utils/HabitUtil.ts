@@ -87,7 +87,7 @@ export namespace HabitUtil{
     }
     
     export function getCompletionRate(habit: HabitType | null, completions: HabitCompletionType[] | undefined){
-        if(!habit || !completions) return {compRate: 0, missedSessions: 0}
+        if(!habit || !completions || completions.length == 0) return {compRate: 0, missedSessions: 0}
         if(habit.completionDays.length == 1){
             return getCompRateAnyDays(habit, completions)
         }else{
@@ -141,7 +141,7 @@ export namespace HabitUtil{
                     completableDaysAmt += missedDaysThisWeek - 1
                     missedSessions += missedDaysThisWeek
                 }else{
-                    missedSessions += completableDaysAmt - completionsThisWeek.length
+                    missedSessions += completableDaysAmt - Math.min(completableDaysAmt, completionsThisWeek.length)
                 }
 
                 completionsComponents.totalCompletions += Math.min(completionsThisWeek.length, completableDaysAmt)
@@ -191,8 +191,9 @@ export namespace HabitUtil{
             missedSessions += completableDays - completionCount.length
 
             completionsComponents.totalPossibleComps += completableDays
-            completionsComponents.totalCompletions += completionCount.length
+            completionsComponents.totalCompletions += Math.min(completionCount.length, completableDays)
         }
+        if(completionsComponents.totalPossibleComps == 0) return {compRate: 0, missedSessions}
         return {compRate: completionsComponents.totalCompletions/completionsComponents.totalPossibleComps, missedSessions}
     }
 
