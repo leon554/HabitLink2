@@ -15,27 +15,27 @@ export default function LogPage() {
 
     return (
         <div className="flex items-center flex-col h-screen pt-3 pb-7 ">   
-            <div className="mt-18 w-[90%] max-w-[600px] bg-[#1b1b1b]">
-                <div className=" mb-2 bg-stone-800 rounded-md flex justify-between items-center ">
-                    <p className="  p-4 font-mono text-2xl text-stone-200">
+            <div className="mt-18 w-[90%] max-w-[600px] ">
+                <div className=" mb-2 bg-gray-100 drop-shadow-sm texture outline-1 outline-gray-700 rounded-2xl text-gray-900 flex justify-between items-center ">
+                    <p className="  p-4 font-mono text-2xl ">
                         Log Your Habits
                     </p>
-                    <button className="text-stone-400 mr-3 p-1 rounded-md hover:cursor-pointer"
+                    <button className="text-gray-800 mr-3 p-1 rounded-md hover:cursor-pointer"
                         onClick={() => setShowSettings(!showSettings)}>
                         <IoSettingsOutline />
                     </button>
                 </div>
             </div>
             {showSettings ? 
-            <div className="w-[90%] max-w-[600px] bg-[#1b1b1b]">
-                <div className="bg-stone-800 rounded-md  p-4 flex justify-center items-start mb-2 flex-col">
-                    <p className="text-stone-200 font-mono text-lg font-normal text-center">
+            <div className="w-[90%] max-w-[600px]">
+                <div className="bg-gray-100 drop-shadow-sm outline-1 outline-gray-700 rounded-2xl text-gray-900 p-4 flex justify-center items-start mb-2 flex-col">
+                    <p className="font-mono text-[19px] font-normal text-center ">
                         Habit Settings
                     </p>
 
                     <div className="flex justify-start w-[90%] mt-4 mb-2 flex-col gap-3">
                         <div className="flex items-center w-full gap-3 ">
-                            <p className="text-stone-400 font-mono text-sm">
+                            <p className="text-gray-700 font-mono text-sm">
                                 Show detailed habit info:
                             </p>
                             <Switch setStatus={(b: boolean) => setSettings({...settings, showDetails: b})} 
@@ -43,7 +43,7 @@ export default function LogPage() {
                         </div>
 
                         <div className="flex items-center w-full gap-3 ">
-                            <p className="text-stone-400 font-mono text-sm">
+                            <p className="text-gray-700 font-mono text-sm">
                                 Show normal habits only:
                             </p>
                             <Switch setStatus={(b: boolean) => setSettings({...settings, showNormal: b})} 
@@ -51,14 +51,14 @@ export default function LogPage() {
                         </div>
 
                         <div className="flex items-center w-full gap-3 ">
-                            <p className="text-stone-400 font-mono text-sm">
+                            <p className="text-gray-700 font-mono text-sm">
                                 Show only due habits:
                             </p>
                             <Switch setStatus={(b: boolean) => setSettings({...settings, showDue: b})} 
                                 ticked={settings.showDue} />
                         </div>
                          <div className="flex items-center w-full gap-3 ">
-                            <p className="text-stone-400 font-mono text-sm">
+                            <p className="text-gray-700 font-mono text-sm">
                                 Show ranks:
                             </p>
                             <Switch setStatus={(b: boolean) => setSettings({...settings, showRanks: b})} 
@@ -68,7 +68,7 @@ export default function LogPage() {
                 </div>
             </div>
             : ""}
-            <div className="w-[90%] max-w-[600px] flex flex-col gap-2 overflow-auto no-scrollbar rounded-md bg-[#1b1b1b]">
+            <div className="w-[90%] max-w-[600px] flex flex-col gap-2 overflow-auto no-scrollbar rounded-md ">
                 {Array.from(user.habits.values()).map((h, i) =>
                     h.type === HabitTypeE.Normal && (!settings.showDue || HabitUtil.isCompleteableToday(h, user.habitsCompletions.get(h.id))) ? (
                         <div className="w-full" key={`normal-${i}`}>

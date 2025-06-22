@@ -33,9 +33,9 @@
   --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.723 0.219 149.579);
-    background-color: #1b1b1b;
-    background-image: radial-gradient(circle, rgba(212, 212, 212, 0.2) 10%, rgba(184, 184, 184, 0) 10%);
+    background-color: rgb(255, 255, 255);
     background-size: 20px 20px;
+    
 }
 
 .dark {
@@ -70,11 +70,16 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.527 0.154 150.069);
+  
 }
 @layer utilities {
     /* Hide scrollbar for Chrome, Safari and Opera */
     .no-scrollbar::-webkit-scrollbar {
         display: none;
+    }
+    .texture{
+      background-image: radial-gradient(circle, #93C5FD 10%, rgba(0, 0, 0, 0) 30%);
+      background-size: 5px 5px;
     }
    /* Hide scrollbar for IE, Edge and Firefox */
     .no-scrollbar {

@@ -22,7 +22,7 @@ export default function Select<T extends HabitType | GoalType>(props: SelectProp
     }
     return (
         <div>
-        <button className={`group relative transition delay-50 duration-300 ease-in-out hover:cursor-pointer ${props.style ? props.style : " outline-1 bg-stone-800 text-sm text-stone-300 font-mono p-3 rounded-md flex justify-center  "}`}
+        <button className={`group relative transition z-10 delay-50 duration-300 ease-in-out hover:cursor-pointer ${props.style ? props.style : " outline-1 bg-stone-800 text-sm text-stone-300 font-mono p-3 rounded-md flex justify-center  "}`}
             ref={focusElement} onClick={() => setClicked(!clicked)}
         >
             {props.setText ? 
@@ -30,13 +30,13 @@ export default function Select<T extends HabitType | GoalType>(props: SelectProp
             :props.selectedItem == null
             ? "Select Habit"
             : Util.capitilizeFirst(props.selectedItem.name)}
-            <div className="absolute top-full rounded-md p-3 mt-2  flex flex-col justify-start items-start scale-0 origin-top duration-200 bg-stone-800  z-20 w-fit outline-1" style={{
+            <div className="absolute top-full rounded-md p-3 mt-2  flex flex-col justify-start items-start scale-0 origin-top duration-200 bg-gray-100 text-gray-950  outline-gray-700  z-20 w-fit outline-1" style={{
             scale: clicked ? 1 : 0
             }}>
             {props.items && props.items.map((h) => {
                 return (
                 <p
-                    className="hover:bg-green-400 font-mono w-full flex justify-start p-1 rounded-md transition duration-100 ease-in-out hover:cursor-pointer text-nowrap hover:text-stone-800"
+                    className="hover:bg-blue-300 font-mono w-full flex justify-start p-1 rounded-md transition duration-100 ease-in-out hover:cursor-pointer text-nowrap hover:text-stone-800 px-3"
                     onClick={() => setItem(h)}
                 >
                     {Util.capitilizeFirst(h.name)}

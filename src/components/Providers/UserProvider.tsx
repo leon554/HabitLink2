@@ -23,7 +23,7 @@ interface UserType{
     habitStrengths: Map<number, number>
     setCurrentGoal: (currentGaol: GoalType | null) => void
     setCurrentHabit: (currentHabit: HabitType | null) => void
-    compleHabit: (habitId: string, value: number) => Promise<void>,
+    compleHabit: (habitId: number, value: number) => Promise<void>,
     removeTodaysHabitCompletion: (habitId: number) => Promise<void>
     addGoalCompletion: (value: number) => Promise<void>
     goalCompletions: Map<number, GaolCompletionType[]>
@@ -285,7 +285,7 @@ export default function UserProvider(props: Props) {
         await getHabitsCompletions()
         setLoading(false)
     }
-    async function compleHabit(habitId: string, value: number){
+    async function compleHabit(habitId: number, value: number){
         const userid = auth.getUserId()
 
         setLoading(true)
