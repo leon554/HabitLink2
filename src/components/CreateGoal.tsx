@@ -232,6 +232,12 @@ export default function CreateGoal() {
                             <input 
                                 value={date}
                                 maxLength={10}
+                                onKeyDown={(e) => {
+                                    const allowedChars = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "Backspace"];
+                                    if (!allowedChars.includes(e.key)) {
+                                        e.preventDefault();
+                                    }
+                                }}
                                 onChange={e => {
                                     let value = e.target.value
                                     let valueArr = e.target.value.split("")
