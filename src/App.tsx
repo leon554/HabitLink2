@@ -12,23 +12,27 @@ import StatsPage from "./pages/StatsPage"
 import SettingsProvider from "./components/Providers/SettingsProvider"
 import GoalsPage from "./pages/GoalsPage"
 import CreateGaolPage from "./pages/CreateGaolPage"
-import { useState, useEffect} from "react"
+import { useState, useEffect, useLayoutEffect} from "react"
 
 function App() {
-  const [dark, setDark] = useState(true)
+  const [dark, setDark] = useState<boolean|null>(null)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme === "dark") {
       setDark(true);
       document.documentElement.classList.add("dark");
-    } else {
+    } else if(savedTheme === "light"){
       setDark(false);
       document.documentElement.classList.remove("dark");
+    }else{
+      setDark(true)
     }
   }, []);
 
   useEffect(() => {
+    if(dark === null) return
     if (dark) {
       document.documentElement.style.backgroundColor = "#1f1f1f"; // Dark background
       document.documentElement.classList.add("dark")

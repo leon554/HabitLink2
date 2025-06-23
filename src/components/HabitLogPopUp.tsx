@@ -23,8 +23,8 @@ export default function HabitLogPopUp(p: Props) {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.1 }}
-                className=" flex flex-col items-center gap-3 z-50 max-w-100 w-[80%] m-2 mb-5 mt-5">
-                <h1 className="text-lg font-semibold text-stone-200 font-mono">Enter Data</h1>
+                className=" flex flex-col items-center gap-3 z-50 max-w-[400px] rounded-2xl w-[80%] m-2 mb-5 mt-5 bg-panel1 dark:bg-panel1 dark:outline-1 outline-border p-8">
+                <h1 className="text-lg font-semibold text-title font-mono leading-0 mb-4">Enter Data</h1>
                 <div className=" w-full">
                      {p.habit.type == HabitTypeE.Time_Based ? 
                         <TimeInput setDuration={p.setValue}/> 
@@ -37,7 +37,7 @@ export default function HabitLogPopUp(p: Props) {
                 </div>
                 <div className="flex justify-stretch  w-full gap-3">
                     <button
-                        className="mt-2 grow-4 bg-green-400 text-stone-800 font-mono p-1 rounded-md pl-2 pr-2 hover:cursor-pointer flex justify-center items-center"
+                        className="mt-2 grow-4 bg-btn  text-btn-text outline-1 outline-border dark:outline-0 font-mono p-1 rounded-xl pl-2 pr-2 hover:cursor-pointer  flex justify-center items-center"
                         onClick={async () => {
                             setLoading(true)
                             await p.onSubmit()
@@ -47,7 +47,7 @@ export default function HabitLogPopUp(p: Props) {
                         {loading ? <AiOutlineLoading className="animate-spin" /> : "Submit"}
                     </button>
                     <button
-                        className="mt-2 grow-1 bg-green-400 text-stone-800 font-mono p-1 rounded-md pl-2 pr-2 hover:cursor-pointer"
+                        className="mt-2 grow-1 bg-btn text-btn-text font-mono outline-1 outline-border dark:outline-0 p-1 rounded-xl pl-2 pr-2 hover:cursor-pointer "
                         onClick={() => {
                             p.onExit()
                         }}>

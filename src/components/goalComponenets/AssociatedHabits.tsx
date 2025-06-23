@@ -13,7 +13,7 @@ export default function AssociatedHabits() {
     const habits = Util.fetchMapItems<HabitType>(HC.currentGaol?.habits.split(",").map(i => Number(i)) ?? [], HC.habits)
 
     return (
-        <div className="bg-gray-100 text-gray-950 drop-shadow-md outline-gray-700 outline-1 w-[90%] max-w-[600px] p-5 rounded-2xl gap-4 flex flex-col items-center">
+        <div className="bg-panel1 text-title drop-shadow-md outline-border outline-1 w-[90%] max-w-[600px] p-5 rounded-2xl gap-4 flex flex-col items-center">
             <p className="text-xl">
                 Associated Habits
             </p>
@@ -21,7 +21,7 @@ export default function AssociatedHabits() {
                 {[...habits].map(h => {
                     if(h){
                         return(
-                            <div key={h.id} className="flex items-center gap-3  outline-1 bg-blue-100/40 outline-gray-400 w-full p-3 rounded-xl justify-between hover:cursor-pointer" 
+                            <div key={h.id} className="flex items-center gap-3  outline-1 bg-panel2 outline-border2 w-full p-3 rounded-xl justify-between hover:cursor-pointer" 
                                 onClick={() => {
                                     HC.setCurrentHabit(h)
                                     navigate("/stats")
@@ -38,10 +38,10 @@ export default function AssociatedHabits() {
                                     </div>
                                 </div>
                                 <div>
-                                    <p className="text-xs text-gray-800">
+                                    <p className="text-xs text-subtext1">
                                         Consistency{String(Math.round(Number((HC.habitComps.get(Number(h.id))) ?? 0) * 100)).padStart(5, ".")}%
                                     </p>
-                                    <p className="text-xs text-gray-800">
+                                    <p className="text-xs text-subtext1">
                                         Strength{String(Math.round(Number((HC.habitStrengths.get(h.id)) ?? 0))).padStart(8, ".")}%
                                     </p>
                                 </div>

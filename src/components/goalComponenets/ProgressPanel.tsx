@@ -9,7 +9,7 @@ interface Props{
 export default function ProgressPanel(p: Props) {
         
     return (
-        <div className="w-[90%] max-w-[600px] flex  gap-5 p-5  bg-gray-100 rounded-2xl text-gray-950 drop-shadow-sm outline-gray-700 outline-1 items-center">
+        <div className="w-[90%] max-w-[600px] flex  gap-5 p-5  bg-panel1 rounded-2xl text-title drop-shadow-sm outline-border outline-1 items-center">
             <div>
                 <FullCircleProgressBar value={Math.round(p.value)} size={p.size ?? 70} fontsize={20} thickness={2}/>
             </div>
@@ -17,7 +17,7 @@ export default function ProgressPanel(p: Props) {
                 <p className="text-xl ">
                     {p.title}
                 </p>
-                <p className="mt-1 text-sm text-gray-700">
+                <p className="mt-1 text-sm text-subtext2">
                     {p.text}
                 </p>
             </div>

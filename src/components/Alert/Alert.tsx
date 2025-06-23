@@ -20,14 +20,14 @@ export default function Alert() {
             animate={{ y: 0 }}
             exit={{ y: -200 }}
             transition={{ duration: 0.5 }}
-            className=" flex fixed flex-col items-center gap-2 z-50 top-1 left-1/2 transform -translate-x-1/2 p-4 bg-stone-800  rounded-md max-w-100 w-[80%]">
-            <h1 className="text-lg font-semibold text-stone-200 font-mono">{AlertData.title}</h1>
-            <h1 className="text-md text-stone-400 text-center font-mono">
+            className=" flex fixed flex-col items-center gap-2 z-50 top-1 left-1/2 transform -translate-x-1/2 p-4 bg-panel1  rounded-2xl max-w-100 w-[80%]">
+            <h1 className="text-lg font-semibold text-title font-mono">{AlertData.title}</h1>
+            <h1 className="text-md text-subtext2 text-center font-mono">
               {AlertData.message}
             </h1>
             <div className="flex justify-center  w-full">
               <button
-                className="mt-2 bg-green-400 text-stone-800 font-mono p-1 rounded-md pl-2 pr-2 hover:cursor-pointer w-full"
+                className="mt-2 bg-btn text-btn-text font-mono p-1 rounded-xl pl-2 pr-2 hover:cursor-pointer w-full"
                 onClick={() => {
                   AlertData.setShowing(false);
                   console.log(AlertData.showing);

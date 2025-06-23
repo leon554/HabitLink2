@@ -34,26 +34,26 @@ export default function CountDown() {
 
     return (
         <>
-            <div className='bg-gray-100 text-gray-950  drop-shadow-sm outline-gray-700 outline-1 w-[90%] max-w-[600px] p-5 py-8 flex gap-1 flex-col items-center rounded-2xl'>
-                <p className="text-gray-700">
+            <div className='bg-panel1  drop-shadow-sm outline-border outline-1 w-[90%] max-w-[600px] p-5 py-8 flex gap-1 flex-col items-center rounded-2xl'>
+                <p className="text-subtext1">
                     Times Running Out!
                 </p>
                 <div className="flex items-center gap-1">
-                    <p className="text-3xl text-blue-700">[</p>
-                    <p className="text-3xl mt-0.5 text-gray-950">
+                    <p className="text-3xl text-highlight">[</p>
+                    <p className="text-3xl mt-0.5 text-title">
                         {formatTime(timeLeft)}
                     </p>
-                    <p className="text-3xl text-blue-700">]</p>
+                    <p className="text-3xl text-highlight">]</p>
                 </div>
                 {HC.currentGaol?.type == HabitTypeE.Normal ?
-                    <button className="bg-blue-300 text-sm flex-grow-10  mt-3 text-gray-900 p-1 px-3 rounded-lg hover:cursor-pointer hover:bg-blue-400 transition-all duration-150 ease-in-out"
+                    <button className="bg-btn text-sm flex-grow-10  mt-3 text-btn-text p-1 px-3 rounded-lg hover:cursor-pointer transition-all duration-150 ease-in-out"
                     onClick={() => completeGoal()}>
                         Complete Goal
                     </button>
                 :
                 !HC.currentGaol?.linkedHabit ? 
                     <div className="flex gap-3 justify-stretch mt-3">
-                            <button className="bg-blue-300 text-sm flex-grow-10 text-gray-900 outline-1 p-1 px-3 rounded-lg hover:cursor-pointer hover:bg-blue-400 transition-all duration-150 ease-in-out"
+                            <button className="bg-btn text-sm flex-grow-10 text-btn-text outline-1 p-1 px-3 rounded-lg hover:cursor-pointer transition-all duration-150 ease-in-out"
                                 onClick={() => {
                                     setOpen(true)
                                 }}>
@@ -61,24 +61,24 @@ export default function CountDown() {
                             </button>
                     </div>
                 : 
-                <p className="text-gray-700 mt-1">
+                <p className="text-subtext1 mt-1">
                     Log your linked habit
                 </p>}
             </div>
-            <Model open={open} onClose={() => setOpen(false)} top={true} fit={false}>
-                <div className="flex flex-col items-center m-5 gap-4 w-[90%] max-w-[400px] p-4 rounded-2xl  bg-gray-100 ">
-                    <p className="text-lg">Enter Value</p>
+            <Model open={open} onClose={() => setOpen(false)}>
+                <div className="flex flex-col items-center m-5 gap-4 w-[90%] max-w-[400px] p-8 rounded-2xl  bg-panel1 text-title">
+                    <p className="text-lg leading-0 mb-4">Enter Value</p>
                     <input type="text" 
-                            className="border-0 outline-1 w-full outline-stone-700 rounded-xl p-1 px-3 text-sm" 
+                            className="border-0 outline-1 w-full outline-border2 rounded-xl p-1 px-3 text-subtext1 text-sm" 
                             placeholder={"Enter value to log..."}
                             value={value}
                             onChange={(e) => setValue(e.target.value)}/>
                     <div className="flex w-full gap-2">
-                        <button className="bg-blue-300 text-sm flex-grow-10 text-gray-900 outline-1 p-1  hover:bg-blue-400 px-3 h-7 flex justify-center rounded-xl hover:cursor-pointer "
+                        <button className="bg-btn text-sm flex-grow-10 text-btn-text outline-1 p-1   px-3 h-7 flex justify-center rounded-xl hover:cursor-pointer "
                             onClick={() => updateCurrentValue()}>
                             {!HC.loading ?  "Log" : <AiOutlineLoading className="animate-spin" />}
                         </button>
-                        <button className="bg-blue-300 text-sm flex-grow-3 text-stone-900 outline-1 hover:bg-blue-400 p-1 px-3 h-7 rounded-xl hover:cursor-pointer " 
+                        <button className="bg-btn text-sm flex-grow-3 text-btn-text outline-1  p-1 px-3 h-7 rounded-xl hover:cursor-pointer " 
                             onClick={() => setOpen(false)}>
                             Exit
                         </button>

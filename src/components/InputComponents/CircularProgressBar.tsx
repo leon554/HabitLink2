@@ -22,7 +22,7 @@ export default function CircularProgressBar(p: Props) {
                 cy="18"
                 r="16"
                 fill="none"
-                className="stroke-current text-stone-700"
+                className="stroke-current text-progress-panel"
                 strokeWidth="1.5"
                 strokeDasharray="50 100"
                 strokeLinecap="round"
@@ -40,8 +40,8 @@ export default function CircularProgressBar(p: Props) {
                 ></circle>
             </svg>
             <div className="absolute sm:top-11 top-9 start-1/2 transform -translate-x-1/2 text-center">
-                <span className="text-2xl text-stone-400 font-mono">{p.value}%</span>
-                <span className="text-sm text-stone-400 font-mono block mt-1">{p.text}</span>
+                <span className="text-2xl text-subtext2 font-mono">{p.value}%</span>
+                <span className="text-sm text-subtext2 font-mono block mt-1">{p.text}</span>
             </div>
         </div>
     )

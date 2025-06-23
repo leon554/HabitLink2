@@ -13,7 +13,7 @@ interface Props{
 export default function Summary(p: Props) {
 
     return (
-        <div className="w-full bg-stone-800 rounded-md font-mono text-stone-300 justify-center p-7 pt-5 pb-7 flex flex-col items-center gap-4">
+        <div className="w-full bg-panel1 rounded-2xl font-mono outline-1 outline-border text-title justify-center p-7 pt-5 pb-7 flex flex-col items-center gap-4">
             <div className="w-full">
                 <p className="text-lg text-center">
                     Summary

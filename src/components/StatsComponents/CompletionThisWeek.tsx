@@ -11,7 +11,7 @@ export default function CompletionThisWeek() {
     const compDays = HabitUtil.getCompletionDaysThisWeek(HC.currentHabit, currentHabitCompletions)
 
     return (
-        <div className="w-full bg-stone-800 rounded-md font-mono text-stone-300 justify-center p-7 pt-5 pb-7 flex flex-col items-center gap-4">
+        <div className="w-full bg-panel1 rounded-2xl outline-1 outline-border font-mono text-title justify-center p-7 pt-5 pb-7 flex flex-col items-center gap-4">
             <div className="w-full">
                 <p className="text-lg text-center">
                     Completions This Week
@@ -21,7 +21,7 @@ export default function CompletionThisWeek() {
                 {compDays.map((d, i) => {
                     return(
                         <div key={i}>
-                            <p className={` ${d.done ? "bg-green-400 text-stone-900" : d.complete ? "bg-stone-700 text-stone-400" : "text-stone-400 outline-1 outline-stone-700"} p-1 rounded-md px-3`}>
+                            <p className={` ${d.done ? "bg-btn text-btn-text outline-1 outline-border2 dark:outline-0" : d.complete ? "bg-panel2 outline-1 outline-border2 text-subtext2" : "text-subtext2 outline-1 outline-border2"} p-1 rounded-xl px-3`}>
                                 {d.day.toUpperCase()}
                             </p>
                         </div>
@@ -29,7 +29,7 @@ export default function CompletionThisWeek() {
                 })}
             </div>
             <div>
-                <p className="text-stone-500 text-xs">
+                <p className="text-subtext3 text-xs">
                     Due: {HabitUtil.getCompletionDaysString(HC.currentHabit?.completionDays ?? "")}
                 </p>
             </div>

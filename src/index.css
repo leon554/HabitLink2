@@ -4,23 +4,35 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-panel1: oklch(96.7% 0.003 264.542);    
-  --color-panel2:oklch(70.7% 0.022 261.325);    
+  --color-panel1: oklch(96.7% 0.003 264.542); 
+  --color-panel2:oklch(93.2% 0.032 255.585);   
+  --color-progress-panel: hsl(0, 0%, 80%); 
+  --color-btn-text: oklch(37.2% 0.044 257.287);   
+  --color-btn:  oklch(70.7% 0.165 254.624);  
   --color-title: oklch(21% 0.034 264.665);      
   --color-subtext1: oklch(37.2% 0.044 257.287);   
-  --color-subtext2: oklch(70.8% 0 0);    
+  --color-subtext2:oklch(44.6% 0.043 257.281);    
+  --color-subtext3:hsl(215, 22%, 45%);   
   --color-border: oklch(37.3% 0.034 259.733);   
+  --color-border2: oklch(37.3% 0.034 259.733);   
   --color-highlight: oklch(70.7% 0.165 254.624);   
+    --texture: var(--color-blue-400)
 }
 
 .dark {
-  --color-panel1: oklch(26.9% 0 0);    
-  --color-panel2: oklch(37.1% 0 0);    
+  --color-panel1: oklch(26.9% 0 0);  
+  --color-panel2: hsl(0, 0%, 20%);    
+  --color-progress-panel: hsl(0, 0%, 25%); 
+  --color-btn-text:   oklch(26.9% 0 0);
+  --color-btn:   oklch(72.3% 0.219 149.579);
   --color-title: oklch(97% 0 0);      
   --color-subtext1: oklch(87% 0 0);   
   --color-subtext2: oklch(70.8% 0 0);    
-  --color-border: color-mix(in oklab, var(--color-neutral-700) /* oklch(37.1% 0 0) = #404040 */ 60%, transparent);
-  --color-highlight: oklch(72.3% 0.219 149.579);  
+  --color-subtext3: hsl(0, 0%, 53%); 
+  --color-border: color-mix(in oklab, var(--color-neutral-700)  60%, transparent);
+  --color-border2:  var(--color-neutral-600)  ;
+  --color-highlight: oklch(72.3% 0.219 149.579);   
+  --texture: #646464
 }
 
 @layer utilities {
@@ -29,7 +41,7 @@
         display: none;
     }
     .texture{
-      background-image: radial-gradient(circle, #646464 10%, rgba(0, 0, 0, 0) 30%);
+      background-image: radial-gradient(circle, var(--texture) 10%, rgba(0, 0, 0, 0) 30%);
       background-size: 5px 5px;
     }
    /* Hide scrollbar for IE, Edge and Firefox */
@@ -43,7 +55,7 @@ input[type="range"].slider-thumb::-webkit-slider-thumb {
   appearance: none;
   height: 16px;
   width: 16px;
-  background-color: #4ade80; /* Tailwind green-400 */
+  background-color: var(--color-highlight); /* Tailwind green-400 */
   border-radius: 100%;
   cursor: pointer;
   border: none;
@@ -52,7 +64,7 @@ input[type="range"].slider-thumb::-webkit-slider-thumb {
 input[type="range"].slider-thumb::-moz-range-thumb {
   height: 16px;
   width: 16px;
-  background-color: #4ade80;
+  background-color: var(--color-highlight);
   border-radius: 9999px;
   cursor: pointer;
   border: none;

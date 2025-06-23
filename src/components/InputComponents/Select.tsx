@@ -1,50 +1,67 @@
-import { useRef, useState } from "react";
-import type { GoalType, HabitType } from "../../utils/types";
+import { useEffect, useRef, useState } from "react";
 import { Util } from "../../utils/util";
 
-
-interface SelectProps<T> {
-  items: T[];
-  selectedItem: T | null;
-  setSelectedItem: (item: T) => void;
-  setText?: string | React.ElementType
+export interface dataFormat{
+    name: string,
+    id: number
+}
+interface SelectProps {
+  items: dataFormat[];
+  selectedItem: dataFormat | null;
+  setSelectedItem: (id: number) => void;
+  setText?: string | React.ReactNode
   style?: string
 }
-export default function Select<T extends HabitType | GoalType>(props: SelectProps<T>) {
-    const focusElement = useRef<null|HTMLButtonElement>(null)
+export default function Select(props: SelectProps) {
+    const focusElement = useRef<null|HTMLDivElement>(null)
     const [clicked, setClicked] = useState(false)
 
-    function setItem(h: T) {
-        props.setSelectedItem(h);
+    function setItem(id: number) {
+        props.setSelectedItem(id);
         if(focusElement.current != null){
-        focusElement.current.blur()
+            setClicked(false)
+            focusElement.current.blur()
         }
     }
+
+    useEffect(() => {
+        const onClick = (e: MouseEvent) => {
+            if (focusElement.current && !focusElement.current.contains(e.target as Node)) {
+                setClicked(false);
+            }
+        }
+        document.addEventListener("click", onClick)
+
+        return () => {
+            document.removeEventListener("click", onClick)
+        }
+    }, [])
+
     return (
-        <div>
-        <button className={`group relative transition z-10 delay-50 duration-300 ease-in-out hover:cursor-pointer ${props.style ? props.style : " outline-1 bg-stone-800 text-sm text-stone-300 font-mono p-3 rounded-md flex justify-center  "}`}
-            ref={focusElement} onClick={() => setClicked(!clicked)}
-        >
-            {props.setText ? 
-            <props.setText/>
-            :props.selectedItem == null
-            ? "Select Habit"
-            : Util.capitilizeFirst(props.selectedItem.name)}
-            <div className="absolute top-full rounded-md p-3 mt-2  flex flex-col justify-start items-start scale-0 origin-top duration-200 bg-gray-100 text-gray-950  outline-gray-700  z-20 w-fit outline-1" style={{
-            scale: clicked ? 1 : 0
-            }}>
-            {props.items && props.items.map((h) => {
-                return (
-                <p
-                    className="hover:bg-blue-300 font-mono w-full flex justify-start p-1 rounded-md transition duration-100 ease-in-out hover:cursor-pointer text-nowrap hover:text-stone-800 px-3"
-                    onClick={() => setItem(h)}
-                >
-                    {Util.capitilizeFirst(h.name)}
-                </p>
-                );
-            })}
+        <div className="relative" ref={focusElement}>
+            <button className={`group relative transition z-10  hover:cursor-pointer ${props.style ? props.style : " outline-1 bg-stone-800 text-sm text-stone-300 font-mono p-3 rounded-md flex justify-center  "}`}
+                 onClick={() => setClicked(!clicked)}
+            >
+                {props.setText 
+                    ?? (props.selectedItem == null 
+                    ? "Select Habit" 
+                    : Util.capitilizeFirst(props.selectedItem.name))}
+
+            </button>
+            <div className="absolute top-full right-0 rounded-md p-3 mt-2  flex flex-col justify-start items-start scale-0 origin-top duration-200 bg-panel1 text-subtext1  outline-border2  z-20 w-fit outline-1" style={{
+                scale: clicked ? 1 : 0
+                }}>
+                {props.items && props.items.map((h) => {
+                    return (
+                    <p
+                        className="hover:bg-highlight font-mono w-full flex justify-start p-1 rounded-md transition duration-100 ease-in-out hover:cursor-pointer text-nowrap hover:text-btn-text px-3"
+                        onClick={() => setItem(h.id)}
+                    >
+                        {Util.capitilizeFirst(h.name)}
+                    </p>
+                    );
+                })}
             </div>
-        </button>
         </div>
     );
 }

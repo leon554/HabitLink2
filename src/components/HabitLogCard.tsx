@@ -91,9 +91,9 @@ export default function HabitLogCard({habit: h}: HabitProps) {
                     <button className={`h-7 flex justify-center 
                         items-center rounded-md p-2 mr-3 w-7 text-subtext1
                         text-2xl hover:cursor-pointer
-                        ease-in-out duration-150 ${isCompletedToday() ? "dark:outline-highlight outline-highlight outline-1  " : "outline-subtext1  outline-1 hover:outline-stone-400  active:bg-stone-800"}`}
+                        ease-in-out duration-150 ${isCompletedToday() ? "dark:outline-highlight outline-highlight outline-1  " : "outline-subtext1 dark:outline-subtext2 outline-1 hover:outline-stone-400  active:bg-stone-800"}`}
                         onClick={HandleClick}>
-                        {loading ? <AiOutlineLoading className={`animate-spin ${getLoadingColor()}`}/> : <FaCheck className={`${isCompletedToday() ? "dark:text-highlight text-highlight" : "text-stone-500" }`}/>}
+                        {loading ? <AiOutlineLoading className={`animate-spin ${getLoadingColor()}`}/> : <FaCheck className={`${isCompletedToday() ? "dark:text-highlight text-highlight" : "text-subtext2 dark:text-subtext2" }`}/>}
                     </button>
                     <Model open={open} onClose={() => setOpen(false)}>
                         <HabitLogPopUp habit={h} onExit={() => setOpen(false)} value={value} setValue={setValue}

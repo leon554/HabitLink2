@@ -53,24 +53,24 @@ export default function GoalsPage() {
                 </div>
             :
             <div className="w-full flex flex-col items-center gap-3">
-                <div className="w-[90%] max-w-[600px] mt-20 p-10 z-10 texture drop-shadow-sm bg-gray-100 text-gray-950  outline-gray-700 outline-1 rounded-2xl flex justify-center flex-col items-center gap-2">
+                <div className="w-[90%] max-w-[600px] mt-20 p-10 z-10 texture drop-shadow-sm bg-panel1 text-title  outline-border outline-1 rounded-2xl flex justify-center flex-col items-center gap-2">
                     <p className="text-3xl font-semibold">
                         {HC.currentGaol.name}
                     </p>
-                    <p className={`text-sm text-gray-700 ${!HC.currentGaol.description ? "absolute" : ""}`}>
+                    <p className={`text-sm text-subtext1 ${!HC.currentGaol.description ? "absolute" : ""}`}>
                         {HC.currentGaol.description}
                     </p>
-                    <div className="text-stone-500 hover:cursor-pointer absolute top-3 right-3">
-                        <Select items={Array.from(HC.goals.values())} 
-                                                selectedItem={HC.currentGaol} 
-                                                setSelectedItem={HC.setCurrentGoal}
-                                                setText={HiOutlineSwitchHorizontal}
+                    <div className="text-subtext2 hover:cursor-pointer absolute top-3 right-3">
+                        <Select items={Array.from(HC.goals.values()).map(h =>({name: h.name, id: h.id}))} 
+                                                selectedItem={{name: HC.currentGaol.name, id: HC.currentGaol.id}}
+                                                setSelectedItem={(id: number) => HC.setCurrentGoal(HC.goals.get(id) ?? null)}
+                                                setText={<HiOutlineSwitchHorizontal/>}
                                                 style="outline-0 p-0 justify-end flex"/>
                     </div>
                 </div>
                 {!isGoalFinished? 
                     <CountDown/> :
-                    <div className="bg-gray-100 w-[90%] max-w-[600px] rounded-2xl p-5 flex justify-center  text-gray-800 drop-shadow-md outline-1 outline-gray-700">
+                    <div className="bg-panel1 w-[90%] max-w-[600px] rounded-2xl p-5 flex justify-center  text-title drop-shadow-md outline-1 outline-border">
                         <p className="text-center">
                             🎉 Congratulations! You’ve completed your goal — amazing work and well done! 💪
                         </p>

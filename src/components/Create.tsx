@@ -63,41 +63,41 @@ export default function Create() {
         return target
     }
     return (
-        <div className="bg-stone-800  max-w-[900px]  max-md:max-w-[500px] relative flex justify-center rounded-md flex-col items-center pb-4 font-mono p-4">
-            <p className="font-mono text-stone-200 font-semibold text-2xl mt-6 mb-8">
+        <div className="bg-panel1 outline-1 outline-border  max-w-[900px]  max-md:max-w-[500px] relative flex justify-center rounded-2xl flex-col items-center pb-4 font-mono p-4">
+            <p className="font-mono text-title font-semibold text-2xl mt-6 mb-8">
                 Create New Habit
             </p>
             
             <div className="flex w-full md:gap-10 md:pl-10 md:pr-10 max-md:flex-col max-md:items-center items-start">
                 <div className="w-full flex justify-center flex-col items-center ">
                     <div className="w-[90%] max-w-[450px]  font-mono mb-5">
-                        <p className="text-[16px]  text-stone-100 mb-2">Habit Name</p>
+                        <p className="text-[16px]  text-subtext1 mb-2">Habit Name</p>
                         <input type="text" 
                         placeholder="Enter habit name"
                         value={name}
                         onChange={e => setName(e.target.value)}
-                        className="outline-1 text-[12px] rounded-md w-full border-0  outline-stone-600 text-sm p-1.5 text-gray-200 mb-1" />
+                        className="outline-1 text-[12px] rounded-xl w-full border-0  outline-border2 text-sm p-1.5 text-subtext1 mb-1" />
                     </div>
                     <div className="w-[90%] max-w-[450px]  font-mono mb-5">
-                        <p className="text-[16px]  text-stone-100 mb-2">Habit Description</p>
+                        <p className="text-[16px]  text-subtext1 mb-2">Habit Description</p>
                         <textarea
                         placeholder="Enter habit description"
                         value={description}
                         onChange={e => setDescription(e.target.value)}
-                        className="outline-1 text-[12px] h-20 rounded-md resize-none w-full border-0  outline-stone-600 text-sm p-1.5 text-gray-200" />
+                        className="outline-1 text-[12px] h-20 rounded-xl resize-none w-full border-0  outline-border2 text-sm p-1.5 text-subtext1" />
                     </div>
                     <div className="w-[90%] max-w-[450px] font-mono  flex justify-center flex-col items-stretch ">
                         <div>
                             <div className="flex items-center gap-2 mb-2">
-                                <p className="text-[16px]  text-stone-100">Completion Days </p> 
-                                <IoInformationCircleOutline size={14} color="#f5f5f4" className="hover:cursor-pointer" onClick={() => {
+                                <p className="text-[16px]  text-subtext1">Completion Days </p> 
+                                <IoInformationCircleOutline size={14}  className="hover:cursor-pointer text-subtext1" onClick={() => {
                                     alert("You can either choose specific days of the week to complete your habit, or set a target number of completions per week, regardless of which days they fall on.")
                                 }}/>
                             </div>
                             <div className=" flex justify-stretch gap-2">
                                 {Object.entries(compDays).map((e, i) => {
                                     return(
-                                        <button className={`${e[1] ? "bg-green-400" : "bg-stone-800" }  ${e[1] ? "text-stone-900" : "text-stone-400" } ${e[1] ? "outline-0" : "outline-1" } grow-1 pl-2 pr-2 rounded-md outline-stone-600 text-stone-400 hover:cursor-pointer   ease-in-out duration-75`}
+                                        <button className={`${e[1] ? "bg-highlight outline-1 outline-border dark:outline-0" : "" }  ${e[1] ? "text-stone-900" : "text-subtext1" } ${e[1] ? "outline-0" : "outline-1" } grow-1 pl-2 pr-2 rounded-xl outline-border2  hover:cursor-pointer   ease-in-out duration-75`}
                                             onClick={() => {setCompDays(prev => ({...prev, [e[0]]: !e[1]})); setCompsPerWeek(0)}}
                                             key={i}>
                                             {e[0][0].toUpperCase()}
@@ -107,24 +107,24 @@ export default function Create() {
                             </div>
                         </div>
                         <div className="flex items-center  gap-3 mt-2 mb-5 ">
-                            <p className="text-stone-400 text-sm font-mono">Or</p>
+                            <p className="text-subtext1 text-sm font-mono">Or</p>
                             <div onClick={() => setCompDays({mon: false, teu: false, wed: false, thu: false, fri: false, sat: false, sun: false})}>
                                 <NumericInput value={compsPerWeek} setValue={setCompsPerWeek} increment={1} min={0} max={7}/>
                             </div>
-                            <p className="text-stone-400 text-sm self-center mt-2 mb-3 font-mono">days per week</p>
+                            <p className="text-subtext1 text-sm self-center mt-2 mb-3 font-mono">days per week</p>
                         </div>
                     </div>
 
                     <div className="flex items-center gap-2 mb-2 w-[90%] max-w-[450px]">
-                        <p className="text-[16px]  text-stone-100">Habit Type </p> 
-                        <IoInformationCircleOutline size={14} color="#f5f5f4" className="hover:cursor-pointer" onClick={() => {
+                        <p className="text-[16px]  text-subtext1">Habit Type </p> 
+                        <IoInformationCircleOutline size={14}  className="hover:cursor-pointer text-subtext1" onClick={() => {
                             alert("Normal: e.g. go to the gym its yes no \n Time Based: e.g Plank can log 13s \n Distance Based: e.g Walking you walked 12km \n Itteration Based: E.g drink 3 cups of water a day")
                         }}/>
                     </div>
                     <div className="flex flex-wrap gap-2 justify-stretch mb-6 w-[90%] max-w-[450px]">
                         {habitTypes.map((h, i) => {
                         return(
-                            <button className={`${selectedTypeIndex == i ? "outline-0 bg-green-400 text-stone-900" : "bg-stone-800 outline-1"} rounded-md outline-stone-600 p-1 grow-1 hover:cursor-pointer hover:bg-green-400 hover:outline-0 text-stone-400 text-sm hover:text-stone-900`}
+                            <button className={`${selectedTypeIndex == i ? "outline-0 bg-btn text-btn-text" : "text-subtext2 outline-1"} rounded-xl px-2 text-sm outline-border2 p-1 grow-1 hover:cursor-pointer hover:bg-btn hover:outline-0   hover:text-btn-text`}
                                 onClick={() => setSelectedTypeIndex(i)} key={i}>
                                 {h}
                             </button>
@@ -133,7 +133,7 @@ export default function Create() {
                     </div>
                     {habitTypes[selectedTypeIndex] != "Normal" &&  habitTypes[selectedTypeIndex] != undefined? 
                     <div className="w-[90%] mb-6  max-w-[450px]">
-                        <p className="text-[16px]  text-stone-100 mb-2">Daily Goal</p>
+                        <p className="text-[16px]  text-subtext1 mb-2">Daily Goal</p>
                         
                         {habitTypes[selectedTypeIndex] == "Time Based" ? 
                             <TimeInput setDuration={setTime}/> 
@@ -146,11 +146,11 @@ export default function Create() {
                 </div>
 
                 <div className="w-[90%] max-w-[450px]  font-mono mb-7  ">
-                    <p className="text-[16px]  text-stone-100 mb-2">Habit Emoji</p>
+                    <p className="text-[16px]  text-subtext1 mb-2">Habit Emoji</p>
                     <div className="flex flex-wrap gap-2 justify-stretch mb-6">
                         {habitEmojis.map((h, i) => {
                             return(
-                                <button className={`${selectedEmojiIndex == i ? "outline-0 bg-green-400" : "bg-stone-800 outline-1"} rounded-md outline-stone-600 p-1 grow-1 hover:cursor-pointer hover:bg-green-400 hover:outline-0`}
+                                <button className={`${selectedEmojiIndex == i ? "outline-0 bg-btn" : "outline-1"} rounded-xl outline-border2 p-1 grow-1 hover:cursor-pointer hover:bg-btn hover:outline-0`}
                                     onClick={() => setSelectedEmojiIndex(i)} key={i}>
                                     {h}
                                 </button>
@@ -158,7 +158,7 @@ export default function Create() {
                         })}
                     </div>
                     
-                    <button className=" w-full rounded-md p-1 bg-green-400 mb-6 font-mono hover:cursor-pointer mt-7 flex justify-center h-8 items-center"
+                    <button className=" w-full rounded-xl p-1 outline-1 outline-border2 dark:outline-0 bg-btn mb-6 font-mono hover:cursor-pointer mt-7 flex justify-center h-8 items-center"
                         onClick={() => createHabit()}>
                         {user.loading ? <AiOutlineLoading className="animate-spin" /> : "Create Habit"}
                     </button>

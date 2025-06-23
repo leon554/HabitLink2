@@ -12,12 +12,12 @@ import CompletionsMonth from "../components/StatsComponents/CompletionsMonth";
 
 export default function StatsPage() {
     const HC = useContext(UserContext)
-    //make habit calander so its from sunday first rown down
+
     return (
         <div className="flex justify-center">
             {!HC.currentHabit ?
-                <div className="flex mt-20 items-center  flex-col gap-5 rounded-md bg-stone-800 w-[90%] max-w-[600px] pb-8">
-                    <p className="text-2xl font-mono text-center font-semibold text-stone-300 mt-7  w-[90%]">
+                <div className="flex mt-20 items-center  flex-col gap-5 rounded-2xl bg-panel1 outline-1 outline-border w-[90%] max-w-[600px] pb-8">
+                    <p className="text-2xl font-mono text-center font-semibold text-title mt-7  w-[90%]">
                         Select a habit to see your stats!
                     </p>
                     {HC.loading ? 
@@ -40,16 +40,16 @@ export default function StatsPage() {
             : 
             <div className="w-full flex justify-center gap-4 mb-15"> 
                 <div className="mt-20 gap-3 flex flex-col items-center w-[90%] max-w-[600px]">
-                    <div className="rounded-md bg-stone-800 w-full p-4 flex justify-between items-center">
+                    <div className="rounded-2xl outline-1 outline-border bg-panel1 w-full p-4 flex justify-between items-center texture">
                         <img src={HC.habitRanks.get(HC.currentHabit.id)} alt="" className="w-7"/>
-                        <p className="text-xl text-center font-mono text-stone-300">
+                        <p className="text-xl text-center font-mono text-title">
                             {Util.capitilizeFirst(HC.currentHabit?.name)} Statistics
                         </p>
-                        <div className="text-stone-500 hover:cursor-pointer flex relative">
+                        <div className="text-subtext2 hover:cursor-pointer flex relative">
                             <Select items={Array.from(HC.habits.values())} 
                                                     selectedItem={HC.currentHabit} 
-                                                    setSelectedItem={HC.setCurrentHabit}
-                                                    setText={HiOutlineSwitchHorizontal}
+                                                    setSelectedItem={(id: number) => HC.setCurrentHabit(HC.habits.get(id) ?? null)}
+                                                    setText={<HiOutlineSwitchHorizontal/>}
                                                     style="outline-0 p-0 justify-end flex "/>
                         </div>
                     </div>
