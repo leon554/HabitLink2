@@ -76,7 +76,7 @@ export default function GoalsPage() {
                         </p>
                     </div>
                 }
-                {HC.currentGaol.type == HabitTypeE.Normal ? 
+                {HC.currentGaol.type == HabitTypeE.Normal && HC.currentGaol.linkedHabit ===  null? 
                  "" : 
                 <GoalProgress/>
                  }

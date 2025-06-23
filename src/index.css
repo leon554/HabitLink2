@@ -69,3 +69,6 @@ input[type="range"].slider-thumb::-moz-range-thumb {
   cursor: pointer;
   border: none;
 }
+::-webkit-calendar-picker-indicator {
+    opacity: 0%;
+}

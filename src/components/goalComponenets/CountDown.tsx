@@ -45,7 +45,7 @@ export default function CountDown() {
                     </p>
                     <p className="text-3xl text-highlight">]</p>
                 </div>
-                {HC.currentGaol?.type == HabitTypeE.Normal ?
+                {HC.currentGaol?.type == HabitTypeE.Normal && HC.currentGaol.linkedHabit == null?
                     <button className="bg-btn text-sm flex-grow-10  mt-3 text-btn-text p-1 px-3 rounded-lg hover:cursor-pointer transition-all duration-150 ease-in-out"
                     onClick={() => completeGoal()}>
                         Complete Goal

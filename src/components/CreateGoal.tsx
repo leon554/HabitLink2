@@ -6,7 +6,9 @@ import Model from "./InputComponents/Model";
 import { AiOutlineLoading } from "react-icons/ai";
 import { add } from "date-fns";
 import { FaLink } from "react-icons/fa";
+import { isValid, isAfter} from "date-fns";
 import { HabitTypeE } from "../utils/types";
+import { dateUtils } from "../utils/dateUtils";
 
 
 export default function CreateGoal() {
@@ -15,7 +17,7 @@ export default function CreateGoal() {
     const [selectedTypeIndex, setSelectedTypeIndex] = useState(-1)
     const [startValue, setStartValue] = useState("")
     const [goalValue, setGoalValue] = useState("")
-    const [days, setDays] = useState(1)
+    const [date, setDate] = useState("")
     const [showModal, setShowModal] = useState(false)
     const [selectHabits, setSelectedHabits] = useState<number[]>([])
     const habitTypes = ["Normal", "Time Based", "Distance Based", "Iteration Based"]
@@ -31,14 +33,16 @@ export default function CreateGoal() {
 
         if(isNaN(goalVal) || isNaN(startVal)) {alert("Start and goal values must be a number"); return}
         if(!type) {alert("Error linked habit type is undefined"); return}
+        if(!isValidDate()) {alert("Date is not valid it needs to be in the correct format and in the future"); return}
+        
 
-        if(type == HabitTypeE.Normal) {
+        if(type == HabitTypeE.Normal && linkedID == -1) {
             goalVal = 1
             startVal = 0
         }
         if(linkedID != -1) selectHabits.push(linkedID)
-        await HC.createGoal(name, description, type, startVal, goalVal, selectHabits, add(new Date(), {days: days}), linkedID == -1 ? null : linkedID)
-        setName(""); setDescription(""); setSelectedTypeIndex(-1); setStartValue(""); setGoalValue(""); setSelectedHabits([]); setDays(1)
+        await HC.createGoal(name, description, type, startVal, goalVal, selectHabits, getDate(), linkedID == -1 ? null : linkedID)
+        setName(""); setDescription(""); setSelectedTypeIndex(-1); setStartValue(""); setGoalValue(""); setSelectedHabits([]); setDate("")
     }
 
     function getPlaceHolderText(){
@@ -50,6 +54,38 @@ export default function CreateGoal() {
             return "amount"
         }
     }
+    function isValidDate(){
+        const componets = date.split("/").map(c => Number(c)).filter(c => !isNaN(c))
+        console.log(componets)
+        if(componets.length != 3) return false
+        if(componets[1] > 12) return false
+        if(componets[0] > 31) return false
+
+        const date1 = new Date(`${componets[2]}-${String(componets[1]).padStart(2, "0")}-${String(componets[0]).padStart(2, "0")}T${dateUtils.getCurrentTime()}`)
+        if(!isAfter(date1, new Date())) return false
+
+        return isValid(date1)
+    }
+    function getDate(){
+        const componets = date.split("/").map(c => Number(c)).filter(c => !isNaN(c))
+        return new Date(`${componets[2]}-${String(componets[1]).padStart(2, "0")}-${String(componets[0]).padStart(2, "0")}T${dateUtils.getCurrentTime()}`)
+    }
+    function getDateToString(d: Date){
+        return `${String(d.getDate()).padStart(2, "0")}/${String(d.getMonth()+1).padStart(2, "0")}/${d.getFullYear()}`
+    }
+    function addX(parameters: object){
+        if(date == ""){
+            setDate(getDateToString(add(new Date(), parameters)))
+        }else if(isValidDate()){
+            const date1 = getDate()
+            const date2 = add(date1, parameters)
+            setDate(getDateToString(date2))
+        }else{
+            alert("Current date is not valid, amount has been added to todays date.")
+            setDate(getDateToString(add(new Date(), parameters)))
+        }
+    }
+
     function getLinkedPlaceHolderText(){
         if(linkedID == -1) return ""
         const type = HC.habits.get(linkedID)?.type
@@ -93,7 +129,7 @@ export default function CreateGoal() {
                         <p className="text-[16px]  text-subtext-1 mb-2">Associated Habits</p>
                         <button className={`outline-1 rounded-xl outline-border2 w-full p-1 grow-1 hover:cursor-pointer hover:bg-btn hover:outline-0 text-subtext1 text-sm hover:text-btn-text`}
                                 onClick={() => setShowModal(true)}>
-                                {selectHabits.length == 0 ? "Select Habits" : `${selectHabits.length + ((linkedID != -1) ? 1 : 0)} habits associated${(linkedID != -1) ? ", 1 Linked" : ""}`}
+                                {selectHabits.length == 0 && linkedID == -1? "Select Habits" : `${selectHabits.length + ((linkedID != -1) ? 1 : 0)} ${selectHabits.length + ((linkedID != -1) ? 1 : 0) == 1 ? "habit" : "habits"} associated${(linkedID != -1) ? ", 1 Linked" : ""}`}
                         </button>
                         <Model open={showModal} onClose={() => setShowModal(false)}>
                             <div className="p-3 flex flex-col  items-center max-w-[600px] w-[90%] bg-panel1 rounded-2xl">
@@ -191,30 +227,43 @@ export default function CreateGoal() {
                     </div>}
 
                     <div className="w-[90%] max-w-[450px]  font-mono mb-8">
-                        <p className="text-[16px]  text-subtext-1 mb-2">Complete Goal In</p>
-                        <div className="flex font-mono p-1 gap-2 rounded-xl text-sm outline-1 outline-border2 justify-stretch">
-                            <div className="flex items-center  grow-1">
-                                <p className="text-subtext1 pl-1 pr-2 w-23 overflow-hidden">
-                                    {days} Days
-                                </p>
-                                <input
-                                    type="range"
-                                    min="1"
-                                    max={365}
-                                    value={days}
-                                    onChange={e => setDays(Number(e.target.value))}
-                                    className="w-full h-2 bg-progress-panel rounded-lg appearance-none cursor-pointer slider-thumb mr-1"
-                                />
-                            </div>
-                        </div>
-                        <div className="flex justify-stretch w-full gap-4 mt-3">
-                            <button className="outline-1 rounded-xl outline-border2 p-1 grow-1 hover:cursor-pointer hover:bg-green-400 hover:outline-0 text-stone-400 text-sm hover:text-stone-900" 
-                                onClick={() => setDays(p => p - 1)}>
-                                -
+                        <p className="text-[16px]  text-subtext-1 mb-2">Complete Goal On</p>
+                        <div className="flex gap-3 items-center flex-wrap justify-stretch">
+                            <input 
+                                value={date}
+                                maxLength={10}
+                                onChange={e => {
+                                    let value = e.target.value
+                                    let valueArr = e.target.value.split("")
+
+                                    if(valueArr.length >= 2 && !valueArr.includes("/") && value.length > date.length){
+                                        valueArr.splice(2, 0, "/")
+                                    }
+                                    if(valueArr.length >= 5 && !valueArr.slice(3).includes("/") && value.length > date.length){
+                                        valueArr.splice(5, 0, "/")
+                                    }
+                                    
+                                    //if((value.length == 2 || value.length == 5) && value.length > date.length) value+= "/"
+                                    setDate(valueArr.join(""))
+                                }}
+                                type="text" 
+                                placeholder="dd/mm/yyyy"
+                                className={`outline-1 ${isValidDate() || date == "" ? "outline-border2 " : "outline-red-500"} rounded-xl pl-2 p-1 text-sm text-subtext2 w-30`}>
+                            </input>
+                            <p className="text-sm text-subtext3">
+                                Add
+                            </p>
+                            <button className="outline-1 flex-grow-1 h-7 px-3 text-sm rounded-xl flex items-center justify-center outline-border2 text-subtext1 hover:cursor-pointer hover:bg-btn hover:text-btn-text transition-colors duration-150 ease-in-out darkmode:hover:outline-0"
+                                onClick={() => addX({days: 1})}>
+                                Day
                             </button>
-                            <button className="outline-1 rounded-xl outline-border2 p-1 grow-1 hover:cursor-pointer hover:bg-green-400 hover:outline-0 text-stone-400 text-sm hover:text-stone-900"
-                                onClick={() => setDays(p => p + 1)}>
-                                +
+                            <button className="outline-1 flex-grow-1 h-7 px-3 text-sm rounded-xl flex items-center justify-center outline-border2 text-subtext1 hover:cursor-pointer hover:bg-btn hover:text-btn-text transition-colors duration-150 ease-in-out darkmode:hover:outline-0"
+                                onClick={() => addX({weeks: 1})}>
+                                Week
+                            </button>
+                            <button className="outline-1 flex-grow-1 h-7 px-3 text-sm rounded-xl flex items-center justify-center outline-border2 text-subtext1 hover:cursor-pointer hover:bg-btn hover:text-btn-text transition-colors duration-150 ease-in-out darkmode:hover:outline-0"
+                                onClick={() => addX({months: 1})}>
+                                Month
                             </button>
                         </div>
                     </div>
