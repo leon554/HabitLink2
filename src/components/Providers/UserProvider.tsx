@@ -7,6 +7,7 @@ import { dateUtils } from "../../utils/dateUtils";
 import { HabitUtil } from "../../utils/HabitUtil";
 import { HabitTypeE } from "../../utils/types";
 import { Util } from "../../utils/util";
+import { GOAL_LIM_FREE, HABIT_LIM_FREE } from "../../utils/Constants";
 
 
 interface UserType{
@@ -125,6 +126,13 @@ export default function UserProvider(props: Props) {
 
     async function createHabit(name: string, description: string, completionDays:string, emoji: string, type: string, target: number){
         setLoading(true)
+
+        if(Array.from(habits.values()).length >= HABIT_LIM_FREE && auth.localUser?.role == "free"){
+            alert("You've reached your free plan limit. Check limits in settings page.");
+            setLoading(false)
+            return
+        }
+
         const userid = auth.getUserId()
 
         const { error } = await supabase
@@ -143,6 +151,13 @@ export default function UserProvider(props: Props) {
     }
     async function createGoal(name: string, description: string, type: string, startValue: number, goalValue: number, habitIds: number[], completionDate: Date, linkedHabitId: number| null){
         setLoading(true)
+
+        if(Array.from(goals.values()).length >= GOAL_LIM_FREE && auth.localUser?.role == "free"){
+            alert("You've reached your free plan limit. Check limits in settings page.");
+            setLoading(false)
+            return
+        }
+
         const userid = auth.getUserId()
         const habitString = habitIds.join(",");
 

@@ -52,3 +52,11 @@ export interface GoalType{
     archived: boolean
 
 }
+export interface UserType{
+    id: number
+    created_at: string
+    email: string
+    name: string
+    user_id: string
+    role: string
+}

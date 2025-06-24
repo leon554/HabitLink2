@@ -23,30 +23,35 @@ export default function SettingsPage() {
             <InfoPanel>
                 <InfoPanel.Title title="Acount"/>
                 <InfoPanel.BodyContainer>
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 mb-2">
                         <p>
-                            Role:
+                            Status:
                         </p>
-                        <p className="outline-border2 outline-1 dark:outline-0 rounded-xl px-3 bg-btn text-btn-text">
+                        <p className="outline-border2 outline-1 dark:outline-0 rounded-xl px-3 bg-btn text-btn-text text-sm flex items-center">
                             {auth.user?.role}
                         </p>
                     </div>
+                    <div className="flex gap-2 mb-1">
+                        <p>
+                            Tier:
+                        </p>
+                        <p className="outline-border2 outline-1 dark:outline-0 rounded-xl px-3 bg-btn text-btn-text text-sm flex items-center">
+                            {auth.localUser?.role}
+                        </p>
+                    </div>
+                    <InfoPanel.SubText text={`Acount created: ${auth.user?.created_at}`}/>
                 </InfoPanel.BodyContainer>
             </InfoPanel>
             <InfoPanel>
                 <InfoPanel.Title title="Limits"/>
                 <InfoPanel.BodyContainer>
-                    <InfoPanel.SubText text={`Total Goal Amount${String(Array.from(HC.goals.values()).length).padStart(10, ".")}/10`}/>
-                    <InfoPanel.SubText text={`Total Habit Amount${String(Array.from(HC.habits.values()).length).padStart(9, ".")}/10`}/>
+                    <InfoPanel.SubText text={`Total Goal Amount${String(Array.from(HC.goals.values()).length).padStart(15, ".")}/10`}/>
+                    <InfoPanel.SubText text={`Total Habit Amount${String(Array.from(HC.habits.values()).length).padStart(14, ".")}/10`}/>
+                    <InfoPanel.SubText text={`Total habit completions${String(completions).padStart(7, ".")}/5000`}/>
+                    <InfoPanel.SubText text={`Total goal completions${String(goalComps).padStart(8, ".")}/1000`}/>
                 </InfoPanel.BodyContainer>
             </InfoPanel>
-            <InfoPanel>
-                <InfoPanel.Title title="Usage"/>
-                <InfoPanel.BodyContainer>
-                    <InfoPanel.SubText text={`Total habit completions${String(completions).padStart(7, ".")}`}/>
-                    <InfoPanel.SubText text={`Total goal completions${String(goalComps).padStart(8, ".")}`}/>
-                </InfoPanel.BodyContainer>
-            </InfoPanel>
+
         </div>
     )
 }

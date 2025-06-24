@@ -2,13 +2,14 @@ import type { Session, User } from "@supabase/supabase-js";
 import { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "../../supabase-client";
 import { AlertContext } from "../Alert/AlertProvider";
-import { SignUpResponses } from "../../utils/types";
+import { SignUpResponses, type UserType } from "../../utils/types";
 import { useLocation, useNavigate } from "react-router-dom";
 
 
 interface AuthType{
     session: Session| null | undefined
     user: User | null
+    localUser: UserType | null
     loading: boolean
     login: (email: string, password: string) => Promise<void>
     signup: (name: string, email: string, password: string) => Promise<SignUpResponses>
@@ -18,6 +19,7 @@ interface AuthType{
 const initialValues: AuthType = {
     session: undefined,
     user: null,
+    localUser: null,
     loading: false,
     login: async (_: string, _1: string) => {},
     signup: async (_: string, _1: string, _2: string) => Promise.resolve(SignUpResponses.SignUpError),
@@ -34,6 +36,7 @@ interface Props {
 export default function AuthProvider(props: Props) {
     const [session, setSession] = useState<null|Session|undefined>(undefined)
     const [user, setUser] = useState<null|User>(null)
+    const [localUser, setLoacalUser] = useState<UserType|null>(null)
     const [loading, setLoading] = useState(false)
     const protectedPaths = ["/dashboard", "/log", "/create", "/stats", "/goals", "/creategoal", "/settings"]
     
@@ -48,9 +51,7 @@ export default function AuthProvider(props: Props) {
             setSession(session)
         })
 
-        return () => {
-            authListener.subscription.unsubscribe()
-        }
+        return () => {authListener.subscription.unsubscribe()}
     }, [])
     
     useEffect(() => {
@@ -74,7 +75,6 @@ export default function AuthProvider(props: Props) {
         await createUserEntry(data.user)
 
         const currentPath = location.pathname
-        console.log(currentPath)
 
         if(protectedPaths.includes(currentPath)){
             navigate(currentPath)
@@ -90,23 +90,23 @@ export default function AuthProvider(props: Props) {
         const { error } = await supabase
             .from('users')
             .insert([
-                { email: data.email, name: data.user_metadata.name, premuimUser: false, user_id: data.id},
+                { email: data.email, name: data.user_metadata.name, role: "free", user_id: data.id},
             ])
         if(error){
             alert("insert error: " + error.message)
         }
     }
     async function checkIfUserEntryExists(data: User){
-        let { data: users, error } = await supabase
+        let { data: user, error } = await supabase
             .from('users')
-            .select('email')
-            .eq("email", data.email)
+            .select()
+            .eq("user_id", data.id)
         if(error){
             alert("Fetch Error: " + error.message)
         }
-        return (users?.length == 0)? false : true
+        setLoacalUser((user ?? [])[0] as UserType)
+        return (user)? true : false
     }
-
     async function login(email: string, password: string){
         setLoading(true)
         const {error} = await supabase.auth.signInWithPassword({email, password})
@@ -149,6 +149,7 @@ export default function AuthProvider(props: Props) {
         <AuthContext.Provider value={{
             session,
             user,
+            localUser,
             loading,
             signup,
             login,
