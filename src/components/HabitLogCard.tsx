@@ -89,7 +89,7 @@ export default function HabitLogCard({habit: h}: HabitProps) {
                         </p>: ""}
                     </div>
                     <button className={`h-7 flex justify-center 
-                        items-center rounded-md p-2 mr-3 w-7 text-subtext1
+                        items-center rounded-lg p-2 mr-3 w-7 text-subtext1
                         text-2xl hover:cursor-pointer
                         ease-in-out duration-150 ${isCompletedToday() ? "dark:outline-highlight outline-highlight outline-1  " : "outline-subtext1 dark:outline-subtext2 outline-1 hover:outline-stone-400  active:bg-stone-800"}`}
                         onClick={HandleClick}>

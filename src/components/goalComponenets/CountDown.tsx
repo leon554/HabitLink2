@@ -66,7 +66,8 @@ export default function CountDown() {
                 </p>}
             </div>
             <Model open={open} onClose={() => setOpen(false)}>
-                <div className="flex flex-col items-center m-5 gap-4 w-[90%] max-w-[400px] p-8 rounded-2xl  bg-panel1 text-title">
+                <div className="flex flex-col items-center m-5 gap-4 w-[90%] max-w-[400px] p-8 rounded-2xl  bg-panel1 text-title"
+                    onClick={(e) => e.stopPropagation()}>
                     <p className="text-lg leading-0 mb-4">Enter Value</p>
                     <input type="text" 
                             className="border-0 outline-1 w-full outline-border2 rounded-xl p-1 px-3 text-subtext1 text-sm" 

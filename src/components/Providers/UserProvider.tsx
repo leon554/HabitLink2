@@ -12,6 +12,9 @@ import { Util } from "../../utils/util";
 interface UserType{
     createHabit: (name: string, description: string, completionDays:string, emoji: string, type: string, target: number) => Promise<void>
     createGoal: (name: string, description: string, type: string, startValue: number, goalValue: number, habitIds: number[], completionDate: Date, linkedHabitId: number | null) => Promise<void>
+    archiveGoal: (goalId: number) => Promise<void>
+    deleteGoal: (goalId: number) => Promise<void>
+
     habits: Map<number, HabitType>
     habitsCompletions: Map<number, HabitCompletionType[]>,
     loading: boolean,
@@ -27,7 +30,7 @@ interface UserType{
     removeTodaysHabitCompletion: (habitId: number) => Promise<void>
     addGoalCompletion: (value: number) => Promise<void>
     goalCompletions: Map<number, GaolCompletionType[]>
-    currenthabitStats : {
+    currentHabitStats : {
         compRate: number
         partialComps: number
         validComps: number
@@ -41,6 +44,8 @@ interface UserType{
 const initialValues: UserType = {
     createHabit: () => Promise.resolve(undefined),
     createGoal: () => Promise.resolve(undefined),
+    archiveGoal: () => Promise.resolve(undefined),
+    deleteGoal: () => Promise.resolve(undefined),
     habits: new Map<number, HabitType>(),
     goals: new Map<number, GoalType>(),
     habitsCompletions: new Map<number, HabitCompletionType[]>(),
@@ -56,7 +61,7 @@ const initialValues: UserType = {
     removeTodaysHabitCompletion: () => Promise.resolve(undefined),
     addGoalCompletion: () => Promise.resolve(undefined),
     goalCompletions: new Map<number, GaolCompletionType[]>(),
-    currenthabitStats : {
+    currentHabitStats : {
         compRate: 0,
         partialComps: 0,
         validComps: 0,
@@ -154,6 +159,50 @@ export default function UserProvider(props: Props) {
         }
         await getGoals()
         alert("Succefully Added Goal")
+        setLoading(false)
+    }
+    async function archiveGoal(goalId: number){
+        setLoading(true)
+
+        const { error } = await supabase
+            .from('goals')
+            .update({ archived: true })
+            .eq('id', goalId)
+            .select()
+        if(error){
+            alert("Archive goal error: " + error.message)
+            setLoading(false)
+            return
+        }
+
+        setGaols(Util.updateMap(goals, goalId, {...goals.get(goalId)!, archived: true}))
+        setLoading(false)
+    }
+    async function deleteGoal(goalId: number){
+        setLoading(true)
+        
+        const {error: error1 } = await supabase
+                    .from("GoalCompletions")
+                    .delete()
+                    .eq('goalId', goalId)
+        const {error} = await supabase  
+                    .from("goals")
+                    .delete()
+                    .eq("id", goalId)
+
+        if(error1){
+            alert("goal completion deltion error: " + error1.message)
+            setLoading(false)
+            return
+        }
+        if(error){
+            alert("goal deltion error: " + error.message)
+            setLoading(false)
+            return
+        }
+
+        goals.delete(goalId)
+        setGaols(goals)
         setLoading(false)
     }
     async function getGoals(){
@@ -316,8 +365,10 @@ export default function UserProvider(props: Props) {
             compleHabit: compleHabit,
             removeTodaysHabitCompletion,
             addGoalCompletion,
+            archiveGoal,
+            deleteGoal,
             goalCompletions,
-            currenthabitStats: {compRate, missedSessions, streak, entries, strength,validComps, partialComps,dataSum},
+            currentHabitStats: {compRate, missedSessions, streak, entries, strength,validComps, partialComps,dataSum},
             habitRanks,
             habitComps,
             habitStrengths

@@ -49,5 +49,6 @@ export interface GoalType{
     habits: string
     completionDate: number
     linkedHabit: number | null
+    archived: boolean
 
 }

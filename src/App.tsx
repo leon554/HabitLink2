@@ -13,6 +13,7 @@ import SettingsProvider from "./components/Providers/SettingsProvider"
 import GoalsPage from "./pages/GoalsPage"
 import CreateGaolPage from "./pages/CreateGaolPage"
 import { useState, useEffect, useLayoutEffect} from "react"
+import SettingsPage from "./pages/SettingsPage"
 
 function App() {
   const [dark, setDark] = useState<boolean|null>(null)
@@ -63,6 +64,7 @@ function App() {
               <Route path="creategoal" element={<CreateGaolPage/>}/>
               <Route path="stats" element={<StatsPage/>}/>
               <Route path="goals" element={<GoalsPage/>}/>
+              <Route path="settings" element={<SettingsPage/>}/>
             </Route>
           </Routes>
           

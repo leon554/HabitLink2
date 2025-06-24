@@ -66,4 +66,9 @@ export namespace Util{
         newMap.set(key, updatedArray);
         return newMap;
     }
+    export function updateMap<K, V>(originalMap: Map<K, V>, key: K, newItem: V): Map<K, V> {
+        const newMap = new Map(originalMap);
+        newMap.set(key, newItem);
+        return newMap;
+    }
 }

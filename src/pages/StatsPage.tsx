@@ -41,7 +41,9 @@ export default function StatsPage() {
             <div className="w-full flex justify-center gap-4 mb-15"> 
                 <div className="mt-20 gap-3 flex flex-col items-center w-[90%] max-w-[600px]">
                     <div className="rounded-2xl outline-1 outline-border bg-panel1 w-full p-4 flex justify-between items-center texture">
-                        <img src={HC.habitRanks.get(HC.currentHabit.id)} alt="" className="w-7"/>
+                        <p className="text-subtext1 font-mono text-lg font-semibold">
+                            {HC.currentHabitStats.streak}🔥
+                        </p>
                         <p className="text-xl text-center font-mono text-title">
                             {Util.capitilizeFirst(HC.currentHabit?.name)} Statistics
                         </p>
@@ -53,9 +55,9 @@ export default function StatsPage() {
                                                     style="outline-0 p-0 justify-end flex "/>
                         </div>
                     </div>
-                    <ConsistencyPanel compRate={HC.currenthabitStats.compRate} strength={HC.currenthabitStats.strength}/>
-                    <Summary habitType={HC.currentHabit.type} validComps={HC.currenthabitStats.validComps} partialComps={HC.currenthabitStats.partialComps} streak={HC.currenthabitStats.streak}
-                        entries={HC.currenthabitStats.entries ? HC.currenthabitStats.entries : 0} missedComps={Math.max(HC.currenthabitStats.missedSessions, 0)} dataSum={HC.currenthabitStats.dataSum}/>
+                    <ConsistencyPanel compRate={HC.currentHabitStats.compRate} strength={HC.currentHabitStats.strength}/>
+                    <Summary habitType={HC.currentHabit.type} validComps={HC.currentHabitStats.validComps} partialComps={HC.currentHabitStats.partialComps} streak={HC.currentHabitStats.streak}
+                        entries={HC.currentHabitStats.entries ? HC.currentHabitStats.entries : 0} missedComps={Math.max(HC.currentHabitStats.missedSessions, 0)} dataSum={HC.currentHabitStats.dataSum}/>
                     <CompletionThisWeek/>
                     <CompletionsMonth/>
                 </div>

@@ -1,9 +1,9 @@
 import { useContext} from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { AuthContext } from "./Providers/AuthProvider"
-import { LuLogOut } from "react-icons/lu";
 import { AiOutlineLoading } from "react-icons/ai";
 import Select from "./InputComponents/Select";
+import { FaRegUserCircle } from "react-icons/fa";
 
 
 
@@ -62,11 +62,18 @@ export default function Navbar() {
                                     }}
                                     setText="Create"
                                     style="flex justify-end items-center h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 font-medium text-sm font-mono text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer"/>
-                        
-                            <button className="h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 font-medium text-sm font-mono text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer"
-                                onClick={logout}>
-                                {loading? <AiOutlineLoading className="animate-spin"/> : <LuLogOut />}
-                            </button>
+
+                            <Select items={[{name: "Settings", id: 0}, {name: "Log Out", id: 1}]}
+                                    selectedItem={null}
+                                    setSelectedItem={(id: number) => {
+                                        if(id == 0){
+                                            navitgate("/settings")
+                                        }else{
+                                            logout()
+                                        }
+                                    }}
+                                    setText={loading? <AiOutlineLoading className="animate-spin"/> : <FaRegUserCircle size={14}/>}
+                                    style="flex justify-end items-center h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 font-medium text-sm font-mono text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer"/>
                         </>
                     }
                 </div>
