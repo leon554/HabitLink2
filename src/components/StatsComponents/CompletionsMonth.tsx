@@ -65,7 +65,7 @@ export default function CompletionsMonth() {
                 </div>
             </div>
             <Model open={open} onClose={() => setOpen(false)}>
-                <div className="m-5 mx-7 flex flex-col gap-2 w-[80%] max-w-[600px] bg-panel1 rounded-2xl p-8">
+                <div className="m-5 mx-7 flex flex-col gap-2 w-[80%] max-w-[600px] bg-panel1 rounded-2xl p-8 " onClick={e => e.stopPropagation()}>
                     <p className="text-lg">
                         Calander Info
                     </p>

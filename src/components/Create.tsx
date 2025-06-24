@@ -1,4 +1,4 @@
-import {useContext, useState } from "react";
+import {useContext, useRef, useState } from "react";
 import NumericInput from "./InputComponents/NumericInput";
 import { IoInformationCircleOutline } from "react-icons/io5";
 import { AlertContext } from "./Alert/AlertProvider";
@@ -10,8 +10,11 @@ import NumberInput from "./InputComponents/NumberInput";
 
 
 
-
-export default function Create() {
+interface Props{
+    compact: boolean
+    onCreate?: () => void
+}
+export default function Create({compact, onCreate} : Props){
     const [compsPerWeek, setCompsPerWeek] = useState(0)
     const [compDays, setCompDays] = useState({mon: false, teu: false, wed: false, thu: false, fri: false, sat: false, sun: false})
     const [selectedEmojiIndex, setSelectedEmojiIndex] = useState(-1)
@@ -23,6 +26,7 @@ export default function Create() {
     const [description, setDescription] = useState("")
     const habitEmojis = ["💪","📖","🧘","📝","🥗","🚰","😴","📚","🏃","🧹","🛏️","🪥","💻","🎨","🎵","☀️","📅","💸","📵","🧼","🧊","🏋️","🧠","🎯","👣","🍎","🚭","🍵","🌿","🕯️","👨‍🍳","🚿","🪑","🐶","🤝"];
     const habitTypes = ["Normal", "Time Based", "Distance Based", "Iteration Based"]
+    const emojiDiv = useRef<HTMLDivElement>(null)
 
     const {alert} = useContext(AlertContext)
     const user = useContext(UserContext)
@@ -68,7 +72,7 @@ export default function Create() {
                 Create New Habit
             </p>
             
-            <div className="flex w-full md:gap-10 md:pl-10 md:pr-10 max-md:flex-col max-md:items-center items-start">
+            <div className={`flex w-full md:gap-10 md:pl-10 md:pr-10 max-md:flex-col max-md:items-center items-start `}>
                 <div className="w-full flex justify-center flex-col items-center ">
                     <div className="w-[90%] max-w-[450px]  font-mono mb-5">
                         <p className="text-[16px]  text-subtext1 mb-2">Habit Name</p>
@@ -84,7 +88,7 @@ export default function Create() {
                         placeholder="Enter habit description"
                         value={description}
                         onChange={e => setDescription(e.target.value)}
-                        className="outline-1 text-[12px] h-20 rounded-xl resize-none w-full border-0  outline-border2 text-sm p-1.5 text-subtext1" />
+                        className={`outline-1 text-[12px] ${compact ? "h-7.5" : "h-20"} rounded-xl resize-none w-full border-0  outline-border2 text-sm p-1.5 text-subtext1`} />
                     </div>
                     <div className="w-[90%] max-w-[450px] font-mono  flex justify-center flex-col items-stretch ">
                         <div>
@@ -126,7 +130,7 @@ export default function Create() {
                         return(
                             <button className={`${selectedTypeIndex == i ? "outline-0 bg-btn text-btn-text" : "text-subtext2 outline-1"} rounded-xl px-2 text-sm outline-border2 p-1 grow-1 hover:cursor-pointer hover:bg-btn hover:outline-0   hover:text-btn-text`}
                                 onClick={() => setSelectedTypeIndex(i)} key={i}>
-                                {h}
+                                {compact ?  h.split(" ")[0]: h}
                             </button>
                         )
                     })}
@@ -147,19 +151,45 @@ export default function Create() {
 
                 <div className="w-[90%] max-w-[450px]  font-mono mb-7  ">
                     <p className="text-[16px]  text-subtext1 mb-2">Habit Emoji</p>
-                    <div className="flex flex-wrap gap-2 justify-stretch mb-6">
-                        {habitEmojis.map((h, i) => {
-                            return(
-                                <button className={`${selectedEmojiIndex == i ? "outline-0 bg-btn" : "outline-1"} rounded-xl outline-border2 p-1 grow-1 hover:cursor-pointer hover:bg-btn hover:outline-0`}
-                                    onClick={() => setSelectedEmojiIndex(i)} key={i}>
-                                    {h}
-                                </button>
-                            )
-                        })}
-                    </div>
+                        <div className="flex mb-6 gap-2 items-center">
+                            {compact ? 
+                            <button className="text-btn-text bg-btn px-2 rounded-lg h-7 hover:cursor-pointer md:invisible md:absolute"
+                                onClick={() => {
+                                    emojiDiv.current?.scrollBy({
+                                        left: -300,
+                                        behavior: "smooth"
+                                    })
+                                }}>
+                                {"<"}
+                            </button> : ""}
+                            <div className={`${compact ? "flex overflow-x-scroll gap-2 p-1 no-scrollbar rounded-xl" : "flex flex-wrap"}  md:flex-wrap gap-2 justify-stretch`} ref={emojiDiv}>
+                                {habitEmojis.map((h, i) => {
+                                    return(
+                                        <button className={`${selectedEmojiIndex == i ? "outline-0 bg-btn" : "outline-1"} rounded-xl outline-border2 p-1 grow-1 hover:cursor-pointer hover:bg-btn hover:outline-0`}
+                                            onClick={() => setSelectedEmojiIndex(i)} key={i}>
+                                            {h}
+                                        </button>
+                                    )
+                                })}
+                            </div>
+                            {compact ? 
+                            <button className="text-btn-text bg-btn px-2 h-7 rounded-lg hover:cursor-pointer md:invisible md:absolute"
+                                onClick={() => {
+                                    emojiDiv.current?.scrollBy({
+                                        left: 300,
+                                        behavior: "smooth"
+                                    })
+                                }}>
+                                {">"}
+                            </button> : ""}
+                        </div>
                     
-                    <button className=" w-full rounded-xl p-1 outline-1 outline-border2 dark:outline-0 bg-btn mb-6 font-mono hover:cursor-pointer mt-7 flex justify-center h-8 items-center"
-                        onClick={() => createHabit()}>
+                    <button className=" w-full rounded-xl p-1 outline-1 outline-border2 dark:outline-0 bg-btn  font-mono hover:cursor-pointer mt-7 flex justify-center h-8 items-center"
+                        onClick={async () => {
+                            await createHabit(); 
+                            if(!onCreate) return
+                            onCreate()
+                        }}>
                         {user.loading ? <AiOutlineLoading className="animate-spin" /> : "Create Habit"}
                     </button>
                 </div>
