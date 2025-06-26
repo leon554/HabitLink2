@@ -23,22 +23,8 @@ export default function SettingsPage() {
             <InfoPanel>
                 <InfoPanel.Title title="Acount"/>
                 <InfoPanel.BodyContainer>
-                    <div className="flex gap-2 mb-2">
-                        <p>
-                            Status:
-                        </p>
-                        <p className="outline-border2 outline-1 dark:outline-0 rounded-xl px-3 bg-btn text-btn-text text-sm flex items-center">
-                            {auth.user?.role}
-                        </p>
-                    </div>
-                    <div className="flex gap-2 mb-1">
-                        <p>
-                            Tier:
-                        </p>
-                        <p className="outline-border2 outline-1 dark:outline-0 rounded-xl px-3 bg-btn text-btn-text text-sm flex items-center">
-                            {auth.localUser?.role}
-                        </p>
-                    </div>
+                    <InfoPanel.BubbleText text="Status:" bubbleText={`${auth.user?.role}`} mb={4}/>
+                    <InfoPanel.BubbleText text="Tier:" bubbleText={`${auth.localUser?.role}`} mb={0}/>
                     <InfoPanel.SubText text={`Acount created: ${auth.user?.created_at}`}/>
                 </InfoPanel.BodyContainer>
             </InfoPanel>

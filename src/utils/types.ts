@@ -60,3 +60,11 @@ export interface UserType{
     user_id: string
     role: string
 }
+export enum Origin{ 
+    top = "top",
+    bottom = "bottom",
+    topRight = "top right",
+    topLeft = "top left",
+    bottomRight = "bottom right",
+    bottomLeft = "bottom left"
+}

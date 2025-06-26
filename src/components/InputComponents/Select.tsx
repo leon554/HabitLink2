@@ -1,16 +1,19 @@
 import { useEffect, useRef, useState } from "react";
 import { Util } from "../../utils/util";
+import type { Origin } from "../../utils/types";
 
 export interface dataFormat{
     name: string,
     id: number
 }
+
 interface SelectProps {
   items: dataFormat[];
   selectedItem: dataFormat | null;
   setSelectedItem: (id: number) => void;
   setText?: string | React.ReactNode
   style?: string
+  origin?: Origin
 }
 export default function Select(props: SelectProps) {
     const focusElement = useRef<null|HTMLDivElement>(null)
@@ -48,8 +51,9 @@ export default function Select(props: SelectProps) {
                     : Util.capitilizeFirst(props.selectedItem.name))}
 
             </button>
-            <div className="absolute top-full right-0 rounded-md p-3 mt-2  flex flex-col justify-start items-start scale-0 origin-top duration-200 bg-panel1 text-subtext1  outline-border2  z-20 w-fit outline-1" style={{
-                scale: clicked ? 1 : 0
+            <div className="absolute top-full right-0 rounded-md p-3 mt-2  flex flex-col justify-start items-start scale-0 duration-200 bg-panel1 text-subtext1  outline-border2  z-20 w-fit outline-1" style={{
+                scale: clicked ? 1 : 0,
+                transformOrigin: props.origin ?? "top"
                 }}>
                 {props.items && props.items.map((h) => {
                     return (
