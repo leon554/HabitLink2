@@ -87,7 +87,7 @@ export namespace HabitUtil{
     }
     
     export function getCompletionRate(habit: HabitType | null, completions: HabitCompletionType[] | undefined){
-        if(!habit || !completions || completions.length == 0) return {compRate: 0, missedSessions: 0}
+        if(!habit || !completions || completions.length == 0) return {compRate: 0, missedSessions: 0, validCompletions: 0, completableDays: 0}
         if(habit.completionDays.length == 1){
             return getCompRateAnyDays(habit, completions)
         }else{
@@ -107,6 +107,8 @@ export namespace HabitUtil{
 
         const completionsComponents = {totalCompletions: 0, totalPossibleComps: 0}
         let missedSessions = hasCompletionToday(habit, completions) ? 0 : -1
+        let completableDaysSum = 0
+
         for(let i = 0; i < weeks.length; i++){
             let completionsThisWeek = completions.filter(c => dateUtils.isDateInWeek(new Date(Number(c.date)), weeks[i]))
             let completableDaysAmt = Number(weeklyTarget)
@@ -120,6 +122,7 @@ export namespace HabitUtil{
 
                 completableDaysAmt = (i == mostRecentWeek) ? completionAmt : completableDaysAmt
                 completableDaysAmt = Math.max(1, completableDaysAmt)
+                completableDaysSum + completableDaysAmt
 
                 if(completionAmt + dateUtils.daysLeftInWeekExToday() < weeklyTarget && i == mostRecentWeek){
                     const missedDaysThisWeek = weeklyTarget - (completionAmt + dateUtils.daysLeftInWeekExToday())
@@ -135,6 +138,7 @@ export namespace HabitUtil{
             }else{
                 completableDaysAmt = (i == mostRecentWeek) ? completionsThisWeek.length : completableDaysAmt
                 completableDaysAmt = Math.max(1, completableDaysAmt)
+                completableDaysSum + completableDaysAmt
 
                 if(completionsThisWeek.length + dateUtils.daysLeftInWeekExToday() < weeklyTarget && i == mostRecentWeek){
                     const missedDaysThisWeek = weeklyTarget - (completionsThisWeek.length + dateUtils.daysLeftInWeekExToday())
@@ -149,8 +153,10 @@ export namespace HabitUtil{
             }
 
         } 
-        console.log(completionsComponents.totalCompletions + "/" + completionsComponents.totalPossibleComps)   
-        return {compRate: completionsComponents.totalCompletions/completionsComponents.totalPossibleComps, missedSessions}
+        return {compRate: completionsComponents.totalCompletions/completionsComponents.totalPossibleComps, 
+                missedSessions,
+                validCompletions: completionsComponents.totalCompletions,
+                completableDays: completionsComponents.totalPossibleComps}
     }
 
     function getCompRateFixedDays(habit: HabitType, completions: HabitCompletionType[]){
@@ -193,8 +199,11 @@ export namespace HabitUtil{
             completionsComponents.totalPossibleComps += completableDays
             completionsComponents.totalCompletions += Math.min(completionCount.length, completableDays)
         }
-        if(completionsComponents.totalPossibleComps == 0) return {compRate: 0, missedSessions}
-        return {compRate: completionsComponents.totalCompletions/completionsComponents.totalPossibleComps, missedSessions}
+        //if(completionsComponents.totalPossibleComps == 0) return {compRate: 0, missedSessions}
+        return {compRate: completionsComponents.totalCompletions/completionsComponents.totalPossibleComps, 
+                missedSessions,
+                validCompletions: completionsComponents.totalCompletions,
+                completableDays: completionsComponents.totalPossibleComps}
     }
 
     function hasCompletionToday(habit: HabitType, completions: HabitCompletionType[]){
@@ -450,6 +459,7 @@ export namespace HabitUtil{
         })
         return {validComps, partialComps}
     }
+    
     function getDate(date: Date){
         return `${date.getMonth() +1}/${date.getDate()}/${date.getFullYear()}`
     }
@@ -460,7 +470,13 @@ export namespace HabitUtil{
         }
         return Util.pretifyNumber(getCompletionDataSum(completions))
     }
-
+    export function getHabitDataSum(completions: HabitCompletionType[] | undefined, type: HabitTypeE | undefined){
+        if(!type) return 0
+        if(type == HabitTypeE.Time_Based){
+            return Util.secondsToHours(getCompletionDataSum(completions))
+        }
+        return getCompletionDataSum(completions)
+    }
     export function getCompletionDaysThisWeek(habit: HabitType|null, completions: HabitCompletionType[]|undefined){
         const output = [{day: "sun", done: false, complete: false}, {day: "mon", done: false, complete: false},{day: "tue", done: false, complete: false},{day: "wed", done: false, complete: false},{day: "thu", done: false, complete: false},{day: "fri", done: false, complete: false},{day: "sat", done: false}]
         if(!habit || !completions) return output

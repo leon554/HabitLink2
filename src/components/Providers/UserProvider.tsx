@@ -34,12 +34,14 @@ interface UserType{
     currentHabitStats : {
         compRate: number
         partialComps: number
-        validComps: number
+        completions: number
         missedSessions: number
         strength: number
         streak: number
         entries: number | undefined
-        dataSum: string
+        dataSum: number
+        validComps: number
+        completableDays: number
     }
 }
 const initialValues: UserType = {
@@ -65,12 +67,14 @@ const initialValues: UserType = {
     currentHabitStats : {
         compRate: 0,
         partialComps: 0,
-        validComps: 0,
+        completions: 0,
         missedSessions: 0,
         strength: 0,
         streak: 0,
         entries: 0,
-        dataSum: "",
+        dataSum: 0,
+        validComps: 0,
+        completableDays: 0
     }
 }
 
@@ -93,12 +97,12 @@ export default function UserProvider(props: Props) {
     const [goalCompletions, setGoalCompletions] = useState<Map<number, GaolCompletionType[]>>(new Map<number, GaolCompletionType[]>())
 
     const currentHabitCompletions = currentHabit ? habitsCompletions.get(Number(currentHabit?.id)) : undefined
-    const {compRate, missedSessions} = HabitUtil.getCompletionRate(currentHabit, currentHabitCompletions)
+    const {compRate, missedSessions, validCompletions: validComps, completableDays} = HabitUtil.getCompletionRate(currentHabit, currentHabitCompletions)
     const strength = HabitUtil.getStrength(currentHabit, currentHabitCompletions)
     const streak = HabitUtil.getStreak(currentHabit, currentHabitCompletions)
-    const {validComps, partialComps} = HabitUtil.getCompletions(currentHabit, currentHabitCompletions)
+    const {validComps: completions, partialComps} = HabitUtil.getCompletions(currentHabit, currentHabitCompletions)
     const entries = currentHabit ? habitsCompletions.get(Number(currentHabit.id))?.length : 0
-    const dataSum = HabitUtil.getHabitDataSumString(currentHabitCompletions, currentHabit?.type as HabitTypeE)
+    const dataSum = HabitUtil.getHabitDataSum(currentHabitCompletions, currentHabit?.type as HabitTypeE)
 
 
     const auth = useContext(AuthContext)
@@ -383,7 +387,7 @@ export default function UserProvider(props: Props) {
             archiveGoal,
             deleteGoal,
             goalCompletions,
-            currentHabitStats: {compRate, missedSessions, streak, entries, strength,validComps, partialComps,dataSum},
+            currentHabitStats: {compRate, missedSessions, streak, entries, strength,completions, partialComps,dataSum, validComps, completableDays},
             habitRanks,
             habitComps,
             habitStrengths

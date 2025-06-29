@@ -40,8 +40,7 @@ export default function StatsPage() {
                 <div className="mt-20 gap-3 flex flex-col items-center w-[90%] max-w-[600px]">
                     <StatsTitle/>
                     <ConsistencyPanel compRate={HC.currentHabitStats.compRate} strength={HC.currentHabitStats.strength}/>
-                    <Summary habitType={HC.currentHabit.type} validComps={HC.currentHabitStats.validComps} partialComps={HC.currentHabitStats.partialComps} streak={HC.currentHabitStats.streak}
-                        entries={HC.currentHabitStats.entries ? HC.currentHabitStats.entries : 0} missedComps={Math.max(HC.currentHabitStats.missedSessions, 0)} dataSum={HC.currentHabitStats.dataSum}/>
+                    <Summary/>
                     <CompletionThisWeek/>
                     <CompletionsMonth/>
                 </div>
