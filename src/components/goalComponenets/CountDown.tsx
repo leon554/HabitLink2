@@ -34,7 +34,7 @@ export default function CountDown() {
 
     return (
         <>
-            <div className='bg-panel1  drop-shadow-sm outline-border outline-1 w-[90%] max-w-[600px] p-5 py-8 flex gap-1 flex-col items-center rounded-2xl'>
+            <div className='bg-panel1  drop-shadow-sm outline-border outline-1 w-[90%] max-w-[600px] p-5 py-8 flex gap-1 flex-col items-center rounded-2xl '>
                 <p className="text-subtext1">
                     Times Running Out!
                 </p>

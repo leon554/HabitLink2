@@ -7,12 +7,12 @@ export default function CircularProgressBar(p: Props) {
     function getColor(){
         const v = p.value
         return v <= 10 ? 
-        "text-red-400" :
+        "text-red-500" :
         v < 40 ? 
-        "text-orange-400" :
+        "text-orange-500" :
         v < 70 ? 
-        "text-yellow-400" :
-        "text-green-400"
+        "text-yellow-500" :
+        "text-green-500"
     }
     return (
        <div className="relative sm:w-50 w-40 sm:h-30 h-25">

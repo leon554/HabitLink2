@@ -96,7 +96,7 @@ export default function HabitLogCard({habit: h}: HabitProps) {
                         {loading ? <AiOutlineLoading className={`animate-spin ${getLoadingColor()}`}/> : <FaCheck className={`${isCompletedToday() ? "dark:text-highlight text-highlight" : "text-subtext2 dark:text-subtext2" }`}/>}
                     </button>
                     <Model open={open} onClose={() => setOpen(false)}>
-                        <div onClick={e => e.stopPropagation()}>
+                        <div onClick={e => e.stopPropagation()} className='w-[90%] max-w-[400px]'>
                             <HabitLogPopUp habit={h} onExit={() => setOpen(false)} value={value} setValue={setValue}
                                 onSubmit={async () => {
                                     await handleSubmit(value)

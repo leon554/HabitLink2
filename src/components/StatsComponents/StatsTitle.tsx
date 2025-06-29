@@ -1,0 +1,29 @@
+import { UserContext } from "../Providers/UserProvider"
+import { Util } from "../../utils/util"
+import Select from "../InputComponents/Select"
+import { HiOutlineSwitchHorizontal } from "react-icons/hi"
+import { useContext } from "react"
+import { IoFlame } from "react-icons/io5";
+
+export default function StatsTitle() {
+
+    const HC = useContext(UserContext)
+
+    return (
+        <div className="rounded-2xl outline-1 outline-border bg-panel1 w-full p-4 flex justify-between items-center texture">
+            <p className="text-subtext1 font-mono text-lg font-semibold flex items-center gap-1">
+                {HC.currentHabitStats.streak}{<IoFlame />}
+            </p>
+            <p className="text-2xl font-semibold text-center font-mono text-title">
+                {Util.capitilizeFirst(HC.currentHabit?.name)} 
+            </p>
+            <div className="text-subtext2 hover:cursor-pointer flex relative">
+                <Select items={Array.from(HC.habits.values())} 
+                                        selectedItem={HC.currentHabit} 
+                                        setSelectedItem={(id: number) => HC.setCurrentHabit(HC.habits.get(id) ?? null)}
+                                        setText={<HiOutlineSwitchHorizontal/>}
+                                        style="outline-0 p-0 justify-end flex "/>
+            </div>
+        </div>
+    )
+}

@@ -462,7 +462,7 @@ export namespace HabitUtil{
     }
 
     export function getCompletionDaysThisWeek(habit: HabitType|null, completions: HabitCompletionType[]|undefined){
-        const output = [{day: "s", done: false, complete: false}, {day: "m", done: false, complete: false},{day: "t", done: false, complete: false},{day: "w", done: false, complete: false},{day: "t", done: false, complete: false},{day: "f", done: false, complete: false},{day: "s", done: false}]
+        const output = [{day: "sun", done: false, complete: false}, {day: "mon", done: false, complete: false},{day: "tue", done: false, complete: false},{day: "wed", done: false, complete: false},{day: "thu", done: false, complete: false},{day: "fri", done: false, complete: false},{day: "sat", done: false}]
         if(!habit || !completions) return output
         
         const completionThisWeek = getCompletionsThisWeek(completions)

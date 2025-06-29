@@ -10,7 +10,7 @@ export default function GoalTitlePanel() {
 
     return (
         <div className="w-[90%] max-w-[600px] mt-20 p-10 z-10 texture drop-shadow-sm bg-panel1 text-title  outline-border outline-1 rounded-2xl flex justify-center flex-col items-center gap-2">
-            <p className="text-3xl font-semibold">
+            <p className="text-3xl font-semibold text-center">
                 {HC.currentGaol!.name}
             </p>
             <p className={`text-sm text-subtext1 ${!HC.currentGaol!.description ? "absolute" : ""}`}>

@@ -5,12 +5,12 @@ interface Props{
 }
 export default function InfoBox(p: Props) {
     return (
-        <div className="flex flex-col items-center justify-center rounded-2xl px-0.5 outline-1 outline-border2 bg-panel2 grow-1">
-            <p className="text-xl mt-3 mb-1.5 text-subtext1">
-                {p.value}
-            </p>
-            <p className="text-[11px] m-2 mt-0 text-subtext2 text-wrap text-center">
+        <div className="flex items-center justify-between rounded-2xl gap-2 px-4 py-2 outline-1 outline-border2 bg-panel2 hover:scale-[1.02] transition-transform duration-200 hover:cursor-default w-full">
+            <p className="text-[12px]  text-subtext2 text-wrap text-center leading-none">
                 {p.text}
+            </p>
+            <p className="text-lg text-subtext1 leading-none ">
+                {p.value}
             </p>
         </div>
     )

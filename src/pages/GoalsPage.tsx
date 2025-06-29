@@ -6,9 +6,10 @@ import AssociatedHabits from "../components/goalComponenets/AssociatedHabits"
 import AvgConsistency from "../components/goalComponenets/AvgConsistency"
 import { Util } from "../utils/util"
 import { HabitTypeE} from "../utils/types"
-import useCurrentGoalValue from "../hooks/useCurrentGoalValue"
+import useCurrentGoalValue from "../components/Hooks/useCurrentGoalValue"
 import GoalCompletionPanel from "../components/GoalCompletionPanel"
 import GoalTitlePanel from "../components/GoalTitlePanel"
+import AvgStrengthPanel from "../AvgStrengthPanel"
 
 
 export default function GoalsPage() {
@@ -51,6 +52,7 @@ export default function GoalsPage() {
                     <GoalProgress/>
                 }
                 <AvgConsistency/>
+                <AvgStrengthPanel/>
                 <AssociatedHabits/>
             </div>}
         </div>

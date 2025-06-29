@@ -1,5 +1,5 @@
 import { useContext } from "react"
-import { UserContext } from "../components/Providers/UserProvider"
+import { UserContext } from "../Providers/UserProvider"
 
 
 export default function useCurrentGoalValue(){

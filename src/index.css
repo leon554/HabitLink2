@@ -21,7 +21,7 @@
 
 .dark {
   --color-panel1: oklch(26.9% 0 0);  
-  --color-panel2: hsl(0, 0%, 20%);    
+  --color-panel2: hsl(0, 0%, 18%);    
   --color-progress-panel: hsl(0, 0%, 25%); 
   --color-btn-text:   oklch(26.9% 0 0);
   --color-btn:   oklch(72.3% 0.219 149.579);
@@ -41,7 +41,7 @@
         display: none;
     }
     .texture{
-      background-image: radial-gradient(circle, var(--texture) 10%, rgba(0, 0, 0, 0) 30%);
+      background-image: radial-gradient(circle, var(--texture) 10%, rgba(0, 0, 0, 0) 20%);
       background-size: 5px 5px;
     }
    /* Hide scrollbar for IE, Edge and Firefox */

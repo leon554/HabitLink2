@@ -51,7 +51,6 @@ export namespace Util{
         return values
     }
     export function calculateProgress(startVal: number, currentVal: number, goalVal: number){
-        console.log(startVal, goalVal, currentVal)
         if(goalVal > startVal){
             return (currentVal - startVal)/(goalVal - startVal)
         }

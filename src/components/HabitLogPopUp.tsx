@@ -23,7 +23,7 @@ export default function HabitLogPopUp(p: Props) {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.1 }}
-                className=" flex flex-col items-center gap-3 z-50 max-w-[400px] rounded-2xl w-[80%] m-2 mb-5 mt-5 bg-panel1 dark:bg-panel1 dark:outline-1 outline-border p-8">
+                className=" flex flex-col items-center gap-3 z-50 rounded-2xl w-[100%] bg-panel1 dark:bg-panel1 dark:outline-1 outline-border p-8">
                 <h1 className="text-lg font-semibold text-title font-mono leading-0 mb-4">Enter Data</h1>
                 <div className=" w-full">
                      {p.habit.type == HabitTypeE.Time_Based ? 

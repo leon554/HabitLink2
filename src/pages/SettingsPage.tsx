@@ -17,7 +17,7 @@ export default function SettingsPage() {
         <div className="flex flex-col justify-center mt-20 gap-3 items-center">
             <div className="bg-panel1 flex flex-col items-center rounded-2xl w-[90%] max-w-[600px]  p-5 font-mono outline-1 outline-border texture">
                 <p className="text-title text-xl">
-                    settings 
+                    Settings 
                 </p>
             </div>
             <InfoPanel>

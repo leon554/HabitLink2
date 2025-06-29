@@ -1,13 +1,11 @@
 import { useContext} from "react";
-import Select from "../components/InputComponents/Select";
 import { UserContext } from "../components/Providers/UserProvider";
 import ConsistencyPanel from "../components/StatsComponents/ConsistencyPanel";
 import Summary from "../components/StatsComponents/Summary";
-
 import { Util } from "../utils/util";
-import { HiOutlineSwitchHorizontal } from "react-icons/hi";
 import CompletionThisWeek from "../components/StatsComponents/CompletionThisWeek";
 import CompletionsMonth from "../components/StatsComponents/CompletionsMonth";
+import StatsTitle from "../components/StatsComponents/StatsTitle";
 
 
 export default function StatsPage() {
@@ -40,21 +38,7 @@ export default function StatsPage() {
             : 
             <div className="w-full flex justify-center gap-4 mb-15"> 
                 <div className="mt-20 gap-3 flex flex-col items-center w-[90%] max-w-[600px]">
-                    <div className="rounded-2xl outline-1 outline-border bg-panel1 w-full p-4 flex justify-between items-center texture">
-                        <p className="text-subtext1 font-mono text-lg font-semibold">
-                            {HC.currentHabitStats.streak}🔥
-                        </p>
-                        <p className="text-xl text-center font-mono text-title">
-                            {Util.capitilizeFirst(HC.currentHabit?.name)} Statistics
-                        </p>
-                        <div className="text-subtext2 hover:cursor-pointer flex relative">
-                            <Select items={Array.from(HC.habits.values())} 
-                                                    selectedItem={HC.currentHabit} 
-                                                    setSelectedItem={(id: number) => HC.setCurrentHabit(HC.habits.get(id) ?? null)}
-                                                    setText={<HiOutlineSwitchHorizontal/>}
-                                                    style="outline-0 p-0 justify-end flex "/>
-                        </div>
-                    </div>
+                    <StatsTitle/>
                     <ConsistencyPanel compRate={HC.currentHabitStats.compRate} strength={HC.currentHabitStats.strength}/>
                     <Summary habitType={HC.currentHabit.type} validComps={HC.currentHabitStats.validComps} partialComps={HC.currentHabitStats.partialComps} streak={HC.currentHabitStats.streak}
                         entries={HC.currentHabitStats.entries ? HC.currentHabitStats.entries : 0} missedComps={Math.max(HC.currentHabitStats.missedSessions, 0)} dataSum={HC.currentHabitStats.dataSum}/>
