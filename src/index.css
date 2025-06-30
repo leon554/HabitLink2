@@ -1,5 +1,5 @@
 @import "tailwindcss";
-
+@import "tw-animate-css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -24,7 +24,7 @@
   --color-panel2: hsl(0, 0%, 18%);    
   --color-progress-panel: hsl(0, 0%, 25%); 
   --color-btn-text:   oklch(26.9% 0 0);
-  --color-btn:   oklch(72.3% 0.219 149.579);
+  --color-btn:   oklch(72.3% 0.219 149.579); 
   --color-title: oklch(97% 0 0);      
   --color-subtext1: oklch(87% 0 0);   
   --color-subtext2: oklch(70.8% 0 0);    
@@ -32,7 +32,7 @@
   --color-border: color-mix(in oklab, var(--color-neutral-700)  60%, transparent);
   --color-border2:  var(--color-neutral-600)  ;
   --color-highlight: oklch(72.3% 0.219 149.579);   
-  --texture: #646464
+  --texture: #646464;
 }
 
 @layer utilities {
@@ -71,3 +71,4 @@ input[type="range"].slider-thumb::-moz-range-thumb {
 ::-webkit-calendar-picker-indicator {
     opacity: 0%;
 }
+
