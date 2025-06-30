@@ -36,18 +36,17 @@
 }
 
 @layer utilities {
-    /* Hide scrollbar for Chrome, Safari and Opera */
-    .no-scrollbar::-webkit-scrollbar {
-        display: none;
-    }
-    .texture{
-      background-image: radial-gradient(circle, var(--texture) 10%, rgba(0, 0, 0, 0) 20%);
-      background-size: 5px 5px;
-    }
-   /* Hide scrollbar for IE, Edge and Firefox */
-    .no-scrollbar {
-        -ms-overflow-style: none;  /* IE and Edge */
-        scrollbar-width: none;  /* Firefox */
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .texture{
+    background-image: radial-gradient(circle, var(--texture) 10%, rgba(0, 0, 0, 0) 20%);
+    background-size: 5px 5px;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;  
+    scrollbar-width: none; 
   }
 }
 
