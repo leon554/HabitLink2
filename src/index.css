@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import "tw-animate-css";
+
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -16,7 +16,7 @@
   --color-border: oklch(37.3% 0.034 259.733);   
   --color-border2: oklch(37.3% 0.034 259.733);   
   --color-highlight: oklch(70.7% 0.165 254.624);   
-    --texture: var(--color-blue-400)
+  --texture: var(--color-blue-400)
 }
 
 .dark {
@@ -27,11 +27,11 @@
   --color-btn:   oklch(72.3% 0.219 149.579); 
   --color-title: oklch(97% 0 0);      
   --color-subtext1: oklch(87% 0 0);   
-  --color-subtext2: oklch(70.8% 0 0);    
+  --color-subtext2: #a1a1a1;    
   --color-subtext3: hsl(0, 0%, 53%); 
   --color-border: color-mix(in oklab, var(--color-neutral-700)  60%, transparent);
   --color-border2:  var(--color-neutral-600)  ;
-  --color-highlight: oklch(72.3% 0.219 149.579);   
+  --color-highlight: #00c950;   
   --texture: #646464;
 }
 

@@ -548,4 +548,16 @@ export namespace HabitUtil{
         arr.splice(start, end - start + 1, ...reversed);
         return arr;
     }
+    const dayMap = {'0': 'Sun', '1': 'Mon', '2': 'Tue', '3': 'Wed', '4': 'Thu', '5': 'Fri', '6': 'Sat', }
+    type DayType = "0" | "1" | "2" | "3" | "4" | "5" | "6"
+    export function getDaysOfWeekCompletions(completions: HabitCompletionType[]){ 
+        let map = {'0': 0, '1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0}
+
+        completions.forEach(c => {
+            const day = new Date(Number(c.date)).getDay()
+            map[`${day}` as DayType]++
+        })
+
+        return Array.from(Object.entries(map)).map(v => ({day: dayMap[`${v[0]}` as DayType], data: v[1]}))
+    }
 }

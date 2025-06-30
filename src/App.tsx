@@ -12,39 +12,15 @@ import StatsPage from "./pages/StatsPage"
 import SettingsProvider from "./components/Providers/SettingsProvider"
 import GoalsPage from "./pages/GoalsPage"
 import CreateGaolPage from "./pages/CreateGaolPage"
-import { useState, useEffect, useLayoutEffect} from "react"
+import { useContext} from "react"
 import SettingsPage from "./pages/SettingsPage"
+import { themeContext } from "./components/Providers/ThemeProvider"
 
 function App() {
-  const [dark, setDark] = useState<boolean|null>(null)
+  const {dark, setDark} = useContext(themeContext)
 
-  useLayoutEffect(() => {
+  console.log("theme " + dark)
 
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "dark") {
-      setDark(true);
-      document.documentElement.classList.add("dark");
-    } else if(savedTheme === "light"){
-      setDark(false);
-      document.documentElement.classList.remove("dark");
-    }else{
-      setDark(true)
-    }
-  }, []);
-
-  useEffect(() => {
-    if(dark === null) return
-    if (dark) {
-      document.documentElement.style.backgroundColor = "#1f1f1f"; // Dark background
-      document.documentElement.classList.add("dark")
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.documentElement.style.backgroundColor = "#ffffff"; // Light background
-      document.documentElement.classList.remove("dark")
-      localStorage.setItem("theme", "light");
-    }
-    
-  }, [dark]);
 
   return (
     <div className="">
