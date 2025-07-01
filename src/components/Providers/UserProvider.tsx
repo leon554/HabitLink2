@@ -84,6 +84,7 @@ interface Props {
     children: React.ReactNode;
 }
 export default function UserProvider(props: Props) {
+    //add delete habit and edit habit functionality and limits on create page
     const [loading, setLoading] = useState(false)
     const [currentHabit, setCurrentHabit] = useState<HabitType|null>(null)
     const [currentGaol, setCurrentGoal] = useState<GoalType|null>(null)

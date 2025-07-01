@@ -44,11 +44,11 @@ export namespace dateUtils{
         const seconds = String(now.getSeconds()).padStart(2, '0');
         return `${hours}:${minutes}:${seconds}`;
     }
-    export function daysLeftInWeekExToday(){
-        return 6 - (new Date()).getDay()
+    export function daysLeftInWeekExToday(today?: Date){
+        return 6 - (today ?? new Date()).getDay()
     }
-    export function daysLeftInWeekIncToday(){
-        return 7 - (new Date()).getDay()
+    export function daysLeftInWeekIncToday(today?: Date){
+        return 7 - (today ?? new Date()).getDay()
     }
     export function isDateInWeek(date: Date, week: Date) {
         
@@ -63,5 +63,12 @@ export namespace dateUtils{
         const targetDate = new Date(date);
 
         return targetDate >= startOfWeek && targetDate <= endOfWeek;
+    }
+    export function formatDate(date: Date): string {
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0'); 
+        const year = date.getFullYear();
+
+        return `${day}/${month}/${year}`;
     }
 }
