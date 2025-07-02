@@ -8,6 +8,7 @@ import CompletionsMonth from "../components/StatsComponents/CompletionsMonth";
 import StatsTitle from "../components/StatsComponents/StatsTitle";
 import MostCommonDays from "../components/Charts/MostCommonDays";
 import { AreaChartStrength } from "@/components/Charts/AreaChartStrength";
+import HabitEdit from "@/components/StatsComponents/HabitEdit";
 
 
 export default function StatsPage() {
@@ -47,6 +48,7 @@ export default function StatsPage() {
                     <CompletionsMonth/>
                     <MostCommonDays/>
                     <AreaChartStrength/>
+                    <HabitEdit/>
                 </div>
             </div>
             }

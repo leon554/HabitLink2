@@ -15,6 +15,8 @@ interface UserType{
     createGoal: (name: string, description: string, type: string, startValue: number, goalValue: number, habitIds: number[], completionDate: Date, linkedHabitId: number | null) => Promise<void>
     archiveGoal: (goalId: number) => Promise<void>
     deleteGoal: (goalId: number) => Promise<void>
+    updateHabitName: (newName: string, habitID: number) => Promise<void>
+    deleteHabit: (habitId: number) => Promise<void>
 
     habits: Map<number, HabitType>
     habitsCompletions: Map<number, HabitCompletionType[]>,
@@ -49,6 +51,8 @@ const initialValues: UserType = {
     createGoal: () => Promise.resolve(undefined),
     archiveGoal: () => Promise.resolve(undefined),
     deleteGoal: () => Promise.resolve(undefined),
+    updateHabitName: () => Promise.resolve(undefined),
+    deleteHabit: () => Promise.resolve(undefined),
     habits: new Map<number, HabitType>(),
     goals: new Map<number, GoalType>(),
     habitsCompletions: new Map<number, HabitCompletionType[]>(),
@@ -369,11 +373,55 @@ export default function UserProvider(props: Props) {
         await getHabitsCompletions()
         setLoading(false)
     }
+    async function updateHabitName(newName: string, habitID: number){
+        if(loading) return
+        setLoading(true)
+
+        const {  error } = await supabase
+            .from('habits')
+            .update({ name: newName })
+            .eq('id', habitID)
+
+        if(error){
+            alert("Habit name update erorr: " + error.message)
+            setLoading(false)
+            return
+        }
+
+        const newMap = Util.updateMap(habits, habitID, {...habits.get(habitID)!, name: newName})
+        setHabits(newMap)
+        setLoading(false)
+    }
+    async function deleteHabit(habitId: number){
+        if(loading) return
+        setLoading(true)
+
+        const { error: err1 } = await supabase
+            .from('habitCompletions')
+            .delete()
+            .eq('habitId', habitId)
+        const {error: err2 } = await supabase
+            .from("habits")
+            .delete()
+            .eq("id", habitId)
+
+        if(err1 || err2){
+            alert("Habit deletion error: " + err1?.message + err2?.message)
+            setLoading(false)
+            return 
+        }
+
+        habits.delete(habitId)
+        setHabits(habits)
+        setLoading(false)
+    }
 
     return (
         <UserContext.Provider value={{
             createHabit,
             createGoal,
+            updateHabitName,
+            deleteHabit,
             habits,
             goals,
             habitsCompletions,
