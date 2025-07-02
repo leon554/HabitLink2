@@ -12,7 +12,7 @@ export default function ConsistencyPanel(p: Props) {
             <div className="flex flex-col gap-4 ">    
                 <div className="flex flex-col gap-1">
                     <p className="text-title">
-                        Consitency
+                        Consistency
                     </p>
                     <div className="flex gap-2 items-center">
                         <div className="w-full">

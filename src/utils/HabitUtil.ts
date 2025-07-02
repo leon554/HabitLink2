@@ -508,11 +508,11 @@ export namespace HabitUtil{
 
 
     }
+    export type compDaysType = {day: Date, done: boolean, complete: boolean, habitCreation: boolean}
     export function getCompletionDaysThisPeriod(habit: HabitType|null, completions: HabitCompletionType[]|undefined){
         let output = Array(113).fill(null).map(() => ({day: new Date(), done: false, complete: false, habitCreation: false})) 
         if(!habit || !completions) return []
 
-        type compDaysType = {day: Date, done: boolean, complete: boolean, habitCreation: boolean}
         let subarrs: compDaysType[][] = [] 
         let date = dateUtils.getEndOfWeekDate()
         for(let i = 0; i < output.length; i++){
@@ -535,7 +535,6 @@ export namespace HabitUtil{
         }
         return subarrs.reverse()
     }
-
 
     export function getRank(strength: number){
         if(strength <= 10){

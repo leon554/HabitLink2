@@ -7,9 +7,10 @@ export const description = "A simple area chart"
 
 
 
+
 const chartConfig = {
-  date: {
-    label: "date",
+  data: {
+    label: "Consistency \u00A0",
     color: "var( --color-highlight)",
   },
 } satisfies ChartConfig
@@ -23,7 +24,7 @@ export function AreaChartStrength() {
     return (
         <div className="w-full flex flex-col gap-4 items-center font-mono bg-panel1 p-7  rounded-2xl outline-1 outline-border">
             <p className="text-title mt-1 mb-2 text-lg">
-                Consitency Over Time
+                Consistency Over Time
             </p>
             <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
             <LineChart
@@ -32,7 +33,8 @@ export function AreaChartStrength() {
                 margin={{
                 left: 12,
                 right: 12,
-                top: 5
+                top: 5,
+                bottom: 15
                 }}
                 className="rounded-2xl "
             >
@@ -41,15 +43,16 @@ export function AreaChartStrength() {
                     dataKey="date"
                     tickLine={false}
                     axisLine={false}
-                    tickMargin={8}
-                    tickFormatter={(value) => value.slice(0, 3)}
-                    angle={-45}
-
+                    tickMargin={20}
+                    tickFormatter={(value) => value.slice(0, 5)}
+                    angle={45}
                 />
-                <YAxis width={20} tickLine={false} domain={[0, 120]} axisLine={false}/>
+                <YAxis width={20} tickLine={false} domain={[0, 100]} axisLine={false}/>
                 <ChartTooltip
                 cursor={false}
-                content={<ChartTooltipContent indicator="line" className="bg-panel2 outline-1 outline-border2 text-subtext2"/>}
+                content={<ChartTooltipContent 
+                    indicator="line" 
+                    className="bg-panel2 outline-1 outline-border2 text-subtext2"/>}
                 />
                 <Line
                 dataKey="data"

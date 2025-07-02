@@ -4,6 +4,7 @@ import { HabitUtil } from "../../utils/HabitUtil"
 import { dateUtils } from "../../utils/dateUtils"
 import { IoInformationCircleOutline } from "react-icons/io5";
 import Model from "../InputComponents/Model";
+import ToolTip from "../ToolTip";
 
 export default function CompletionsMonth() {
     const HC = useContext(UserContext)
@@ -33,27 +34,35 @@ export default function CompletionsMonth() {
                                 </p>
                             )
                         })}  
-                    </div>
+                </div>
                     {compDays.map((d, i) => {
                         return(
                             <div key={i} className="flex flex-col items-center gap-1.5 ">
                                 {d.reverse().map(v => {
                                     return(
-                                        <p className={`w-4 h-4 ${dateUtils.isDatesSameDay(v.day , new Date()) ? 
-                                            v.done ? "bg-highlight rounded-xl" : "outline-1 outline-highlight rounded-sm" :
-                                            v.habitCreation ? 
-                                            v.done ? 
-                                            "rounded-none bg-highlight" :
-                                            v.complete ? 
-                                            "rounded-none bg-red-400" :
-                                            "outline-1 rounded-none outline-green-500" : 
-                                            v.done ?
-                                            "bg-highlight rounded-sm" : 
-                                            v.complete ? 
-                                            "bg-red-400 rounded-sm" : 
-                                            "outline-1 outline-border2/70 rounded-sm"}  hover:scale-[1.2] transition-transform duration-200 hover:cursor-default`}>
+                                        <ToolTip tooltip={
+                                            <div className="rounded-2xl bg-panel2 outline-1 outline-border2 p-3 max-w-[300px] ">
+                                                <p className=" text-xs text-center text-subtext2 w-full">
+                                                    {dateUtils.formatDate(v.day)} {getDayStatus(v)} {dateUtils.isDatesSameDay(v.day , new Date()) ? "Today" : ""} {dateUtils.isDatesSameDay(new Date(Number(HC.currentHabit?.creationDate)) , v.day) ? "Creation Date" : ""}
+                                                </p>
+                                            </div>
+                                        }>
+                                            <p className={`w-4 h-4 ${dateUtils.isDatesSameDay(v.day , new Date()) ? 
+                                                v.done ? "bg-highlight rounded-xl" : "outline-1 outline-highlight rounded-sm" :
+                                                v.habitCreation ? 
+                                                v.done ? 
+                                                "rounded-none bg-highlight" :
+                                                v.complete ? 
+                                                "rounded-none bg-red-400" :
+                                                "outline-1 rounded-none outline-green-500" : 
+                                                v.done ?
+                                                "bg-highlight rounded-sm" : 
+                                                v.complete ? 
+                                                "bg-red-400 rounded-sm" : 
+                                                "outline-1 outline-border2/70 rounded-sm"}  hover:scale-[1.2] transition-transform duration-200 hover:cursor-default`}>
 
-                                        </p>
+                                            </p>
+                                        </ToolTip>
                                     )
                                 })}
                                 <p className="text-xs text-subtext3 text-center w-[15px]">
@@ -139,4 +148,8 @@ export default function CompletionsMonth() {
             </Model>
         </div>
     )
+}
+
+function getDayStatus(day: HabitUtil.compDaysType){
+    return day.done ? "Completed" : day.complete ? "Missed" : "No Entries"
 }
