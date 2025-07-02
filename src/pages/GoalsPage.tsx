@@ -7,8 +7,8 @@ import AvgConsistency from "../components/goalComponenets/AvgConsistency"
 import { Util } from "../utils/util"
 import { HabitTypeE} from "../utils/types"
 import useCurrentGoalValue from "../components/Hooks/useCurrentGoalValue"
-import GoalCompletionPanel from "../components/GoalCompletionPanel"
-import GoalTitlePanel from "../components/GoalTitlePanel"
+import GoalTitlePanel from "@/components/goalComponenets/GoalTitlePanel"
+import GoalCompletionPanel from "@/components/goalComponenets/GoalCompletionPanel"
 import AvgStrengthPanel from "../AvgStrengthPanel"
 
 

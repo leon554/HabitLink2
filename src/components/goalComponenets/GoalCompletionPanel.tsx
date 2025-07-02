@@ -1,5 +1,5 @@
 import { useContext } from "react"
-import { UserContext } from "./Providers/UserProvider"
+import { UserContext } from "../Providers/UserProvider"
 import { AiOutlineLoading } from "react-icons/ai"
 
 export default function GoalCompletionPanel() {

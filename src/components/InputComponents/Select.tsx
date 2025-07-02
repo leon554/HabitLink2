@@ -51,14 +51,14 @@ export default function Select(props: SelectProps) {
                     : Util.capitilizeFirst(props.selectedItem.name))}
 
             </button>
-            <div className="absolute top-full right-0 rounded-md p-3 mt-2  flex flex-col justify-start items-start scale-0 duration-200 bg-panel1 text-subtext1  outline-border2  z-20 w-fit outline-1" style={{
+            <div className="absolute top-full right-0 rounded-2xl p-3 mt-2  flex flex-col justify-start items-start scale-0 duration-200 bg-panel1 text-subtext1  outline-border2  z-20 w-fit outline-1" style={{
                 scale: clicked ? 1 : 0,
                 transformOrigin: props.origin ?? "top"
                 }}>
                 {props.items && props.items.map((h) => {
                     return (
                     <p
-                        className="hover:bg-highlight font-mono w-full flex justify-start p-1 rounded-md transition duration-100 ease-in-out hover:cursor-pointer text-nowrap hover:text-btn-text px-3"
+                        className="hover:bg-highlight font-mono w-full flex justify-start p-1 rounded-xl transition duration-100 ease-in-out hover:cursor-pointer text-nowrap hover:text-btn-text px-3"
                         onClick={() => setItem(h.id)}
                     >
                         {Util.capitilizeFirst(h.name)}

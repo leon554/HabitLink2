@@ -1,8 +1,8 @@
 import { useContext } from 'react'
-import { UserContext } from './Providers/UserProvider'
-import Select from './InputComponents/Select'
+import { UserContext } from '../Providers/UserProvider'
+import Select from '../InputComponents/Select'
 import { HiOutlineSwitchHorizontal } from 'react-icons/hi'
-import { Origin } from '../utils/types'
+import { Origin } from '@/utils/types'
 
 export default function GoalTitlePanel() {
 
