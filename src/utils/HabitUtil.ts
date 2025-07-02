@@ -117,29 +117,37 @@ export namespace HabitUtil{
 
         for(let i = 0; i < weeks.length; i++){
             let completionsThisWeek = completions.filter(c => dateUtils.isDateInWeek(new Date(Number(c.date)), weeks[i]))
+           
             let completableDaysAmt = Number(weeklyTarget)
             let completionAmt = completionsThisWeek.length
+            let daysleft = dateUtils.daysLeftInWeekIncToday(today)
+            const hasCompToday = hasCompletionToday(habit, completionsThisWeek)
+            daysleft = hasCompToday ? daysleft - 1 : daysleft
 
+            if(!isNormalHabit(habit.type)){
+                completionAmt = getValidCompsInWeekDailyTarget(completionsThisWeek, Number(habit.target), weeks[i])
+            }
+            completionAmt = Math.min(weeklyTarget, completionAmt)
+            
             if(i == creationWeek && i != mostRecentWeek){
                 completableDaysAmt = Math.min(weeklyTarget, dateUtils.daysLeftInWeekIncToday(creationDate))
             }
             if(i == mostRecentWeek && i != creationWeek){
-                completableDaysAmt = Math.min(today.getDay() + 1, weeklyTarget)
+                if(daysleft + completionAmt < weeklyTarget){
+                    completableDaysAmt = Math.min(today.getDay() + 1, weeklyTarget)
+                }else{
+                    completableDaysAmt = completionAmt
+                }
             }
             if(i == mostRecentWeek && i == creationWeek){
-                const maxDays = (today.getDay()- creationDate.getDay()) + 1 
-                completableDaysAmt = Math.min(maxDays, weeklyTarget)
+                if(daysleft + completionAmt < weeklyTarget){
+                    const maxDays = (today.getDay()- creationDate.getDay()) + 1 
+                    completableDaysAmt = Math.min(maxDays, weeklyTarget)
+                }else{
+                    completableDaysAmt = completionAmt
+                }
             }
-            
-            if(!isNormalHabit(habit.type)){
-                completionAmt = getValidCompsInWeekDailyTarget(completionsThisWeek, Number(habit.target), weeks[i])
-            }
-
-            //make it so if you miss a day it wont bring your consitency down if you can still do it the rest of the weel
-
-            console.log("day " + dateUtils.formatDate(today))
-            console.log("completions: " + completionAmt)
-            console.log("completable days: " + completableDaysAmt)
+  
             completionsComponents.totalCompletions += Math.min(completionAmt, weeklyTarget)
             completionsComponents.totalPossibleComps += completableDaysAmt
             missedSessions += Math.abs(Math.min(completionAmt, weeklyTarget) - completableDaysAmt)
@@ -205,8 +213,8 @@ export namespace HabitUtil{
                 completableDays: completionsComponents.totalPossibleComps}
     }
 
-    function hasCompletionToday(habit: HabitType, completions: HabitCompletionType[]){
-        const today = new Date()
+    function hasCompletionToday(habit: HabitType, completions: HabitCompletionType[], todayDate? : Date){
+        const today = todayDate ?? new Date()
         if(habit.type == HabitTypeE.Normal){
             return completions.some(c => dateUtils.isDatesSameDay(today, new Date(Number(c.date))))
         }else{
