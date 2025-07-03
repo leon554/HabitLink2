@@ -7,7 +7,7 @@ import CompletionThisWeek from "../components/StatsComponents/CompletionThisWeek
 import CompletionsMonth from "../components/StatsComponents/CompletionsMonth";
 import StatsTitle from "../components/StatsComponents/StatsTitle";
 import MostCommonDays from "../components/Charts/MostCommonDays";
-import { AreaChartStrength } from "@/components/Charts/AreaChartStrength";
+import { ConsistencyOverTime } from "@/components/Charts/ConsistencyOverTime";
 import HabitEdit from "@/components/StatsComponents/HabitEdit";
 
 
@@ -47,7 +47,7 @@ export default function StatsPage() {
                     <CompletionThisWeek/>
                     <CompletionsMonth/>
                     <MostCommonDays/>
-                    <AreaChartStrength/>
+                    <ConsistencyOverTime/>
                     <HabitEdit/>
                 </div>
             </div>

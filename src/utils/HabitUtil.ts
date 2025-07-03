@@ -113,7 +113,7 @@ export namespace HabitUtil{
 
 
         const completionsComponents = {totalCompletions: 0, totalPossibleComps: 0}
-        let missedSessions = hasCompletionToday(habit, completions) ? 0 : -1
+        let missedSessions = 0 
 
         for(let i = 0; i < weeks.length; i++){
             let completionsThisWeek = completions.filter(c => dateUtils.isDateInWeek(new Date(Number(c.date)), weeks[i]))
@@ -176,7 +176,7 @@ export namespace HabitUtil{
         }
 
         const completionsComponents = {totalCompletions: 0, totalPossibleComps: 0}
-        let missedSessions = hasCompletionToday(habit, completions) ? 0 : -1
+        let missedSessions = 0
         for(let i = 0; i < weeks.length; i++){
             const completionsThisWeek = completions.filter(c => dateUtils.isDateInWeek(new Date(Number(c.date)), weeks[i]))
             const compDaysIndexs = getCompDays(compDays)
@@ -184,7 +184,7 @@ export namespace HabitUtil{
             
 
             if(i == mostRecentWeek){
-                completableDays = getCompletableNumDaysThisWeek(compDays, today)
+                completableDays = getCompletableNumDaysThisWeekIncToday(compDays, today)
                 completableDays = (isSameWeek(creationDate, customeDate ?? new Date())) ? 
                 getCompletableNumDaysCreationSameWeek(compDays, creationDate, true, today) :
                 completableDays
@@ -230,7 +230,7 @@ export namespace HabitUtil{
             .map(v => v.index)
             .sort()
     }
-    function getCompletableNumDaysThisWeek(completionDays: string, today?: Date){
+    function getCompletableNumDaysThisWeekIncToday(completionDays: string, today?: Date){
         const compDays = getCompDays(completionDays)
         const currentDay = (today ?? new Date()).getDay()
         return compDays.filter(d => d <= currentDay).length
@@ -271,23 +271,29 @@ export namespace HabitUtil{
     export function isNotNormalHabit(habitType: HabitTypeE | string){
         return habitType != HabitTypeE.Normal
     }
-    export function getStrength(habit: HabitType | null, completions: HabitCompletionType[] | undefined){
+    export function getStrength(habit: HabitType | null, completions: HabitCompletionType[] | undefined, customeDate?: Date){
         if(!completions || !habit) return 0
         if(habit.completionDays.length == 1){
-            return getStrengthAnyDays(habit, completions)
+            return getStrengthAnyDays(habit, completions, customeDate)
         }
-        return getStrengthFixedDays(habit, completions)
+        return getStrengthFixedDays(habit, completions, customeDate)
     }
     const maxStrengthDays = 30
     const strengthMultiplier = 100/maxStrengthDays
-    function getStrengthAnyDays(habit: HabitType, completions: HabitCompletionType[]){
+
+    function getStrengthAnyDays(habit: HabitType, completions: HabitCompletionType[], customeDate?: Date){
         const { completionDays: wt} = habit
-        const endDate = new Date()
+        const today = customeDate ?? new Date()
         const weeklyTarget = Number(wt)
         const weeksToReachMaxStrength = Math.ceil(maxStrengthDays/weeklyTarget)
 
-        const weeks = eachWeekOfInterval({start: sub(endDate, {weeks: weeksToReachMaxStrength}), end: endDate})
+        const weeks = eachWeekOfInterval({start: sub(today, {weeks: weeksToReachMaxStrength}), end: today})
         const mostRecentWeek = weeks.length - 1
+
+        if(customeDate){
+            customeDate.setHours(23, 59, 59, 999)
+            completions = completions.filter(c => !isAfter(new Date(Number(c.date)), today))
+        }
 
         let strength: number = 0
         for(let i = 0; i < weeks.length; i++){
@@ -310,14 +316,20 @@ export namespace HabitUtil{
         }    
         return strength
     }
-    function getStrengthFixedDays(habit: HabitType, completions: HabitCompletionType[]){
+    function getStrengthFixedDays(habit: HabitType, completions: HabitCompletionType[], customeDate?: Date){
         const { completionDays: compDays} = habit
-        const endDate = new Date()
-        const weeksToReachMaxStrength = Math.ceil(getCompDays(compDays).length)
+        const today = customeDate ?? new Date()
+        const weeksToReachMaxStrength = Math.ceil(maxStrengthDays/getCompDays(compDays).length)
 
-        const weeks = eachWeekOfInterval({start: sub(endDate, {weeks: weeksToReachMaxStrength}), end: endDate})
+        const weeks = eachWeekOfInterval({start: sub(today, {weeks: weeksToReachMaxStrength}), end: today})
         const mostRecentWeek = weeks.length - 1
+        const creationWeek = 0
         
+        if(customeDate){
+            customeDate.setHours(23, 59, 59, 999)
+            completions = completions.filter(c => !isAfter(new Date(Number(c.date)), today))
+        }
+
         let strength: number = 0
         for(let i = 0; i < weeks.length; i++){
             const completionsThisWeek = completions.filter(c => dateUtils.isDateInWeek(new Date(Number(c.date)), weeks[i]))
@@ -325,7 +337,14 @@ export namespace HabitUtil{
             let completableDaysAmt = compDaysIndexs.length
 
             if(i == mostRecentWeek){
-                completableDaysAmt = getCompletableNumDaysThisWeek(compDays) + 1
+                completableDaysAmt = getCompletableNumDaysThisWeekIncToday(compDays, today)
+            }
+            if(i == creationWeek){
+                const validCompDays =  compDaysIndexs.filter(c => c >= new Date(Number(habit.creationDate)).getDay())
+                completableDaysAmt = validCompDays.length
+            }
+            if(i == creationWeek && i == mostRecentWeek){
+                completableDaysAmt = getCompletableNumDaysCreationSameWeek(compDays, new Date(Number(habit.creationDate)), true, today)
             }
  
             const completionCount = compDaysIndexs.map(d => {
@@ -567,15 +586,17 @@ export namespace HabitUtil{
 
         return Array.from(Object.entries(map)).map(v => ({day: dayMap[`${v[0]}` as DayType], data: v[1]}))
     }
-    export function getCompRateOverTimeChartData(habit: HabitType | null | undefined, completions: HabitCompletionType[] | null | undefined){
+
+    export function getCompRateStrengthOverTimeChartData(habit: HabitType | null | undefined, completions: HabitCompletionType[] | null | undefined){
         if(!habit || !completions) return []
         
-        const data: {date: string, data: number}[] = []
+        const data: {date: string, consistency: number, strength: number}[] = []
         let currentDate = new Date()
 
         while(!dateUtils.isDatesSameDay(sub(new Date(Number(habit.creationDate)), {days: 1}), currentDate)){
-            data.push({date: dateUtils.formatDate(currentDate), data: (getCompletionRate(habit, completions, currentDate).compRate * 100)})
-            console.log("input date: " + currentDate)
+            data.push({date: dateUtils.formatDate(currentDate), 
+                consistency: (Math.round(getCompletionRate(habit, completions, currentDate).compRate * 100*10)/10),
+                strength: Math.round(getStrength(habit, completions, currentDate)*10)/10})
             currentDate = sub(currentDate, {days: 1})
         }
 

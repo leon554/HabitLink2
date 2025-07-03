@@ -16,6 +16,7 @@
   --color-border: oklch(37.3% 0.034 259.733);   
   --color-border2: oklch(37.3% 0.034 259.733);   
   --color-highlight: oklch(70.7% 0.165 254.624);   
+  --color-highlight2: #0039c9; 
   --texture: var(--color-blue-400);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
@@ -37,7 +38,8 @@
   --color-subtext3: hsl(0, 0%, 53%); 
   --color-border: color-mix(in oklab, var(--color-neutral-700)  60%, transparent);
   --color-border2:  var(--color-neutral-600)  ;
-  --color-highlight: #00c950;   
+  --color-highlight: hsl(144, 100%, 39%);  
+  --color-highlight2: oklch(76.8% 0.233 130.85);    
   --texture: #646464;   
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
