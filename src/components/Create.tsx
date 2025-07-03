@@ -67,14 +67,14 @@ export default function Create({compact, onCreate} : Props){
         return target
     }
     return (
-        <div className="bg-panel1 outline-1 outline-border  max-w-[900px]  max-md:max-w-[500px] relative flex justify-center rounded-2xl flex-col items-center pb-4 font-mono p-4">
-            <p className="font-mono text-title font-semibold text-2xl mt-6 mb-8">
+        <div className="bg-panel1 outline-1 outline-border  max-w-[900px]  max-md:max-w-[500px] relative flex justify-center rounded-2xl flex-col items-center pb-4   p-4">
+            <p className="  text-title font-semibold text-2xl mt-6 mb-8">
                 Create New Habit
             </p>
             
             <div className={`flex w-full md:gap-10 md:pl-10 md:pr-10 max-md:flex-col max-md:items-center items-start `}>
                 <div className="w-full flex justify-center flex-col items-center ">
-                    <div className="w-[90%] max-w-[450px]  font-mono mb-5">
+                    <div className="w-[90%] max-w-[450px]    mb-5">
                         <p className="text-[16px]  text-subtext1 mb-2">Habit Name</p>
                         <input type="text" 
                         placeholder="Enter habit name"
@@ -82,7 +82,7 @@ export default function Create({compact, onCreate} : Props){
                         onChange={e => setName(e.target.value)}
                         className="outline-1 text-[12px] rounded-xl w-full border-0  outline-border2 text-sm p-1.5 text-subtext1 mb-1" />
                     </div>
-                    <div className="w-[90%] max-w-[450px]  font-mono mb-5">
+                    <div className="w-[90%] max-w-[450px]    mb-5">
                         <p className="text-[16px]  text-subtext1 mb-2">Habit Description</p>
                         <textarea
                         placeholder="Enter habit description"
@@ -90,7 +90,7 @@ export default function Create({compact, onCreate} : Props){
                         onChange={e => setDescription(e.target.value)}
                         className={`outline-1 text-[12px] ${compact ? "h-7.5" : "h-20"} rounded-xl resize-none w-full border-0  outline-border2 text-sm p-1.5 text-subtext1`} />
                     </div>
-                    <div className="w-[90%] max-w-[450px] font-mono  flex justify-center flex-col items-stretch ">
+                    <div className="w-[90%] max-w-[450px]    flex justify-center flex-col items-stretch ">
                         <div>
                             <div className="flex items-center gap-2 mb-2">
                                 <p className="text-[16px]  text-subtext1">Completion Days </p> 
@@ -111,11 +111,11 @@ export default function Create({compact, onCreate} : Props){
                             </div>
                         </div>
                         <div className="flex items-center  gap-3 mt-2 mb-5 ">
-                            <p className="text-subtext1 text-sm font-mono">Or</p>
+                            <p className="text-subtext1 text-sm  ">Or</p>
                             <div onClick={() => setCompDays({mon: false, teu: false, wed: false, thu: false, fri: false, sat: false, sun: false})}>
                                 <NumericInput value={compsPerWeek} setValue={setCompsPerWeek} increment={1} min={0} max={7}/>
                             </div>
-                            <p className="text-subtext1 text-sm self-center mt-2 mb-3 font-mono">days per week</p>
+                            <p className="text-subtext1 text-sm self-center mt-2 mb-3  ">days per week</p>
                         </div>
                     </div>
 
@@ -149,7 +149,7 @@ export default function Create({compact, onCreate} : Props){
                     </div> : ""}
                 </div>
 
-                <div className="w-[90%] max-w-[450px]  font-mono mb-7  ">
+                <div className="w-[90%] max-w-[450px]    mb-7  ">
                     <p className="text-[16px]  text-subtext1 mb-2">Habit Emoji</p>
                         <div className="flex mb-6 gap-2 items-center">
                             {compact ? 
@@ -184,7 +184,7 @@ export default function Create({compact, onCreate} : Props){
                             </button> : ""}
                         </div>
                     
-                    <button className=" w-full rounded-xl p-1 outline-1 outline-border2 dark:outline-0 bg-btn  font-mono hover:cursor-pointer mt-7 flex justify-center h-8 items-center"
+                    <button className=" w-full rounded-xl p-1 outline-1 outline-border2 dark:outline-0 bg-btn    hover:cursor-pointer mt-7 flex justify-center h-8 items-center"
                         onClick={async () => {
                             await createHabit(); 
                             if(!onCreate) return

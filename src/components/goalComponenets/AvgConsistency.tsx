@@ -12,9 +12,12 @@ export default function AvgConsistency() {
     const avg = Util.avgNumArr(concistencies.map(p => Number(p) * 100))
 
     return (
-        <ProgressPanel title="Consistency"
-            text="This is the avg consistency of all you associated habits."
-            value={avg}/>
+        <>
+            <ProgressPanel title="Consistency"
+                value={avg}/>
+            <ProgressPanel title="Miss Rate"
+            value={100 - avg}/>
+        </>
 
     )
 }

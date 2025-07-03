@@ -102,14 +102,14 @@ export default function CreateGoal() {
     }
     return (
         <>
-            <div className="rounded-2xl bg-panel1 outline-1 outline-border flex p-4 text-title font-mono  max-md:max-w-[500px] max-w-[900px] w-[90%] flex-col items-center relative">
+            <div className="rounded-2xl bg-panel1 outline-1 outline-border flex p-4 text-title    max-md:max-w-[500px] max-w-[900px] w-[90%] flex-col items-center relative">
                 <p className="text-2xl mt-4 mb-7 font-semibold md:mb-10">
                     Create Goal 🎯
                 </p>
                 <div className="flex max-md:flex-col  w-full">
                     <div className="w-full flex flex-col items-center ">
                         
-                        <div className="w-[90%] max-w-[450px]  font-mono mb-5 ">
+                        <div className="w-[90%] max-w-[450px]    mb-5 ">
                             <p className="text-[16px]  text-subtext-1 mb-2">Goal Name</p>
                             <input type="text" 
                             placeholder="Enter goal name"
@@ -117,7 +117,7 @@ export default function CreateGoal() {
                             onChange={e => setName(e.target.value)}
                             className="outline-1 text-[12px] rounded-xl w-full border-0  outline-border2 text-sm p-1.5 text-subtext1 mb-1" />
                         </div>
-                        <div className="w-[90%] max-w-[450px]  font-mono mb-5">
+                        <div className="w-[90%] max-w-[450px]    mb-5">
                             <p className="text-[16px]  text-subtext-1 mb-2">Goal Description</p>
                             <textarea
                             placeholder="Enter goal description"
@@ -126,7 +126,7 @@ export default function CreateGoal() {
                             className="outline-1 text-[12px] h-20 rounded-xl resize-none w-full border-0  outline-border2 text-sm p-1.5 text-subtext1" />
                         </div>
 
-                        <div className="w-[90%] max-w-[450px]  font-mono mb-6">
+                        <div className="w-[90%] max-w-[450px]    mb-6">
                             <p className="text-[16px]  text-subtext-1 mb-2">Associated Habits</p>
                             <button className={`outline-1 rounded-xl outline-border2 w-full p-1 grow-1 hover:cursor-pointer hover:bg-btn hover:outline-0 text-subtext1 text-sm hover:text-btn-text`}
                                     onClick={() => setShowModal(true)}>
@@ -148,7 +148,7 @@ export default function CreateGoal() {
                             <div className="flex flex-wrap gap-2 justify-stretch mb-6 w-[90%] max-w-[450px]">
                                 {habitTypes.map((h, i) => {
                                 return(
-                                    <button className={`${selectedTypeIndex == i ? "outline-0 bg-btn text-btn-text" : "outline-1 text-subtext1"} rounded-xl outline-border2 p-1 grow-1 hover:cursor-pointer hover:bg-btn hover:outline-0 text-sm hover:text-stone-900`}
+                                    <button className={`${selectedTypeIndex == i ? "outline-0 bg-btn text-btn-text" : "outline-1 text-subtext1"} rounded-xl outline-border2 p-1 grow-1 hover:cursor-pointer hover:bg-btn hover:outline-0 text-sm px-2 hover:text-stone-900`}
                                         onClick={() => setSelectedTypeIndex(i)} key={i}>
                                         {h}
                                     </button>
@@ -185,7 +185,7 @@ export default function CreateGoal() {
                             </div>
                         </div>}
 
-                        <div className="w-[90%] max-w-[450px]  font-mono mb-8">
+                        <div className="w-[90%] max-w-[450px]    mb-8">
                             <p className="text-[16px]  text-subtext-1 mb-2">Complete Goal On</p>
                             <div className="flex gap-3 items-center flex-wrap justify-stretch">
                                 <input 
@@ -241,7 +241,7 @@ export default function CreateGoal() {
                 </div>
             </div>
             <Model open={showModal} onClose={() => setShowModal(false)}>
-                <div className="p-3 flex flex-col  items-center max-w-[600px] w-[90%] bg-panel1 rounded-2xl font-mono"
+                <div className="p-3 flex flex-col  items-center max-w-[600px] w-[90%] bg-panel1 rounded-2xl  "
                  onClick={e => e.stopPropagation()}>
                     <p className="mb-4 mt-2 text-xl select-none text-title">
                         Select Habits

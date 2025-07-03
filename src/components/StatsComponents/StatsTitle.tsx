@@ -11,10 +11,10 @@ export default function StatsTitle() {
 
     return (
         <div className="rounded-2xl outline-1 outline-border bg-panel1 w-full p-4 flex justify-between items-center texture">
-            <p className="text-subtext1 font-mono text-lg font-semibold flex items-center gap-1">
+            <p className="text-subtext1  text-lg font-semibold flex items-center gap-1">
                 {HC.currentHabitStats.streak}{<IoFlame />}
             </p>
-            <p className="text-2xl font-semibold text-center font-mono text-title">
+            <p className="text-2xl font-semibold text-center  text-title">
                 {Util.capitilizeFirst(HC.currentHabit?.name)} 
             </p>
             <div className="text-subtext2 hover:cursor-pointer flex relative">

@@ -1,7 +1,6 @@
 import { useContext} from "react";
 import { UserContext } from "../Providers/UserProvider";
 import { Util } from "../../utils/util";
-import type { HabitTypeE } from "../../utils/types";
 import ProgressPanel from "./ProgressPanel";
 import useCurrentGoalValue from "../Hooks/useCurrentGoalValue";
 
@@ -17,9 +16,10 @@ export default function GoalProgress() {
     
     return (
         <ProgressPanel title="Progress"
-            text={`You currently have ${Util.pretifyData(currentValue, HC.currentGaol?.type as HabitTypeE)}
-                logged with a goal of ${Util.pretifyData(targetValue, HC.currentGaol?.type as HabitTypeE)} 
-                ${(startValue != 0) ? " and a starting value of " + startValue : ""}`}
             value={Util.calculateProgress(startValue, currentValue, targetValue)*100}/>
     )
 }
+
+//`You currently have ${Util.pretifyData(currentValue, HC.currentGaol?.type as HabitTypeE)}
+               // logged with a goal of ${Util.pretifyData(targetValue, HC.currentGaol?.type as HabitTypeE)} 
+             //   ${(startValue != 0) ? " and a starting value of " + startValue : ""}`

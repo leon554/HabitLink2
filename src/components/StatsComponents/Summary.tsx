@@ -20,7 +20,7 @@ export default function Summary() {
                     Overview
                 </p>
             </div>
-            <div className="gap-4 gap-x-14 grid-cols-2 grid  items-stretch w-full">
+            <div className="gap-3 gap-x-14 grid-cols-2 grid  items-stretch w-full">
                 <InfoBox value={`${p.streak}`} text="Current Streak" toolTipText="This is the current streak of your habit"/>
                 <InfoBox value={`${p.completions}`} text="Total Completions" toolTipText="This is the total number of times you've completed a habit, regardless of the day. For non-normal habits, only completions that met the goal are counted."/>
                 <InfoBox value={`${Math.round(p.missedSessions/(p.missedSessions + p.validComps) * 100)}%`} text="Miss Rate" toolTipText="This is the percentage of scheduled days that for the current habit that were missed."/>

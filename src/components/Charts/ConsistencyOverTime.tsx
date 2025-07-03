@@ -52,7 +52,7 @@ export function ConsistencyOverTime() {
                 />
                 <Line
                     dataKey="consistency"
-                    type="linear"
+                    type="step"
                     stroke="var(--color-highlight)"
                     fillOpacity={0.6}
                     dot={false}
@@ -60,7 +60,7 @@ export function ConsistencyOverTime() {
                 />
                 <Line
                     dataKey="strength"
-                    type="linear"
+                    type="step"
                     stroke="var(--color-highlight2)"
                     fillOpacity={0.6}
                     dot={false}

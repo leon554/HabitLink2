@@ -13,7 +13,6 @@ export default function AvgStrengthPanel() {
 
     return (
         <ProgressPanel title="Strength"
-            text="This is the avg strength of all you associated habits."
             value={avg}/>
 
     )

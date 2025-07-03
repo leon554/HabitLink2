@@ -10,6 +10,7 @@ import useCurrentGoalValue from "../components/Hooks/useCurrentGoalValue"
 import GoalTitlePanel from "@/components/goalComponenets/GoalTitlePanel"
 import GoalCompletionPanel from "@/components/goalComponenets/GoalCompletionPanel"
 import AvgStrengthPanel from "../AvgStrengthPanel"
+import GoalSummary from "@/components/goalComponenets/GoalSummary"
 
 
 export default function GoalsPage() {
@@ -22,7 +23,7 @@ export default function GoalsPage() {
 
 
     return (
-        <div className="w-full flex justify-center mb-10 font-mono">
+        <div className="w-full flex justify-center mb-10 ">
             {!HC.currentGaol ?
                 <div className="w-[90%] max-w-[600px] mt-20 bg-stone-800 text-stone-300  rounded-2xl p-4 flex justify-center flex-col items-center">
                     <p className="text-2xl mb-5 mt-1">
@@ -47,12 +48,15 @@ export default function GoalsPage() {
                     <CountDown/> :
                     <GoalCompletionPanel/>
                 }
-                {HC.currentGaol.type == HabitTypeE.Normal && HC.currentGaol.linkedHabit ===  null? 
-                    "" : 
-                    <GoalProgress/>
-                }
-                <AvgConsistency/>
-                <AvgStrengthPanel/>
+                <div className="w-[90%] max-w-[600px] p-7 bg-panel1 rounded-2xl outline-1 outline-border flex flex-col gap-4">
+                    {HC.currentGaol.type == HabitTypeE.Normal && HC.currentGaol.linkedHabit ===  null? 
+                        "" : 
+                        <GoalProgress/>
+                    }
+                    <AvgConsistency/>
+                    <AvgStrengthPanel/>
+                </div>
+                <GoalSummary/>
                 <AssociatedHabits/>
             </div>}
         </div>

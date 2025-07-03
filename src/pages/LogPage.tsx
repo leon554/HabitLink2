@@ -17,7 +17,7 @@ export default function LogPage() {
         <div className="flex items-center flex-col h-screen pt-3 pb-7 ">   
             <div className="mt-18 w-[90%] max-w-[600px] ">
                 <div className=" mb-2 bg-panel1 dark:bg-panel1 dark:outline-border dark:text-title  drop-shadow-sm texture outline-1 outline-border rounded-2xl text-title flex justify-between items-center ">
-                    <p className="  p-4 font-mono text-2xl ">
+                    <p className="  p-4  text-2xl font-semibold">
                         Log Your Habits
                     </p>
                     <button className="text-title dark:text-title mr-3 p-1 rounded-md hover:cursor-pointer"
@@ -29,13 +29,13 @@ export default function LogPage() {
             {showSettings ? 
             <div className="w-[90%] max-w-[600px]">
                 <div className="bg-panel1 dark:bg-panel1 dark:outline-border drop-shadow-sm outline-1 outline-border rounded-2xl text-title dark:text-title p-4 flex justify-center items-start mb-2 flex-col">
-                    <p className="font-mono text-[19px] font-normal text-center ">
+                    <p className=" text-[19px]  text-center font-semibold">
                         Habit Settings
                     </p>
 
                     <div className="flex justify-start w-[90%] mt-4 mb-2 flex-col gap-3">
                         <div className="flex items-center w-full gap-3 ">
-                            <p className="text-subtext1 dark:text-subtext2 font-mono text-sm">
+                            <p className="text-subtext1 dark:text-subtext2  text-sm">
                                 Show detailed habit info:
                             </p>
                             <Switch setStatus={(b: boolean) => setSettings({...settings, showDetails: b})} 
@@ -43,7 +43,7 @@ export default function LogPage() {
                         </div>
 
                         <div className="flex items-center w-full gap-3 ">
-                            <p className="text-subtext1 dark:text-subtext2 font-mono text-sm">
+                            <p className="text-subtext1 dark:text-subtext2  text-sm">
                                 Show normal habits only:
                             </p>
                             <Switch setStatus={(b: boolean) => setSettings({...settings, showNormal: b})} 
@@ -51,14 +51,14 @@ export default function LogPage() {
                         </div>
 
                         <div className="flex items-center w-full gap-3 ">
-                            <p className="text-subtext1 dark:text-subtext2 font-mono text-sm">
+                            <p className="text-subtext1 dark:text-subtext2  text-sm">
                                 Show only due habits:
                             </p>
                             <Switch setStatus={(b: boolean) => setSettings({...settings, showDue: b})} 
                                 ticked={settings.showDue} />
                         </div>
                          <div className="flex items-center w-full gap-3 ">
-                            <p className="text-subtext1 dark:text-subtext2 font-mono text-sm">
+                            <p className="text-subtext1 dark:text-subtext2  text-sm">
                                 Show ranks:
                             </p>
                             <Switch setStatus={(b: boolean) => setSettings({...settings, showRanks: b})} 

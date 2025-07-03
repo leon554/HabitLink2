@@ -1,27 +1,32 @@
-import FullCircleProgressBar from "../InputComponents/FullCircleProgressBar";
+import ProgressBar from "../InputComponents/ProgressBar";
 
 interface Props{
     value: number
     title: string
-    text: string
+    text?: string
     size? : number
 }
 export default function ProgressPanel(p: Props) {
         
     return (
-        <div className="w-[90%] max-w-[600px] flex  gap-5 p-5  bg-panel1 rounded-2xl text-title drop-shadow-sm outline-border outline-1 items-center">
-            <div>
-                <FullCircleProgressBar value={Math.round(p.value)} size={p.size ?? 70} fontsize={20} thickness={2}/>
-            </div>
-            <div className="flex flex-col justify-center mb-0.5">
-                <p className="text-xl ">
-                    {p.title}
-                </p>
-                <p className="mt-1 text-sm text-subtext2">
+        <div className="w-full max-w-[700px] text-title  flex flex-col">
+            <p className="">
+                {p.title}
+            </p>
+            {p.text ? 
+                <p className="mt-0.5 text-xs text-subtext2 mb-1">
                     {p.text}
+                </p>      
+            :"" }
+            <div className="w-full flex justify-stretch items-center gap-2 mt-2">
+                <div className="w-full">
+                    <ProgressBar min={0} max={100} current={p.value} />
+                </div>
+                <p className="text-subtext2 text-xs leading-none mb-1">
+                    {Math.round(p.value)}%
                 </p>
             </div>
-            
+           
         </div>
     )
 }

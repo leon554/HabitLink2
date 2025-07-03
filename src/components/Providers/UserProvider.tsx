@@ -417,6 +417,7 @@ export default function UserProvider(props: Props) {
     }
 
     return (
+        
         <UserContext.Provider value={{
             createHabit,
             createGoal,
