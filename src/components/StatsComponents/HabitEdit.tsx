@@ -33,17 +33,17 @@ export default function HabitEdit() {
 
     return (
         <>
-            <button className="bg-panel1 p-2 px-9 rounded-xl text-subtext3 outline-1 font-mono outline-border hover:cursor-pointer hover:bg-panel2  hover:scale-[1.02] transition-all duration-150 ease-in-out"
+            <button className="bg-panel1 p-2 px-9 rounded-xl text-subtext3 outline-1  outline-border hover:cursor-pointer hover:bg-panel2  hover:scale-[1.02] transition-all duration-150 ease-in-out"
                 onClick={() => setOpen(true)}>
                     Edit 
             </button>
             <Model open={open} onClose={() => setOpen(false)}>
-                <div className="bg-panel1 p-5 px-9 rounded-xl max-w-[450px] gap-4 font-mono w-[80%] flex flex-col items-center  text-subtext3 outline-1 outline-border"
+                <div className="bg-panel1 p-5 px-9 rounded-xl max-w-[450px] gap-4  w-[80%] flex flex-col items-center  text-subtext3 outline-1 outline-border"
                     onClick={e => e.stopPropagation()}>
                     <p className="text-title text-xl mt-2 mb-2">
                         Edit Habit
                     </p>
-                    <div className="w-full max-w-[450px]  font-mono flex justify-stretchs gap-3 items-center">
+                    <div className="w-full max-w-[450px]  flex justify-stretchs gap-3 items-center">
                         <p className="text-[16px] flex-grow-2 text-subtext2 whitespace-nowrap">Habit Name</p>
                         <input type="text" 
                         placeholder={`${prevName}`}

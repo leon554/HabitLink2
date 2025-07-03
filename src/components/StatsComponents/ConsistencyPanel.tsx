@@ -7,7 +7,7 @@ interface Props{
 export default function ConsistencyPanel(p: Props) {
     
     return (
-        <div className="bg-panel1 rounded-2xl text-title outline-1 outline-border font-mono w-full p-6 ">
+        <div className="bg-panel1 rounded-2xl text-title outline-1 outline-border w-full p-6 ">
             
             <div className="flex flex-col gap-4 ">    
                 <div className="flex flex-col gap-1">

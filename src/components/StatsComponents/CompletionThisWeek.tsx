@@ -13,13 +13,16 @@ export default function CompletionThisWeek() {
     const compDays = HabitUtil.getCompletionDaysThisWeek(HC.currentHabit, currentHabitCompletions)
 
     return (
-        <div className="w-full bg-panel1 rounded-2xl outline-1 outline-border font-mono text-title justify-center p-7 pt-5 pb-7 flex flex-col items-center gap-4 ">
+        <div className="w-full bg-panel1 rounded-2xl outline-1 outline-border  text-title justify-center p-7 pt-5 pb-7 flex flex-col items-center gap-4 ">
             <div className="w-full">
-                <p className="text-lg text-center mb-2 mt-1">
+                <p className=" text-left mt-1">
                     Completions This Week
                 </p>
+                <p className="text-subtext3 text-xs mb-1.5 mt-0.5">
+                    Due: {HabitUtil.getCompletionDaysString(HC.currentHabit?.completionDays ?? "")}
+                </p>
             </div>
-            <div className={`flex gap-3 justify-around w-full ${width < 600 ? "max-w-[400px]" : "max-w-[550px]"}`} >
+            <div className={`flex gap-3 justify-between w-full ${width < 600 ? "max-w-[400px]" : "max-w-[550px]"}`} >
                 {compDays.map((d, i) => {
                     return(
                         <div key={i} className="hover:scale-[1.05] transition-transform duration-200 hover:cursor-default">
@@ -30,11 +33,7 @@ export default function CompletionThisWeek() {
                     )
                 })}
             </div>
-            <div>
-                <p className="text-subtext3 text-xs">
-                    Due: {HabitUtil.getCompletionDaysString(HC.currentHabit?.completionDays ?? "")}
-                </p>
-            </div>
+        
         </div>
     )
 }

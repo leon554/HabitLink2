@@ -15,21 +15,21 @@ export default function CompletionsMonth() {
     const days = ["S", "M", "T", "W", "T", "F", "S", " "]
 
     return (
-        <div className="w-full bg-panel1  rounded-2xl outline-1 outline-border font-mono relative text-title justify-center p-7 pt-5 pb-7 flex flex-col items-center gap-4 ">
-            <div className="w-full flex justify-center items-center">
-                <p className="text-lg text-center mt-1 mb-2">
+        <div className="w-full bg-panel1  rounded-2xl outline-1 outline-border relative text-title justify-center p-7 pt-5 pb-7 flex flex-col items-center gap-4 ">
+            <div className="w-full ">
+                <p className="text-left mt-1 mb-2">
                     Completions Past 16 Weeks
                 </p>
             </div>
             <IoInformationCircleOutline size={14} color="#57534E" className="hover:cursor-pointer absolute top-3 right-3" onClick={() => {
                 setOpen(true)
             }}/>
-            <div className="w-full">
-                <div className="mr-1.5 flex gap-1.5  justify-center ">
+            <div className="w-full ">
+                <div className="flex gap-1.5  ">
                     <div className="flex flex-col  gap-1.5 mr-0.5 ">
                         {Array(8).fill(null).map((_, i) => {
                             return(
-                                <p className="flex items-center text-xs text-subtext3 ">
+                                <p className="flex items-center text-xs font-mono text-subtext3 ">
                                     {days[i]}
                                 </p>
                             )
@@ -37,7 +37,7 @@ export default function CompletionsMonth() {
                 </div>
                     {compDays.map((d, i) => {
                         return(
-                            <div key={i} className="flex flex-col items-center gap-1.5 ">
+                            <div key={i} className="flex flex-col items-center gap-1.5 w-full">
                                 {d.reverse().map(v => {
                                     return(
                                         <ToolTip tooltip={
@@ -47,19 +47,19 @@ export default function CompletionsMonth() {
                                                 </p>
                                             </div>
                                         }>
-                                            <p className={`w-4 h-4 ${dateUtils.isDatesSameDay(v.day , new Date()) ? 
-                                                v.done ? "bg-highlight rounded-xl" : "outline-1 outline-highlight rounded-sm" :
+                                            <p className={`w-full h-4 ${dateUtils.isDatesSameDay(v.day , new Date()) ? 
+                                                v.done ? "bg-highlight rounded-xl" : "border-1 border-highlight rounded-sm" :
                                                 v.habitCreation ? 
                                                 v.done ? 
                                                 "rounded-none bg-highlight" :
                                                 v.complete ? 
                                                 "rounded-none bg-red-400" :
-                                                "outline-1 rounded-none outline-green-500" : 
+                                                "border-1 rounded-none border-green-500" : 
                                                 v.done ?
                                                 "bg-highlight rounded-sm" : 
                                                 v.complete ? 
                                                 "bg-red-400 rounded-sm" : 
-                                                "outline-1 outline-border2/70 rounded-sm"}  hover:scale-[1.2] transition-transform duration-200 hover:cursor-default`}>
+                                                "border-1 border-border2/70 rounded-sm"}  hover:scale-[1.2] transition-transform duration-200 hover:cursor-default`}>
 
                                             </p>
                                         </ToolTip>

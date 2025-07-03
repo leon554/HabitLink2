@@ -1,4 +1,4 @@
-import {Line, LineChart, CartesianGrid, XAxis, YAxis} from "recharts"
+import {Line, LineChart, CartesianGrid} from "recharts"
 import {type ChartConfig,ChartContainer,ChartTooltip, ChartTooltipContent} from "@/components/ui/chart"
 import { useContext } from "react"
 import { UserContext } from "../Providers/UserProvider"
@@ -25,8 +25,8 @@ export function ConsistencyOverTime() {
     
 
     return (
-        <div className="w-full flex flex-col gap-4 items-center font-mono bg-panel1 p-7  rounded-2xl outline-1 outline-border">
-            <p className="text-title mt-1 mb-2 text-lg">
+        <div className="w-full flex flex-col h-70 gap-4  bg-panel1 p-7  rounded-2xl outline-1 outline-border">
+            <p className="text-title mt-1 mb-5 ">
                 Consistency & Strength Over Time
             </p>
             <ChartContainer config={chartConfig} className="min-h-[100px] max-h-[200px] w-full">
@@ -42,15 +42,8 @@ export function ConsistencyOverTime() {
                 className="rounded-2xl "
             >
                 <CartesianGrid vertical={false} className=""/>
-                <XAxis
-                    dataKey="date"
-                    tickLine={false}
-                    axisLine={false}
-                    tickMargin={20}
-                    tickFormatter={(value) => value.slice(0, 5)}
-                    angle={45}
-                />
-                <YAxis width={20} tickLine={false} domain={[0, 100]} axisLine={false}/>
+                
+               
                 <ChartTooltip
                 cursor={false}
                 content={<ChartTooltipContent 
@@ -59,7 +52,7 @@ export function ConsistencyOverTime() {
                 />
                 <Line
                     dataKey="consistency"
-                    type="step"
+                    type="linear"
                     stroke="var(--color-highlight)"
                     fillOpacity={0.6}
                     dot={false}
@@ -67,7 +60,7 @@ export function ConsistencyOverTime() {
                 />
                 <Line
                     dataKey="strength"
-                    type="step"
+                    type="linear"
                     stroke="var(--color-highlight2)"
                     fillOpacity={0.6}
                     dot={false}
@@ -75,7 +68,7 @@ export function ConsistencyOverTime() {
                 />
             </LineChart>
             </ChartContainer>
-            <div className="flex items-center gap-2">
+            <div className="flex justify-center items-center gap-2 w-full">
                 <div className="w-3.5 h-3.5 bg-highlight rounded-md"></div>
                 <p className="text-xs text-subtext3">
                     Consistency
