@@ -31,10 +31,10 @@ export default function SettingsPage() {
             <InfoPanel>
                 <InfoPanel.Title title="Limits"/>
                 <InfoPanel.BodyContainer>
-                    <InfoPanel.SubText text={`Total Goal Amount${String(Array.from(HC.goals.values()).length).padStart(15, "_")}/10`}/>
-                    <InfoPanel.SubText text={`Total Habit Amount${String(Array.from(HC.habits.values()).length).padStart(14, "_")}/10`}/>
-                    <InfoPanel.SubText text={`Total habit completions${String(completions).padStart(11, "_")}/5000`}/>
-                    <InfoPanel.SubText text={`Total goal completions${String(goalComps).padStart(11, "_")}/1000`}/>
+                    <InfoPanel.SubText text={`Total Goal Amount: ${String(Array.from(HC.goals.values()).length)}/10`}/>
+                    <InfoPanel.SubText text={`Total Habit Amount: ${String(Array.from(HC.habits.values()).length)}/10`}/>
+                    <InfoPanel.SubText text={`Total habit completions: ${String(completions)}/5000`}/>
+                    <InfoPanel.SubText text={`Total goal completions: ${String(goalComps)}/1000`}/>
                 </InfoPanel.BodyContainer>
             </InfoPanel>
 

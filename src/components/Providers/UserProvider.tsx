@@ -17,6 +17,7 @@ interface UserType{
     deleteGoal: (goalId: number) => Promise<void>
     updateHabitName: (newName: string, habitID: number) => Promise<void>
     deleteHabit: (habitId: number) => Promise<void>
+    deleteHabitCompletion: (completionID: number, habitId: number) => Promise<void>
 
     habits: Map<number, HabitType>
     habitsCompletions: Map<number, HabitCompletionType[]>,
@@ -53,6 +54,7 @@ const initialValues: UserType = {
     deleteGoal: () => Promise.resolve(undefined),
     updateHabitName: () => Promise.resolve(undefined),
     deleteHabit: () => Promise.resolve(undefined),
+    deleteHabitCompletion: () => Promise.resolve(undefined),
     habits: new Map<number, HabitType>(),
     goals: new Map<number, GoalType>(),
     habitsCompletions: new Map<number, HabitCompletionType[]>(),
@@ -88,7 +90,6 @@ interface Props {
     children: React.ReactNode;
 }
 export default function UserProvider(props: Props) {
-    //add delete habit and edit habit functionality and limits on create page
     const [loading, setLoading] = useState(false)
     const [currentHabit, setCurrentHabit] = useState<HabitType|null>(null)
     const [currentGaol, setCurrentGoal] = useState<GoalType|null>(null)
@@ -415,6 +416,28 @@ export default function UserProvider(props: Props) {
         setHabits(habits)
         setLoading(false)
     }
+    async function deleteHabitCompletion(completionID: number, habitId: number){
+        if(loading) return alert("Cant run wait for loading to finish")
+        setLoading(true)
+
+        const { error } = await supabase
+            .from('habitCompletions')
+            .delete()
+            .eq('id', completionID)
+
+        if(error){
+            alert("Habit completion deletion error: " + error.message)
+            setLoading(false)
+            return
+        }
+
+        const currentArray = (habitsCompletions.get(habitId) ?? []).filter(c => c.id != completionID);
+        const updatedArray = [...currentArray];
+        const newMap = new Map(habitsCompletions);
+        newMap.set(habitId, updatedArray);
+        setHabitsCompletions(newMap)
+        setLoading(false)
+    }
 
     return (
         
@@ -423,6 +446,7 @@ export default function UserProvider(props: Props) {
             createGoal,
             updateHabitName,
             deleteHabit,
+            deleteHabitCompletion,
             habits,
             goals,
             habitsCompletions,

@@ -70,4 +70,9 @@ export namespace Util{
         newMap.set(key, newItem);
         return newMap;
     }
+    export function deleteMapItem<K, V>(originalMap: Map<K, V>, key: K): Map<K, V> {
+        const newMap = new Map(originalMap);
+        newMap.delete(key);
+        return newMap;
+    }
 }

@@ -36,7 +36,7 @@ InfoPanel.SubText = function SubText({text} : {text: string}){
 InfoPanel.BubbleText = function BubbleText({text, bubbleText, mb}: {text: string, bubbleText: string, mb: number}){
     return(
          <div className="flex gap-2" style={{marginBottom: `${mb}px`}}>
-            <p>
+            <p className="">
                 {text}
             </p>
             <p className="outline-border2 outline-1 dark:outline-0 rounded-xl px-3 bg-btn text-btn-text text-sm flex items-center">
