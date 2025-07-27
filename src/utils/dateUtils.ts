@@ -1,3 +1,5 @@
+import { isValid, isAfter, isBefore} from "date-fns";
+
 export namespace dateUtils{
 
     export function isDatesSameDay(date1: Date, date2: Date){
@@ -70,5 +72,24 @@ export namespace dateUtils{
         const year = date.getFullYear();
 
         return `${day}/${month}/${year}`;
+    }
+    export function isStringValidDate(date: string, minDate?: Date, maxDate? : Date){
+        const maxTimeNum = 8640000000000000
+
+        const componets = date.split("/").map(c => Number(c)).filter(c => !isNaN(c))
+        if(componets.length != 3) return false
+        if(componets[1] > 12) return false
+        if(componets[0] > 31) return false
+
+        const selectedDate = new Date(`${componets[2]}-${String(componets[1]).padStart(2, "0")}-${String(componets[0]).padStart(2, "0")}T${dateUtils.getCurrentTime()}`)
+       
+        if(!isAfter(selectedDate, minDate ?? new Date(0))) return false
+        if(!isBefore(selectedDate, maxDate ?? new Date(maxTimeNum))) return false
+
+        return isValid(selectedDate)
+    }
+    export function stringToDate(date: string){
+        const componets = date.split("/").map(c => Number(c)).filter(c => !isNaN(c))
+        return new Date(`${componets[2]}-${String(componets[1]).padStart(2, "0")}-${String(componets[0]).padStart(2, "0")}T${dateUtils.getCurrentTime()}`)
     }
 }

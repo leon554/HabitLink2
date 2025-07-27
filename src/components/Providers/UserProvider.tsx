@@ -30,7 +30,7 @@ interface UserType{
     habitStrengths: Map<number, number>
     setCurrentGoal: (currentGaol: GoalType | null) => void
     setCurrentHabit: (currentHabit: HabitType | null) => void
-    compleHabit: (habitId: number, value: number) => Promise<void>,
+    compleHabit: (habitId: number, value: number, date?: Date) => Promise<void>,
     removeTodaysHabitCompletion: (habitId: number) => Promise<void>
     addGoalCompletion: (value: number) => Promise<void>
     goalCompletions: Map<number, GaolCompletionType[]>
@@ -359,14 +359,14 @@ export default function UserProvider(props: Props) {
         await getHabitsCompletions()
         setLoading(false)
     }
-    async function compleHabit(habitId: number, value: number){
+    async function compleHabit(habitId: number, value: number, date?: Date){
         const userid = auth.getUserId()
 
         setLoading(true)
         const { error } = await supabase
             .from('habitCompletions')
             .insert([
-                { habitId, data: value, date: Date.now(), user_id: userid},
+                { habitId, data: value, date: date ? date.getTime() : Date.now(), user_id: userid},
             ])
         if(error){
             alert("Habit Completion Error: " + error)

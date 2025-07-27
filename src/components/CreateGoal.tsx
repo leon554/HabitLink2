@@ -6,10 +6,10 @@ import Model from "./InputComponents/Model";
 import { AiOutlineLoading } from "react-icons/ai";
 import { add } from "date-fns";
 import { FaLink } from "react-icons/fa";
-import { isValid, isAfter} from "date-fns";
 import { HabitTypeE } from "../utils/types";
 import { dateUtils } from "../utils/dateUtils";
 import Create from "./Create";
+import DateInput from "./InputComponents/DateInput";
 
 
 export default function CreateGoal() {
@@ -35,7 +35,7 @@ export default function CreateGoal() {
 
         if(isNaN(goalVal) || isNaN(startVal)) {alert("Start and goal values must be a number"); return}
         if(!type) {alert("Error linked habit type is undefined"); return}
-        if(!isValidDate()) {alert("Date is not valid it needs to be in the correct format and in the future"); return}
+        if(!dateUtils.isStringValidDate(date, new Date())) {alert("Date is not valid it needs to be in the correct format and in the future"); return}
         
 
         if(type == HabitTypeE.Normal && linkedID == -1) {
@@ -43,7 +43,7 @@ export default function CreateGoal() {
             startVal = 0
         }
         if(linkedID != -1) selectHabits.push(linkedID)
-        await HC.createGoal(name, description, type, startVal, goalVal, selectHabits, getDate(), linkedID == -1 ? null : linkedID)
+        await HC.createGoal(name, description, type, startVal, goalVal, selectHabits, dateUtils.stringToDate(date), linkedID == -1 ? null : linkedID)
         setName(""); setDescription(""); setSelectedTypeIndex(-1); setStartValue(""); setGoalValue(""); setSelectedHabits([]); setDate("")
     }
     function getPlaceHolderText(){
@@ -55,30 +55,14 @@ export default function CreateGoal() {
             return "amount"
         }
     }
-    function isValidDate(){
-        const componets = date.split("/").map(c => Number(c)).filter(c => !isNaN(c))
-        console.log(componets)
-        if(componets.length != 3) return false
-        if(componets[1] > 12) return false
-        if(componets[0] > 31) return false
-
-        const date1 = new Date(`${componets[2]}-${String(componets[1]).padStart(2, "0")}-${String(componets[0]).padStart(2, "0")}T${dateUtils.getCurrentTime()}`)
-        if(!isAfter(date1, new Date())) return false
-
-        return isValid(date1)
-    }
-    function getDate(){
-        const componets = date.split("/").map(c => Number(c)).filter(c => !isNaN(c))
-        return new Date(`${componets[2]}-${String(componets[1]).padStart(2, "0")}-${String(componets[0]).padStart(2, "0")}T${dateUtils.getCurrentTime()}`)
-    }
     function getDateToString(d: Date){
         return `${String(d.getDate()).padStart(2, "0")}/${String(d.getMonth()+1).padStart(2, "0")}/${d.getFullYear()}`
     }
     function addX(parameters: object){
         if(date == ""){
             setDate(getDateToString(add(new Date(), parameters)))
-        }else if(isValidDate()){
-            const date1 = getDate()
+        }else if(dateUtils.isStringValidDate(date, new Date())){
+            const date1 = dateUtils.stringToDate(date)
             const date2 = add(date1, parameters)
             setDate(getDateToString(date2))
         }else{
@@ -188,32 +172,7 @@ export default function CreateGoal() {
                         <div className="w-[90%] max-w-[450px]    mb-8">
                             <p className="text-[16px]  text-subtext-1 mb-2">Complete Goal On</p>
                             <div className="flex gap-3 items-center flex-wrap justify-stretch">
-                                <input 
-                                    value={date}
-                                    maxLength={10}
-                                    onKeyDown={(e) => {
-                                        const allowedChars = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "Backspace"];
-                                        if (!allowedChars.includes(e.key)) {
-                                            e.preventDefault();
-                                        }
-                                    }}
-                                    onChange={e => {
-                                        let value = e.target.value
-                                        let valueArr = e.target.value.split("")
-
-                                        if(valueArr.length >= 2 && !valueArr.includes("/") && value.length > date.length){
-                                            valueArr.splice(2, 0, "/")
-                                        }
-                                        if(valueArr.length >= 5 && !valueArr.slice(3).includes("/") && value.length > date.length){
-                                            valueArr.splice(5, 0, "/")
-                                        }
-                                        
-                                        setDate(valueArr.join(""))
-                                    }}
-                                    type="text" 
-                                    placeholder="dd/mm/yyyy"
-                                    className={`outline-1 ${isValidDate() || date == "" ? "outline-border2 " : "outline-red-500"} rounded-xl pl-2 p-1 text-sm text-subtext2 w-30`}>
-                                </input>
+                                <DateInput minDate={new Date()} date={date} setDate={setDate}/>
                                 <p className="text-sm text-subtext3">
                                     Add
                                 </p>
