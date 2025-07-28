@@ -10,6 +10,7 @@ import { HabitTypeE } from "../utils/types";
 import { dateUtils } from "../utils/dateUtils";
 import Create from "./Create";
 import DateInput from "./InputComponents/DateInput";
+import { Util } from "@/utils/util";
 
 
 export default function CreateGoal() {
@@ -24,6 +25,8 @@ export default function CreateGoal() {
     const [selectHabits, setSelectedHabits] = useState<number[]>([])
     const habitTypes = ["Normal", "Time Based", "Distance Based", "Iteration Based"]
     const [linkedID, setLinkedId] = useState(-1)
+    const [habits, setHabits] = useState<string[]>([])
+    const [habitName, setHabitName] = useState("")
 
     const HC = useContext(UserContext)
     const {alert} = useContext(AlertContext)
@@ -84,6 +87,12 @@ export default function CreateGoal() {
             return "completion amount"
         }
     }
+    async function genHabits(){
+        setHabits([])
+        const habitArr = await HC.askGpt('Given the goal of ' + name + ', identify the essential actions needed to achieve this goal and translate them into specific, measurable, and trackable habits that can be logged daily or weekly in a habit tracking app. Ensure that each habit is actionable, clear, and easy to monitor. Habits must begin with a verb and be concise. Habits must not include the word "daily" or "weekly". ONLY list the habits, separated by commas and nothing else. Some great examples of habits are "Stretch", "morning walk", "take creatinine", "drink protein shake", "measure weight", "code", "go gym" and "run". Habits should be no more than 4 words')
+        setHabits(habitArr.split(","))
+    }
+
     return (
         <>
             <div className="rounded-2xl bg-panel1 outline-1 outline-border flex p-4 text-title    max-md:max-w-[500px] max-w-[900px] w-[90%] flex-col items-center relative">
@@ -202,7 +211,7 @@ export default function CreateGoal() {
             <Model open={showModal} onClose={() => setShowModal(false)}>
                 <div className="p-3 flex flex-col  items-center max-w-[600px] w-[90%] bg-panel1 rounded-2xl  "
                  onClick={e => e.stopPropagation()}>
-                    <p className="mb-4 mt-2 text-xl select-none text-title">
+                    <p className="mb-4 mt-2 text-2xl select-none text-title">
                         Select Habits
                     </p>
                     <div className="flex flex-col p-[1px] gap-2 mb-3 items-stretch w-[90%] max-h-[400px] overflow-y-scroll no-scrollbar rounded-lg">
@@ -236,10 +245,38 @@ export default function CreateGoal() {
                             )
                         })}
                     </div>
-                    <button className=" w-[90%] rounded-xl outline-1 outline-border2 text-subtext1  h-8 hover:cursor-pointer" 
-                        onClick={() => setShowNewHabitModal(true)}>
-                        New Habit
-                    </button>
+                    {habits.length >= 1 ? 
+                    <div className="w-[90%] mt-3">
+                        <p className="text-title text-lg">
+                            Possible Habits
+                        </p>
+                        <div className="flex flex-wrap gap-2 mt-3 w-full justify-stretch mb-7">
+                            {habits.map(h => {
+                                return(
+                                    <div className="outline-1 rounded-xl outline-border flex-grow-1 p-1 flex justify-center px-2 hover:cursor-pointer hover:bg-panel2 transition-colors duration-150 ease-in-out"
+                                        onClick={() => {
+                                            setHabitName(Util.capitilizeFirst(h) ?? "jfhfd")
+                                            setShowNewHabitModal(true)
+                                        }}>
+                                        <p className="text-sm text-subtext2">
+                                            {Util.capitilizeFirst(h)}
+                                        </p>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    </div>
+                    :""}
+                    <div className="flex items-center w-[90%] gap-2">
+                        <button className=" rounded-xl outline-1 outline-border2 flex justify-center items-center text-subtext1 text-sm h-8 hover:cursor-pointer w-full hover:bg-panel2 transition-colors duration-150 ease-in-out" 
+                            onClick={async () => await genHabits()}>
+                            {HC.loading ? <AiOutlineLoading className="animate-spin" /> : "Generate Habits"}
+                        </button>
+                        <button className="  rounded-xl outline-1 outline-border2 text-subtext1 text-sm  h-8 hover:cursor-pointer w-full hover:bg-panel2 transition-colors duration-150 ease-in-out" 
+                            onClick={() => setShowNewHabitModal(true)}>
+                            New Habit
+                        </button>
+                    </div>
                     <button className="bg-btn w-[90%] rounded-xl outline-1 outline-border1 text-btn-text mb-5 mt-2 h-8 hover:cursor-pointer" 
                         onClick={() => setShowModal(false)}>
                         Done
@@ -249,7 +286,7 @@ export default function CreateGoal() {
             <Model open={showNewHabitModal} onClose={() => setShowNewHabitModal(false)}>
                 <div className="w-[90%]  max-w-[900px]  max-md:max-w-[500px]" 
                  onClick={e => e.stopPropagation()}>
-                    <Create compact={true} onCreate={() => setShowNewHabitModal(false)}/>
+                    <Create compact={true} onCreate={() => setShowNewHabitModal(false)} initialName={habitName}/>
                 </div>
             </Model>
         </>

@@ -1,4 +1,4 @@
-import {useContext, useRef, useState } from "react";
+import {useContext, useRef, useState, useEffect} from "react";
 import NumericInput from "./InputComponents/NumericInput";
 import { IoInformationCircleOutline } from "react-icons/io5";
 import { AlertContext } from "./Alert/AlertProvider";
@@ -13,13 +13,14 @@ import NumberInput from "./InputComponents/NumberInput";
 interface Props{
     compact: boolean
     onCreate?: () => void
+    initialName? : string
 }
-export default function Create({compact, onCreate} : Props){
+export default function Create({compact, onCreate, initialName} : Props){
     const [compsPerWeek, setCompsPerWeek] = useState(0)
     const [compDays, setCompDays] = useState({mon: false, teu: false, wed: false, thu: false, fri: false, sat: false, sun: false})
     const [selectedEmojiIndex, setSelectedEmojiIndex] = useState(-1)
     const [selectedTypeIndex, setSelectedTypeIndex] = useState(-1)
-    const [name, setName] = useState("")
+    const [name, setName] = useState(initialName ?? "sadsad")
     const [time, setTime] = useState(0)
     const [distance, setDistance] = useState(0)
     const [amount, setAmount] = useState(0)
@@ -30,6 +31,12 @@ export default function Create({compact, onCreate} : Props){
 
     const {alert} = useContext(AlertContext)
     const user = useContext(UserContext)
+
+    useEffect(() => {
+        if (initialName !== undefined) {
+            setName(initialName);
+        }
+    }, [initialName]);
 
     async function createHabit(){
         //add check if everything is filled in

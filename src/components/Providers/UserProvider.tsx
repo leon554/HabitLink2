@@ -33,6 +33,7 @@ interface UserType{
     compleHabit: (habitId: number, value: number, date?: Date) => Promise<void>,
     removeTodaysHabitCompletion: (habitId: number) => Promise<void>
     addGoalCompletion: (value: number) => Promise<void>
+    askGpt: (promt: string) => Promise<string>
     goalCompletions: Map<number, GaolCompletionType[]>
     currentHabitStats : {
         compRate: number
@@ -69,6 +70,7 @@ const initialValues: UserType = {
     compleHabit: () => Promise.resolve(undefined),
     removeTodaysHabitCompletion: () => Promise.resolve(undefined),
     addGoalCompletion: () => Promise.resolve(undefined),
+    askGpt: () => Promise.resolve(""),
     goalCompletions: new Map<number, GaolCompletionType[]>(),
     currentHabitStats : {
         compRate: 0,
@@ -438,6 +440,28 @@ export default function UserProvider(props: Props) {
         setHabitsCompletions(newMap)
         setLoading(false)
     }
+    async function askGpt(promt: string){
+        if(auth.localUser?.role != "premium") {
+            alert("You need premuim for this feature")
+            return
+        }
+        if(loading) return
+        setLoading(true)
+
+        const { data, error } = await supabase.functions.invoke('habitNameGen', {
+            body: { promt: promt},
+        })
+
+        if(error){
+            alert("Error: " + error.message)
+            setLoading(false)
+            return
+        }
+
+        setLoading(false)
+        return data.text 
+    }
+
 
     return (
         
@@ -460,6 +484,7 @@ export default function UserProvider(props: Props) {
             addGoalCompletion,
             archiveGoal,
             deleteGoal,
+            askGpt,
             goalCompletions,
             currentHabitStats: {compRate, missedSessions, streak, entries, strength,completions, partialComps,dataSum, validComps, completableDays},
             habitRanks,
