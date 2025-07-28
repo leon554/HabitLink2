@@ -16,7 +16,7 @@ export default function LogPage() {
     return (
         <div className="flex items-center flex-col h-screen pt-3 pb-7 ">   
             <div className="mt-18 w-[90%] max-w-[600px] ">
-                <div className=" mb-2 bg-panel1 dark:bg-panel1 dark:outline-border dark:text-title  drop-shadow-sm texture outline-1 outline-border rounded-2xl text-title flex justify-between items-center ">
+                <div className=" mb-2 bg-panel1 dark:bg-panel1 dark:outline-border dark:text-title  drop-shadow-sm  outline-1 outline-border rounded-2xl text-title flex justify-between items-center ">
                     <p className="  p-4  text-2xl font-semibold">
                         Log Your Habits
                     </p>

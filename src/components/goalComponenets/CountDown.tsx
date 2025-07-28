@@ -6,6 +6,7 @@ import { AiOutlineLoading } from "react-icons/ai"
 import { HabitTypeE } from "../../utils/types"
 import useCurrentGoalValue from "../Hooks/useCurrentGoalValue"
 import { Util } from "@/utils/util"
+import DeleteArchiveGoal from "./DeleteArchiveGoal"
 
 export default function CountDown() {
     const [open, setOpen] = useState(false)
@@ -42,7 +43,7 @@ export default function CountDown() {
         <>
             <div className='bg-panel1  drop-shadow-sm outline-border outline-1 w-[90%] max-w-[600px] p-5 py-8 flex gap-1 flex-col items-center rounded-2xl '>
                 <p className="text-subtext1">
-                    Times Running Out!
+                    {timeLeft <= 0 ? "Time Has Ran Out!" : "Times Running Out!"}
                 </p>
                 <div className="flex items-center gap-1">
                     <p className="text-3xl text-highlight">[</p>
@@ -51,11 +52,15 @@ export default function CountDown() {
                     </p>
                     <p className="text-3xl text-highlight">]</p>
                 </div>
+                {timeLeft <= 0 ? 
+                    <DeleteArchiveGoal/>
+                : 
                 <p className="text-center text-xs text-subtext3 max-w-70 mt-1">
                     {`You currently have ${Util.pretifyData(currentValue, HC.currentGaol?.type as HabitTypeE)}
                     logged with a goal of ${Util.pretifyData(targetValue, HC.currentGaol?.type as HabitTypeE)} 
                     ${(startValue != 0) ? " and a starting value of " + startValue : ""}`}
                 </p>
+                }
                 {HC.currentGaol?.type == HabitTypeE.Normal && HC.currentGaol.linkedHabit == null?
                     <button className="bg-btn text-sm flex-grow-10  mt-3 text-btn-text p-1 px-3 rounded-lg hover:cursor-pointer transition-all duration-150 ease-in-out"
                     onClick={() => completeGoal()}>

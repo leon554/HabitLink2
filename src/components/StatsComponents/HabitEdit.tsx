@@ -99,24 +99,28 @@ export default function HabitEdit() {
                         className="outline-1 px-2 text-xs rounded-xl h-7 w-full  outline-border2  p-1 text-subtext1 " />
                     </div>
                     <div className="w-full max-w-[450px]  flex flex-col items-start gap-2 mb-3">
-                        <p className="text-[16px] flex-grow-2 text-subtext1 whitespace-nowrap">Habit Completions</p>
-                        <div className="flex flex-col max-h-[200px] overflow-y-scroll w-full no-scrollbar gap-1.5 rounded-xl">
-                            {Array.from(HC.habitsCompletions.get(HC.currentHabit!.id)!).map((c,i) => {
-                                return(
-                                    <div className=" rounded-xl border-border2 border-1 p-1 px-2 flex justify-between items-center h-7" key={i}>
-                                        <p className="text-xs" >
-                                            {dateUtils.formatDate(new Date(Number(c.date)))} | Data: {Util.pretifyData(c.data, HC.currentHabit!.type as HabitTypeE)}
-                                        </p>
-                                        <p className="hover:cursor-pointer" onClick={async () => {
-                                            btnClicked.current = 10 + i
-                                            deleteEntry(c.id)
-                                        }}>
-                                            {HC.loading && btnClicked.current == 10 + i ? <AiOutlineLoading className="animate-spin"/>  : <TiDelete />} 
-                                        </p>
-                                    </div>
-                                )
-                            })}
-                        </div>
+                        {Array.from(HC.habitsCompletions.get(HC.currentHabit!.id) ?? []).length == 0 ? "" :
+                            <>
+                            <p className="text-[16px] flex-grow-2 text-subtext1 whitespace-nowrap">Habit Completions</p>
+                            <div className="flex flex-col max-h-[200px] overflow-y-scroll w-full no-scrollbar gap-1.5 rounded-xl">
+                                {Array.from(HC.habitsCompletions.get(HC.currentHabit!.id) ?? []).map((c,i) => {
+                                    return(
+                                        <div className=" rounded-xl border-border2 border-1 p-1 px-2 flex justify-between items-center h-7" key={i}>
+                                            <p className="text-xs" >
+                                                {dateUtils.formatDate(new Date(Number(c.date)))} | Data: {Util.pretifyData(c.data, HC.currentHabit!.type as HabitTypeE)}
+                                            </p>
+                                            <p className="hover:cursor-pointer" onClick={async () => {
+                                                btnClicked.current = 10 + i
+                                                deleteEntry(c.id)
+                                            }}>
+                                                {HC.loading && btnClicked.current == 10 + i ? <AiOutlineLoading className="animate-spin"/>  : <TiDelete />} 
+                                            </p>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                            </>
+                        }
                         <button className="rounded-xl outline-1 outline-border2 w-full text-sm p-1 hover:cursor-pointer"
                             onClick={() => {
                                 setEntryData(0)

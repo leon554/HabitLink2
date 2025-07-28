@@ -10,7 +10,7 @@ export default function StatsTitle() {
     const HC = useContext(UserContext)
 
     return (
-        <div className="rounded-2xl outline-1 outline-border bg-panel1 w-full p-4 flex justify-between items-center texture">
+        <div className="rounded-2xl outline-1 outline-border bg-panel1 w-full p-4 flex justify-between items-center ">
             <p className="text-subtext1  text-lg font-semibold flex items-center gap-1">
                 {HC.currentHabitStats.streak}{<IoFlame />}
             </p>

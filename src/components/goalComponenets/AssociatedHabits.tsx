@@ -11,38 +11,38 @@ export default function AssociatedHabits() {
     const HC = useContext(UserContext)
     const navigate = useNavigate()
     const habits = Util.fetchMapItems<HabitType>(HC.currentGaol?.habits.split(",").map(i => Number(i)) ?? [], HC.habits)
+    const habitsLength = habits.length
 
     return (
-        <div className="bg-panel1 text-title drop-shadow-md outline-border outline-1 w-[90%] max-w-[600px] p-5 rounded-2xl gap-4 flex flex-col items-center">
-            <p className="text-xl">
+        <div className="bg-panel1 text-title drop-shadow-md outline-border outline-1 w-[90%] max-w-[600px] p-5 rounded-2xl gap-4 flex flex-col ">
+            <p className="text-lg">
                 Associated Habits
             </p>
-            <div className="w-full flex flex-col gap-2">
-                {[...habits].map(h => {
+            <div className="w-full flex flex-col gap-0.5 mb-1">
+                {[...habits].map((h, i) => {
                     if(h){
                         return(
-                            <div key={h.id} className="flex items-center gap-3  outline-1 bg-panel2 outline-border2 w-full p-3 rounded-xl justify-between hover:cursor-pointer" 
+                            <div key={h.id} className={`flex items-center gap-3   ${i == habitsLength -1 ? "" : "border-border2 border-b-1"} w-full py-3  justify-between hover:cursor-pointer h-10`} 
                                 onClick={() => {
                                     HC.setCurrentHabit(h)
                                     navigate("/stats")
                                 }}>
                                 <div className="flex items-center gap-3">
-                                    <img src={HC.habitRanks.get(h.id)} className="h-5"/>
                                     <div className="flex items-center gap-2">
-                                        <p className="text-xl">
-                                            {h.name}
+                                        <p className="text-md text-subtext1">
+                                            {h.icon} {Util.capitilizeFirst(h.name)}
                                         </p>
                                         <p className="text-stone-500">
                                             {h.id == HC.currentGaol?.linkedHabit ? <FaLink size={12}/> : ""}
                                         </p>
                                     </div>
                                 </div>
-                                <div>
-                                    <p className="text-xs text-subtext1">
-                                        Consistency{String(Math.round(Number((HC.habitComps.get(Number(h.id))) ?? 0) * 100)).padStart(5, ".")}%
+                                <div className="flex gap-4">
+                                    <p className="text-xs text-subtext2">
+                                        📈 {Math.round(Number((HC.habitComps.get(Number(h.id))) ?? 0) * 100)}%
                                     </p>
-                                    <p className="text-xs text-subtext1">
-                                        Strength{String(Math.round(Number((HC.habitStrengths.get(h.id)) ?? 0))).padStart(8, ".")}%
+                                    <p className="text-xs text-subtext2">
+                                        💪 {Math.round(Number((HC.habitStrengths.get(h.id)) ?? 0))}%
                                     </p>
                                 </div>
                             </div>

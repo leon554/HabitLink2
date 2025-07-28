@@ -153,8 +153,9 @@ export namespace HabitUtil{
             missedSessions += Math.abs(Math.min(completionAmt, weeklyTarget) - completableDaysAmt)
 
         } 
-
-        return {compRate: completionsComponents.totalCompletions/completionsComponents.totalPossibleComps, 
+        let compRate = completionsComponents.totalCompletions/completionsComponents.totalPossibleComps
+        if(isNaN(compRate)) compRate = 0
+        return {compRate: compRate, 
                 missedSessions,
                 validCompletions: completionsComponents.totalCompletions,
                 completableDays: completionsComponents.totalPossibleComps}
@@ -206,8 +207,9 @@ export namespace HabitUtil{
             completionsComponents.totalPossibleComps += completableDays
             completionsComponents.totalCompletions += Math.min(completionCount.length, completableDays)
         }
-        //if(completionsComponents.totalPossibleComps == 0) return {compRate: 0, missedSessions}
-        return {compRate: completionsComponents.totalCompletions/completionsComponents.totalPossibleComps, 
+        let compRate = completionsComponents.totalCompletions/completionsComponents.totalPossibleComps
+        if(isNaN(compRate)) compRate = 0
+        return {compRate: compRate, 
                 missedSessions,
                 validCompletions: completionsComponents.totalCompletions,
                 completableDays: completionsComponents.totalPossibleComps}
@@ -528,9 +530,9 @@ export namespace HabitUtil{
 
     }
     export type compDaysType = {day: Date, done: boolean, complete: boolean, habitCreation: boolean}
-    export function getCompletionDaysThisPeriod(habit: HabitType|null, completions: HabitCompletionType[]|undefined){
+    export function getCompletionDaysThisPeriod(habit: HabitType|null, completions: HabitCompletionType[]|undefined = []){
         let output = Array(113).fill(null).map(() => ({day: new Date(), done: false, complete: false, habitCreation: false})) 
-        if(!habit || !completions) return []
+        if(!habit ) return 
 
         let subarrs: compDaysType[][] = [] 
         let date = dateUtils.getEndOfWeekDate()

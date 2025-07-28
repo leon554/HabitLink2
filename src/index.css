@@ -33,8 +33,8 @@
   --color-btn-text:   oklch(26.9% 0 0);
   --color-btn:   oklch(72.3% 0.219 149.579); 
   --color-title: hsl(0, 0%, 85%);      
-  --color-subtext1: oklch(87% 0 0);   
-  --color-subtext2: #a1a1a1;    
+  --color-subtext1: hsl(0, 0%, 70%);   
+  --color-subtext2: hsl(0, 0%, 63%);    
   --color-subtext3: hsl(0, 0%, 53%); 
   --color-border: color-mix(in oklab, var(--color-neutral-700)  60%, transparent);
   --color-border2:  var(--color-neutral-700)  ;

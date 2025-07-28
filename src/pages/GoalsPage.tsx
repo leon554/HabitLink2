@@ -11,6 +11,7 @@ import GoalTitlePanel from "@/components/goalComponenets/GoalTitlePanel"
 import GoalCompletionPanel from "@/components/goalComponenets/GoalCompletionPanel"
 import AvgStrengthPanel from "../AvgStrengthPanel"
 import GoalSummary from "@/components/goalComponenets/GoalSummary"
+import GoalEdit from "@/components/goalComponenets/GoalEdit"
 
 
 export default function GoalsPage() {
@@ -58,6 +59,7 @@ export default function GoalsPage() {
                 </div>
                 <GoalSummary/>
                 <AssociatedHabits/>
+                <GoalEdit/>
             </div>}
         </div>
     )

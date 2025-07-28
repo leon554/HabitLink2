@@ -23,7 +23,7 @@ export default function Summary() {
             <div className="gap-3 gap-x-14 grid-cols-2 grid  items-stretch w-full">
                 <InfoBox value={`${p.streak}`} text="Current Streak" toolTipText="This is the current streak of your habit"/>
                 <InfoBox value={`${p.completions}`} text="Total Completions" toolTipText="This is the total number of times you've completed a habit, regardless of the day. For non-normal habits, only completions that met the goal are counted."/>
-                <InfoBox value={`${Math.round(p.missedSessions/(p.missedSessions + p.validComps) * 100)}%`} text="Miss Rate" toolTipText="This is the percentage of scheduled days that for the current habit that were missed."/>
+                <InfoBox value={`${Math.round((p.missedSessions + p.validComps) === 0 ? 0 : (p.missedSessions / (p.missedSessions + p.validComps)) * 100)}%`} text="Miss Rate" toolTipText="This is the percentage of scheduled days that for the current habit that were missed."/>
                 <InfoBox value={`${p.validComps}`} text="Valid Completions" toolTipText="This is the number of times you've completed the current habit that met its goal and was done on one of the habit's scheduled completion days."/>
                 <InfoBox value={`${p.completableDays}`} text="Completable Days" toolTipText="This is the number of scheduled days that could've/has bean completed since its creation"/>
                 <InfoBox value={`${p.missedSessions}`} text="Missed Completions" toolTipText="This is the number of days the current habit was scheduled but had no recorded completion."/>
@@ -42,7 +42,7 @@ export default function Summary() {
                         "Avg Count/Entry" :
                         "Avg Hours/Entry"}
                         toolTipText="This is the average amount logged for each entry"/>
-                        <InfoBox value={`${p.entries}`} text="Total Entries" toolTipText="This counts the number of entries for the current habit. For example, if your goal is to walk 20 km a day and you log 10 km in the morning and 5 km in the afternoon, that would count as two separate entries."/>
+                        <InfoBox value={`${p.entries ?? 0}`} text="Total Entries" toolTipText="This counts the number of entries for the current habit. For example, if your goal is to walk 20 km a day and you log 10 km in the morning and 5 km in the afternoon, that would count as two separate entries."/>
                     </>
                 : ""}
             </div>

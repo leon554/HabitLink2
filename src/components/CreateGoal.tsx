@@ -11,6 +11,7 @@ import { dateUtils } from "../utils/dateUtils";
 import Create from "./Create";
 import DateInput from "./InputComponents/DateInput";
 import { Util } from "@/utils/util";
+import { RiAiGenerate } from "react-icons/ri";
 
 
 export default function CreateGoal() {
@@ -92,6 +93,15 @@ export default function CreateGoal() {
         const habitArr = await HC.askGpt('Given the goal of ' + name + ', identify the essential actions needed to achieve this goal and translate them into specific, measurable, and trackable habits that can be logged daily or weekly in a habit tracking app. Ensure that each habit is actionable, clear, and easy to monitor. Habits must begin with a verb and be concise. Habits must not include the word "daily" or "weekly". ONLY list the habits, separated by commas and nothing else. Some great examples of habits are "Stretch", "morning walk", "take creatinine", "drink protein shake", "measure weight", "code", "go gym" and "run". Habits should be no more than 4 words')
         setHabits(habitArr.split(","))
     }
+    async function genDescription(){
+        if(name == "") {
+            alert("Enter goal name first in order to generate description")
+            return
+        }
+        setDescription("Loading...")
+        const habitArr = await HC.askGpt('write a 1 sentence description for the following goal: ' + name)
+        setDescription(habitArr)
+    }
 
     return (
         <>
@@ -110,13 +120,19 @@ export default function CreateGoal() {
                             onChange={e => setName(e.target.value)}
                             className="outline-1 text-[12px] rounded-xl w-full border-0  outline-border2 text-sm p-1.5 text-subtext1 mb-1" />
                         </div>
-                        <div className="w-[90%] max-w-[450px]    mb-5">
+                        <div className="w-[90%] max-w-[450px] relative mb-5">
                             <p className="text-[16px]  text-subtext-1 mb-2">Goal Description</p>
                             <textarea
                             placeholder="Enter goal description"
                             value={description}
                             onChange={e => setDescription(e.target.value)}
-                            className="outline-1 text-[12px] h-20 rounded-xl resize-none w-full border-0  outline-border2 text-sm p-1.5 text-subtext1" />
+                            className="outline-1 text-[12px] h-20 rounded-xl resize-none w-full border-0 no-scrollbar outline-border2 text-sm p-1.5 text-subtext1" />
+                            <p className="absolute right-2 bottom-3 hover:cursor-pointer text-subtext2 bg-panel1"
+                            onClick={async () => {
+                                await genDescription()
+                            }}>
+                                {HC.loading ? <AiOutlineLoading className="animate-spin" size={12}/> : <RiAiGenerate size={14}/>}
+                            </p>
                         </div>
 
                         <div className="w-[90%] max-w-[450px]    mb-6">
