@@ -17,7 +17,7 @@ export default function CompletionsMonth() {
     return (
         <div className="w-full bg-panel1  rounded-2xl outline-1 outline-border relative text-title justify-center p-7 pt-5 pb-7 flex flex-col items-center gap-4 ">
             <div className="w-full ">
-                <p className="text-left mt-1 mb-2">
+                <p className="text-left mt-1 mb-2 font-medium">
                     Completions Past 16 Weeks
                 </p>
             </div>

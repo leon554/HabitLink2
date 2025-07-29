@@ -11,7 +11,7 @@ export default function ConsistencyPanel(p: Props) {
             
             <div className="flex flex-col gap-4 ">    
                 <div className="flex flex-col gap-1">
-                    <p className="text-title">
+                    <p className="text-title font-medium">
                         Consistency
                     </p>
                     <div className="flex gap-2 items-center">
@@ -24,7 +24,7 @@ export default function ConsistencyPanel(p: Props) {
                     </div>
                 </div>       
                 <div className="flex flex-col gap-1">
-                    <p className="text-title">
+                    <p className="text-title font-medium">
                         Strength
                     </p>
                     <div className="flex gap-2 items-center">

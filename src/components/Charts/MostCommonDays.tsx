@@ -28,7 +28,7 @@ export default function MostCommonDays() {
     }
     return (
         <div className=" flex flex-col gap-4 h-70 w-full  bg-panel1 p-7  rounded-2xl outline-1 outline-border">
-            <p className="text-title text-left mb-4">
+            <p className="text-title text-left mb-4 font-medium">
                 Most Common Entry Days
             </p>
             {comps.length < 5 ? 

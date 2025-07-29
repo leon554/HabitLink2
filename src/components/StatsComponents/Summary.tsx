@@ -16,7 +16,7 @@ export default function Summary() {
                 setOpen(true)
             }}/>
             <div className="w-full">
-                <p className="text-lg text-leftr mb-1 mt-1 font-sans">
+                <p className="text-lg text-leftr mt-1 font-sans font-medium">
                     Overview
                 </p>
             </div>

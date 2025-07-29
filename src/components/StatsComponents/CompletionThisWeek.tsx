@@ -15,10 +15,10 @@ export default function CompletionThisWeek() {
     return (
         <div className="w-full bg-panel1 rounded-2xl outline-1 outline-border  text-title justify-center p-7 pt-5 pb-7 flex flex-col items-center gap-4 ">
             <div className="w-full">
-                <p className=" text-left mt-1">
+                <p className=" text-left mt-1 font-medium">
                     Completions This Week
                 </p>
-                <p className="text-subtext3 text-xs mb-1.5 mt-0.5">
+                <p className="text-subtext3 text-xs mb-1.5 mt-1">
                     Due: {HabitUtil.getCompletionDaysString(HC.currentHabit?.completionDays ?? "")}
                 </p>
             </div>

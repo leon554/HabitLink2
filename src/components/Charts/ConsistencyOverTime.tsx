@@ -28,7 +28,7 @@ export function ConsistencyOverTime() {
 
     return (
         <div className="w-full flex flex-col h-70 gap-4  bg-panel1 p-7  rounded-2xl outline-1 outline-border">
-            <p className="text-title mt-1 mb-5 ">
+            <p className="text-title mt-1 mb-5 font-medium">
                 Consistency & Strength Over Time
             </p>
             {comps!.length < 5 ? 
