@@ -1,7 +1,8 @@
+import type { ReactNode } from "react"
 import ToolTip from "../ToolTip"
 
 interface Props{
-    value: string
+    value: string | ReactNode
     text: string
     toolTipText: string
 }

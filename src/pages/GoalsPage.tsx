@@ -48,7 +48,6 @@ export default function GoalsPage() {
                     <GoalCompletionPanel/>
                 }
                 <div className="w-[90%] max-w-[600px] p-7 bg-panel1 rounded-2xl outline-1 outline-border flex flex-col gap-4">
-                   
                     <AvgConsistency/>
                     <AvgStrengthPanel/>
                 </div>
