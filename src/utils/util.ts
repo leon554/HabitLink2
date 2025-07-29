@@ -51,6 +51,9 @@ export namespace Util{
         })
         return values
     }
+    export function fetchAllMapItems<T, B>(map: Map<T, B>){
+        return Array.from(map.values())
+    }
     export function calculateProgress(startVal: number, currentVal: number, goalVal: number){
         if(goalVal > startVal){
             return (currentVal - startVal)/(goalVal - startVal)
