@@ -14,8 +14,8 @@ export default function AssociatedHabits() {
     const habitsLength = habits.length
 
     return (
-        <div className="bg-panel1 text-title drop-shadow-md outline-border outline-1 w-[90%] max-w-[600px] p-5 rounded-2xl gap-4 flex flex-col ">
-            <p className="text-lg">
+        <div className="bg-panel1 text-title drop-shadow-md outline-border outline-1 w-[90%] max-w-[600px] p-5 rounded-2xl gap-3 flex flex-col ">
+            <p className="text-lg font-medium">
                 Associated Habits
             </p>
             <div className="w-full flex flex-col gap-0.5 mb-1">

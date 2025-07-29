@@ -1,11 +1,9 @@
 import { useContext} from "react"
 import { UserContext } from "../components/Providers/UserProvider"
-import GoalProgress from "../components/goalComponenets/GoalProgress"
 import CountDown from "../components/goalComponenets/CountDown"
 import AssociatedHabits from "../components/goalComponenets/AssociatedHabits"
 import AvgConsistency from "../components/goalComponenets/AvgConsistency"
 import { Util } from "../utils/util"
-import { HabitTypeE} from "../utils/types"
 import useCurrentGoalValue from "../components/Hooks/useCurrentGoalValue"
 import GoalTitlePanel from "@/components/goalComponenets/GoalTitlePanel"
 import GoalCompletionPanel from "@/components/goalComponenets/GoalCompletionPanel"
@@ -50,10 +48,7 @@ export default function GoalsPage() {
                     <GoalCompletionPanel/>
                 }
                 <div className="w-[90%] max-w-[600px] p-7 bg-panel1 rounded-2xl outline-1 outline-border flex flex-col gap-4">
-                    {HC.currentGaol.type == HabitTypeE.Normal && HC.currentGaol.linkedHabit ===  null? 
-                        "" : 
-                        <GoalProgress/>
-                    }
+                   
                     <AvgConsistency/>
                     <AvgStrengthPanel/>
                 </div>

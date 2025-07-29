@@ -4,9 +4,9 @@ import { AlertContext } from "../Alert/AlertProvider"
 import Model from "../InputComponents/Model"
 import { AiOutlineLoading } from "react-icons/ai"
 import { HabitTypeE } from "../../utils/types"
-import useCurrentGoalValue from "../Hooks/useCurrentGoalValue"
-import { Util } from "@/utils/util"
 import DeleteArchiveGoal from "./DeleteArchiveGoal"
+import ProgressPanel from "./ProgressPanel"
+import GoalProgress from "./GoalProgress"
 
 export default function CountDown() {
     const [open, setOpen] = useState(false)
@@ -16,14 +16,17 @@ export default function CountDown() {
     const HC = useContext(UserContext)
     const {alert} = useContext(AlertContext)
     const [timeLeft, setTimeLeft] = useState((HC.currentGaol?.completionDate ?? 0) - Date.now());
-    const startValue = HC.currentGaol?.startValue ?? 0
-    let currentValue = useCurrentGoalValue()
-    const targetValue = HC.currentGaol?.targetValue ?? 0
+    const startTime = new Date(HC.currentGaol!.created_at).getTime()
+    const completionTime = HC.currentGaol?.completionDate ?? 0
 
     useEffect(() => {
-        const intervalID = setInterval(() => {
-            setTimeLeft((HC.currentGaol?.completionDate ?? 0) - Date.now());
-        }, 1000);
+
+        function calcTime(){
+            setTimeLeft(completionTime - Date.now());
+        }
+
+        calcTime()
+        const intervalID = setInterval(calcTime, 1000);
 
         return () => clearInterval(intervalID);
     }, [HC.currentGaol]);
@@ -41,35 +44,30 @@ export default function CountDown() {
 
     return (
         <>
-            <div className='bg-panel1  drop-shadow-sm outline-border outline-1 w-[90%] max-w-[600px] p-5 py-8 flex gap-1 flex-col items-center rounded-2xl '>
-                <p className="text-subtext1">
-                    {timeLeft <= 0 ? "Time Has Ran Out!" : "Times Running Out!"}
-                </p>
-                <div className="flex items-center gap-1">
-                    <p className="text-3xl text-highlight">[</p>
-                    <p className="text-3xl mt-0.5 text-title">
-                        {formatTime(timeLeft)}
-                    </p>
-                    <p className="text-3xl text-highlight">]</p>
-                </div>
-                {timeLeft <= 0 ? 
-                    <DeleteArchiveGoal/>
-                : 
-                <p className="text-center text-xs text-subtext3 max-w-70 mt-1">
-                    {`You currently have ${Util.pretifyData(currentValue, HC.currentGaol?.type as HabitTypeE)}
-                    logged with a goal of ${Util.pretifyData(targetValue, HC.currentGaol?.type as HabitTypeE)} 
-                    ${(startValue != 0) ? " and a starting value of " + startValue : ""}`}
-                </p>
+            <div className='bg-panel1  drop-shadow-sm outline-border outline-1 w-[90%] max-w-[600px] p-7 py-7 flex gap-1 flex-col  rounded-2xl '>
+                <ProgressPanel 
+                    title={timeLeft <= 0 ? "Time Has Ran Out!" : "Time Progress"}
+                    text={`Remaining Time: ${formatTime(timeLeft)}`}
+                    value={(1 - (timeLeft)/(completionTime - startTime)) * 100} roundTo={2}
+                    large={false}/>
+                {HC.currentGaol!.type == HabitTypeE.Normal && HC.currentGaol!.linkedHabit ===  null? 
+                    "" : 
+                    <GoalProgress/>
                 }
+                {timeLeft <= 0 ? 
+                    <div className="mt-5">
+                        <DeleteArchiveGoal/>
+                    </div>
+                : ""}
                 {HC.currentGaol?.type == HabitTypeE.Normal && HC.currentGaol.linkedHabit == null?
-                    <button className="bg-btn text-sm flex-grow-10  mt-3 text-btn-text p-1 px-3 rounded-lg hover:cursor-pointer transition-all duration-150 ease-in-out"
+                    <button className="text-sm w-full text-subtext2 outline-1 outline-border2 p-1.5  px-3 rounded-xl hover:cursor-pointer transition-all duration-150 ease-in-out hover:bg-panel2 mt-4"
                     onClick={() => completeGoal()}>
                         Complete Goal
                     </button>
                 :
                 !HC.currentGaol?.linkedHabit ? 
-                    <div className="flex gap-3 justify-stretch mt-3">
-                            <button className="bg-btn text-sm flex-grow-10 text-btn-text outline-1 p-1 px-3 rounded-lg hover:cursor-pointer transition-all duration-150 ease-in-out"
+                    <div className="flex gap-3 justify-end mt-4  ">
+                            <button className="text-sm w-full text-subtext2 outline-1 outline-border2 p-1.5  px-3 rounded-xl hover:cursor-pointer transition-all duration-150 ease-in-out hover:bg-panel2"
                                 onClick={() => {
                                     setOpen(true)
                                 }}>

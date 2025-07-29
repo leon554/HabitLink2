@@ -3,7 +3,7 @@ import { UserContext } from "../Providers/UserProvider";
 import { Util } from "../../utils/util";
 import ProgressPanel from "./ProgressPanel";
 import useCurrentGoalValue from "../Hooks/useCurrentGoalValue";
-
+import type { HabitTypeE } from "@/utils/types";
 
 
 
@@ -15,11 +15,13 @@ export default function GoalProgress() {
     const targetValue = HC.currentGaol?.targetValue ?? 0
     
     return (
-        <ProgressPanel title="Progress"
-            value={Util.calculateProgress(startValue, currentValue, targetValue)*100}/>
+        <div className="mt-4">
+            <ProgressPanel 
+                title="Actaul Progress"
+                text={`You have ${Util.pretifyData(currentValue, HC.currentGaol?.type as HabitTypeE)}
+                    logged with a goal of ${Util.pretifyData(targetValue, HC.currentGaol?.type as HabitTypeE)} 
+                  ${(startValue != 0) ? " starting with " + startValue : ""}`}
+                value={Util.calculateProgress(startValue, currentValue, targetValue)*100}/>
+        </div>
     )
 }
-
-//`You currently have ${Util.pretifyData(currentValue, HC.currentGaol?.type as HabitTypeE)}
-               // logged with a goal of ${Util.pretifyData(targetValue, HC.currentGaol?.type as HabitTypeE)} 
-             //   ${(startValue != 0) ? " and a starting value of " + startValue : ""}`
