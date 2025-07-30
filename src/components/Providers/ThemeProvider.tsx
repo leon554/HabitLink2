@@ -20,7 +20,6 @@ export default function ThemeProvider(props: Props) {
 
     useLayoutEffect(() => {
         const savedTheme = localStorage.getItem("theme");
-        console.log("theme: " +  savedTheme)
         if (savedTheme === "dark") {
         setDark(true);
         document.documentElement.classList.add("dark");

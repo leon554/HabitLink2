@@ -30,7 +30,6 @@ export default function Alert() {
                 className="mt-2 bg-btn text-btn-text font-mono p-1 rounded-xl pl-2 pr-2 hover:cursor-pointer w-full"
                 onClick={() => {
                   AlertData.setShowing(false);
-                  console.log(AlertData.showing);
                 }}>
                 Done
               </button>

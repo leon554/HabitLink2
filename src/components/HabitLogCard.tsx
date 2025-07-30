@@ -13,7 +13,8 @@ import HabitLogPopUp from './HabitLogPopUp';
 import { AlertContext } from './Alert/AlertProvider';
 import { SettingsContext } from './Providers/SettingsProvider';
 import { useNavigate } from 'react-router-dom';
-
+import useCurrentGoalValue from './Hooks/useCurrentGoalValue';
+import type { GoalType } from '../utils/types';
 
 
 interface HabitProps{
@@ -31,8 +32,23 @@ export default function HabitLogCard({habit: h}: HabitProps) {
 
     useEffect(() => {
         isCompletedToday()
-    })
+    }, [])
 
+    const startValue = UC.currentGaol?.startValue ?? 0
+    const currenValue = useCurrentGoalValue()
+    const targetValue = UC.currentGaol?.targetValue ?? 0
+    const isGoalFinished =  Util.calculateProgress(startValue, currenValue, targetValue) >= 1;
+
+    useEffect(() => {
+        const updateGoal = async () => {
+            if(isGoalFinished){
+                await UC.compleGoal(UC.currentGaol?.id!)
+                UC.setCurrentGoal({...UC.currentGaol, completed: true} as GoalType)
+            }
+        }
+        updateGoal()
+    }, [isGoalFinished])
+    
     async function HandleClick(){
         if(h.type != HabitTypeE.Normal){
             setOpen(true)
@@ -49,7 +65,6 @@ export default function HabitLogCard({habit: h}: HabitProps) {
     async function handleSubmit(value: number){
         await UC.compleHabit(h.id, value)
     }
-
     function isNormalHabit(){
         return h.type == HabitTypeE.Normal
     }

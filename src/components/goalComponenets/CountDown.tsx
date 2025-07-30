@@ -7,6 +7,7 @@ import { HabitTypeE } from "../../utils/types"
 import DeleteArchiveGoal from "./DeleteArchiveGoal"
 import ProgressPanel from "./ProgressPanel"
 import GoalProgress from "./GoalProgress"
+import { dateUtils } from "@/utils/dateUtils"
 
 export default function CountDown() {
     const [open, setOpen] = useState(false)
@@ -39,7 +40,7 @@ export default function CountDown() {
     }
     async function completeGoal(){
         await HC.addGoalCompletion(1)
-        alert(`Well done you completed you goal with ${formatTime(timeLeft)} left 🎉🎉🎉🎉🎉`)
+        alert(`Well done you completed you goal with ${ dateUtils.formatTime(timeLeft)} left 🎉🎉🎉🎉🎉`)
     }
 
     return (
@@ -47,7 +48,7 @@ export default function CountDown() {
             <div className='bg-panel1  drop-shadow-sm outline-border outline-1 w-[90%] max-w-[600px] p-7 py-7 flex gap-1 flex-col  rounded-2xl '>
                 <ProgressPanel 
                     title={timeLeft <= 0 ? "Time Has Ran Out!" : "Time Progress"}
-                    text={`Remaining Time: ${formatTime(timeLeft)}`}
+                    text={`Remaining Time: ${ dateUtils.formatTime(timeLeft)}`}
                     value={(1 - (timeLeft)/(completionTime - startTime)) * 100} roundTo={2}
                     large={false}/>
                 {HC.currentGaol!.type == HabitTypeE.Normal && HC.currentGaol!.linkedHabit ===  null? 
@@ -100,16 +101,4 @@ export default function CountDown() {
             </Model>
         </>
     )
-}
-function formatTime(ms: number): string {
-    if (ms <= 0) return "0d 00h 00m 00s";
-
-    const totalSeconds = Math.floor(ms / 1000);
-
-    const days = Math.floor(totalSeconds / (3600 * 24));
-    const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
-
-    return `${days}d ${String(hours).padStart(2, "0")}h ${String(minutes).padStart(2, "0")}m ${String(seconds).padStart(2, "0")}s`;
 }

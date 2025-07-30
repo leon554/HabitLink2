@@ -19,8 +19,6 @@ import { themeContext } from "./components/Providers/ThemeProvider"
 function App() {
   const {dark, setDark} = useContext(themeContext)
 
-  console.log("theme " + dark)
-
 
   return (
     <div className="">

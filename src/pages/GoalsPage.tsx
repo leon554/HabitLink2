@@ -1,4 +1,4 @@
-import { useContext} from "react"
+import { useContext, useEffect} from "react"
 import { UserContext } from "../components/Providers/UserProvider"
 import CountDown from "../components/goalComponenets/CountDown"
 import AssociatedHabits from "../components/goalComponenets/AssociatedHabits"
@@ -10,6 +10,7 @@ import GoalCompletionPanel from "@/components/goalComponenets/GoalCompletionPane
 import AvgStrengthPanel from "../AvgStrengthPanel"
 import GoalSummary from "@/components/goalComponenets/GoalSummary"
 import GoalEdit from "@/components/goalComponenets/GoalEdit"
+import type { GoalType } from "@/utils/types"
 
 
 export default function GoalsPage() {
@@ -20,6 +21,15 @@ export default function GoalsPage() {
     const targetValue = HC.currentGaol?.targetValue ?? 0
     const isGoalFinished =  Util.calculateProgress(startValue, currenValue, targetValue) >= 1;
 
+    useEffect(() => {
+        const updateGoal = async () => {
+            if(isGoalFinished){
+                await HC.compleGoal(HC.currentGaol?.id!)
+                HC.setCurrentGoal({...HC.currentGaol, completed: true} as GoalType)
+            }
+        }
+        updateGoal()
+    }, [isGoalFinished])
 
     return (
         <div className="w-full flex justify-center mb-10 ">

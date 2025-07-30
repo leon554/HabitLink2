@@ -50,6 +50,7 @@ export interface GoalType{
     completionDate: number
     linkedHabit: number | null
     archived: boolean
+    completed: boolean
 }
 export interface UserType{
     id: number

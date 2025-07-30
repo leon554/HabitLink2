@@ -27,7 +27,6 @@ export default function Auth() {
     }
 
     const logIn = async () => {
-        console.log("called loging")
        await auth.login(formData.email, formData.password)
     }
 

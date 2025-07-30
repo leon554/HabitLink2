@@ -23,7 +23,6 @@ export namespace Util{
         }
     }
     export function secondsToHours(seconds: number): number {
-        console.log(seconds)
         return Math.round((seconds / 3600) * 100) / 100;
     }
     export function pretifyData(data: string | undefined | number, type: HabitTypeE | undefined){
