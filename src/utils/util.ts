@@ -78,4 +78,34 @@ export namespace Util{
         newMap.delete(key);
         return newMap;
     }
+
+    export function getInterpolatedColor(min: number,max: number,value: number,colorStart: string,colorEnd: string): string {
+        value = Math.max(min, Math.min(value, max));
+
+        const ratio = (value - min) / (max - min);
+
+        const hexToRgb = (hex: string): { r: number; g: number; b: number } => {
+            const cleanHex = hex.replace("#", "");
+            if (cleanHex.length !== 6) {
+                throw new Error(`Invalid hex color: ${hex}`);
+            }
+
+            return {
+                r: parseInt(cleanHex.substring(0, 2), 16),
+                g: parseInt(cleanHex.substring(2, 4), 16),
+                b: parseInt(cleanHex.substring(4, 6), 16),
+            };
+        };
+
+        const toHex = (c: number): string => c.toString(16).padStart(2, "0");
+
+        const start = hexToRgb(colorStart);
+        const end = hexToRgb(colorEnd);
+
+        const r = Math.round(start.r + (end.r - start.r) * ratio);
+        const g = Math.round(start.g + (end.g - start.g) * ratio);
+        const b = Math.round(start.b + (end.b - start.b) * ratio);
+
+        return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+    }
 }

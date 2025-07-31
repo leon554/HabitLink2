@@ -22,7 +22,6 @@ export default function UpcomingGoals() {
             upcommingGoals.forEach((g) => {
                 times.push(g.completionDate - new Date().getTime())
             })
-            console.log(times)
             setTimeLeft(times);
         }
 

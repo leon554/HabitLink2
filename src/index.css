@@ -27,7 +27,7 @@
 }
 
 .dark {
-  --color-panel1: hsl(0, 0%, 12%);  
+  --color-panel1: #1f1f1f;  
   --color-panel2: hsl(0, 0%, 15%);    
   --color-progress-panel: hsl(0, 0%, 25%); 
   --color-btn-text:   oklch(26.9% 0 0);

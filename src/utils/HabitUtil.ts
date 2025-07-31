@@ -1,6 +1,6 @@
 import { dateUtils } from "./dateUtils";
 import { HabitTypeE, type HabitCompletionType, type HabitType } from "./types";
-import { eachWeekOfInterval, add, sub, isSameWeek, isAfter} from "date-fns";
+import { eachWeekOfInterval, add, sub, isSameWeek, isAfter, isBefore} from "date-fns";
 import { Util } from "./util";
 
 
@@ -529,17 +529,19 @@ export namespace HabitUtil{
 
 
     }
-    export type compDaysType = {day: Date, done: boolean, complete: boolean, habitCreation: boolean}
-    export function getCompletionDaysThisPeriod(habit: HabitType|null, completions: HabitCompletionType[]|undefined = []){
-        let output = Array(113).fill(null).map(() => ({day: new Date(), done: false, complete: false, habitCreation: false})) 
-        if(!habit ) return 
+
+    export type compDaysType = {day: Date, done: boolean, complete: boolean, habitCreation: boolean, existed: boolean}
+    export function getCompletionDaysThisPeriod(habit: HabitType, completions: HabitCompletionType[] = []){
+        let output = Array(113).fill(null).map(() => ({day: new Date(), done: false, complete: false, habitCreation: false, existed: true})) 
 
         let subarrs: compDaysType[][] = [] 
         let date = dateUtils.getEndOfWeekDate()
         for(let i = 0; i < output.length; i++){
             output[i].day = date
             
+            if(isBefore(date, new Date(Number(habit.creationDate)))) output[i].existed = false
             if(dateUtils.isDatesSameDay(date, new Date(Number(habit.creationDate)))) output[i].habitCreation = true
+
             if(habit.completionDays.length != 1 && date.getTime() >= Number(habit.creationDate) && date.getTime() < add((new Date()), {days: 1}).getTime()){
                 const compDays = getCompDays(habit.completionDays)
                 output[i].complete = compDays.includes(date.getDay())
@@ -555,6 +557,42 @@ export namespace HabitUtil{
             if(i % 7 == 0 && i >= 7) subarrs.push(output.slice(i - 7, i)) 
         }
         return subarrs.reverse()
+    }
+
+    export function GetCompletionDaysThisPeriodAllHabits(habits: HabitType[], completions: Map<number, HabitCompletionType[]>){
+        const results = habits.map((h, _) => {
+            return getCompletionDaysThisPeriod(h, completions.get(h.id))
+        })
+
+        let firstResult = Array(16)
+            .fill(null)
+            .map(() => Array(7)
+            .fill(null)
+            .map(() => ({creation: false, missAmount: 0, completeAmount: 0, day: new Date(), totalHabits: 0}))) 
+
+        let maxMiss = 0
+        let maxComp = 0
+
+        for(let i = 0; i < results.length; i++){
+            for(let j = 0; j < results[i].length; j++){
+                for(let k = 0; k < results[i][j].length; k++){
+                    firstResult[j][k].creation = firstResult[j][k].creation ? true : results[i][j][k].habitCreation
+                    firstResult[j][k].completeAmount += results[i][j][k].done ? 1 : 0
+                    firstResult[j][k].missAmount += results[i][j][k].complete && !results[i][j][k].done ? 1 : 0
+                    firstResult[j][k].day = results[i][j][k].day
+                    firstResult[j][k].totalHabits += results[i][j][k].existed ? 1 : 0
+
+                    if(i == results.length -1){
+                        const miss = Math.max(firstResult[j][k].missAmount, 0)
+                        const comp = Math.max(firstResult[j][k].completeAmount, 0)
+                        maxMiss = maxMiss < miss ? miss : maxMiss
+                        maxComp = maxComp < comp ? comp : maxComp
+                    }
+                }
+            }
+        }
+
+        return {firstResult, maxMiss, maxComp}
     }
 
     export function getRank(strength: number){

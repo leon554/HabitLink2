@@ -11,7 +11,7 @@ export default function CompletionsMonth() {
     const [open, setOpen] = useState(false)
 
     const currentHabitCompletions = HC.currentHabit ? HC.habitsCompletions.get(HC.currentHabit?.id) : undefined
-    const compDays = HabitUtil.getCompletionDaysThisPeriod(HC.currentHabit, currentHabitCompletions) ?? []
+    const compDays = HabitUtil.getCompletionDaysThisPeriod(HC.currentHabit!, currentHabitCompletions) ?? []
     const days = ["S", "M", "T", "W", "T", "F", "S", " "]
 
     return (
