@@ -14,7 +14,7 @@ export default function InfoPanel({ children }: { children: ReactNode}) {
 
 InfoPanel.Title = function Title({title} : {title: string}){
     return(
-        <p className="text-title text-lg">
+        <p className="text-title text-lg font-medium">
             {title}
         </p>
     )
@@ -28,7 +28,7 @@ InfoPanel.BodyContainer = function BodyContainer({ children }: { children: React
 }
 InfoPanel.SubText = function SubText({text} : {text: string}){
     return(
-        <p>
+        <p className="text-sm">
             {text}
         </p>
     )
@@ -36,10 +36,10 @@ InfoPanel.SubText = function SubText({text} : {text: string}){
 InfoPanel.BubbleText = function BubbleText({text, bubbleText, mb}: {text: string, bubbleText: string, mb: number}){
     return(
          <div className="flex gap-2" style={{marginBottom: `${mb}px`}}>
-            <p className="">
+            <p className="text-sm">
                 {text}
             </p>
-            <p className="outline-border2 outline-1 dark:outline-0 rounded-xl px-3 bg-btn text-btn-text text-sm flex items-center">
+            <p className="outline-border2 outline-1 dark:outline-0 rounded-xl px-3 pb-0.5 bg-btn text-btn-text text-xs flex items-center">
                 {bubbleText}
             </p>
         </div>

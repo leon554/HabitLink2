@@ -111,7 +111,7 @@ export default function HabitEdit() {
                                             </p>
                                             <p className="hover:cursor-pointer" onClick={async () => {
                                                 btnClicked.current = 10 + i
-                                                deleteEntry(c.id)
+                                                await deleteEntry(c.id)
                                             }}>
                                                 {HC.loading && btnClicked.current == 10 + i ? <AiOutlineLoading className="animate-spin"/>  : <TiDelete />} 
                                             </p>

@@ -60,6 +60,21 @@ export interface UserType{
     user_id: string
     role: string
 }
+export interface IssueType{
+    id: number
+    created_at: string
+    user_id: string
+    page: string
+    type: ErrorType
+    description: string
+    status: ErrorStatus
+    response: string | undefined
+}
+export interface SubmitIssueType{
+    page: string
+    type: ErrorType
+    description: string
+}
 export enum Origin{ 
     top = "top",
     bottom = "bottom",
@@ -67,4 +82,16 @@ export enum Origin{
     topLeft = "top left",
     bottomRight = "bottom right",
     bottomLeft = "bottom left"
+}
+export enum ErrorStatus{
+    pending = "pending",
+    reviewing = "reviewing",
+    resolved = "resolved"
+}
+export enum ErrorType{
+    dataNotLoading = "data not loading",
+    layoutIssue = "layout issue",
+    statisticError = "statistic is wrong",
+    securityIssue = "security issue",
+    other = "other"
 }

@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react"
 import { AuthContext } from "./AuthProvider";
 import { supabase } from "../../supabase-client";
 import { AlertContext } from "../Alert/AlertProvider";
-import {type GaolCompletionType, type GoalType, type HabitCompletionType, type HabitType } from "../../utils/types";
+import {type GaolCompletionType, type GoalType, type HabitCompletionType, type HabitType, type IssueType, type SubmitIssueType } from "../../utils/types";
 import { dateUtils } from "../../utils/dateUtils";
 import { HabitUtil } from "../../utils/HabitUtil";
 import { HabitTypeE } from "../../utils/types";
@@ -19,7 +19,8 @@ interface UserType{
     deleteHabit: (habitId: number) => Promise<void>
     deleteHabitCompletion: (completionID: number, habitId: number) => Promise<void>
     compleGoal: (goalId: number) => Promise<void>
-
+    lodgeIssue: (issue: SubmitIssueType) => Promise<void>
+    deleteIssue: (issueId: number) => Promise<void>
     habits: Map<number, HabitType>
     habitsCompletions: Map<number, HabitCompletionType[]>,
     loading: boolean,
@@ -30,6 +31,7 @@ interface UserType{
     habitComps: Map<number, number>
     habitStrengths: Map<number, number>
     goalProgress: Map<number, number>
+    issues: Map<number, IssueType>
     setCurrentGoal: (currentGaol: GoalType | null) => void
     setCurrentHabit: (currentHabit: HabitType | null) => void
     compleHabit: (habitId: number, value: number, date?: Date) => Promise<void>,
@@ -59,8 +61,11 @@ const initialValues: UserType = {
     deleteHabit: () => Promise.resolve(undefined),
     deleteHabitCompletion: () => Promise.resolve(undefined),
     compleGoal: () => Promise.resolve(undefined),
+    lodgeIssue: () => Promise.resolve(undefined),
+    deleteIssue: () => Promise.resolve(undefined),
     habits: new Map<number, HabitType>(),
     goals: new Map<number, GoalType>(),
+    issues: new Map<number, IssueType>(),
     habitsCompletions: new Map<number, HabitCompletionType[]>(),
     loading: false,
     currentHabit: null,
@@ -105,6 +110,7 @@ export default function UserProvider(props: Props) {
     const [habitComps, setHabitComps] = useState<Map<number, number>>(new Map<number, number>())
     const [habitStrengths, setHabitStrengths] = useState<Map<number, number>>(new Map<number, number>())
     const [goalProgress, setGoalProgress] = useState<Map<number, number>>(new Map<number, number>())
+    const [issues, setIssues] = useState<Map<number, IssueType>>(new Map<number, IssueType>())
 
     const [habitsCompletions, setHabitsCompletions] = useState<Map<number, HabitCompletionType[]>>(new Map<number, HabitCompletionType[]>())
     const [goalCompletions, setGoalCompletions] = useState<Map<number, GaolCompletionType[]>>(new Map<number, GaolCompletionType[]>())
@@ -124,10 +130,12 @@ export default function UserProvider(props: Props) {
     useEffect(() => {
         const userid = auth.getUserId()
         if(!userid) return
+        //make this properly async 
         getHabits()
         getGoals()
         getHabitsCompletions()
         getGoalsCompletions()
+        getIssues()
     }, [auth.session?.user])
 
     useEffect(() => {
@@ -504,7 +512,68 @@ export default function UserProvider(props: Props) {
         }
         setLoading(false)
     }
+    async function lodgeIssue(issue: SubmitIssueType){
+        setLoading(true)
 
+        const userid = auth.getUserId()
+
+        const { data, error } = await supabase
+            .from('issues')
+            .insert([
+            { user_id: userid, page: issue.page, type: issue.type, description: issue.description, status: "pending", response: ""},
+            ]).select()
+        
+        if(error){
+            alert("Bug report error: " + error.message)
+            setLoading(false)
+            return
+        }
+
+        const issueData = (data[0] as IssueType)
+        issues.set(issueData.id, issueData)
+        setIssues(issues)
+        setLoading(false)
+    }
+    async function getIssues(){
+        setLoading(true)
+
+        let { data, error } = await supabase
+            .from('issues')
+            .select('*')
+
+        if(error){
+            alert("Issue fetch error: " + error.message)
+            setLoading(false)
+            return true
+        }
+
+        const issuesMap = new Map<number, IssueType>()
+        const issuesData = data as IssueType[]
+        issuesData.map(i => {
+            issuesMap.set(i.id, i)
+        })
+        setIssues(issuesMap)
+        setLoading(false)
+    }
+    async function deleteIssue(issueId: number){
+        setLoading(true)
+
+
+        const { error } = await supabase
+            .from('issues')
+            .delete()
+            .eq('id', issueId)
+
+        if(error){
+            alert("Bug deletion error: " + error.message)
+            setLoading(false)
+            return
+        }
+
+        issues.delete(issueId)
+        setIssues(issues)
+        setLoading(false)
+    }
     return (
         
         <UserContext.Provider value={{
@@ -513,11 +582,13 @@ export default function UserProvider(props: Props) {
             updateHabitName,
             deleteHabit,
             deleteHabitCompletion,
+            deleteIssue,
             habits,
             goals,
             habitsCompletions,
             loading,
             currentGaol,
+            issues,
             setCurrentGoal,
             currentHabit,
             setCurrentHabit,
@@ -528,6 +599,7 @@ export default function UserProvider(props: Props) {
             deleteGoal,
             askGpt,
             compleGoal,
+            lodgeIssue,
             goalCompletions,
             currentHabitStats: {compRate, missedSessions, streak, entries, strength,completions, partialComps,dataSum, validComps, completableDays},
             habitRanks,

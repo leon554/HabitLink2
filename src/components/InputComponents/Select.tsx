@@ -12,8 +12,12 @@ interface SelectProps {
   selectedItem: dataFormat | null;
   setSelectedItem: (id: number) => void;
   setText?: string | React.ReactNode
+  defaultText?: string
   style?: string
   origin?: Origin
+  center?: boolean
+  blur?: boolean
+  setBlur?: (blur: boolean) => void
 }
 export default function Select(props: SelectProps) {
     const focusElement = useRef<null|HTMLDivElement>(null)
@@ -28,6 +32,13 @@ export default function Select(props: SelectProps) {
     }
 
     useEffect(() => {
+        console.log("truggered")
+        if(props.blur && props.setBlur && focusElement.current != null){
+            setClicked(false)
+            focusElement.current.blur()
+            props.setBlur(false)
+            console.log("ran")
+        }
         const onClick = (e: MouseEvent) => {
             if (focusElement.current && !focusElement.current.contains(e.target as Node)) {
                 setClicked(false);
@@ -38,27 +49,29 @@ export default function Select(props: SelectProps) {
         return () => {
             document.removeEventListener("click", onClick)
         }
-    }, [])
+    }, [props.blur])
 
     return (
         <div className="relative" ref={focusElement}>
-            <button className={`group relative transition z-10  hover:cursor-pointer ${props.style ? props.style : " outline-1 bg-stone-800 text-sm text-stone-300 font-mono p-3 rounded-md flex justify-center  "}`}
-                 onClick={() => setClicked(!clicked)}
-            >
+            <button className={`group relative transition-transform z-10  hover:cursor-pointer ${props.style ? props.style : " outline-1 bg-stone-800 text-sm text-stone-300 font-mono p-3 rounded-md flex justify-center  "}`}
+                 onClick={(e) => {
+                    setClicked(!clicked)
+                    e.stopPropagation()
+                }}>
                 {props.setText 
                     ?? (props.selectedItem == null 
-                    ? "Select Habit" 
+                    ? props.defaultText 
                     : Util.capitilizeFirst(props.selectedItem.name))}
 
             </button>
-            <div className="absolute top-full right-0 rounded-2xl p-3 mt-2  flex flex-col justify-start items-start scale-0 duration-200 bg-panel1 text-subtext1  outline-border2  z-20 w-fit outline-1" style={{
+            <div className={`absolute top-full ${props.center ? "left-1/2 transform -translate-x-1/2" : "right-0 "} rounded-2xl p-3 mt-2  flex flex-col justify-start items-start scale-0 transition-transform duration-200 bg-panel1 text-subtext1  outline-border2  z-20 w-fit outline-1`} style={{
                 scale: clicked ? 1 : 0,
                 transformOrigin: props.origin ?? "top"
                 }}>
                 {props.items && props.items.map((h) => {
                     return (
                     <p
-                        className="hover:bg-highlight font-mono w-full flex justify-start p-1 rounded-xl transition duration-100 ease-in-out hover:cursor-pointer text-nowrap hover:text-btn-text px-3"
+                        className="hover:bg-highlight w-full flex justify-start p-1 text-sm rounded-xl transition duration-100 ease-in-out hover:cursor-pointer text-nowrap hover:text-btn-text px-3"
                         onClick={() => setItem(h.id)}
                     >
                         {Util.capitilizeFirst(h.name)}
