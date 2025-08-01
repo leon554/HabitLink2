@@ -136,7 +136,7 @@ export default function SettingsPage() {
                         </p>
                         <div className="w-fit">
                             <Select items={pageItems} defaultText="Select" selectedItem={selectedPage} setSelectedItem={(id) => setSelectedPage(pageItems.find(p => p.id == id) ?? null)} origin={Origin.top} center={true} 
-                            style="outline-1 outline-border2 px-4 rounded-xl text-xs py-1 text-subtext2 flex items-center" blur={blur} setBlur={setBlur}/>
+                            style="outline-1 outline-border2 px-4 rounded-xl text-xs py-0.5 pb-1 text-subtext2 flex items-center" blur={blur} setBlur={setBlur}/>
                         </div>
                     </div>
                      <div className="flex gap-3 items-center">
@@ -145,7 +145,7 @@ export default function SettingsPage() {
                         </p>
                         <div className="w-fit">
                             <Select items={typeItems} defaultText="Select" selectedItem={selectedType} setSelectedItem={(id) => setSelectedType(typeItems.find(p => p.id == id) ?? null)} origin={Origin.top} center={true} 
-                            style="outline-1 outline-border2 px-4 rounded-xl text-xs py-1 text-subtext2 flex items-center" blur={blur} setBlur={setBlur}/>
+                            style="outline-1 outline-border2 px-4 rounded-xl text-xs py-0.5 pb-1 text-subtext2 flex items-center" blur={blur} setBlur={setBlur}/>
                         </div>
                     </div>
                     <div className="flex flex-col gap-2">

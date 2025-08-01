@@ -104,5 +104,10 @@ export namespace dateUtils{
 
         return `${days}d ${String(hours).padStart(2, "0")}h ${String(minutes).padStart(2, "0")}m ${String(seconds).padStart(2, "0")}s`;
     }
+    export function getDayStringFromDay(date: Date, charAmount?: number){
+        const daysArr = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+
+        return daysArr[date.getDay()].slice(0, Math.min(charAmount ?? 3, 3))
+    }
 
 }

@@ -7,7 +7,7 @@ import { AiOutlineLoading } from "react-icons/ai"
 import UpcomingGoals from "@/components/DashboardComponenets/UpcomingGoals"
 import BestHabits from "@/components/DashboardComponenets/BestHabits"
 import HabitCalander from "@/components/DashboardComponenets/HabitCalander"
-import HabitWeekly from "@/components/DashboardComponenets/HabitWeekly"
+
 
 
 export default function Dashboard() {
@@ -49,9 +49,21 @@ export default function Dashboard() {
                 <div className=" h-105  flex flex-col gap-5 rounded-2xl bg-panel1 w-[90%] max-w-[600px] md:max-w-[400px] outline-1 outline-border grow-1">
                     <BestHabits/>
                 </div>
-                <div className="  h-105  rounded-2xl bg-panel1 w-[90%] max-w-[600px]  outline-1 outline-border relative flex-grow-1">
-                    <HabitCalander/>
-                    <HabitWeekly/>
+                <div className="rounded-2xl  w-[90%] max-w-[600px] flex flex-col gap-5">
+                    <div className=" h-64 rounded-2xl bg-panel1  outline-1 outline-border relative">
+                        <HabitCalander/>
+                    </div>
+                    <div className=" h-36 rounded-2xl bg-panel1  outline-1 outline-border relative">
+
+                    </div>
+                </div>
+            </div>
+            <div className=" p-[1px] flex max-md:flex-col gap-5 justify-center max-md:items-center  md:w-[90%] max-md:w-full">
+                <div className=" h-105  flex flex-col gap-5 rounded-2xl bg-panel1 w-[90%] max-w-[600px] md:max-w-[400px] outline-1 outline-border grow-1">
+
+                </div>
+                <div className=" h-105 rounded-2xl bg-panel1 w-[90%] max-w-[600px] outline-1 outline-border relative flex-grow">
+
                 </div>
             </div>
         </div>
