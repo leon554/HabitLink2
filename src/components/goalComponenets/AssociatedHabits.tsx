@@ -39,10 +39,10 @@ export default function AssociatedHabits() {
                                 </div>
                                 <div className="flex gap-4">
                                     <p className="text-xs text-subtext2">
-                                        📈 {Math.round(Number((HC.habitComps.get(Number(h.id))) ?? 0) * 100)}%
+                                        📈 {Math.round(Number((HC.habitStats.get(Number(h.id))?.compRate) ?? 0) * 100)}%
                                     </p>
                                     <p className="text-xs text-subtext2">
-                                        💪 {Math.round(Number((HC.habitStrengths.get(h.id)) ?? 0))}%
+                                        💪 {Math.round(Number((HC.habitStats.get(h.id)?.strength) ?? 0))}%
                                     </p>
                                 </div>
                             </div>

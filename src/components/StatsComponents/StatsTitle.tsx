@@ -12,7 +12,7 @@ export default function StatsTitle() {
     return (
         <div className="rounded-2xl outline-1 outline-border bg-panel1 w-full p-4 flex justify-between items-center ">
             <p className="text-subtext1  text-lg font-semibold flex items-center gap-1">
-                {HC.currentHabitStats.streak}{<IoFlame />}
+                {HC.habitStats.get(HC.currentHabit?.id ?? 0)?.streak ?? 0}{<IoFlame />}
             </p>
             <p className="text-2xl font-semibold text-center  text-title">
                 {Util.capitilizeFirst(HC.currentHabit?.name)} 

@@ -14,7 +14,7 @@ import { useScreenWidth } from "@/components/Hooks/UseScreenWidth";
 
 export default function StatsPage() {
     const HC = useContext(UserContext)
-    const width =useScreenWidth()
+    const width = useScreenWidth()
 
     return (
         <div className="flex justify-center">
@@ -33,7 +33,6 @@ export default function StatsPage() {
                                 <div key={i} className="flex items-center gap-3 text-stone-400 hover:text-stone-300 font-mono bg-stone-700/30 rounded-md grow-1 hover:cursor-pointer"
                                     onClick={() => HC.setCurrentHabit(h)}>
                                     <div className="w-2 h-10 bg-green-400 rounded-l-md"></div>
-                                    <img src={HC.habitRanks.get(h.id)} className="h-4"/>
                                     <p>{Util.capitilizeFirst(h.name)}</p>
                                 </div>
                             )
@@ -44,7 +43,7 @@ export default function StatsPage() {
             <div className="w-full flex justify-center gap-4 mb-15"> 
                 <div className="mt-20 gap-3 flex flex-col items-center w-[90%] max-w-[600px]">
                     <StatsTitle/>
-                    <ConsistencyPanel compRate={HC.currentHabitStats.compRate} strength={HC.currentHabitStats.strength}/>
+                    <ConsistencyPanel compRate={HC.habitStats.get(HC.currentHabit.id)?.compRate ?? 0} strength={HC.habitStats.get(HC.currentHabit.id)?.strength ?? 0}/>
                     <Summary/>
                     <CompletionThisWeek/>
                     <CompletionsMonth/>

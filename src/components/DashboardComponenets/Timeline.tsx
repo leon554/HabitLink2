@@ -18,7 +18,7 @@ export default function Timeline() {
     const totalDayMs = endDay - startDay;
 
     const completionsToday = Util.fetchAllMapItems(HC.habitsCompletions)
-        .reduce((s,a) => s = [...s, ...a])
+        .reduce((s,a) => s = [...s, ...a], [])
         .filter(c => new Date(Number(c.date)).getTime() >= startDay)
 
 

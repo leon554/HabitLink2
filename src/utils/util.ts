@@ -108,4 +108,13 @@ export namespace Util{
 
         return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
     }
+    export function standardDeviation(numbers: number[]): number {
+        const n = numbers.length;
+        if (n === 0) return NaN;
+
+        const mean = numbers.reduce((acc, val) => acc + val, 0) / n;
+        const variance = numbers.reduce((acc, val) => acc + (val - mean) ** 2, 0) / n;
+
+        return Math.sqrt(variance);
+    }
 }

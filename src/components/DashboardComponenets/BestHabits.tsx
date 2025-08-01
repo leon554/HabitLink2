@@ -17,8 +17,8 @@ export default function BestHabits() {
         return {
             name: h.name,
             icon: h.icon,
-            consistency: HC.habitComps.get(h.id) ?? 0, 
-            strength: HC.habitStrengths.get(h.id)  ?? 0
+            consistency: HC.habitStats.get(h.id)?.compRate ?? 0, 
+            strength: HC.habitStats.get(h.id)?.strength  ?? 0
         }
     }).sort((a,b) => getProperData(b) - getProperData(a))
 

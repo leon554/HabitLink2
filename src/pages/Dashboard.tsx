@@ -8,21 +8,23 @@ import UpcomingGoals from "@/components/DashboardComponenets/UpcomingGoals"
 import BestHabits from "@/components/DashboardComponenets/BestHabits"
 import HabitCalander from "@/components/DashboardComponenets/HabitCalander"
 import Timeline from "@/components/DashboardComponenets/Timeline"
+import DashBoardStats from "@/components/DashboardComponenets/DashBoardStats"
 
 
 
 export default function Dashboard() {
     const session = useContext(AuthContext)
     const HC = useContext(UserContext)
+    const habitStats = Util.fetchAllMapItems(HC.habitStats)
 
-    let avgHabitComp = Util.avgNumArr(Util.fetchAllMapItems(HC.habitComps)) * 100
-    let avgHabitStrength = Util.avgNumArr(Util.fetchAllMapItems(HC.habitStrengths))
+    let avgHabitComp = Util.avgNumArr(habitStats.map(h => h.compRate)) * 100
+    let avgHabitStrength = Util.avgNumArr(habitStats.map(h => h.strength))
     const avgGoalProgress = Util.avgNumArr(Util.fetchAllMapItems(HC.goalProgress))
 
     useEffect(() => {
-        avgHabitComp = Util.avgNumArr(Util.fetchAllMapItems(HC.habitComps)) * 100
-        avgHabitStrength = Util.avgNumArr(Util.fetchAllMapItems(HC.habitStrengths))
-    }, [HC.habitComps, HC.habitStrengths])
+        avgHabitComp = Util.avgNumArr(habitStats.map(h => h.compRate)) * 100
+        avgHabitStrength = Util.avgNumArr(habitStats.map(h => h.strength))
+    }, [habitStats])
 
     return (
         <div className="flex flex-col items-center w-full mt-18 gap-5 mb-10">
@@ -64,7 +66,7 @@ export default function Dashboard() {
 
                 </div>
                 <div className=" h-105 rounded-2xl bg-panel1 w-[90%] max-w-[600px] outline-1 outline-border relative flex-grow">
-
+                    <DashBoardStats/>
                 </div>
             </div>
         </div>
