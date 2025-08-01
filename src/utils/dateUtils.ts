@@ -109,5 +109,16 @@ export namespace dateUtils{
 
         return daysArr[date.getDay()].slice(0, Math.min(charAmount ?? 3, 3))
     }
+    export function formatTo12HourTime(unixMs: number): string {
+        const date = new Date(unixMs);
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
+
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        const hour12 = hours % 12 === 0 ? 12 : hours % 12;
+        const paddedMinutes = minutes.toString().padStart(2, '0');
+
+        return `${hour12}:${paddedMinutes} ${ampm}`;
+    }
 
 }

@@ -64,9 +64,9 @@ export default function HabitCalander() {
                                         return(
                                             <ToolTip tooltip={
                                                 <div className="rounded-2xl bg-panel2 outline-1 outline-border2 p-3 max-w-[600px] w-30">
-                                                    <p className=" text-xs text-center text-subtext2 w-full">
+                                                    <div className=" text-xs text-center text-subtext2 w-full">
                                                         {dateUtils.formatDate(v.day)} {dateUtils.isDatesSameDay(v.day , new Date()) ? "Today" : ""}  {getDayStatus(v)} 
-                                                    </p>
+                                                    </div>
                                                 </div>
                                             }>
                                                 <p className={`w-full h-4  border-border2/70 

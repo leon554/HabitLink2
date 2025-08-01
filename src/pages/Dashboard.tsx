@@ -7,6 +7,7 @@ import { AiOutlineLoading } from "react-icons/ai"
 import UpcomingGoals from "@/components/DashboardComponenets/UpcomingGoals"
 import BestHabits from "@/components/DashboardComponenets/BestHabits"
 import HabitCalander from "@/components/DashboardComponenets/HabitCalander"
+import Timeline from "@/components/DashboardComponenets/Timeline"
 
 
 
@@ -54,7 +55,7 @@ export default function Dashboard() {
                         <HabitCalander/>
                     </div>
                     <div className=" h-36 rounded-2xl bg-panel1  outline-1 outline-border relative">
-
+                        <Timeline/>
                     </div>
                 </div>
             </div>
