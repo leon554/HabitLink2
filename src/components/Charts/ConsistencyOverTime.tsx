@@ -1,5 +1,5 @@
 import {Line, LineChart, CartesianGrid} from "recharts"
-import {type ChartConfig,ChartContainer,ChartTooltip, ChartTooltipContent} from "@/components/ui/chart"
+import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "../ui/chart"
 import { useContext } from "react"
 import { UserContext } from "../Providers/UserProvider"
 import { HabitUtil } from "@/utils/HabitUtil"

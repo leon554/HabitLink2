@@ -100,6 +100,16 @@ ${colorConfig
   )
 }
 
+type Payload = {
+  dataKey: string;
+  name: string;
+  value: string;
+  payload: {
+    fill: string;
+  }[];
+  color: string;
+}[];
+
 const ChartTooltip = RechartsPrimitive.Tooltip
 
 function ChartTooltipContent({
@@ -123,6 +133,8 @@ function ChartTooltipContent({
     indicator?: "line" | "dot" | "dashed"
     nameKey?: string
     labelKey?: string
+    payload?: Payload
+    label?: any
   }) {
   const { config } = useChart()
 
@@ -255,9 +267,10 @@ function ChartLegendContent({
   verticalAlign = "bottom",
   nameKey,
 }: React.ComponentProps<"div"> &
-  Pick<RechartsPrimitive.LegendProps, "payload" | "verticalAlign"> & {
+  Pick<RechartsPrimitive.LegendProps, "mask" | "verticalAlign"> & {
     hideIcon?: boolean
     nameKey?: string
+    payload?: Payload
   }) {
   const { config } = useChart()
 
