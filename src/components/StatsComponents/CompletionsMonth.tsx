@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext, useState, useRef, useEffect } from "react"
 import { UserContext } from "../Providers/UserProvider"
 import { HabitUtil } from "../../utils/HabitUtil"
 import { dateUtils } from "../../utils/dateUtils"
@@ -14,6 +14,28 @@ export default function CompletionsMonth() {
     const compDays = HabitUtil.getCompletionDaysThisPeriod(HC.currentHabit!, currentHabitCompletions) ?? []
     const days = ["S", "M", "T", "W", "T", "F", "S", " "]
 
+    const calanderRef = useRef<HTMLDivElement>(null)
+    const [columns, setColumns] = useState(16)
+
+    useEffect(() => {
+        if (!calanderRef.current) return;
+
+        const observer = new ResizeObserver((entries) => {
+            for (const entry of entries) {
+                const width = entry.contentRect.width
+                setColumns(prev => {
+                    if (width < 390 && prev !== 12) return 12;
+                    if (width > 410 && prev !== 16) return 16;
+                    return prev
+                });
+            }
+        });
+
+        observer.observe(calanderRef.current);
+
+        return () => observer.disconnect();
+    }, []);
+
     return (
         <div className="w-full bg-panel1  rounded-2xl outline-1 outline-border relative text-title justify-center p-7 pt-5 pb-7 flex flex-col items-center gap-4 ">
             <div className="w-full ">
@@ -24,7 +46,7 @@ export default function CompletionsMonth() {
             <IoInformationCircleOutline size={14} color="#57534E" className="hover:cursor-pointer absolute top-3 right-3" onClick={() => {
                 setOpen(true)
             }}/>
-            <div className="w-full ">
+            <div className="w-full " ref={calanderRef}>
                 <div className="flex gap-1.5  ">
                     <div className="flex flex-col  gap-1.5 mr-0.5 ">
                         {Array(8).fill(null).map((_, i) => {
@@ -36,40 +58,42 @@ export default function CompletionsMonth() {
                         })}  
                 </div>
                     {compDays.map((d, i) => {
-                        return(
-                            <div key={i} className="flex flex-col items-center gap-1.5 w-full">
-                                {d.reverse().map(v => {
-                                    return(
-                                        <ToolTip tooltip={
-                                            <div className="rounded-2xl bg-panel2 outline-1 outline-border2 p-3 max-w-[300px] ">
-                                                <p className=" text-xs text-center text-subtext2 w-full">
-                                                    {dateUtils.formatDate(v.day)} {getDayStatus(v)} {dateUtils.isDatesSameDay(v.day , new Date()) ? "Today" : ""} {dateUtils.isDatesSameDay(new Date(Number(HC.currentHabit?.creationDate)) , v.day) ? "Creation Date" : ""}
-                                                </p>
-                                            </div>
-                                        }>
-                                            <p className={`w-full h-4 ${dateUtils.isDatesSameDay(v.day , new Date()) ? 
-                                                v.done ? "bg-highlight rounded-xl" : "border-1 border-highlight rounded-sm" :
-                                                v.habitCreation ? 
-                                                v.done ? 
-                                                "rounded-none bg-highlight" :
-                                                v.complete ? 
-                                                "rounded-none bg-red-400" :
-                                                "border-1 rounded-none border-green-500" : 
-                                                v.done ?
-                                                "bg-highlight rounded-sm" : 
-                                                v.complete ? 
-                                                "bg-red-400 rounded-sm" : 
-                                                "border-1 border-border2/70 rounded-sm"}  hover:scale-[1.2] transition-transform duration-200 hover:cursor-default`}>
+                        if(compDays.length - i <= columns){
+                            return(
+                                <div key={i} className="flex flex-col items-center gap-1.5 w-full">
+                                    {d.reverse().map(v => {
+                                        return(
+                                            <ToolTip tooltip={
+                                                <div className="rounded-2xl bg-panel2 outline-1 outline-border2 p-3 max-w-[300px] ">
+                                                    <p className=" text-xs text-center text-subtext2 w-full">
+                                                        {dateUtils.formatDate(v.day)} {getDayStatus(v)} {dateUtils.isDatesSameDay(v.day , new Date()) ? "Today" : ""} {dateUtils.isDatesSameDay(new Date(Number(HC.currentHabit?.creationDate)) , v.day) ? "Creation Date" : ""}
+                                                    </p>
+                                                </div>
+                                            }>
+                                                <p className={`w-full h-4 ${dateUtils.isDatesSameDay(v.day , new Date()) ? 
+                                                    v.done ? "bg-highlight rounded-xl" : "border-1 border-highlight rounded-sm" :
+                                                    v.habitCreation ? 
+                                                    v.done ? 
+                                                    "rounded-none bg-highlight" :
+                                                    v.complete ? 
+                                                    "rounded-none bg-red-400" :
+                                                    "border-1 rounded-none border-green-500" : 
+                                                    v.done ?
+                                                    "bg-highlight rounded-sm" : 
+                                                    v.complete ? 
+                                                    "bg-red-400 rounded-sm" : 
+                                                    "border-1 border-border2/70 rounded-sm"}  hover:scale-[1.2] transition-transform duration-200 hover:cursor-default`}>
 
-                                            </p>
-                                        </ToolTip>
-                                    )
-                                })}
-                                <p className="text-xs text-subtext3 text-center w-[15px]">
-                                    {16 - i}
-                                </p>
-                            </div>
-                        )
+                                                </p>
+                                            </ToolTip>
+                                        )
+                                    })}
+                                    <p className="text-xs text-subtext3 text-center w-[15px]">
+                                        {16 - i}
+                                    </p>
+                                </div>
+                            )
+                        }
                     })}
                 </div>
             </div>

@@ -51,11 +51,11 @@ export default function UpcomingGoals() {
                     </p>:
                     upcommingGoals.map((g, i) => {
                         return(
-                            <div className={`${i < upcommingGoals.length-1 ? "border-b-1" : ""} text-sm border-border2 py-2 pb-3 flex justify-between items-center`} key={i}>
-                                <p className="text-subtext1">
+                            <div className={`${i < upcommingGoals.length-1 ? "border-b-1" : ""} text-sm border-border2 py-2 pb-3 flex justify-between items-center gap-2`} key={i}>
+                                <p className="text-subtext1 truncate overflow-hidden whitespace-nowrap">
                                     🎯 {Util.capitilizeFirst(g.name)}
                                 </p>
-                                <p className="text-subtext3 text-xs flex items-center gap-1">
+                                <p className="text-subtext3 text-xs flex items-center gap-1 whitespace-nowrap">
                                   <FaHourglassHalf size={9} className="mt-[1px]"/> {dateUtils.formatTime(timeLeft[i])}
                                 </p>
                             </div>

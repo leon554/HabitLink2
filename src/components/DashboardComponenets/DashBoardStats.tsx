@@ -21,7 +21,7 @@ export default function DashBoardStats() {
             <p className="text-lg text-title font-medium">
                 Statistics
             </p>
-            <div className="grid grid-cols-2 gap-x-17 gap-3">
+            <div className="grid grid-cols-2 max-sm:grid-cols-1 gap-x-17 gap-3 max-h-72 overflow-y-scroll no-scrollbar">
                 <InfoBox value={habits.length} text="Habit Count" toolTipText=""/>
                 <InfoBox value={goals.length} text="Goal Count" toolTipText=""/>
                 <InfoBox value={Math.round(Math.min(Math.max(...strengths), 100))+ "%"} text="Max Strength" toolTipText=""/>

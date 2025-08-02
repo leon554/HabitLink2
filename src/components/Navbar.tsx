@@ -4,12 +4,16 @@ import { AuthContext } from "./Providers/AuthProvider"
 import { AiOutlineLoading } from "react-icons/ai";
 import Select from "./InputComponents/Select";
 import { FaRegUserCircle } from "react-icons/fa";
+import { useScreenWidth } from "./Hooks/UseScreenWidth";
+import { IoMenu } from "react-icons/io5";
+import { Origin } from "@/utils/types";
 
 
 
 export default function Navbar() {
     const {session, logout, loading} = useContext(AuthContext)
     const navitgate = useNavigate()
+    const screenWidth = useScreenWidth()
     
     return (
         <>
@@ -20,15 +24,19 @@ export default function Navbar() {
                     </p>
                 </div>
                 <div className="flex">
-                    { !session ? <>
-                        <Link to={"/auth"}>
-                            <button className="h-13 pl-4 pr-4 font-medium text-sm font-mono text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer">
-                                Sign up
-                            </button>
-                        </Link>
-                        <Link to={"/"}> 
-                            <button className="pl-4 pr-4 h-13 font-medium text-sm font-mono text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800  ease-in-out duration-150 hover:cursor-pointer">Landing Page</button>
-                        </Link></> : 
+                    { !session ? 
+                        <>
+                            <Link to={"/auth"}>
+                                <button className="h-13 pl-4 pr-4 font-medium text-sm font-mono text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer">
+                                    Sign up
+                                </button>
+                            </Link>
+                            <Link to={"/"}> 
+                                <button className="pl-4 pr-4 h-13 font-medium text-sm font-mono text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800  ease-in-out duration-150 hover:cursor-pointer">Landing Page</button>
+                            </Link>
+                        </> : 
+                        
+                        screenWidth > 500 ? 
                         <>
                             <Link to={"/dashboard"}>
                                 <button className="h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 font-medium text-sm font-mono text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer">
@@ -74,7 +82,51 @@ export default function Navbar() {
                                     }}
                                     setText={loading? <AiOutlineLoading className="animate-spin"/> : <FaRegUserCircle size={14}/>}
                                     style="flex justify-end items-center h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 font-medium text-sm font-mono text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer"/>
-                        </>
+                        </> 
+                        : 
+                        <>
+                            <Select items={[{name: "Home", id: 7},
+                                            {name: "Log", id: 6},
+                                            {name: "Habits", id: 5},
+                                            {name: "Goals", id: 4},
+                                            {name: "New Habit", id: 3},
+                                            {name: "New Goal", id: 2},
+                                            {name: "Settings", id: 1}, 
+                                            {name: "Log Out", id: 0}, 
+                                            ]}
+                                    selectedItem={null}
+                                    setSelectedItem={(id: number) => {
+                                        if(id == 0){
+                                            logout()
+                                        }
+                                        if(id == 1){
+                                            navitgate("/settings")
+                                        }
+                                        if(id == 2){
+                                            navitgate("/creategoal")
+                                        }
+                                        if(id == 3){
+                                            navitgate("/create")
+                                        }
+                                        if(id == 4){
+                                            navitgate("/goals")
+                                        }
+                                        if(id == 5){
+                                            navitgate("/stats")
+                                        }
+                                        if(id == 6){
+                                            navitgate("/log")
+                                        }
+                                        if(id == 7){
+                                            navitgate("/dashboard")
+                                        }
+                                    }}
+                                    origin={Origin.topRight}
+                                    setText={loading? <AiOutlineLoading className="animate-spin"/> : <IoMenu size={20}/>}
+                                    style="flex justify-end items-center h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 font-medium text-sm font-mono text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer"/>
+                        </> 
+                                
+                        
                     }
                 </div>
             </div>

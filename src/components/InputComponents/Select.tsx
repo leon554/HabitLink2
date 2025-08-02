@@ -64,7 +64,7 @@ export default function Select(props: SelectProps) {
                     : Util.capitilizeFirst(props.selectedItem.name))}
 
             </button>
-            <div className={`absolute top-full ${props.center ? "left-1/2 transform -translate-x-1/2" : "right-0 "} rounded-2xl p-3 mt-2  flex flex-col justify-start items-start scale-0 transition-transform duration-200 bg-panel1 text-subtext1  outline-border2  z-20 w-fit outline-1`} style={{
+            <div className={`absolute top-full ${props.center ? "left-1/2 transform -translate-x-1/2" : "right-0 "} rounded-2xl p-3 mt-2 m-2 flex flex-col justify-start items-start scale-0 transition-transform duration-200 bg-panel1 text-subtext1  outline-border2  z-20 w-fit outline-1`} style={{
                 scale: clicked ? 1 : 0,
                 transformOrigin: props.origin ?? "top"
                 }}>
