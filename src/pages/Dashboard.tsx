@@ -62,12 +62,13 @@ export default function Dashboard() {
                     </div>
                 </div>
             </div>
-            <div className=" p-[1px] flex max-md:flex-col gap-5 justify-center max-md:items-center  md:w-[90%] max-md:w-full">
-                <div className=" h-96  flex flex-col gap-5 rounded-2xl bg-panel1 w-[90%] max-w-[600px] md:max-w-[400px] outline-1 outline-border grow-1">
-                    <AvgCompRate/>
+            <div className="p-[1px] flex max-md:flex-col gap-5 justify-center max-md:items-center md:w-[90%] max-md:w-full">
+                <div className="h-96 flex-1 min-w-0 flex flex-col gap-5 rounded-2xl bg-panel1  outline-1 outline-border w-[90%] max-w-[600px] md:max-w-[400px]">
+                    <AvgCompRate />
                 </div>
-                <div className=" h-96 rounded-2xl bg-panel1 w-[90%] max-w-[600px] outline-1 outline-border relative flex-grow">
-                    <DashBoardStats/>
+
+                <div className="h-96 flex-1 min-w-0 rounded-2xl bg-panel1 outline-1 outline-border relative w-[90%] max-w-[600px] ">
+                    <DashBoardStats />
                 </div>
             </div>
         </div>

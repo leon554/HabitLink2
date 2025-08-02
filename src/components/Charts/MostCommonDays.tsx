@@ -1,33 +1,127 @@
 import { useContext } from "react";
-import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis} from 'recharts';
+
 import { UserContext } from "../Providers/UserProvider";
 import { HabitUtil } from "../../utils/HabitUtil";
-import { themeContext } from "../Providers/ThemeProvider";
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
+
 import { FaChartLine } from "react-icons/fa6";
 
+import {
+  Chart as ChartJS,
+  RadialLinearScale,
+  PointElement,
+  LineElement,
+  Filler,
+  Tooltip,
+  Legend,
+} from "chart.js"
+import { Radar } from "react-chartjs-2"
+import { useEffect, useState } from "react"
 
+ChartJS.register(
+  RadialLinearScale,
+  PointElement,
+  LineElement,
+  Filler,
+  Tooltip,
+  Legend
+)
 
 
 export default function MostCommonDays() {
 
     const HC = useContext(UserContext)
-    const {dark} = useContext(themeContext)
     const comps = HC.habitsCompletions.get(HC.currentHabit!.id) ?? []
 
-    const data = HabitUtil.getDaysOfWeekCompletions(comps)
-    const max = Math.max(...data.map(d => d.data))
-    const subtext2 = dark ? "#a1a1a1" : "#5a5d73";    
-    const subtext3 = dark ? "#444444" : "#6b7891";   
+    const [chartKey, setChartKey] = useState(0);
 
-    const chartConfig = {
-        data: {
-            label: "Entries",
-            color: "var( --color-highlight)",
+    useEffect(() => {
+        const handleResize = () => {
+            setChartKey(prev => prev + 1);
+        };
+        
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    const rawData = HabitUtil.getDaysOfWeekCompletions(comps)
+
+    const rootStyles = getComputedStyle(document.documentElement)
+
+    const title = rootStyles.getPropertyValue('--color-title').trim()
+    const subtext2 = rootStyles.getPropertyValue('--color-subtext2').trim()
+    const panel = rootStyles.getPropertyValue('--color-panel1').trim() 
+    const border = rootStyles.getPropertyValue('--color-border').trim()
+    const highlight = rootStyles.getPropertyValue('--color-highlight').trim()
+    
+    const data = {
+        labels: rawData.map(d => d.day),
+        datasets: [
+        {
+            label: "Count",
+            data: rawData.map(d => d.data),
+            backgroundColor: "rgba(0, 255, 136, 0.2)",
+            borderColor: highlight,
+            borderWidth: 1,
+            opacity: 1,
+            pointRadius: 0,
+        },
+        ],
+    }
+
+    const options = {
+        responsive: true,
+        maintainAspectRatio: false,
+        
+        scales: {
+        r: {
+            angleLines: {
+            color: "rgba(255,255,255,0.1)",
+            },
+            grid: {
+            color: "rgba(255,255,255,0.1)",
+            },
+            pointLabels: {
+            font: {
+                size: 12,
+                weight: "normal" as const,
+                family: "'Inter', sans-serif",
+            },
+            color: "#aaa",
+            },
+            ticks: {
+                display: false,
+                maxTicksLimit: 5, 
+            },
+        },
+        },
+        plugins: {
+        legend: {
+            display: false,
+        },
+         tooltip: {
+                mode: "index" as const,        
+                intersect: false,   
+                backgroundColor: panel,
+                titleColor: title,      
+                bodyColor: subtext2,      
+                borderColor: border,     
+                borderWidth: 1,
+                padding: 10,
+                titleFont: {
+                    family: "'Inter', sans-serif",
+                    weight: 500,
+                    size: 12,
+                },
+                bodyFont: {
+                    size: 11,
+                },
+                cornerRadius: 6,            
+                displayColors: false   
+            },
         },
     }
     return (
-        <div className=" flex flex-col gap-4 h-70 w-full  bg-panel1 p-7  rounded-2xl outline-1 outline-border">
+        <div className=" flex flex-col gap-4 h-70  bg-panel1 p-7  rounded-2xl outline-1 outline-border flex-1">
             <p className="text-title text-left mb-4 font-medium">
                 Most Common Entry Days
             </p>
@@ -38,31 +132,8 @@ export default function MostCommonDays() {
                     </p>
                 </div>
             :
-                <div className="flex items-center h-full">
-                    <ChartContainer
-                        config={chartConfig}
-                        className="mx-auto aspect-square max-h-[170px] min-h-[100px] w-full"
-                    >
-                    <RadarChart data={data} className="min-h-[170px] " >
-                        <ChartTooltip cursor={false} 
-                        content={<ChartTooltipContent indicator="line" className="bg-panel2 outline-1 outline-border2 text-subtext2"/>}/>
-                        <PolarAngleAxis dataKey="day" stroke={subtext2} tickLine={false} orientation="outer"/>
-                        <PolarGrid className="text-subtext3" stroke={subtext3}/>
-                        <Radar
-                            dataKey="data"
-                            fill="var(--color-highlight)"
-                            fillOpacity={0.6}
-                            isAnimationActive={false}
-                            strokeLinejoin="round"
-                        />
-                        <PolarRadiusAxis 
-                            domain={[0, Math.ceil(max*1.1)]} 
-                            tickCount={6}
-                            axisLine={false}
-                            tick={false}
-                        />
-                    </RadarChart>
-                    </ChartContainer>
+                <div className=" h-full min-w-0 ">
+                    <Radar data={data} options={options} key={chartKey}/>
                 </div>
              }
         </div>

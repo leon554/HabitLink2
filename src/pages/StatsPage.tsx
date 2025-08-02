@@ -9,12 +9,10 @@ import StatsTitle from "../components/StatsComponents/StatsTitle";
 import MostCommonDays from "../components/Charts/MostCommonDays";
 import { ConsistencyOverTime } from "@/components/Charts/ConsistencyOverTime";
 import HabitEdit from "@/components/StatsComponents/HabitEdit";
-import { useScreenWidth } from "@/components/Hooks/UseScreenWidth";
 
 
 export default function StatsPage() {
     const HC = useContext(UserContext)
-    const width = useScreenWidth()
 
     return (
         <div className="flex justify-center">
@@ -47,7 +45,7 @@ export default function StatsPage() {
                     <Summary/>
                     <CompletionThisWeek/>
                     <CompletionsMonth/>
-                    <div className={`flex  gap-3 w-full ${width < 570 ? "flex-col" : ""}`}>
+                    <div className={`flex flex-col  gap-3 w-full  `}>
                         <MostCommonDays/>
                         <ConsistencyOverTime/>
                     </div>

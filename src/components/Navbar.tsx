@@ -85,16 +85,17 @@ export default function Navbar() {
                         </> 
                         : 
                         <>
-                            <Select items={[{name: "Home", id: 7},
-                                            {name: "Log", id: 6},
-                                            {name: "Habits", id: 5},
-                                            {name: "Goals", id: 4},
-                                            {name: "New Habit", id: 3},
-                                            {name: "New Goal", id: 2},
-                                            {name: "Settings", id: 1}, 
-                                            {name: "Log Out", id: 0}, 
+                            <Select items={[{name: "🏠 Home", id: 7},
+                                            {name: "📒 Log", id: 6},
+                                            {name: "✅ Habits", id: 5},
+                                            {name: "🎯 Goals", id: 4},
+                                            {name: "➕ New Habit", id: 3},
+                                            {name: "➕ New Goal", id: 2},
+                                            {name: "⚙️ Settings", id: 1}, 
+                                            {name: "🚪Log Out", id: 0}, 
                                             ]}
                                     selectedItem={null}
+                                    largeText={true}
                                     setSelectedItem={(id: number) => {
                                         if(id == 0){
                                             logout()

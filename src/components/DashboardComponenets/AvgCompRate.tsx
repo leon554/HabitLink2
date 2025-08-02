@@ -1,89 +1,126 @@
-import {Line, LineChart, CartesianGrid} from "recharts"
-import { type ChartConfig,ChartContainer,ChartTooltip } from "../ui/chart"
-import { useContext } from "react"
+import { useContext} from "react"
 import { UserContext } from "../Providers/UserProvider"
 import { HabitUtil } from "@/utils/HabitUtil"
 import { Util } from "@/utils/util"
 
-export const description = "A simple area chart"
+import {Line} from "react-chartjs-2"
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, type ChartData} from "chart.js"
 
-const chartConfig = {
-  consistency: {
-    label: "Consistency \u00A0",
-    color: "var( --color-highlight)",
-  },
-  strength: {
-    label: "Strength"
-  },
-  date: {
-    label: "Date"
-  }
-} satisfies ChartConfig
+
+ChartJS.register(
+    CategoryScale, 
+    LinearScale, 
+    PointElement, 
+    LineElement, 
+    Title, 
+    Tooltip,  
+)
+
 export default function AvgCompRate() {
 
     const HC = useContext(UserContext)
     const rawData = Util.fetchAllMapItems(HC.habitStats).map(i => i.chartData)
     const data = HabitUtil.avgSameLengthChartDataArrs(HabitUtil.normalizeChartDataArrays(rawData))
-    
-    
-    return (
-        <div className="m-7 my-6 flex flex-col gap-7">
-            <p className="text-title text-lg font-medium">
-                Avg Consistency & Strength
-            </p>
-            <>
-            <ChartContainer config={chartConfig} className="max-md:min-h-55 max-md:max-h-50">
-                <LineChart
-                    accessibilityLayer
-                    data={data}
-                    margin={{
-                    left: 12,
-                    right: 12,
-                    top: 5,
-                    bottom: 15
-                    }}
-                    className="rounded-2xl "
-                >
-                    <CartesianGrid vertical={false} className=""/>
-                    
-                    <ChartTooltip
-                        cursor={false}
-                        content={({ payload, active }) => {
-                            if (!active || !payload?.length) return null;
-                            const point = payload[0].payload;
 
-                            return (
-                            <div className="rounded-md bg-panel2 px-3 py-2 shadow-sm  outline-border2 text-subtext2 text-xs space-y-1">
-                                <p className="text-muted">{point.date}</p>
-                                {payload.map((entry, i) => (
-                                <div key={i} className="flex justify-between gap-4">
-                                    <span>{chartConfig[entry.dataKey as keyof typeof chartConfig]?.label}</span>
-                                    <span>{entry.value.toFixed(2)}</span>
-                                </div>
-                                ))}
-                            </div>
-                            );
-                        }}
-                    />
-                  
-                    <Line
-                        dataKey="consistency"
-                        type="step"
-                        stroke="var(--color-highlight)"
-                        fillOpacity={0.6}
-                        dot={false}
-                        strokeWidth={2}
-                    />
-                    <Line
-                        dataKey="strength"
-                        type="step"
-                        stroke="var(--color-highlight2)"
-                        fillOpacity={0.6}
-                        dot={false}
-                        strokeWidth={2}
-                    />
-                </LineChart>
-            </ChartContainer>
+    const rootStyles = getComputedStyle(document.documentElement)
+
+    const title = rootStyles.getPropertyValue('--color-title').trim()
+    const subtext2 = rootStyles.getPropertyValue('--color-subtext2').trim()
+    const panel = rootStyles.getPropertyValue('--color-panel1').trim() 
+    const border = rootStyles.getPropertyValue('--color-border').trim()
+
+    const formatedData = {
+        labels: data?.map(d => d.date),
+        datasets: [
+            {
+                label: "Strength",
+                data: data?.map(d => d.strength ?? 0) ?? [],
+                borderColor: "hsl(144, 100%, 39%)",
+                borderWidth: 2,
+                stepped: 'middle', 
+                tension: 0,
+            },
+            {
+                label: "Concistency",
+                data: data?.map(d => d.consistency ?? 0) ?? [],
+                borderColor: "hsl(84, 100%, 41%",
+                borderWidth: 2,
+                stepped: 'middle', 
+                tension: 0,
+            }
+        ]
+    }
+    const options = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+            display: false,  // Hide the legend
+            },
+            tooltip: {
+                mode: "index" as const,         // ✅ show tooltip for all datasets at same index
+                intersect: false,   
+                backgroundColor: panel, // ✅ Tooltip background
+                titleColor: title,      // ✅ Title text color
+                bodyColor: subtext2,       // ✅ Body text color
+                borderColor: border,     // ✅ Optional: border
+                borderWidth: 1,
+                padding: 10,
+                titleFont: {
+                    family: "'Inter', sans-serif",
+                    weight: 500,
+                    size: 12,
+                },
+                bodyFont: {
+                    size: 11,
+                },
+                cornerRadius: 6,            // ✅ Optional: rounded corners
+                displayColors: false   // ✅ show tooltip even if not directly over a point
+            },
+        },
+        elements: {
+            point: {
+            radius: 0,  // Removes the circles on the lines
+            },
+        },
+        scales: {
+            x: {
+                display: false,  // Keep the X-axis grid lines
+                ticks: {
+                    display: false,  // Remove X-axis labels
+                },
+                grid: {
+                    display: false,  // Keep X-axis grid lines
+                    drawBorder: false
+                },
+            },
+            y: {
+                border: {
+                    display: false,       
+                },
+                display: true,  
+                ticks: {
+                    display: false,  
+                    maxTicksLimit: 6, 
+                },
+                grid: {
+                    display: true, 
+                    stepSzie: 20,
+                    borderDash: [50, 50],
+                    color: "hsl(0, 0%, 16%)",
+                    drawBorder: false
+                },
+            },
+        },
+    }
+    return (
+        <div className="m-7 my-6 flex flex-col gap-7 overflow-clip ">
+            <p className="text-title text-lg font-medium">
+                Avg Consistency & Strength 
+            </p>
+            <div className="h-50 bg">
+                <Line options={options} data={formatedData as ChartData<"line", number[], string>}/>
+            </div>
             <div className="flex justify-center items-center gap-2 w-full ">
                 <div className="w-3.5 h-3.5 bg-highlight rounded-md"></div>
                 <p className="text-xs text-subtext3">
@@ -94,7 +131,6 @@ export default function AvgCompRate() {
                     Strength
                 </p>
             </div>
-            </>
         </div>
     ) 
 }

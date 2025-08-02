@@ -17,6 +17,7 @@ interface SelectProps {
   origin?: Origin
   center?: boolean
   blur?: boolean
+  largeText?: boolean
   setBlur?: (blur: boolean) => void
 }
 export default function Select(props: SelectProps) {
@@ -64,14 +65,14 @@ export default function Select(props: SelectProps) {
                     : Util.capitilizeFirst(props.selectedItem.name))}
 
             </button>
-            <div className={`absolute top-full ${props.center ? "left-1/2 transform -translate-x-1/2" : "right-0 "} rounded-2xl p-3 mt-2 m-2 flex flex-col justify-start items-start scale-0 transition-transform duration-200 bg-panel1 text-subtext1  outline-border2  z-20 w-fit outline-1`} style={{
+            <div className={`absolute top-full ${props.center ? "left-1/2 transform -translate-x-1/2" : "right-0 "} rounded-2xl p-3 mt-2 m-2 ${props.largeText ? "gap-1.5" : ""} flex flex-col justify-start items-start scale-0 transition-transform duration-200 bg-panel1 text-subtext1  outline-border2  z-20 w-fit outline-1`} style={{
                 scale: clicked ? 1 : 0,
                 transformOrigin: props.origin ?? "top"
                 }}>
                 {props.items && props.items.map((h) => {
                     return (
                     <p
-                        className="hover:bg-highlight w-full flex justify-start p-1 text-sm rounded-xl transition duration-100 ease-in-out hover:cursor-pointer text-nowrap hover:text-btn-text px-3"
+                        className={`hover:bg-highlight w-full flex justify-start p-1 ${props.largeText ? "" : "text-sm"} rounded-xl transition duration-100 ease-in-out hover:cursor-pointer text-nowrap hover:text-btn-text px-3`}
                         onClick={() => setItem(h.id)}
                     >
                         {Util.capitilizeFirst(h.name)}

@@ -31,7 +31,7 @@
   --color-panel2: hsl(0, 0%, 15%);    
   --color-progress-panel: hsl(0, 0%, 25%); 
   --color-btn-text:   oklch(26.9% 0 0);
-  --color-btn:   oklch(72.3% 0.219 149.579); 
+  --color-btn:   hsl(144, 100%, 39%); 
   --color-title: hsl(0, 0%, 85%);      
   --color-subtext1: hsl(0, 0%, 75%);   
   --color-subtext2: hsl(0, 0%, 63%);    
@@ -39,7 +39,7 @@
   --color-border: color-mix(in oklab, var(--color-neutral-700)  60%, transparent);
   --color-border2:  var(--color-neutral-700)  ;
   --color-highlight: hsl(144, 100%, 39%);  
-  --color-highlight2: oklch(76.8% 0.233 130.85);    
+  --color-highlight2: hsl(84, 100%, 41%);    
   --texture: #646464;   
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
