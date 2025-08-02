@@ -34,9 +34,6 @@ export default function Navbar() {
                                     Sign up
                                 </button>
                             </Link>
-                            <Link to={"/"}> 
-                                <button className="pl-4 pr-4 h-13 font-medium text-sm font-mono text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800  ease-in-out duration-150 hover:cursor-pointer">Landing Page</button>
-                            </Link>
                         </> : 
                         
                         screenWidth > 500 ? 

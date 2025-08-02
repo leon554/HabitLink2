@@ -94,7 +94,9 @@ export default function AuthProvider(props: Props) {
             ])
         if(error){
             alert("insert error: " + error.message)
+            return
         }
+        navigateUser(session ?? null)
     }
     async function checkIfUserEntryExists(data: User){
         let { data: user, error } = await supabase
@@ -104,8 +106,10 @@ export default function AuthProvider(props: Props) {
         if(error){
             alert("Fetch Error: " + error.message)
         }
+
+        if(user == null) return false
         setLoacalUser((user ?? [])[0] as UserType)
-        return (user)? true : false
+        return (user.length != 0) ? true : false
     }
     async function login(email: string, password: string){
         setLoading(true)
@@ -115,7 +119,7 @@ export default function AuthProvider(props: Props) {
         if(error){
             alert("Log In Error: " + error.message)
         }else{
-            alert("Succes")
+            
         }
     }
     async function signup(name: string, email: string, password: string) {
