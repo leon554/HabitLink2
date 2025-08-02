@@ -9,6 +9,7 @@ import BestHabits from "@/components/DashboardComponenets/BestHabits"
 import HabitCalander from "@/components/DashboardComponenets/HabitCalander"
 import Timeline from "@/components/DashboardComponenets/Timeline"
 import DashBoardStats from "@/components/DashboardComponenets/DashBoardStats"
+import AvgCompRate from "@/components/DashboardComponenets/AvgCompRate"
 
 
 
@@ -62,10 +63,10 @@ export default function Dashboard() {
                 </div>
             </div>
             <div className=" p-[1px] flex max-md:flex-col gap-5 justify-center max-md:items-center  md:w-[90%] max-md:w-full">
-                <div className=" h-105  flex flex-col gap-5 rounded-2xl bg-panel1 w-[90%] max-w-[600px] md:max-w-[400px] outline-1 outline-border grow-1">
-
+                <div className=" h-96  flex flex-col gap-5 rounded-2xl bg-panel1 w-[90%] max-w-[600px] md:max-w-[400px] outline-1 outline-border grow-1">
+                    <AvgCompRate/>
                 </div>
-                <div className=" h-105 rounded-2xl bg-panel1 w-[90%] max-w-[600px] outline-1 outline-border relative flex-grow">
+                <div className=" h-96 rounded-2xl bg-panel1 w-[90%] max-w-[600px] outline-1 outline-border relative flex-grow">
                     <DashBoardStats/>
                 </div>
             </div>

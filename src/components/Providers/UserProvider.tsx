@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react"
 import { AuthContext } from "./AuthProvider";
 import { supabase } from "../../supabase-client";
 import { AlertContext } from "../Alert/AlertProvider";
-import {type GaolCompletionType, type GoalType, type HabitCompletionType, type HabitType, type IssueType, type SubmitIssueType } from "../../utils/types";
+import {type ChartDataType, type GaolCompletionType, type GoalType, type HabitCompletionType, type HabitType, type IssueType, type SubmitIssueType } from "../../utils/types";
 import { dateUtils } from "../../utils/dateUtils";
 import { HabitUtil } from "../../utils/HabitUtil";
 import { HabitTypeE } from "../../utils/types";
@@ -84,6 +84,7 @@ export interface HabitStats{
     dataSum: number
     validComps: number
     completableDays: number
+    chartData: ChartDataType[]
 }
 export default function UserProvider(props: Props) {
     const [loading, setLoading] = useState(false)
@@ -123,6 +124,8 @@ export default function UserProvider(props: Props) {
             const {validComps: completions, partialComps} = HabitUtil.getCompletions(h, currentHabitComps)
             const entries = h ? habitsCompletions.get(Number(h.id))?.length : 0
             const dataSum = HabitUtil.getHabitDataSum(currentHabitComps, h?.type as HabitTypeE)
+            const chartData = HabitUtil.getCompRateStrengthOverTimeChartData(h, currentHabitComps) as ChartDataType[]
+
 
             const data = {
                 compRate, 
@@ -134,7 +137,8 @@ export default function UserProvider(props: Props) {
                 completions,
                 partialComps,
                 entries,
-                dataSum
+                dataSum,
+                chartData
             } as HabitStats
             HabitStatsMap.set(h.id, data)
         })

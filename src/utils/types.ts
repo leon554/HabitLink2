@@ -95,3 +95,8 @@ export enum ErrorType{
     securityIssue = "security issue",
     other = "other"
 }
+export interface ChartDataType{
+    date: string;
+    consistency: number | null;
+    strength: number | null;
+}

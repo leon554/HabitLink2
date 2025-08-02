@@ -2,6 +2,8 @@ import { dateUtils } from "./dateUtils";
 import { HabitTypeE, type HabitCompletionType, type HabitType } from "./types";
 import { eachWeekOfInterval, add, sub, isSameWeek, isAfter, isBefore} from "date-fns";
 import { Util } from "./util";
+import { format, parse, eachDayOfInterval } from "date-fns";
+import type { ChartDataType } from "./types";
 
 
 export namespace HabitUtil{
@@ -642,4 +644,48 @@ export namespace HabitUtil{
 
         return data.reverse()
     }
+    export function normalizeChartDataArrays(arrays: ChartDataType[][]): ChartDataType[][] {
+        if (arrays.length === 0) return [];
+
+        const allDates = arrays.flat().map(item => parse(item.date, "dd/MM/yyyy", new Date()));
+        const minDate = new Date(Math.min(...allDates.map(d => d.getTime())));
+        const maxDate = new Date(Math.max(...allDates.map(d => d.getTime())));
+
+        const fullDateStrings = eachDayOfInterval({ start: minDate, end: maxDate })
+            .map(d => format(d, 'dd/MM/yyyy'));
+
+        return arrays.map(arr => {
+            const map = new Map(arr.map(item => [item.date, item]));
+            return fullDateStrings.map(date => 
+                map.get(date) || { date, consistency: null, strength: null }
+            );
+        });
+    }
+    export function avgSameLengthChartDataArrs(arrays: ChartDataType[][]){
+        if(arrays.length == 0) return
+       
+        const length = arrays[0].length;
+
+        const data = Array.from({ length }, () => ({ consistencySum: 0, strengthSum: 0, entries: 0 }));
+        const output = Array.from({ length }, () => ({ date: "", consistency: null, strength: null })) as ChartDataType[];
+
+        arrays.forEach(ca => {
+            ca.forEach((a, i1) => {
+                if(a.strength && a.consistency){
+                    data[i1].entries++
+                    data[i1].consistencySum += a.consistency
+                    data[i1].strengthSum += a.strength
+                }
+            })
+        })
+        console.log(data)
+        data.map((d, i)=> {
+            output[i].date = arrays[1][i].date
+            output[i].consistency = d.consistencySum/d.entries
+            output[i].strength = d.strengthSum/d.entries
+        })
+
+        return output
+    }
+
 }
