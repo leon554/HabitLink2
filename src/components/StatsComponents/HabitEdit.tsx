@@ -85,7 +85,7 @@ export default function HabitEdit() {
                     Edit 
             </button>
             <Model open={open} onClose={() => setOpen(false)}>
-                <div className="bg-panel1 p-5 px-9 rounded-xl max-w-[450px] gap-4  w-[80%] flex flex-col items-center  text-subtext3 outline-1 outline-border"
+                <div className="bg-panel1 p-5 px-9 rounded-xl max-w-[500px] gap-4  w-[90%] flex flex-col items-center  text-subtext3 outline-1 outline-border"
                     onClick={e => e.stopPropagation()}>
                     <p className="text-title text-xl mt-2 mb-2 font-medium">
                         Edit Habit
@@ -130,6 +130,7 @@ export default function HabitEdit() {
                         </button>
                     </div>        
                     <div className="flex justify-stretch w-full gap-4 mb-5">
+
                         <button className="rounded-xl text-sm flex-grow-1 bg-btn text-btn-text h-8 p-1 px-5 hover:cursor-pointer"
                             onClick={async () => {
                                 btnClicked.current = 1
@@ -143,7 +144,7 @@ export default function HabitEdit() {
                             }}>
                             Exit
                         </button>
-                        <button className="rounded-xl text-sm flex justify-center items-center  px-5 outline-1 h-8 hover:cursor-pointer hover:bg-panel2 transition-colors duration-150 ease-in-out w-full outline-red-500 text-red-500"
+                        <button className="rounded-xl text-sm truncate overflow-hidden whitespace-nowrap flex justify-center items-center  px-5 outline-1 h-8 hover:cursor-pointer hover:bg-panel2 transition-colors duration-150 ease-in-out w-full outline-red-500 text-red-500"
                             onClick={async () => {
                                 if(btnClicked.current == 2){
                                     await deleteHabit()
@@ -158,7 +159,7 @@ export default function HabitEdit() {
                 </div>
             </Model>
             <Model open={openNewComp} onClose={() => setOpenNewComp(false)}>
-                <div className="bg-panel1 p-5 px-9 rounded-xl max-w-[450px] gap-4  w-[80%] flex flex-col items-center  text-subtext3 outline-1 outline-border"
+                <div className="bg-panel1 p-5 px-9 rounded-xl max-w-[500px] gap-4  w-[90%] flex flex-col items-center  text-subtext3 outline-1 outline-border"
                     onClick={e => e.stopPropagation()}>
                     <p className="text-title text-xl mt-2 mb-2 font-medium">
                         New Entry

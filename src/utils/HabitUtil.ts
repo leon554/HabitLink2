@@ -291,7 +291,7 @@ export namespace HabitUtil{
         const weeklyTarget = Number(wt)
         const weeksToReachMaxStrength = Math.ceil(maxStrengthDays/weeklyTarget)
 
-        const weeks = eachWeekOfInterval({start: sub(today, {weeks: weeksToReachMaxStrength}), end: today})
+        const weeks = eachWeekOfInterval({start: sub(today, {weeks: weeksToReachMaxStrength-1}), end: today})
         const mostRecentWeek = weeks.length - 1
 
         if(customeDate){
@@ -325,7 +325,7 @@ export namespace HabitUtil{
         const today = customeDate ?? new Date()
         const weeksToReachMaxStrength = Math.ceil(maxStrengthDays/getCompDays(compDays).length)
 
-        const weeks = eachWeekOfInterval({start: sub(today, {weeks: weeksToReachMaxStrength}), end: today})
+        const weeks = eachWeekOfInterval({start: sub(today, {weeks: weeksToReachMaxStrength -1}), end: today})
         const mostRecentWeek = weeks.length - 1
         const creationWeek = 0
         
@@ -678,7 +678,6 @@ export namespace HabitUtil{
                 }
             })
         })
-        console.log(data)
         data.map((d, i)=> {
             output[i].date = arrays[1][i].date
             output[i].consistency = d.consistencySum/d.entries

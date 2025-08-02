@@ -21,7 +21,7 @@ export default function Create({compact, onCreate, initialName} : Props){
     const [compDays, setCompDays] = useState({mon: false, teu: false, wed: false, thu: false, fri: false, sat: false, sun: false})
     const [selectedEmojiIndex, setSelectedEmojiIndex] = useState(-1)
     const [selectedTypeIndex, setSelectedTypeIndex] = useState(-1)
-    const [name, setName] = useState(initialName ?? "sadsad")
+    const [name, setName] = useState(initialName ?? "")
     const [time, setTime] = useState(0)
     const [distance, setDistance] = useState(0)
     const [amount, setAmount] = useState(0)

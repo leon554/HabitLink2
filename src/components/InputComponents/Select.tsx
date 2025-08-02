@@ -33,12 +33,10 @@ export default function Select(props: SelectProps) {
     }
 
     useEffect(() => {
-        console.log("truggered")
         if(props.blur && props.setBlur && focusElement.current != null){
             setClicked(false)
             focusElement.current.blur()
             props.setBlur(false)
-            console.log("ran")
         }
         const onClick = (e: MouseEvent) => {
             if (focusElement.current && !focusElement.current.contains(e.target as Node)) {

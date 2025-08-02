@@ -1,6 +1,6 @@
 
 
-import { useContext, useEffect, useState } from "react"
+import { useContext} from "react"
 import { UserContext } from "../Providers/UserProvider"
 import { HabitUtil } from "@/utils/HabitUtil"
 import { FaChartLine } from "react-icons/fa6";
@@ -30,17 +30,6 @@ export function ConsistencyOverTime() {
     const data = HabitUtil.getCompRateStrengthOverTimeChartData(HC.currentHabit, comps)
     
     const rootStyles = getComputedStyle(document.documentElement)
-
-    const [chartKey, setChartKey] = useState(0);
-    useEffect(() => {
-            const handleResize = () => {
-                setChartKey(prev => prev + 1);
-            };
-            
-            window.addEventListener('resize', handleResize);
-            return () => window.removeEventListener('resize', handleResize);
-        }, []);
-    
 
     const title = rootStyles.getPropertyValue('--color-title').trim()
     const subtext2 = rootStyles.getPropertyValue('--color-subtext2').trim()
@@ -138,7 +127,7 @@ export function ConsistencyOverTime() {
                 Consistency & Strength Over Time
             </p>
             {comps!.length < 5 ? 
-                <div className="w-full flex justify-center items-center  h-full outline-1 rounded-2xl outline-border2">
+                <div className="w-full flex justify-center items-center h-full outline-1 rounded-2xl outline-border2">
                     <p className="flex items-center gap-1.5 text-subtext2 text-sm">
                         Log 5 or more entries to unlock <FaChartLine />
                     </p>
@@ -146,7 +135,7 @@ export function ConsistencyOverTime() {
             :
             <>
                 <div className="w-full h-full min-w-0">
-                    <Line options={options} data={formatedData as ChartData<"line", number[], string>} key={chartKey}/>
+                    <Line options={options} data={formatedData as ChartData<"line", number[], string>} />
                 </div>
                 <div className="flex justify-center items-center gap-2 w-full">
                     <div className="w-3.5 h-3.5 bg-highlight rounded-md"></div>

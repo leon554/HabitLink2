@@ -69,6 +69,13 @@ export default function UpcomingGoals() {
                     Habits Due Today
                 </p>
                 {tasksToday.length == 0 ? 
+                Util.fetchAllMapItems(HC.habits).length == 0 ?
+                 <div className="h-10 flex items-center">
+                    <p className="text-subtext2 text-xs">
+                        No habits, Try creating one
+                    </p>
+                </div>
+                :
                 <div className="h-10 flex items-center">
                     <p className="text-subtext2 text-sm">
                         🎉 Congratulations! You've completed all your habits for today — well done! 🎉

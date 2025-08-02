@@ -4,6 +4,7 @@ import Select from "../InputComponents/Select"
 import { HiOutlineSwitchHorizontal } from "react-icons/hi"
 import { useContext } from "react"
 import { IoFlame } from "react-icons/io5";
+import { Origin } from "@/utils/types"
 
 export default function StatsTitle() {
 
@@ -22,7 +23,8 @@ export default function StatsTitle() {
                                         selectedItem={HC.currentHabit} 
                                         setSelectedItem={(id: number) => HC.setCurrentHabit(HC.habits.get(id) ?? null)}
                                         setText={<HiOutlineSwitchHorizontal/>}
-                                        style="outline-0 p-0 justify-end flex "/>
+                                        style="outline-0 p-0 justify-end flex "
+                                        origin={Origin.topRight}/>
             </div>
         </div>
     )

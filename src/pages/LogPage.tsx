@@ -6,11 +6,14 @@ import Switch from "../components/InputComponents/Switch"
 import { IoSettingsOutline } from "react-icons/io5";
 import { HabitUtil } from "../utils/HabitUtil"
 import { SettingsContext } from "../components/Providers/SettingsProvider"
+import { Util } from "@/utils/util"
+import { useNavigate } from "react-router-dom"
 
 export default function LogPage() {
     const [showSettings, setShowSettings] = useState(false)
 
     const user = useContext(UserContext)
+    const navigate = useNavigate()
     const {settings, setSettings} = useContext(SettingsContext)
 
     return (
@@ -57,17 +60,24 @@ export default function LogPage() {
                             <Switch setStatus={(b: boolean) => setSettings({...settings, showDue: b})} 
                                 ticked={settings.showDue} />
                         </div>
-                         <div className="flex items-center w-full gap-3 ">
-                            <p className="text-subtext1 dark:text-subtext2  text-sm">
-                                Show ranks:
-                            </p>
-                            <Switch setStatus={(b: boolean) => setSettings({...settings, showRanks: b})} 
-                                ticked={settings.showRanks} />
-                        </div>
                     </div>
                 </div>
             </div>
             : ""}
+            {Util.fetchAllMapItems(user.habits).length == 0 ? 
+            <div className="w-[90%] max-w-[600px] bg-panel1 rounded-2xl outline-1 outline-border mt-2 p-7 flex flex-col gap-4">
+                <p className="text-lg text-title font-medium leading-none">
+                    No Habits :(
+                </p>
+                <p className="text-sm text-subtext3">
+                    You currently have no habits to log try adding a new habit and then comming back 💪
+                </p>
+                <button className="w-full bg-btn rounded-xl py-1 text-btn-text font-medium text-sm hover:cursor-pointer" 
+                    onClick={() => navigate("/create")}>
+                    New Habit
+                </button>
+            </div>
+            :
             <div className="w-[90%] max-w-[600px] flex flex-col gap-2 overflow-auto no-scrollbar rounded-md ">
                 {Array.from(user.habits.values()).map((h, i) =>
                     h.type === HabitTypeE.Normal && (!settings.showDue || HabitUtil.isCompleteableToday(h, user.habitsCompletions.get(h.id))) ? (
@@ -84,6 +94,7 @@ export default function LogPage() {
                     ) : null
                 )}       
             </div>
+            }
         </div>
     )
 }

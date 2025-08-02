@@ -15,7 +15,6 @@ import {
   Legend,
 } from "chart.js"
 import { Radar } from "react-chartjs-2"
-import { useEffect, useState } from "react"
 
 ChartJS.register(
   RadialLinearScale,
@@ -31,17 +30,6 @@ export default function MostCommonDays() {
 
     const HC = useContext(UserContext)
     const comps = HC.habitsCompletions.get(HC.currentHabit!.id) ?? []
-
-    const [chartKey, setChartKey] = useState(0);
-
-    useEffect(() => {
-        const handleResize = () => {
-            setChartKey(prev => prev + 1);
-        };
-        
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
 
     const rawData = HabitUtil.getDaysOfWeekCompletions(comps)
 
@@ -122,18 +110,18 @@ export default function MostCommonDays() {
     }
     return (
         <div className=" flex flex-col gap-4 h-70  bg-panel1 p-7  rounded-2xl outline-1 outline-border flex-1">
-            <p className="text-title text-left mb-4 font-medium">
+            <p className="text-title text-left font-medium">
                 Most Common Entry Days
             </p>
             {comps.length < 5 ? 
-                <div className="w-full flex justify-center items-center  h-full outline-1 rounded-2xl outline-border2">
+                <div className="w-full flex justify-center items-center  h-70 outline-1 rounded-2xl outline-border2">
                     <p className="flex items-center gap-1.5 text-subtext2 text-sm">
                         Log 5 or more entries to unlock <FaChartLine />
                     </p>
                 </div>
             :
                 <div className=" h-full min-w-0 ">
-                    <Radar data={data} options={options} key={chartKey}/>
+                    <Radar data={data} options={options} />
                 </div>
              }
         </div>

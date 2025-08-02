@@ -1,18 +1,29 @@
-import { type ReactNode } from "react"
+import { useState } from "react";
+import { type ReactNode } from "react";
 
-
-interface Props{
-    children: ReactNode
-    tooltip: ReactNode
+interface Props {
+    children: ReactNode;
+    tooltip: ReactNode;
 }
+
 export default function ToolTip(p: Props) {
-    
+    const [isHovered, setIsHovered] = useState(false);
+
     return (
-        <div className="flex relative w-full group ">
+        <div
+            className="flex relative w-full"
+            onMouseEnter={() => setIsHovered(true)} 
+            onMouseLeave={() => setIsHovered(false)} 
+            onTouchStart={() => setIsHovered(true)} 
+            onTouchEnd={() => setIsHovered(false)} 
+        >
             {p.children}
-            <div className="absolute z-10 origin-bottom bottom-full mb-2 left-1/2 -translate-x-1/2  scale-0 group-hover:scale-100 transition-all duration-250 ease-in-out group-hover:delay-200">
+            <div
+                className={`absolute z-10 origin-bottom bottom-full mb-2 left-1/2 -translate-x-1/2 
+                ${isHovered ? 'scale-100 delay-200' : 'scale-0'} transition-all duration-250 ease-in-out`}
+            >
                 {p.tooltip}
             </div>
         </div>
-    )
+    );
 }

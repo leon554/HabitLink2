@@ -18,9 +18,12 @@ export default function Navbar() {
     return (
         <>
             <div className="bg-blue-400 dark:bg-neutral-800 dark:border-b-1 dark:border-neutral-700/60 flex justify-between h-13 items-stretch p-0 fixed top-0 left-0 w-full z-30">
-                <div className="flex items-center">
+                <div className="flex items-center gap-2">
                     <p className="ml-4 text-gray-800 dark:text-neutral-100 font-mono text-xl">
                         HabitLink
+                    </p>
+                    <p className="text-xs text-subtext3">
+                        (Beta)
                     </p>
                 </div>
                 <div className="flex">

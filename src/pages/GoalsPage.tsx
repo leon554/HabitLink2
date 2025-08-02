@@ -11,6 +11,7 @@ import AvgStrengthPanel from "../AvgStrengthPanel"
 import GoalSummary from "@/components/goalComponenets/GoalSummary"
 import GoalEdit from "@/components/goalComponenets/GoalEdit"
 import type { GoalType } from "@/utils/types"
+import { useNavigate } from "react-router-dom"
 
 
 export default function GoalsPage() {
@@ -20,6 +21,7 @@ export default function GoalsPage() {
     const currenValue = useCurrentGoalValue()
     const targetValue = HC.currentGaol?.targetValue ?? 0
     const isGoalFinished =  Util.calculateProgress(startValue, currenValue, targetValue) >= 1;
+    const navigate = useNavigate()
 
     useEffect(() => {
         const updateGoal = async () => {
@@ -33,23 +35,36 @@ export default function GoalsPage() {
 
     return (
         <div className="w-full flex justify-center mb-10 ">
-            {!HC.currentGaol ?
-                <div className="w-[90%] max-w-[600px] mt-20 bg-stone-800 text-stone-300  rounded-2xl p-4 flex justify-center flex-col items-center">
-                    <p className="text-2xl mb-5 mt-1">
+            {!HC.currentGaol && Util.fetchAllMapItems(HC.goals).length != 0 ?
+                <div className="w-[90%] max-w-[600px] mt-20 bg-panel1 text-title  rounded-2xl p-4 outline-1 outline-border flex justify-center flex-col items-center">
+                    <p className="text-2xl mb-5 mt-1 font-medium">
                         Select Goal
                     </p>
                     <div className="flex flex-col items-stretch gap-2 w-full mb-2">
                         {Array.from(HC.goals.values()).map((g, i) => {
                             return(
-                                <div key={i} className="grow-1 bg-stone-700/30 rounded-2xl text-stone-300 flex gap-3 items-center hover:cursor-pointer"
+                                <div key={i} className="grow-1 bg-panel2 rounded-2xl text-stone-300 flex gap-3 items-center hover:cursor-pointer"
                                     onClick={() => HC.setCurrentGoal(g)}>
-                                    <div className="w-3 h-10 bg-green-400 rounded-l-md"></div>
-                                    <p>{g.name}</p>
+                                    <div className="w-3 h-10 bg-green-400 rounded-l-2xl"></div>
+                                    <p className="text-subtext1 text-sm">{g.name}</p>
                                 </div>
                             )
                         })}
                     </div>
                 </div>
+            : Util.fetchAllMapItems(HC.goals).length == 0 ? 
+                <div className="w-[90%] max-w-[600px] bg-panel1 rounded-2xl outline-1 outline-border  p-7 flex flex-col gap-4 mt-18">
+                    <p className="text-lg text-title font-medium leading-none">
+                        No Goals :(
+                    </p>
+                    <p className="text-sm text-subtext3">
+                        You currently have no goals, try adding a new goal and then comming back 💪
+                    </p>
+                    <button className="w-full bg-btn rounded-xl py-1 text-btn-text font-medium text-sm hover:cursor-pointer" 
+                        onClick={() => navigate("/creategoal")}>
+                        New Goal
+                    </button>
+                </div>        
             :
             <div className="w-full flex flex-col items-center gap-3">
                 <GoalTitlePanel/> 

@@ -1,4 +1,4 @@
-import {useContext, useEffect} from "react"
+import {useContext, useEffect, useState} from "react"
 import {AuthContext} from "../components/Providers/AuthProvider"
 import { Util } from "../utils/util"
 import ProgressPanel from "@/components/goalComponenets/ProgressPanel"
@@ -10,24 +10,53 @@ import HabitCalander from "@/components/DashboardComponenets/HabitCalander"
 import Timeline from "@/components/DashboardComponenets/Timeline"
 import DashBoardStats from "@/components/DashboardComponenets/DashBoardStats"
 import AvgCompRate from "@/components/DashboardComponenets/AvgCompRate"
+import { useNavigate } from "react-router-dom"
 
 
 
 export default function Dashboard() {
-    const session = useContext(AuthContext)
-    const HC = useContext(UserContext)
-    const habitStats = Util.fetchAllMapItems(HC.habitStats)
+    const session = useContext(AuthContext);
+    const HC = useContext(UserContext);
+    const habitStats = Util.fetchAllMapItems(HC.habitStats);
 
-    let avgHabitComp = Util.avgNumArr(habitStats.map(h => h.compRate)) * 100
-    let avgHabitStrength = Util.avgNumArr(habitStats.map(h => h.strength))
-    const avgGoalProgress = Util.avgNumArr(Util.fetchAllMapItems(HC.goalProgress))
+    const [avgHabitComp, setAvgHabitComp] = useState(0);
+    const [avgHabitStrength, setAvgHabitStrength] = useState(0);
+    const [avgGoalProgress, setAvgGoalProgress] = useState(0);
+    const navigate = useNavigate()
 
     useEffect(() => {
-        avgHabitComp = Util.avgNumArr(habitStats.map(h => h.compRate)) * 100
-        avgHabitStrength = Util.avgNumArr(habitStats.map(h => h.strength))
-    }, [habitStats])
+        const newAvgHabitComp = Util.avgNumArr(habitStats.map(h => h.compRate)) * 100;
+        const newAvgHabitStrength = Util.avgNumArr(habitStats.map(h => h.strength));
+        const newAvgGoalProgress = Util.avgNumArr(Util.fetchAllMapItems(HC.goalProgress));
+
+        setAvgHabitComp(newAvgHabitComp);
+        setAvgHabitStrength(newAvgHabitStrength);
+        setAvgGoalProgress(newAvgGoalProgress);
+    }, [habitStats, HC.goalProgress]); 
+
 
     return (
+        Util.fetchAllMapItems(HC.habits).length == 0 ? 
+            <div className="w-full flex flex-col items-center justify-center mt-17 gap-2">
+                <div className="w-[90%] max-w-[600px] bg-panel1 rounded-2xl outline-1 outline-border flex justify-center items-center p-5">
+                    <p className="text-2xl font-medium text-title">
+                        {session.localUser ? `Welecome Back, ${Util.capitilizeFirst(session.localUser?.name)}` : <AiOutlineLoading className="animate-spin"/>}
+                    </p>
+                </div>
+                <div className="w-[90%] max-w-[600px] bg-panel1 rounded-2xl outline-1 outline-border mt-2 p-7 flex flex-col gap-4">
+                    <p className="text-lg text-title font-medium leading-none">
+                        No Habits :(
+                    </p>
+                    <p className="text-sm text-subtext3">
+                        You currently have no habits, try adding a new habit and then comming back 💪
+                    </p>
+                    <button className="w-full bg-btn rounded-xl py-1 text-btn-text font-medium text-sm hover:cursor-pointer" 
+                        onClick={() => navigate("/create")}>
+                        New Habit
+                    </button>
+                </div>
+            </div>
+        : 
         <div className="flex flex-col items-center w-full mt-18 gap-5 mb-10">
             <div className="  flex max-md:flex-col gap-5 justify-center max-md:items-center  md:w-[90%] max-md:w-full">
                 <div className="rounded-2xl w-[90%] max-w-[600px] flex flex-col gap-5 md:max-w-[400px]">
@@ -40,9 +69,9 @@ export default function Dashboard() {
                         <p className="text-title text-lg font-medium">
                             Progression
                         </p>
-                        <ProgressPanel title="Average Habit Consistency" value={avgHabitComp} small={true}/>
-                        <ProgressPanel title="Average Habit Strength" value={avgHabitStrength} small={true}/>
-                        <ProgressPanel title="Average Goal Progress" value={avgGoalProgress} small={true}/>
+                        <ProgressPanel title="Average Habit Consistency" value={isNaN(avgHabitComp) ? 0 : avgHabitComp} small={true}/>
+                        <ProgressPanel title="Average Habit Strength" value={isNaN(avgHabitStrength) ? 0 : avgHabitStrength} small={true}/>
+                        <ProgressPanel title="Average Goal Progress" value={isNaN(avgGoalProgress) ? 0 : avgGoalProgress} small={true}/>
                     </div>
                 </div>
                 <div className="h-89 rounded-2xl bg-panel1 w-[90%] max-w-[600px] outline-1 outline-border flex flex-col gap-5 ">

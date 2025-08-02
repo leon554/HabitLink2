@@ -44,17 +44,17 @@ export default function Auth() {
     }
 
     return (
-        <div className="flex justify-center mt-20">
-            <div className="outline-1 outline-border bg-panel1 w-[80%] max-w-100 flex justify-center rounded-2xl p-5 flex-col items-center ">
+        <div className="flex justify-center mt-17">
+            <div className="outline-1 outline-border bg-panel1 w-[90%] max-w-100 flex justify-center rounded-2xl p-5 flex-col items-center ">
                 <p className="text-title font-mono text-2xl m-1 mt-4 font-semibold">
                     {login ? "Log In" : "Sign Up"}
                 </p>
-                <div className="w-full flex justify-center">
-                    <p className="text-subtext2 text-[13px] mb-7 font font-mono">
+                <div className="w-[90%] flex justify-center">
+                    <p className="text-subtext2 text-[13px] mb-7 font font-mono text-center">
                     Start your improvement journey today
                 </p>
                 </div>
-                <form className=" w-[80%] flex flex-col gap-3 text-subtext1 font-mono" onSubmit={e => submit(e)}>
+                <form className=" w-[90%] flex flex-col gap-3 text-subtext1 font-mono" onSubmit={e => submit(e)}>
                     {!login ? <div>
                         <p className="mb-1.5">Name</p>
                         <input type="text" 
@@ -96,7 +96,7 @@ export default function Auth() {
                         {auth.loading ? <AiOutlineLoading className="animate-spin" /> : (login? "Log In" : "Sign Up")}
                     </button>
                     <div className="flex justify-center mt-1.5 mb-8">
-                        <p className="text-[13px] text-subtext3">
+                        <p className="text-[13px] text-subtext3 text-center">
                             {login ? "Don't have and acount?" : "Allready have an acount?"}
                             <a className="text-highlight hover:cursor-pointer" 
                                 onClick={() => setLogin(!login)}> 
