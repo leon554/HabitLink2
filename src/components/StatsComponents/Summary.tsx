@@ -10,6 +10,7 @@ export default function Summary() {
     const [open, setOpen] = useState(false)
     const {habitStats, currentHabit} = useContext(UserContext)
     const p = habitStats.get(currentHabit!.id)!
+    console.log(p)
 
     return (
         <div className="w-full relative bg-panel1 rounded-2xl font outline-1 font-mono outline-border text-title justify-center p-7 pt-5 pb-7 flex flex-col items-center gap-4">
