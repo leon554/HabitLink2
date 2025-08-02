@@ -55,15 +55,15 @@ export default function AvgCompRate() {
         maintainAspectRatio: false,
         plugins: {
             legend: {
-            display: false,  // Hide the legend
+            display: false, 
             },
             tooltip: {
-                mode: "index" as const,         // ✅ show tooltip for all datasets at same index
+                mode: "index" as const,         
                 intersect: false,   
-                backgroundColor: panel, // ✅ Tooltip background
-                titleColor: title,      // ✅ Title text color
-                bodyColor: subtext2,       // ✅ Body text color
-                borderColor: border,     // ✅ Optional: border
+                backgroundColor: panel,
+                titleColor: title,   
+                bodyColor: subtext2,     
+                borderColor: border,    
                 borderWidth: 1,
                 padding: 10,
                 titleFont: {
@@ -74,23 +74,23 @@ export default function AvgCompRate() {
                 bodyFont: {
                     size: 11,
                 },
-                cornerRadius: 6,            // ✅ Optional: rounded corners
-                displayColors: false   // ✅ show tooltip even if not directly over a point
+                cornerRadius: 6,            
+                displayColors: false   
             },
         },
         elements: {
             point: {
-            radius: 0,  // Removes the circles on the lines
+            radius: 0, 
             },
         },
         scales: {
             x: {
-                display: false,  // Keep the X-axis grid lines
+                display: false,
                 ticks: {
-                    display: false,  // Remove X-axis labels
+                    display: false, 
                 },
                 grid: {
-                    display: false,  // Keep X-axis grid lines
+                    display: false,  
                     drawBorder: false
                 },
             },
