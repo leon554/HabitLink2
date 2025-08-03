@@ -132,25 +132,25 @@ export default function CreateGoal() {
                     <div className="w-full flex flex-col items-center ">
                         
                         <div className="w-[90%] max-w-[450px]    mb-5 ">
-                            <p className="text-[16px]  text-subtext-1 mb-2">Goal Name</p>
+                            <p className="text-sm font-medium  text-subtext-1 mb-2">Goal Name</p>
                             <input type="text" 
                             placeholder="Enter goal name"
                             value={name}
                             onChange={e => Util.setValueLim(setName, e.target.value, 30)}
-                            className="outline-1 text-[12px] rounded-xl w-full border-0  outline-border2 text-sm p-1.5 text-subtext1 mb-1" />
-                            <div className="w-full flex justify-end mt-1 mb-[-10px]">
+                            className="outline-1 text-[12px] rounded-md w-full border-0  outline-border2 text-sm p-1.5 text-subtext1 mb-1" />
+                            <div className="w-full flex justify-end mt-1 mb-[-14px]">
                                 <p className="text-xs text-subtext3">
                                     {name.length}/30
                                 </p>
                             </div>
                         </div>
                         <div className="w-[90%] max-w-[450px] relative mb-5">
-                            <p className="text-[16px]  text-subtext-1 mb-2">Goal Description</p>
+                            <p className="text-sm font-medium  text-subtext-1 mb-2">Goal Description</p>
                             <textarea
                             placeholder="Enter goal description"
                             value={description}
                             onChange={e => Util.setValueLim(setDescription, e.target.value, 200)}
-                            className="outline-1 text-[12px] h-20 rounded-xl resize-none w-full border-0 no-scrollbar outline-border2 text-sm p-1.5 text-subtext1" />
+                            className="outline-1 text-[12px] h-20 rounded-md resize-none w-full border-0 no-scrollbar outline-border2 text-sm p-1.5 text-subtext1" />
                             <p className="absolute right-2 bottom-6 hover:cursor-pointer text-subtext2 bg-panel1"
                             onClick={async () => {
                                 loadingRef.current = 1
@@ -158,7 +158,7 @@ export default function CreateGoal() {
                             }}>
                                 {HC.loading && loadingRef.current == 1 ? <AiOutlineLoading className="animate-spin" size={12}/> : <RiAiGenerate size={14}/>}
                             </p>
-                            <div className="w-full flex justify-end mt-1 mb-[-10px]">
+                            <div className="w-full flex justify-end mt-1 mb-[-16px]">
                                 <p className="text-xs text-subtext3">
                                     {description.length}/200
                                 </p>
@@ -166,8 +166,8 @@ export default function CreateGoal() {
                         </div>
 
                         <div className="w-[90%] max-w-[450px]    mb-6">
-                            <p className="text-[16px]  text-subtext-1 mb-2">Associated Habits</p>
-                            <button className={`outline-1 rounded-xl outline-border2 w-full p-1 grow-1 hover:cursor-pointer hover:bg-btn hover:outline-0 text-subtext1 text-sm hover:text-btn-text`}
+                            <p className="text-sm font-medium  text-subtext-1 mb-2">Associated Habits</p>
+                            <button className={`outline-1 rounded-md outline-border2 w-full p-1 grow-1 hover:cursor-pointer hover:bg-btn hover:outline-0 text-subtext1 text-sm hover:text-btn-text`}
                                     onClick={() => setShowModal(true)}>
                                     {selectHabits.length == 0 && linkedID == -1? "Select Habits" : `${selectHabits.length + ((linkedID != -1) ? 1 : 0)} ${selectHabits.length + ((linkedID != -1) ? 1 : 0) == 1 ? "habit" : "habits"} associated${(linkedID != -1) ? ", 1 Linked" : ""}`}
                             </button>
@@ -179,7 +179,7 @@ export default function CreateGoal() {
                         {linkedID == -1?
                         <div className="w-full flex flex-col items-center">
                             <div className="flex items-center gap-2 mb-2 w-[90%] max-w-[450px]">
-                                <p className="text-[16px]  text-subtext-1">Goal Type </p> 
+                                <p className="text-sm font-medium  text-subtext-1">Goal Type </p> 
                                 <IoInformationCircleOutline size={14} color="#f5f5f4" className="hover:cursor-pointer" onClick={() => {
                                     alert("Normal: e.g. Get promotion at work \n Time Based: e.g Meditate for 20 hour \n Distance Based: e.g Walk 200km \n Itteration Based: E.g Weigh 40kg or drink 20 cups of water")
                                 }}/>
@@ -187,7 +187,7 @@ export default function CreateGoal() {
                             <div className="flex flex-wrap gap-2 justify-stretch mb-6 w-[90%] max-w-[450px]">
                                 {habitTypes.map((h, i) => {
                                 return(
-                                    <button className={`${selectedTypeIndex == i ? "outline-0 bg-btn text-btn-text" : "outline-1 text-subtext1"} rounded-xl outline-border2 p-1 grow-1 hover:cursor-pointer hover:bg-btn hover:outline-0 text-sm px-2 hover:text-stone-900`}
+                                    <button className={`${selectedTypeIndex == i ? "outline-0 bg-btn text-btn-text" : "outline-1 text-subtext1"} rounded-md outline-border2 p-1 grow-1 hover:cursor-pointer hover:bg-btn hover:outline-0 text-sm px-2 hover:text-stone-900`}
                                         onClick={() => setSelectedTypeIndex(i)} key={i}>
                                         {h}
                                     </button>
@@ -195,51 +195,51 @@ export default function CreateGoal() {
                             })}
                             </div>
                             {habitTypes[selectedTypeIndex] != "Normal" &&  habitTypes[selectedTypeIndex] != undefined? <div className="w-[90%] max-w-[450px] mb-6">
-                                <p className="text-[16px]  text-subtext-1 mb-2">Start Value</p>
+                                <p className="text-sm font-medium  text-subtext-1 mb-2">Start Value</p>
                                 
                                 <input type="text" 
                                         placeholder={"Enter start " + getPlaceHolderText()}
                                         value={startValue}
                                         onChange={e => setStartValue(e.target.value)}
-                                        className="outline-1 text-[12px] rounded-xl w-full border-0  outline-border2 text-sm p-1.5 text-subtext1 mb-1" />
+                                        className="outline-1 text-[12px] rounded-md w-full border-0  outline-border2 text-sm p-1.5 text-subtext1 mb-1" />
                             </div> : ""}
 
                             {habitTypes[selectedTypeIndex] != "Normal" &&  habitTypes[selectedTypeIndex] != undefined? <div className="w-[90%] max-w-[450px] mb-6">
-                                <p className="text-[16px]  text-subtext-1 mb-2">Goal Value</p>
+                                <p className="text-sm font-medium  text-subtext-1 mb-2">Goal Value</p>
                                 <input type="text" 
                                         placeholder={"Enter goal " + getPlaceHolderText()}
                                         value={goalValue}
                                         onChange={e => setGoalValue(e.target.value)}
-                                        className="outline-1 text-[12px] rounded-xl w-full border-0  outline-border2 text-sm p-1.5 text-subtext1 mb-1" />
+                                        className="outline-1 text-[12px] rounded-md w-full border-0  outline-border2 text-sm p-1.5 text-subtext1 mb-1" />
                             </div> : ""}
                         </div>: 
                         <div className="w-full flex flex-col items-center">
                             <div className="w-[90%] max-w-[450px] mb-6">
-                                <p className="text-[16px]  text-subtext-1 mb-2">Goal Value</p>
+                                <p className="text-sm font-medium  text-subtext-1 mb-2">Goal Value</p>
                                 <input type="text" 
                                         placeholder={"Enter goal " + getLinkedPlaceHolderText()}
                                         value={goalValue}
                                         onChange={e => setGoalValue(e.target.value)}
-                                        className="outline-1 text-[12px] rounded-xl w-full border-0  outline-border2 text-sm p-1.5 text-subtext1 mb-1" />
+                                        className="outline-1 text-[12px] rounded-md w-full border-0  outline-border2 text-sm p-1.5 text-subtext1 mb-1" />
                             </div>
                         </div>}
 
                         <div className="w-[90%] max-w-[450px]    mb-8">
-                            <p className="text-[16px]  text-subtext-1 mb-2">Complete Goal On</p>
+                            <p className="text-sm font-medium  text-subtext-1 mb-2">Complete Goal On</p>
                             <div className="flex gap-3 items-center flex-wrap justify-stretch">
                                 <DateInput minDate={new Date()} date={date} setDate={setDate}/>
                                 <p className="text-sm text-subtext3">
                                     Add
                                 </p>
-                                <button className="outline-1 flex-grow-1 h-7 px-3 text-sm rounded-xl flex items-center justify-center outline-border2 text-subtext1 hover:cursor-pointer hover:bg-btn hover:text-btn-text transition-colors duration-150 ease-in-out darkmode:hover:outline-0"
+                                <button className="outline-1 flex-grow-1 h-7 px-3 text-sm rounded-md flex items-center justify-center outline-border2 text-subtext1 hover:cursor-pointer hover:bg-btn hover:text-btn-text transition-colors duration-150 ease-in-out darkmode:hover:outline-0"
                                     onClick={() => addX({days: 1})}>
                                     Day
                                 </button>
-                                <button className="outline-1 flex-grow-1 h-7 px-3 text-sm rounded-xl flex items-center justify-center outline-border2 text-subtext1 hover:cursor-pointer hover:bg-btn hover:text-btn-text transition-colors duration-150 ease-in-out darkmode:hover:outline-0"
+                                <button className="outline-1 flex-grow-1 h-7 px-3 text-sm rounded-md flex items-center justify-center outline-border2 text-subtext1 hover:cursor-pointer hover:bg-btn hover:text-btn-text transition-colors duration-150 ease-in-out darkmode:hover:outline-0"
                                     onClick={() => addX({weeks: 1})}>
                                     Week
                                 </button>
-                                <button className="outline-1 flex-grow-1 h-7 px-3 text-sm rounded-xl flex items-center justify-center outline-border2 text-subtext1 hover:cursor-pointer hover:bg-btn hover:text-btn-text transition-colors duration-150 ease-in-out darkmode:hover:outline-0"
+                                <button className="outline-1 flex-grow-1 h-7 px-3 text-sm rounded-md flex items-center justify-center outline-border2 text-subtext1 hover:cursor-pointer hover:bg-btn hover:text-btn-text transition-colors duration-150 ease-in-out darkmode:hover:outline-0"
                                     onClick={() => addX({months: 1})}>
                                     Month
                                 </button>
@@ -247,7 +247,7 @@ export default function CreateGoal() {
                         </div>
 
 
-                        <button className="bg-btn text-btn-text outline-1 dark:outline-0 outline-border2 hover:cursor-pointer rounded-xl w-[90%] max-w-[450px] py-1 mb-6 h-9 flex justify-center items-center" 
+                        <button className="bg-btn text-btn-text text-sm font-medium outline-1 dark:outline-0 outline-border2 hover:cursor-pointer rounded-md w-[90%] max-w-[450px] py-1 mb-6 h-9 flex justify-center items-center" 
                             onClick={async () => {
                                 loadingRef.current = 2
                                 await submit()
@@ -266,7 +266,7 @@ export default function CreateGoal() {
                     <div className="flex flex-col p-[1px] gap-2 mb-3 items-stretch w-[90%] max-h-[400px] overflow-y-scroll no-scrollbar rounded-lg">
                         {Array.from(HC.habits.values()).map((h, i) => {
                             return(
-                                <div className={`bg-panel2 rounded-xl w-full hover:cursor-pointer select-none flex justify-between outline-1 outline-border2 h-10`} key={i} 
+                                <div className={`bg-panel2 rounded-md w-full hover:cursor-pointer select-none flex justify-between outline-1 outline-border2 h-10`} key={i} 
                                     onClick={() => {
                                         if(selectHabits.includes(Number(h.id))){
                                             setSelectedHabits(p => [...p.filter(d => d != Number(h.id))])
@@ -302,7 +302,7 @@ export default function CreateGoal() {
                         <div className="flex flex-wrap gap-2 mt-3 w-full justify-stretch mb-7">
                             {habits.map(h => {
                                 return(
-                                    <div className="outline-1 rounded-xl outline-border flex-grow-1 p-1 flex justify-center px-2 hover:cursor-pointer hover:bg-panel2 transition-colors duration-150 ease-in-out"
+                                    <div className="outline-1 rounded-md outline-border flex-grow-1 p-1 flex justify-center px-2 hover:cursor-pointer hover:bg-panel2 transition-colors duration-150 ease-in-out"
                                         onClick={() => {
                                             setHabitName(Util.capitilizeFirst(h) ?? "jfhfd")
                                             setShowNewHabitModal(true)
@@ -317,19 +317,19 @@ export default function CreateGoal() {
                     </div>
                     :""}
                     <div className="flex items-center w-[90%] gap-2">
-                        <button className=" rounded-xl outline-1 outline-border2 flex justify-center items-center text-subtext1 text-sm h-8 hover:cursor-pointer w-full hover:bg-panel2 transition-colors duration-150 ease-in-out" 
+                        <button className=" rounded-md outline-1 outline-border2 flex justify-center items-center text-subtext1 text-sm h-8 hover:cursor-pointer w-full hover:bg-panel2 transition-colors duration-150 ease-in-out" 
                             onClick={async () => {
                                 loadingRef.current = 3
                                 await genHabits()
                             }}>
                             {HC.loading && loadingRef.current == 3 ? <AiOutlineLoading className="animate-spin" /> : "Generate Habits"}
                         </button>
-                        <button className="  rounded-xl outline-1 outline-border2 text-subtext1 text-sm  h-8 hover:cursor-pointer w-full hover:bg-panel2 transition-colors duration-150 ease-in-out" 
+                        <button className="  rounded-md outline-1 outline-border2 text-subtext1 text-sm  h-8 hover:cursor-pointer w-full hover:bg-panel2 transition-colors duration-150 ease-in-out" 
                             onClick={() => setShowNewHabitModal(true)}>
                             New Habit
                         </button>
                     </div>
-                    <button className="bg-btn w-[90%] rounded-xl outline-1 outline-border1 text-btn-text mb-5 mt-2 h-8 hover:cursor-pointer" 
+                    <button className="bg-btn w-[90%] rounded-md outline-1 outline-border1 text-btn-text mb-5 mt-2 h-8 hover:cursor-pointer" 
                         onClick={() => setShowModal(false)}>
                         Done
                     </button>

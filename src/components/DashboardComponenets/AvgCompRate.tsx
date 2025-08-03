@@ -121,7 +121,7 @@ export default function AvgCompRate() {
             </p>
             {data.length < 10 ? 
             <div className="h-40 border-1 border-border2 flex justify-center items-center rounded-2xl">
-                <p className="text-sm text-subtext3 flex items-center gap-2">
+                <p className="text-sm max-sm:text-xs text-subtext3 flex flex-wrap text-center justify-center items-center gap-2">
                     Log your habits for {10-data.length} days to see this graph <FaChartLine />
                 </p>
             </div>

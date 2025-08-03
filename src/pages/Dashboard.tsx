@@ -32,7 +32,7 @@ export default function Dashboard() {
         setAvgHabitComp(newAvgHabitComp);
         setAvgHabitStrength(newAvgHabitStrength);
         setAvgGoalProgress(newAvgGoalProgress);
-    }, [HC.habitStats, HC.goalProgress]); 
+    }, [HC.habitStats, HC.goalProgress, HC.goals]); 
 
 
     return (

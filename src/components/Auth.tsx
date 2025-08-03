@@ -5,6 +5,8 @@ import { AuthContext } from "./Providers/AuthProvider";
 import { SignUpResponses } from "../utils/types";
 import { LuLogIn } from "react-icons/lu";
 import { Util } from "@/utils/util";
+import { IoMdEyeOff } from "react-icons/io";
+import { IoMdEye } from "react-icons/io";
 
 interface FormProps{
     name: string
@@ -18,6 +20,8 @@ export default function Auth() {
 
     const auth = useContext(AuthContext)
     const {alert} = useContext(AlertContext)
+    const [showPass, setShowPass] = useState(false)
+    const [showConPass, setShowConPass] = useState(false)
 
     const submit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -47,7 +51,7 @@ export default function Auth() {
 
     return (
         <div className="flex justify-center mt-17">
-            <div className="outline-1 outline-border bg-panel1 w-[90%] max-w-100 flex justify-center rounded-md p-5 flex-col items-center ">
+            <div className="outline-1 outline-border bg-panel1 w-[90%] max-w-100 flex justify-center rounded-xl p-5 flex-col items-center ">
                 <p className="text-title  text-2xl m-1 mt-4 font-semibold">
                     {login ? "Log In" : "Sign Up"}
                 </p>
@@ -86,31 +90,41 @@ export default function Auth() {
                         </div>
                     </div>
                     <div>
-                        <p className="mb-1.5 text-sm font-medium">Password</p>
-                        <input type="password"  
-                        onChange={(e) => Util.setValueLim((v: string) => setFormData(prev => ({...prev, password: v})), e.target.value, 40)}
-                        value={formData.password}
-                        placeholder={login ? "Enter Password" : "Create password"}
-                        autoComplete="new-password"
-                        className="outline-1 text-[12px] rounded-sm w-full border-0 pl-2 outline-border2 text-sm p-1.5 text-subtext1 mb-1"/>
-                        <div className={`w-full flex justify-end ${login ? "mb-[-5px]" : "mb-[-12px]"}`}>
-                            <p className="text-xs text-subtext3">
-                                {formData.password.length}/40
-                            </p>
+                        <div className="relative">
+                            {!showPass ? 
+                            <IoMdEyeOff className="absolute right-2 top-[33px] text-subtext3 hover:cursor-pointer" size={15} onClick={() => setShowPass(true)}/> :
+                            <IoMdEye className="absolute right-2 top-[33px] text-subtext3 hover:cursor-pointer" size={15} onClick={() => setShowPass(false)}/>}
+                            <p className="mb-1.5 text-sm font-medium">Password</p>
+                            <input type={showPass ? "text" : "password"}  
+                            onChange={(e) => Util.setValueLim((v: string) => setFormData(prev => ({...prev, password: v})), e.target.value, 40)}
+                            value={formData.password}
+                            placeholder={login ? "Enter Password" : "Create password"}
+                            autoComplete="new-password"
+                            className="outline-1 text-[12px] rounded-sm w-full border-0 pl-2 outline-border2 text-sm p-1.5 text-subtext1 mb-1"/>
+                            <div className={`w-full flex justify-end ${login ? "mb-[-5px]" : "mb-[-12px]"}`}>
+                                <p className="text-xs text-subtext3">
+                                    {formData.password.length}/40
+                                </p>
+                            </div>
                         </div>
                     </div>
                     {!login ? <div>
-                        <p className="mb-1.5 text-sm font-medium">Confirm Password</p>
-                        <input type="password"  
-                        onChange={(e) => Util.setValueLim((v: string) => setFormData(prev => ({...prev, confirmPassword: v})), e.target.value, 40)}
-                        value={formData.confirmPassword}
-                        placeholder="Confirm password"
-                        autoComplete="new-password"
-                        className="outline-1 text-[12px] rounded-sm w-full border-0 pl-2 outline-border2 text-sm p-1.5 text-subtext1 mb-1"/>
-                        <div className={`w-full flex justify-end mb-[-5px]`}>
-                            <p className="text-xs text-subtext3">
-                                {formData.confirmPassword.length}/40
-                            </p>
+                        <div className="relative">
+                            {!showConPass ? 
+                            <IoMdEyeOff className="absolute right-2 top-[33px] text-subtext3 hover:cursor-pointer" size={15} onClick={() => setShowConPass(true)}/> :
+                            <IoMdEye className="absolute right-2 top-[33px] text-subtext3 hover:cursor-pointer" size={15} onClick={() => setShowConPass(false)}/>}
+                            <p className="mb-1.5 text-sm font-medium">Confirm Password</p>
+                            <input type={showConPass ? "text" : "password"}  
+                            onChange={(e) => Util.setValueLim((v: string) => setFormData(prev => ({...prev, confirmPassword: v})), e.target.value, 40)}
+                            value={formData.confirmPassword}
+                            placeholder="Confirm password"
+                            autoComplete="new-password"
+                            className="outline-1 text-[12px] rounded-sm w-full border-0 pl-2 outline-border2 text-sm p-1.5 text-subtext1 mb-1"/>
+                            <div className={`w-full flex justify-end mb-[-5px]`}>
+                                <p className="text-xs text-subtext3">
+                                    {formData.confirmPassword.length}/40
+                                </p>
+                            </div>
                         </div>
                     </div>: ""}
                     <button className="flex justify-center gap-2 bg-btn rounded-sm p-1 text-btn-text font-medium text-sm  outline-border2 darkmode:outline-0 mt-1.5 hover:cursor-pointer  duration-400 ease-in-out  h-8 items-center"

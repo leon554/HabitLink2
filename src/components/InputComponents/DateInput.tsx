@@ -35,7 +35,7 @@ export default function DateInput(p: Props) {
             }}
             type="text" 
             placeholder="dd/mm/yyyy"
-            className={`outline-1 ${dateUtils.isStringValidDate(p.date, p.minDate, p.maxDate) || p.date == "" ? "outline-border2 " : "outline-red-500"} rounded-xl pl-2 p-1 text-sm text-subtext2  ${p.fullWidth ? "w-full" : "w-30"}`}>
+            className={`outline-1 ${dateUtils.isStringValidDate(p.date, p.minDate, p.maxDate) || p.date == "" ? "outline-border2 " : "outline-red-500"} rounded-md pl-2 p-1 text-sm text-subtext2  ${p.fullWidth ? "w-full" : "w-30"}`}>
         </input>
     )
 }
