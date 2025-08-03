@@ -35,7 +35,20 @@ export default function HabitEdit() {
         return setOpen(false)
     }
     async function deleteHabit(){
-        await HC.deleteHabit(HC.currentHabit!.id)
+        const habitID = HC.currentHabit!.id
+        const isLinkedToGoal = Util.fetchAllMapItems(HC.goals).some(g => ((g.linkedHabit ?? -1) == habitID))
+        const goalsAssociated = Util.fetchAllMapItems(HC.goals).filter(g => g.habits.split(",").includes(String(habitID)))
+        const isNotDeletable = goalsAssociated.some(g => g.habits.split(",").length == 1)
+
+        if(isLinkedToGoal || isNotDeletable){
+            alert("Habit is associated or linked with a goal delete that goal first before deleting this habit")
+            return
+        }
+
+        for(const goal of goalsAssociated){
+            await HC.removeAssociatedHabit(goal.id, habitID)
+        }
+        await HC.deleteHabit(habitID)
         HC.setCurrentHabit(null)
         setOpen(false)
     }

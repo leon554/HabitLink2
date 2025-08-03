@@ -32,7 +32,7 @@ export default function Dashboard() {
         setAvgHabitComp(newAvgHabitComp);
         setAvgHabitStrength(newAvgHabitStrength);
         setAvgGoalProgress(newAvgGoalProgress);
-    }, [habitStats, HC.goalProgress]); 
+    }, [HC.habitStats, HC.goalProgress]); 
 
 
     return (
@@ -96,7 +96,7 @@ export default function Dashboard() {
                     <AvgCompRate />
                 </div>
 
-                <div className="h-96 flex-1 min-w-0 rounded-2xl bg-panel1 outline-1 outline-border relative w-[90%] max-w-[600px] ">
+                <div className="sm:h-96 flex-1 min-w-0 rounded-2xl bg-panel1 outline-1 outline-border relative w-[90%] max-w-[600px] ">
                     <DashBoardStats />
                 </div>
             </div>

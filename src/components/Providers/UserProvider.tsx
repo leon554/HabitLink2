@@ -21,6 +21,7 @@ interface UserType{
     compleGoal: (goalId: number) => Promise<void>
     lodgeIssue: (issue: SubmitIssueType) => Promise<void>
     deleteIssue: (issueId: number) => Promise<void>
+    removeAssociatedHabit: (goalID: number, habitID: number) => Promise<void>
     habits: Map<number, HabitType>
     habitsCompletions: Map<number, HabitCompletionType[]>,
     loading: boolean,
@@ -35,7 +36,7 @@ interface UserType{
     compleHabit: (habitId: number, value: number, date?: Date) => Promise<void>,
     removeTodaysHabitCompletion: (habitId: number) => Promise<void>
     addGoalCompletion: (value: number) => Promise<void>
-    askGpt: (promt: string) => Promise<string>
+    askGpt: (promt: string) => Promise<string|null>
     goalCompletions: Map<number, GaolCompletionType[]>
 }
 const initialValues: UserType = {
@@ -49,6 +50,7 @@ const initialValues: UserType = {
     compleGoal: () => Promise.resolve(undefined),
     lodgeIssue: () => Promise.resolve(undefined),
     deleteIssue: () => Promise.resolve(undefined),
+    removeAssociatedHabit: () => Promise.resolve(undefined),
     habits: new Map<number, HabitType>(),
     goals: new Map<number, GoalType>(),
     issues: new Map<number, IssueType>(),
@@ -143,7 +145,7 @@ export default function UserProvider(props: Props) {
             HabitStatsMap.set(h.id, data)
         })
         setHabitStats(HabitStatsMap)
-    }, [habitsCompletions, auth.session?.user])
+    }, [habitsCompletions, auth.session?.user, habits])
 
     useEffect(() => {
         const values: Map<number, number> = new Map<number, number>()
@@ -476,9 +478,9 @@ export default function UserProvider(props: Props) {
     async function askGpt(promt: string){
         if(auth.localUser?.role != "premium") {
             alert("You need premuim for this feature")
-            return
+            return null
         }
-        if(loading) return
+        if(loading) return null
         setLoading(true)
 
         const { data, error } = await supabase.functions.invoke('habitNameGen', {
@@ -488,11 +490,11 @@ export default function UserProvider(props: Props) {
         if(error){
             alert("Error: " + error.message)
             setLoading(false)
-            return
+            return null
         }
 
         setLoading(false)
-        return data.text 
+        return data.text as string
     }
     async function compleGoal(goalId: number){
         if(loading) return
@@ -570,6 +572,37 @@ export default function UserProvider(props: Props) {
         setIssues(issues)
         setLoading(false)
     }
+    async function removeAssociatedHabit(goalID: number, habitID: number){
+        setLoading(true)
+
+        const goal = goals.get(goalID)
+        if(!goal) { alert("Goal trying to update doesnt exist"); setLoading(false); return}
+
+        const associatedHabits = goal.habits.split(",")
+        if(associatedHabits.length <= 1) {
+            alert("Cant remove associated habit from goal if its the only associated habit")
+            setLoading(false)
+            return
+        }
+
+        const newAssociatedHabits = associatedHabits.filter(id => id != `${habitID}`).join(",")
+
+        const { error } = await supabase
+            .from('goals')
+            .update({ habits: newAssociatedHabits })
+            .eq('id', goalID)
+
+
+        if(error){
+            alert("Associated habit update error: " + error.message)
+            setLoading(false)
+            return
+        }
+
+        const newGoalsMap = Util.updateMap(goals, goalID, {...goal, habits: newAssociatedHabits})
+        setGaols(newGoalsMap)
+        setLoading(false)
+    }
     return (
         
         <UserContext.Provider value={{
@@ -596,6 +629,7 @@ export default function UserProvider(props: Props) {
             askGpt,
             compleGoal,
             lodgeIssue,
+            removeAssociatedHabit,
             goalCompletions,
             goalProgress,
             habitStats

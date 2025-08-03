@@ -117,4 +117,9 @@ export namespace Util{
 
         return Math.sqrt(variance);
     }
+    export function setValueLim(setFunc: (value: string) => void, value: string, lim: number){
+        if(value.length <= lim){
+            setFunc(value)
+        }
+    }
 }

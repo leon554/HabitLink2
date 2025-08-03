@@ -50,7 +50,7 @@ export default function Navbar() {
                             </Link>
                             <Link to={"/stats"}>
                                 <button className="h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 font-medium text-sm font-mono text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer">
-                                    Stats
+                                    Habits
                                 </button>
                             </Link>
                             <Link to={"/goals"}>

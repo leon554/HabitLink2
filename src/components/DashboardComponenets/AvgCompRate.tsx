@@ -2,6 +2,7 @@ import { useContext} from "react"
 import { UserContext } from "../Providers/UserProvider"
 import { HabitUtil } from "@/utils/HabitUtil"
 import { Util } from "@/utils/util"
+import { FaChartLine } from "react-icons/fa"
 
 import {Line} from "react-chartjs-2"
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, type ChartData} from "chart.js"
@@ -20,7 +21,7 @@ export default function AvgCompRate() {
 
     const HC = useContext(UserContext)
     const rawData = Util.fetchAllMapItems(HC.habitStats).map(i => i.chartData)
-    const data = HabitUtil.avgSameLengthChartDataArrs(HabitUtil.normalizeChartDataArrays(rawData))
+    const data = HabitUtil.avgSameLengthChartDataArrs(HabitUtil.normalizeChartDataArrays(rawData)) ?? []
 
     const rootStyles = getComputedStyle(document.documentElement)
 
@@ -118,19 +119,29 @@ export default function AvgCompRate() {
             <p className="text-title text-lg font-medium">
                 Avg Consistency & Strength 
             </p>
-            <div className="h-50 bg">
-                <Line options={options} data={formatedData as ChartData<"line", number[], string>}/>
-            </div>
-            <div className="flex justify-center items-center gap-2 w-full ">
-                <div className="w-3.5 h-3.5 bg-highlight rounded-md"></div>
-                <p className="text-xs text-subtext3">
-                    Consistency
-                </p>
-                <div className="w-3.5 h-3.5 bg-highlight2 rounded-md"></div>
-                <p className="text-xs text-subtext3">
-                    Strength
+            {data.length < 10 ? 
+            <div className="h-40 border-1 border-border2 flex justify-center items-center rounded-2xl">
+                <p className="text-sm text-subtext3 flex items-center gap-2">
+                    Log your habits for {10-data.length} days to see this graph <FaChartLine />
                 </p>
             </div>
+            :
+            <>
+                <div className="h-50 bg">
+                    <Line options={options} data={formatedData as ChartData<"line", number[], string>}/>
+                </div>
+                <div className="flex justify-center items-center gap-2 w-full ">
+                    <div className="w-3.5 h-3.5 bg-highlight rounded-md"></div>
+                    <p className="text-xs text-subtext3">
+                        Consistency
+                    </p>
+                    <div className="w-3.5 h-3.5 bg-highlight2 rounded-md"></div>
+                    <p className="text-xs text-subtext3">
+                        Strength
+                    </p>
+                </div>
+            </>
+            }
         </div>
     ) 
 }

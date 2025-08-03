@@ -663,6 +663,8 @@ export namespace HabitUtil{
     }
     export function avgSameLengthChartDataArrs(arrays: ChartDataType[][]){
         if(arrays.length == 0) return
+        console.log(arrays)
+        if(arrays[0].length == 0) return
        
         const length = arrays[0].length;
 
@@ -679,7 +681,8 @@ export namespace HabitUtil{
             })
         })
         data.map((d, i)=> {
-            output[i].date = arrays[1][i].date
+            console.log(i)
+            output[i].date = arrays[0][i].date
             output[i].consistency = d.consistencySum/d.entries
             output[i].strength = d.strengthSum/d.entries
         })

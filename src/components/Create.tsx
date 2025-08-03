@@ -8,6 +8,7 @@ import TimeInput from "./InputComponents/TimeInput";
 import DistanceInput from "./InputComponents/DistanceInput";
 import NumberInput from "./InputComponents/NumberInput";
 import { RiAiGenerate } from "react-icons/ri";
+import { Util } from "@/utils/util";
 
 
 
@@ -29,6 +30,7 @@ export default function Create({compact, onCreate, initialName} : Props){
     const habitEmojis = ["💪","📖","🧘","📝","🥗","🚰","😴","📚","🏃","🧹","🛏️","🪥","💻","🎨","🎵","☀️","📅","💸","📵","🧼","🧊","🏋️","🧠","🎯","👣","🍎","🚭","🍵","🌿","🕯️","👨‍🍳","🚿","🪑","🐶","🤝"];
     const habitTypes = ["Normal", "Time Based", "Distance Based", "Iteration Based"]
     const emojiDiv = useRef<HTMLDivElement>(null)
+    const loadingRef = useRef(-1)
 
     const {alert} = useContext(AlertContext)
     const HC = useContext(UserContext)
@@ -40,9 +42,20 @@ export default function Create({compact, onCreate, initialName} : Props){
     }, [initialName]);
 
     async function createHabit(){
-        //add check if everything is filled in
+        
         const completionDaysString = (compsPerWeek == 0) ? getCompDaysString() : `${compsPerWeek}`
-        await HC.createHabit(name, description, completionDaysString, habitEmojis[selectedEmojiIndex], habitTypes[selectedTypeIndex], getTarget())
+        const target = getTarget()
+
+        console.log(target)
+
+        if(name.trim() == "") {alert("Habit needs a name"); return}
+        if(completionDaysString == "" || completionDaysString == "0000000") {alert("Select days to complete the habit on"); return}
+        if(selectedTypeIndex == -1) {alert("Select a habit type before creating a habit"); return}
+        if(target == 0 && habitTypes[selectedTypeIndex] != "Normal") {alert("Habit daily goal can't be 0"); return}
+        if(selectedEmojiIndex == -1) {alert("Select a habit emoji to continue"); return}
+
+
+        await HC.createHabit(name, description, completionDaysString, habitEmojis[selectedEmojiIndex], habitTypes[selectedTypeIndex], target)
         resetValues()
     }
     function resetValues(){
@@ -81,6 +94,10 @@ export default function Create({compact, onCreate, initialName} : Props){
         }
         setDescription("Loading...")
         const habitArr = await HC.askGpt('write a 1 sentence description for the following habit: ' + name)
+        if(!habitArr){
+            setDescription("")
+            return
+        }
         setDescription(habitArr)
     }
     return (
@@ -96,22 +113,33 @@ export default function Create({compact, onCreate, initialName} : Props){
                         <input type="text" 
                         placeholder="Enter habit name"
                         value={name}
-                        onChange={e => setName(e.target.value)}
+                        onChange={e => Util.setValueLim(setName, e.target.value, 30)}
                         className="outline-1 text-[12px] rounded-xl w-full border-0  outline-border2 text-sm p-1.5 text-subtext1 mb-1" />
+                        <div className="w-full flex justify-end mt-1 mb-[-13px]">
+                            <p className="text-xs text-subtext3">
+                                {name.length}/30
+                            </p>
+                        </div>
                     </div>
                     <div className="w-[90%] max-w-[450px] relative mb-5">
                         <p className="text-[16px]  text-subtext1 mb-2">Habit Description</p>
                         <textarea
                         placeholder="Enter habit description"
                         value={description}
-                        onChange={e => setDescription(e.target.value)}
+                        onChange={e => Util.setValueLim(setDescription, e.target.value, 200)}
                         className={`outline-1 text-[12px] ${compact ? "h-7.5" : "h-20"} rounded-xl resize-none w-full border-0  outline-border2 text-sm p-1.5 text-subtext1`} />
-                        <p className="absolute right-2 bottom-3 hover:cursor-pointer text-subtext2 bg-panel1"
+                        <p className="absolute right-2 bottom-5 hover:cursor-pointer text-subtext2 bg-panel1"
                         onClick={async () => {
+                            loadingRef.current = 1
                             await genDescription()
                         }}>
-                            {HC.loading ? <AiOutlineLoading className="animate-spin" size={12}/> : <RiAiGenerate size={14}/>}
+                            {HC.loading && loadingRef.current == 1 ? <AiOutlineLoading className="animate-spin" size={12}/> : <RiAiGenerate size={14}/>}
                         </p>
+                        <div className="w-full flex justify-end mt-1 mb-[-14px]">
+                            <p className="text-xs text-subtext3">
+                                {description.length}/200
+                            </p>
+                        </div>
                     </div>
                     <div className="w-[90%] max-w-[450px]    flex justify-center flex-col items-stretch ">
                         <div>
@@ -209,11 +237,12 @@ export default function Create({compact, onCreate, initialName} : Props){
                     
                     <button className=" w-full rounded-xl p-1 outline-1 outline-border2 dark:outline-0 bg-btn    hover:cursor-pointer mt-7 flex justify-center h-8 items-center"
                         onClick={async () => {
+                            loadingRef.current = 2
                             await createHabit(); 
                             if(!onCreate) return
                             onCreate()
                         }}>
-                        {HC.loading ? <AiOutlineLoading className="animate-spin" /> : "Create Habit"}
+                        {HC.loading && loadingRef.current == 2 ? <AiOutlineLoading className="animate-spin" /> : "Create Habit"}
                     </button>
                 </div>
             </div>

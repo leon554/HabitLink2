@@ -20,7 +20,8 @@ export default function GoalsPage() {
     const startValue = HC.currentGaol?.startValue ?? 0
     const currenValue = useCurrentGoalValue()
     const targetValue = HC.currentGaol?.targetValue ?? 0
-    const isGoalFinished =  Util.calculateProgress(startValue, currenValue, targetValue) >= 1;
+    const progress = Util.calculateProgress(startValue, currenValue, targetValue)
+    const isGoalFinished =   progress >= 1;
     const navigate = useNavigate()
 
     useEffect(() => {

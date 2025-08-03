@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext, useRef, useState } from "react"
 import { IoInformationCircleOutline } from "react-icons/io5";
 import { AlertContext } from "./Alert/AlertProvider";
 import { UserContext } from "./Providers/UserProvider";
@@ -28,25 +28,39 @@ export default function CreateGoal() {
     const [linkedID, setLinkedId] = useState(-1)
     const [habits, setHabits] = useState<string[]>([])
     const [habitName, setHabitName] = useState("")
+    const loadingRef = useRef(-1)
 
     const HC = useContext(UserContext)
     const {alert} = useContext(AlertContext)
 
     async function submit(){
         const type = (linkedID == -1) ? habitTypes[selectedTypeIndex] : HC.habits.get(linkedID)?.type
+        
+        if(name == "") {alert("Goal needs a name"); return}
+        if(selectHabits.length == 0) {alert("Assocaite or link atleast one habit. If you have no habits create a habit first"); return}
+        if(!type) {alert("Choose a goal type before creating a goal"); return}
+
         let goalVal = Number(goalValue)
         let startVal = Number(startValue)
 
-        if(isNaN(goalVal) || isNaN(startVal)) {alert("Start and goal values must be a number"); return}
-        if(!type) {alert("Error linked habit type is undefined"); return}
-        if(!dateUtils.isStringValidDate(date, new Date())) {alert("Date is not valid it needs to be in the correct format and in the future"); return}
-        
-
         if(type == HabitTypeE.Normal && linkedID == -1) {
-            goalVal = 1
             startVal = 0
+            goalVal = 1
         }
+        if(linkedID != -1) {
+            startVal = 0
+            if(goalValue == "" || goalVal <= 0) {alert("Goal value must be filled in with a number bigger than 0"); return}
+        }
+        if(type != HabitTypeE.Normal && linkedID == -1) {
+           if(goalValue == "" || startValue == "") {alert("Start and goal values must be filled in with a number"); return}
+           if(goalVal == startVal) {alert("Goal and start values can't be the same "); return}
+        }
+
+        if(goalVal < 0 || startVal < 0) {alert("Start or goal value cant be negative values"); return}
         if(linkedID != -1) selectHabits.push(linkedID)
+        if(isNaN(goalVal) || isNaN(startVal)) {alert("Start and goal values must be a number"); return}
+        if(!dateUtils.isStringValidDate(date, new Date())) {alert("Date is not valid it needs to be in the correct format and in the future"); return}
+
         await HC.createGoal(name, description, type, startVal, goalVal, selectHabits, dateUtils.stringToDate(date), linkedID == -1 ? null : linkedID)
         setName(""); setDescription(""); setSelectedTypeIndex(-1); setStartValue(""); setGoalValue(""); setSelectedHabits([]); setDate("")
     }
@@ -91,6 +105,7 @@ export default function CreateGoal() {
     async function genHabits(){
         setHabits([])
         const habitArr = await HC.askGpt('Given the goal of ' + name + ', identify the essential actions needed to achieve this goal and translate them into specific, measurable, and trackable habits that can be logged daily or weekly in a habit tracking app. Ensure that each habit is actionable, clear, and easy to monitor. Habits must begin with a verb and be concise. Habits must not include the word "daily" or "weekly". ONLY list the habits, separated by commas and nothing else. Some great examples of habits are "Stretch", "morning walk", "take creatinine", "drink protein shake", "measure weight", "code", "go gym" and "run". Habits should be no more than 4 words')
+        if(!habitArr){return}
         setHabits(habitArr.split(","))
     }
     async function genDescription(){
@@ -99,8 +114,12 @@ export default function CreateGoal() {
             return
         }
         setDescription("Loading...")
-        const habitArr = await HC.askGpt('write a 1 sentence description for the following goal: ' + name)
-        setDescription(habitArr)
+        const description = await HC.askGpt('write a 1 sentence description for the following goal: ' + name)
+        if(!description){
+            setDescription("")
+            return
+        }
+        setDescription(description)
     }
 
     return (
@@ -117,22 +136,33 @@ export default function CreateGoal() {
                             <input type="text" 
                             placeholder="Enter goal name"
                             value={name}
-                            onChange={e => setName(e.target.value)}
+                            onChange={e => Util.setValueLim(setName, e.target.value, 30)}
                             className="outline-1 text-[12px] rounded-xl w-full border-0  outline-border2 text-sm p-1.5 text-subtext1 mb-1" />
+                            <div className="w-full flex justify-end mt-1 mb-[-10px]">
+                                <p className="text-xs text-subtext3">
+                                    {name.length}/30
+                                </p>
+                            </div>
                         </div>
                         <div className="w-[90%] max-w-[450px] relative mb-5">
                             <p className="text-[16px]  text-subtext-1 mb-2">Goal Description</p>
                             <textarea
                             placeholder="Enter goal description"
                             value={description}
-                            onChange={e => setDescription(e.target.value)}
+                            onChange={e => Util.setValueLim(setDescription, e.target.value, 200)}
                             className="outline-1 text-[12px] h-20 rounded-xl resize-none w-full border-0 no-scrollbar outline-border2 text-sm p-1.5 text-subtext1" />
-                            <p className="absolute right-2 bottom-3 hover:cursor-pointer text-subtext2 bg-panel1"
+                            <p className="absolute right-2 bottom-6 hover:cursor-pointer text-subtext2 bg-panel1"
                             onClick={async () => {
+                                loadingRef.current = 1
                                 await genDescription()
                             }}>
-                                {HC.loading ? <AiOutlineLoading className="animate-spin" size={12}/> : <RiAiGenerate size={14}/>}
+                                {HC.loading && loadingRef.current == 1 ? <AiOutlineLoading className="animate-spin" size={12}/> : <RiAiGenerate size={14}/>}
                             </p>
+                            <div className="w-full flex justify-end mt-1 mb-[-10px]">
+                                <p className="text-xs text-subtext3">
+                                    {description.length}/200
+                                </p>
+                            </div>
                         </div>
 
                         <div className="w-[90%] max-w-[450px]    mb-6">
@@ -151,7 +181,7 @@ export default function CreateGoal() {
                             <div className="flex items-center gap-2 mb-2 w-[90%] max-w-[450px]">
                                 <p className="text-[16px]  text-subtext-1">Goal Type </p> 
                                 <IoInformationCircleOutline size={14} color="#f5f5f4" className="hover:cursor-pointer" onClick={() => {
-                                    alert("Normal: e.g. go to the gym its yes no \n Time Based: e.g Plank can log 13s \n Distance Based: e.g Walking you walked 12km \n Itteration Based: E.g drink 3 cups of water a day")
+                                    alert("Normal: e.g. Get promotion at work \n Time Based: e.g Meditate for 20 hour \n Distance Based: e.g Walk 200km \n Itteration Based: E.g Weigh 40kg or drink 20 cups of water")
                                 }}/>
                             </div>
                             <div className="flex flex-wrap gap-2 justify-stretch mb-6 w-[90%] max-w-[450px]">
@@ -218,8 +248,11 @@ export default function CreateGoal() {
 
 
                         <button className="bg-btn text-btn-text outline-1 dark:outline-0 outline-border2 hover:cursor-pointer rounded-xl w-[90%] max-w-[450px] py-1 mb-6 h-9 flex justify-center items-center" 
-                            onClick={submit}>
-                            {HC.loading ? <AiOutlineLoading className="animate-spin" /> : "Create Goal"}
+                            onClick={async () => {
+                                loadingRef.current = 2
+                                await submit()
+                            }}>
+                            {HC.loading && loadingRef.current == 2 ? <AiOutlineLoading className="animate-spin" /> : "Create Goal"}
                         </button>
                     </div>
                 </div>
@@ -285,8 +318,11 @@ export default function CreateGoal() {
                     :""}
                     <div className="flex items-center w-[90%] gap-2">
                         <button className=" rounded-xl outline-1 outline-border2 flex justify-center items-center text-subtext1 text-sm h-8 hover:cursor-pointer w-full hover:bg-panel2 transition-colors duration-150 ease-in-out" 
-                            onClick={async () => await genHabits()}>
-                            {HC.loading ? <AiOutlineLoading className="animate-spin" /> : "Generate Habits"}
+                            onClick={async () => {
+                                loadingRef.current = 3
+                                await genHabits()
+                            }}>
+                            {HC.loading && loadingRef.current == 3 ? <AiOutlineLoading className="animate-spin" /> : "Generate Habits"}
                         </button>
                         <button className="  rounded-xl outline-1 outline-border2 text-subtext1 text-sm  h-8 hover:cursor-pointer w-full hover:bg-panel2 transition-colors duration-150 ease-in-out" 
                             onClick={() => setShowNewHabitModal(true)}>
