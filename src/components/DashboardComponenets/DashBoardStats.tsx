@@ -28,10 +28,10 @@ export default function DashBoardStats() {
                 <InfoBox value={Math.round(Math.max(...consistencies)*100)+ "%"} text="Max Consistency" toolTipText="The highest consistency of all your habits"/>
                 <InfoBox value={Math.round(Math.min(...strengths)) + "%"} text="Min Strength" toolTipText="The lowest strenght of all of your habits"/>
                 <InfoBox value={Math.round(Math.min(...consistencies)*100)+ "%"} text="Min Consistency" toolTipText="The lowest consistency of all of your habits "/>
-                <InfoBox value={Math.round(Util.avgNumArr(strengths))} text="Strength Avg" toolTipText="The average strength of all your habits. "/>
+                <InfoBox value={Math.round(Util.avgNumArr(strengths)) + "%"} text="Strength Avg" toolTipText="The average strength of all your habits. "/>
                 <InfoBox value={Math.round(Util.avgNumArr(consistencies)*100) + "%"} text="Consistency Avg" toolTipText="The Avg consistency of all your habits"/>
                 <InfoBox value={Math.round(Util.standardDeviation(strengths))} text="Strength SD" toolTipText="The standard deviation of all your habits strengths"/>
-                <InfoBox value={Math.round(Util.standardDeviation(consistencies)*100)} text="Consistency SD" toolTipText=""/>
+                <InfoBox value={Math.round(Util.standardDeviation(consistencies)*100)} text="Consistency SD" toolTipText="This is the standard deviation of all your habits consistencies"/>
                 <InfoBox value={Math.max(...habitStats.map(s => s.streak))} text="Best Streak" toolTipText="The best streak of all your habits"/>
                 <InfoBox value={entries.length} text="Total Entries" toolTipText="Total entries of all your habits. A entry just counts as data you logged regarless if you had a specific habit scheduled or if you met a specific habits goal."/>
                 <InfoBox value={Math.min(...habitStats.map(s => s.streak))} text="Worst Streak" toolTipText="The worst streak of all your habits"/>

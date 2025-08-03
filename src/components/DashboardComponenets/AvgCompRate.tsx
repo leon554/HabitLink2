@@ -120,9 +120,9 @@ export default function AvgCompRate() {
                 Avg Consistency & Strength 
             </p>
             {data.length < 10 ? 
-            <div className="h-40 border-1 border-border2 flex justify-center items-center rounded-2xl">
-                <p className="text-sm max-sm:text-xs text-subtext3 flex flex-wrap text-center justify-center items-center gap-2">
-                    Log your habits for {10-data.length} days to see this graph <FaChartLine />
+            <div className="h-70 border-1 border-border2 flex justify-center items-center rounded-2xl">
+                <p className="text-sm p-6 max-sm:text-xs text-subtext3 flex flex-wrap text-center justify-center items-center gap-2">
+                    Log your habits for {10-data.length} more days to see this graph <FaChartLine />
                 </p>
             </div>
             :

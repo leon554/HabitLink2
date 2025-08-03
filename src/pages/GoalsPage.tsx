@@ -29,6 +29,8 @@ export default function GoalsPage() {
             if(isGoalFinished){
                 await HC.compleGoal(HC.currentGaol?.id!)
                 HC.setCurrentGoal({...HC.currentGaol, completed: true} as GoalType)
+                const newGoalMap = Util.updateMap<number, GoalType>(HC.goals, HC.currentGaol!.id, {...HC.currentGaol, completed: true} as GoalType)
+                HC.setGaols(newGoalMap)
             }
         }
         updateGoal()

@@ -92,7 +92,7 @@ export default function HabitLogCard({habit: h}: HabitProps) {
                 navigate("/stats")
             }}>
             <div className='flex justify-between items-center'>
-                <p className={`text-title dark:text-title p-3 pt-3   ${settings.showDetails ? "pb-2" : ""} text-lg flex gap-2.5 items-center`}>
+                <p className={`text-subtext1  p-3 pt-3   ${settings.showDetails ? "pb-2" : ""} font-medium flex gap-2.5 items-center`}>
                     {settings.showRanks ? 
                     "missing"
                     : h.icon} {Util.capitilizeFirst(h.name)} 

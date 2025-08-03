@@ -28,6 +28,7 @@ interface UserType{
     currentHabit: HabitType | null
     currentGaol: GoalType | null
     goals: Map<number, GoalType>
+    setGaols: (goals:  Map<number, GoalType>) => void
     goalProgress: Map<number, number>
     issues: Map<number, IssueType>
     habitStats: Map<number, HabitStats>
@@ -53,6 +54,7 @@ const initialValues: UserType = {
     removeAssociatedHabit: () => Promise.resolve(undefined),
     habits: new Map<number, HabitType>(),
     goals: new Map<number, GoalType>(),
+    setGaols: () => null,
     issues: new Map<number, IssueType>(),
     habitsCompletions: new Map<number, HabitCompletionType[]>(),
     loading: false,
@@ -614,6 +616,7 @@ export default function UserProvider(props: Props) {
             deleteIssue,
             habits,
             goals,
+            setGaols,
             habitsCompletions,
             loading,
             currentGaol,

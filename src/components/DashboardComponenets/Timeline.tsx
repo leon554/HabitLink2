@@ -10,6 +10,9 @@ export default function Timeline() {
     const HC = useContext(UserContext);
     const [open, setOpen] = useState(false);
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+    const [hoveredIndex2, setHoveredIndex2] = useState<number | null>(null);
+    const [filter, setFilter] = useState(0)
+    const [oneHourMs, setOneHourMs] = useState(1800000)
 
     const now = new Date();
     const startDay = new Date(now).setHours(0, 0, 0, 0);
@@ -22,12 +25,27 @@ export default function Timeline() {
 
     return (
         <div className="m-7 my-6 flex flex-col gap-4 relative">
-            <p className="text-title text-lg font-medium">
-                Today's Time Line
-            </p>
-            <IoInformationCircleOutline size={14} color="#57534E" className="hover:cursor-pointer absolute -top-3 -right-4" onClick={() => {
-                setOpen(true);
-            }} />
+            <div className="flex justify-between items-center">
+                <p className="text-title text-lg font-medium">
+                    Today's Time Line
+                </p>
+                <div className="flex gap-1.5">
+                     <button className={`text-[11px] text-subtext3 hover:cursor-pointer pb-[3px] ${filter == 1 ? "border-b-1 border-border2" : ""}`} 
+                        onClick={() => setFilter(1)}>
+                        Zoom
+                    </button>
+                    <p className="text-[11px] text-border2">
+                        |
+                    </p>
+                     <button className={`text-[11px] text-subtext3 hover:cursor-pointer pb-[3px] ${filter == 0 ? "border-b-1 border-border2" : ""}`} 
+                        onClick={() => setFilter(0)}>
+                        Information
+                    </button>
+                    <IoInformationCircleOutline size={14} color="#57534E" className="hover:cursor-pointer mt-[1px] ml-[1px]" onClick={() => {
+                        setOpen(true);
+                    }} />
+                </div>
+            </div>
             <div className="flex flex-col gap-1">
                 <div className="relative h-4 w-full flex items-center">
                     <div className="w-full h-1 bg-progress-panel rounded-2xl"></div>
@@ -36,27 +54,77 @@ export default function Timeline() {
                             <div
                                 className="absolute h-4 w-1 bg-highlight rounded-2xl hover:cursor-pointer group"
                                 style={{ left: `${((Number(c.date) - startDay) / totalDayMs) * 100}%` }}
-                                onMouseEnter={() => setHoveredIndex(index)} // Set the specific index when hovered
-                                onMouseLeave={() => setHoveredIndex(null)} // Reset when mouse leaves
-                                onTouchStart={() => setHoveredIndex(index)} // Set the specific index for mobile tap
-                                onTouchEnd={() => setHoveredIndex(null)} // Reset for mobile tap
+                                onMouseEnter={() => setHoveredIndex(index)} 
+                                onMouseLeave={() => {setHoveredIndex(null)}} 
+                                onTouchStart={() => setHoveredIndex(index)}
+                                onTouchEnd={() => {setHoveredIndex(null)}} 
                             >
                                 <div
                                     className={`p-2 px-4 bg-panel1 absolute left-1/2 transform -translate-x-1/2 bottom-5
-                                    ${hoveredIndex === index ? 'scale-100 delay-200' : 'scale-0'}
+                                    ${hoveredIndex === index ? 'scale-100 delay-200' : 'scale-0 delay-300'}
                                     transition-transform duration-200 ease-in-out rounded-2xl border-1 border-border`}
                                 >
-                                    <div className="flex flex-col items-center">
-                                        <p className="text-sm text-subtext2 whitespace-nowrap">
-                                            {Util.capitilizeFirst(HC.habits.get(c.habitId)?.name)}
-                                        </p>
-                                        <p className="text-subtext3 text-xs whitespace-nowrap mb-1 mt-1.5">
-                                            Data: {Util.pretifyData(c.data, HC.habits.get(c.habitId)?.type as HabitTypeE)}
-                                        </p>
-                                        <p className="text-subtext3 text-xs whitespace-nowrap">
-                                            {dateUtils.formatTo12HourTime(Number(c.date))}
-                                        </p>
-                                    </div>
+                                    {filter == 0 ?
+                                        <div className="flex flex-col items-center">
+                                            <p className="text-sm text-subtext2 whitespace-nowrap">
+                                                {Util.capitilizeFirst(HC.habits.get(c.habitId)?.name)}
+                                            </p>
+                                            <p className="text-subtext3 text-xs whitespace-nowrap mb-1 mt-1.5">
+                                                Data: {Util.pretifyData(c.data, HC.habits.get(c.habitId)?.type as HabitTypeE)}
+                                            </p>
+                                            <p className="text-subtext3 text-xs whitespace-nowrap">
+                                                {dateUtils.formatTo12HourTime(Number(c.date))}
+                                            </p>
+                                        </div>
+                                    :
+                                        <div className="flex flex-col w-40 p-2 px-0 gap-6 ">
+                                           
+                                            <div className="w-full h-1 bg-progress-panel rounded-2xl relative mt-2">
+                                                {completionsToday.map((c1, i) => {
+                                                    if(Math.abs(Number(c1.date) - Number(c.date)) <= oneHourMs/2){
+                                                        const min = Number(c.date) - oneHourMs/2
+                                                        return(
+                                                            <div className="absolute h-4 w-1 bg-highlight rounded-2xl hover:cursor-pointer group/nested top-1/2 transform -translate-y-1/2"
+                                                                style={{ left: `${(( (Number(c1.date) - min)) / oneHourMs) * 100}%` }}
+                                                                onMouseEnter={() => setHoveredIndex2(i)} 
+                                                                onMouseLeave={() => setHoveredIndex2(null)} 
+                                                                onTouchStart={() => setHoveredIndex2(i)}
+                                                                onTouchEnd={() => setHoveredIndex2(null)}>
+                                                                {hoveredIndex2 === i && (
+                                                                    <div
+                                                                        className={`p-2 px-4 bg-panel1 absolute left-1/2 transform -translate-x-1/2 bottom-5
+                                                                                    scale-100 transition-transform duration-200 ease-in-out rounded-2xl border-1 border-border`}
+                                                                    >
+                                                                            <div className="flex flex-col items-center">
+                                                                                <p className="text-sm text-subtext2 whitespace-nowrap">
+                                                                                    {Util.capitilizeFirst(HC.habits.get(c1.habitId)?.name)}
+                                                                                </p>
+                                                                                <p className="text-subtext3 text-xs whitespace-nowrap mb-1 mt-1.5">
+                                                                                    Data: {Util.pretifyData(c1.data, HC.habits.get(c1.habitId)?.type as HabitTypeE)}
+                                                                                </p>
+                                                                                <p className="text-subtext3 text-xs whitespace-nowrap">
+                                                                                    {dateUtils.formatTo12HourTime(Number(c1.date))}
+                                                                                </p>
+                                                                            </div>
+                                                                    </div>
+                                                                 )}
+                                                            </div>                                                           
+                                                        )
+                                                    }
+                                                })}
+                                            </div>
+                                            <div className="flex gap-2">
+                                                <button className="outline-1 outline-border2 w-full text-subtext3 rounded-md font-bold flex items-center font-mono justify-center hover:cursor-pointer" 
+                                                    onClick={() => setOneHourMs(prev => prev * 2)}>
+                                                    -
+                                                </button>
+                                                <button className="outline-1 outline-border2 w-full text-subtext3  rounded-md font-bold flex items-center font-mono justify-center hover:cursor-pointer" 
+                                                    onClick={() => setOneHourMs(prev => prev / 2)}>
+                                                    +
+                                                </button>
+                                            </div>
+                                        </div>
+                                    }
                                 </div>
                             </div>
                         )
@@ -79,6 +147,10 @@ export default function Timeline() {
                     </p>
                     <p className="text-sm text-subtext2">
                         The timeline shows each habit entry throughout the day on a timeline. You can hover over each green line for more information about that specific entry.
+                    </p>
+
+                     <p className="text-sm text-subtext2">
+                        There are two options "Information" and "Zoom" when the information mode is selected you can hover over entries and see information about them. When the zoom mode is selected you can over over entries and a new timeline will apear where you can zoom in and out on entries around the original entry you were hovering on.
                     </p>
                     <button className="bg-btn rounded-xl text-btn-text font-mono py-1 mt-5 hover:cursor-pointer"
                         onClick={() => setOpen(false)}>

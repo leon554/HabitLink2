@@ -35,7 +35,7 @@ export default function UpcomingGoals() {
         return goals
             .sort((a, b) => a.completionDate - b.completionDate)
             .filter(g => (Number(g.completionDate) >= new Date().getTime()) && !g.completed)
-            .slice(0, Math.min(amount, goals.length - 1))
+            .slice(0, amount)
     }
 
     return (

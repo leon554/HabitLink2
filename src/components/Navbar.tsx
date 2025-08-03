@@ -23,7 +23,7 @@ export default function Navbar() {
                         HabitLink
                     </p>
                     <p className="text-xs text-subtext3">
-                        (Beta)
+                        (Beta 1.0.0)
                     </p>
                 </div>
                 <div className="flex">

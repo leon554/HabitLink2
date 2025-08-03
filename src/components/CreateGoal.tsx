@@ -35,6 +35,7 @@ export default function CreateGoal() {
 
     async function submit(){
         const type = (linkedID == -1) ? habitTypes[selectedTypeIndex] : HC.habits.get(linkedID)?.type
+        if(linkedID != -1) selectHabits.push(linkedID) //no proper fix
         
         if(name == "") {alert("Goal needs a name"); return}
         if(selectHabits.length == 0) {alert("Assocaite or link atleast one habit. If you have no habits create a habit first"); return}
@@ -57,7 +58,7 @@ export default function CreateGoal() {
         }
 
         if(goalVal < 0 || startVal < 0) {alert("Start or goal value cant be negative values"); return}
-        if(linkedID != -1) selectHabits.push(linkedID)
+        
         if(isNaN(goalVal) || isNaN(startVal)) {alert("Start and goal values must be a number"); return}
         if(!dateUtils.isStringValidDate(date, new Date())) {alert("Date is not valid it needs to be in the correct format and in the future"); return}
 
@@ -266,7 +267,7 @@ export default function CreateGoal() {
                     <div className="flex flex-col p-[1px] gap-2 mb-3 items-stretch w-[90%] max-h-[400px] overflow-y-scroll no-scrollbar rounded-lg">
                         {Array.from(HC.habits.values()).map((h, i) => {
                             return(
-                                <div className={`bg-panel2 rounded-md w-full hover:cursor-pointer select-none flex justify-between outline-1 outline-border2 h-10`} key={i} 
+                                <div className={`bg-panel1 rounded-md w-full hover:cursor-pointer select-none flex justify-between outline-1 outline-border2 h-10`} key={i} 
                                     onClick={() => {
                                         if(selectHabits.includes(Number(h.id))){
                                             setSelectedHabits(p => [...p.filter(d => d != Number(h.id))])
@@ -281,7 +282,7 @@ export default function CreateGoal() {
                                         }
                                     }}>
                                     <div className="flex items-center">
-                                        <div className={`h-[100%]  w-3 ${selectHabits.includes(Number(h.id)) ? "bg-green-500" : Number(h.id) == linkedID ? "bg-blue-400" : " dark:bg-progress-panel"}  rounded-l-xl`}>
+                                        <div className={`h-[100%]  w-3 ${selectHabits.includes(Number(h.id)) ? "bg-green-500" : Number(h.id) == linkedID ? "bg-blue-400" : " dark:bg-progress-panel"}  rounded-l-md`}>
                                         </div>
                                         <p className="p-2 text-subtext1">
                                             {h.icon} {h.name}

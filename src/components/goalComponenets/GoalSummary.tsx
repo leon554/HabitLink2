@@ -52,8 +52,8 @@ export default function GoalSummary() {
                 <InfoBox value={onTrack} text="On Track" toolTipText="This indicator shows whether you're on track to complete your goal. It is calculated by comparing your time progress with your actual progress. If your actual progress is greater than your time progress, the result is 'Yes', meaning you're on track. Both values can be viewed at the top of the page."/>
                 <InfoBox value={String(Math.max(...concistencies)) + "%"} text="Max Consistency" toolTipText="This is the highest concistency of all your associated habits"/>
                 <InfoBox value={String(Math.min(...concistencies)) + "%"} text="Min Consistency" toolTipText="This is the lowest concistency of all your associated habits"/>
-                <InfoBox value={String(Math.max(...strengths))} text="Max Strength" toolTipText="This is the highest strength of all your associated habits"/>
-                <InfoBox value={String(Math.min(...strengths))} text="Min Strength" toolTipText="This is the lowest concistency of all your associated habits"/>
+                <InfoBox value={String(Math.max(...strengths)) + "%"} text="Max Strength" toolTipText="This is the highest strength of all your associated habits"/>
+                <InfoBox value={String(Math.min(...strengths)) + "%"} text="Min Strength" toolTipText="This is the lowest concistency of all your associated habits"/>
             </div>
         </div>
     )
