@@ -123,7 +123,7 @@ export default function UserProvider(props: Props) {
             const currentHabitComps = habitsCompletions.get(h.id)
 
             const {compRate, missedSessions, validCompletions: validComps, completableDays} = HabitUtil.getCompletionRate(h, currentHabitComps)
-            const strength = HabitUtil.getStrength(h, currentHabitComps, new Date())
+            const strength = HabitUtil.getStrength(h, currentHabitComps)
             const streak = HabitUtil.getStreak(h, currentHabitComps)
             const {validComps: completions, partialComps} = HabitUtil.getCompletions(h, currentHabitComps)
             const entries = h ? habitsCompletions.get(Number(h.id))?.length : 0

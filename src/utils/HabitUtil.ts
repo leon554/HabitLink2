@@ -6,6 +6,7 @@ import { format, parse, eachDayOfInterval } from "date-fns";
 import type { ChartDataType } from "./types";
 
 
+
 export namespace HabitUtil{
 
     export function getCompletionValueSumToday(completions: HabitCompletionType[] | undefined){
@@ -282,75 +283,84 @@ export namespace HabitUtil{
         }
         return getStrengthFixedDays(habit, completions, customeDate)
     }
+    
     const maxStrengthDays = 30
     const strengthMultiplier = 100/maxStrengthDays
-
     function getStrengthAnyDays(habit: HabitType, completions: HabitCompletionType[], customeDate?: Date){
         const { completionDays: wt} = habit
         const today = customeDate ?? new Date()
         const weeklyTarget = Number(wt)
-        const weeksToReachMaxStrength = Math.ceil(maxStrengthDays/weeklyTarget)
 
-        const weeks = eachWeekOfInterval({start: sub(today, {weeks: weeksToReachMaxStrength-1}), end: today})
-        const mostRecentWeek = weeks.length - 1
+        const weeks = eachWeekOfInterval({start: new Date(Number(habit.creationDate)), end: today}).reverse()
+        const mostRecentWeek = 0
 
         if(customeDate){
             customeDate.setHours(23, 59, 59, 999)
             completions = completions.filter(c => !isAfter(new Date(Number(c.date)), today))
         }
 
-        let strength: number = 0
+        let completedDays = 0
+        let possibleDays = 0
+
         for(let i = 0; i < weeks.length; i++){
-            let completionsThisWeek = completions.filter(c => dateUtils.isDateInWeek(new Date(Number(c.date)), weeks[i]))
+            let entriesThisWeek = completions.filter(c => dateUtils.isDateInWeek(new Date(Number(c.date)), weeks[i]))
+            let completionsThisWeek = habit.type == HabitTypeE.Normal ?
+                entriesThisWeek.length :
+                getValidCompsInWeekDailyTarget(entriesThisWeek, Number(habit.target), weeks[i])
+
             let completableDaysAmt = weeklyTarget
             
             if(i == mostRecentWeek){
-                completableDaysAmt = (new Date()).getDay() + 1
+                completableDaysAmt = today.getDay() + 1
                 completableDaysAmt = Math.min(completableDaysAmt, weeklyTarget)
             }
+            
+            if(possibleDays + completableDaysAmt > maxStrengthDays){
+                const delta = maxStrengthDays - possibleDays
+                completedDays += Math.min(delta, completionsThisWeek)
+                break
 
-            if(habit.type != HabitTypeE.Normal){
-                const completionAmt = getValidCompsInWeekDailyTarget(completionsThisWeek, Number(habit.target), weeks[i])
-                strength += Math.min(completionAmt, weeklyTarget) * strengthMultiplier
             }
-            else{
-                strength += Math.min(completionsThisWeek.length, completableDaysAmt) * strengthMultiplier
-            }
+            const remainingDays = 6 - today.getDay()
+            const onTrack = remainingDays + Math.min(completionsThisWeek, completableDaysAmt) >= weeklyTarget
+
+            completedDays += Math.min(completionsThisWeek, completableDaysAmt)
+            possibleDays += onTrack && i == mostRecentWeek ? Math.min(completionsThisWeek, completableDaysAmt) : completableDaysAmt
+          
 
         }    
-        return strength
+        return completedDays * strengthMultiplier
     }
     function getStrengthFixedDays(habit: HabitType, completions: HabitCompletionType[], customeDate?: Date){
         const { completionDays: compDays} = habit
         const today = customeDate ?? new Date()
-        const weeksToReachMaxStrength = Math.ceil(maxStrengthDays/getCompDays(compDays).length)
 
-        const weeks = eachWeekOfInterval({start: sub(today, {weeks: weeksToReachMaxStrength -1}), end: today})
-        const mostRecentWeek = weeks.length - 1
-        const creationWeek = 0
-        
+        const weeks = eachWeekOfInterval({start: new Date(Number(habit.creationDate)), end: today}).reverse()
+
         if(customeDate){
             customeDate.setHours(23, 59, 59, 999)
             completions = completions.filter(c => !isAfter(new Date(Number(c.date)), today))
         }
 
-        let strength: number = 0
-        for(let i = 0; i < weeks.length; i++){
+        let completedDays = 0
+        let completableDays = 0
+
+        for(let i = 0;i < weeks.length;i++){
             const completionsThisWeek = completions.filter(c => dateUtils.isDateInWeek(new Date(Number(c.date)), weeks[i]))
             const compDaysIndexs = getCompDays(compDays)
             let completableDaysAmt = compDaysIndexs.length
 
-            if(i == mostRecentWeek){
+            if(i == 0){
                 completableDaysAmt = getCompletableNumDaysThisWeekIncToday(compDays, today)
             }
-            if(i == creationWeek){
-                const validCompDays =  compDaysIndexs.filter(c => c >= new Date(Number(habit.creationDate)).getDay())
+            if(i == weeks.length-1){
+                const validCompDays = compDaysIndexs.filter(c => c >= new Date(Number(habit.creationDate)).getDay())
                 completableDaysAmt = validCompDays.length
             }
-            if(i == creationWeek && i == mostRecentWeek){
+            if(i == weeks.length-1 && i == 0){
                 completableDaysAmt = getCompletableNumDaysCreationSameWeek(compDays, new Date(Number(habit.creationDate)), true, today)
             }
- 
+
             const completionCount = compDaysIndexs.map(d => {
                 if(habit.type != HabitTypeE.Normal){
                     const compSumForDay = getCompletionValueSumDay(completionsThisWeek, add(weeks[i], {days: d}))
@@ -360,12 +370,20 @@ export namespace HabitUtil{
                 
             }).filter(didComplete => didComplete)
 
+            if(completableDays + completableDaysAmt > maxStrengthDays){
+                const delta = maxStrengthDays - completableDays
+                completedDays += Math.min(delta, completionCount.length)
+                break
 
-            strength += Math.min(completionCount.length, completableDaysAmt) * strengthMultiplier
+            }
+            completedDays += Math.min(completionCount.length, completableDaysAmt)
+            completableDays += completableDaysAmt
+
         }
-        return strength
-    }
 
+        return completedDays * strengthMultiplier
+
+    }
     export function getStreak(habit: HabitType | null, completions: HabitCompletionType[] | undefined){
         if(!habit || !completions) return 0
         if(habit.completionDays.length == 1){

@@ -138,11 +138,11 @@ export function ConsistencyOverTime() {
                     <Line options={options} data={formatedData as ChartData<"line", number[], string>} />
                 </div>
                 <div className="flex justify-center items-center gap-2 w-full">
-                    <div className="w-3.5 h-3.5 bg-highlight rounded-md"></div>
+                    <div className="w-3.5 h-3.5 bg-highlight2 rounded-md"></div>
                     <p className="text-xs text-subtext3">
                         Consistency
                     </p>
-                    <div className="w-3.5 h-3.5 bg-highlight2 rounded-md"></div>
+                    <div className="w-3.5 h-3.5 bg-highlight rounded-md"></div>
                     <p className="text-xs text-subtext3">
                         Strength
                     </p>
