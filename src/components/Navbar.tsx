@@ -61,6 +61,7 @@ export default function Navbar() {
                             
                             <Select items={[{name: "New Habit", id: 0}, {name: "New Goal", id: 1}]}
                                     selectedItem={null}
+                                    largeText={true}
                                     setSelectedItem={(id: number) => {
                                         if(id == 0){
                                             navitgate("/create")
@@ -71,13 +72,16 @@ export default function Navbar() {
                                     setText="Create"
                                     style="flex justify-end items-center h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 font-medium text-sm font-mono text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer"/>
 
-                            <Select items={[{name: "Settings", id: 0}, {name: "Log Out", id: 1}]}
+                            <Select items={[{name: "Settings", id: 0}, {name: "Help", id: 2}, {name: "Log Out", id: 1}]}
+                                    largeText={true}
                                     selectedItem={null}
                                     setSelectedItem={(id: number) => {
                                         if(id == 0){
                                             navitgate("/settings")
-                                        }else{
+                                        }else if(id == 1){
                                             logout()
+                                        }else{
+                                            navitgate("/help")
                                         }
                                     }}
                                     setText={loading? <AiOutlineLoading className="animate-spin"/> : <FaRegUserCircle size={14}/>}
@@ -91,6 +95,7 @@ export default function Navbar() {
                                             {name: "🎯 Goals", id: 4},
                                             {name: "➕ New Habit", id: 3},
                                             {name: "➕ New Goal", id: 2},
+                                            {name: "📘 Help", id: 8}, 
                                             {name: "⚙️ Settings", id: 1}, 
                                             {name: "🚪Log Out", id: 0}, 
                                             ]}
@@ -120,6 +125,9 @@ export default function Navbar() {
                                         }
                                         if(id == 7){
                                             navitgate("/dashboard")
+                                        }
+                                         if(id == 8){
+                                            navitgate("/help")
                                         }
                                     }}
                                     origin={Origin.topRight}

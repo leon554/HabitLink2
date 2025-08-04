@@ -15,6 +15,7 @@ import CreateGaolPage from "./pages/CreateGaolPage"
 import { useContext} from "react"
 import SettingsPage from "./pages/SettingsPage"
 import { themeContext } from "./components/Providers/ThemeProvider"
+import Help from "./pages/Help"
 
 function App() {
   const {dark, setDark} = useContext(themeContext)
@@ -39,6 +40,7 @@ function App() {
               <Route path="stats" element={<StatsPage/>}/>
               <Route path="goals" element={<GoalsPage/>}/>
               <Route path="settings" element={<SettingsPage/>}/>
+              <Route path="help" element={<Help/>}/>
             </Route>
           </Routes>
           
