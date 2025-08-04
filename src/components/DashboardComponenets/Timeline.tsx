@@ -5,6 +5,7 @@ import { dateUtils } from "@/utils/dateUtils";
 import type { HabitTypeE } from "@/utils/types";
 import { IoInformationCircleOutline } from "react-icons/io5";
 import Model from "../InputComponents/Model";
+import { isMobile } from 'react-device-detect';
 
 export default function Timeline() {
     const HC = useContext(UserContext);
@@ -24,7 +25,8 @@ export default function Timeline() {
         .filter(c => new Date(Number(c.date)).getTime() >= startDay);
 
     return (
-        <div className="m-7 my-6 flex flex-col gap-4 relative">
+        <div className="m-7 my-6 flex flex-col gap-4 relative"
+            onClick={() => setHoveredIndex(null)}>
             <div className="flex justify-between items-center">
                 <p className="text-title text-lg font-medium">
                     Today's Time Line
@@ -54,15 +56,26 @@ export default function Timeline() {
                             <div
                                 className="absolute h-4 w-1 bg-highlight rounded-2xl hover:cursor-pointer group"
                                 style={{ left: `${((Number(c.date) - startDay) / totalDayMs) * 100}%` }}
-                                onMouseEnter={() => setHoveredIndex(index)} 
-                                onMouseLeave={() => {setHoveredIndex(null)}} 
-                                onTouchStart={() => setHoveredIndex(index)}
-                                onTouchEnd={() => {setHoveredIndex(null)}} 
-                            >
+                                onMouseEnter={() => {
+                                    if(!isMobile){
+                                        setHoveredIndex(index)
+                                    }
+                                }} 
+                                onMouseLeave={() => {
+                                    if(!isMobile){
+                                        setHoveredIndex(null)
+                                    }
+                                }} 
+                                onClick={(e) => {
+                                    e.stopPropagation()
+                                    setHoveredIndex(prev => prev ? null : index)
+                                }}
+                                >
                                 <div
                                     className={`p-2 px-4 bg-panel1 absolute left-1/2 transform -translate-x-1/2 bottom-5
                                     ${hoveredIndex === index ? 'scale-100 delay-200' : 'scale-0 delay-300'}
                                     transition-transform duration-200 ease-in-out rounded-2xl border-1 border-border`}
+                                    
                                 >
                                     {filter == 0 ?
                                         <div className="flex flex-col items-center">
@@ -77,7 +90,8 @@ export default function Timeline() {
                                             </p>
                                         </div>
                                     :
-                                        <div className="flex flex-col w-40 p-2 px-0 gap-6 ">
+                                        <div className="flex flex-col w-40 p-2 px-0 gap-6 "
+                                         onClick={e => e.stopPropagation()}>
                                            
                                             <div className="w-full h-1 bg-progress-panel rounded-2xl relative mt-2">
                                                 {completionsToday.map((c1, i) => {
