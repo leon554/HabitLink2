@@ -61,6 +61,7 @@ export default function AuthProvider(props: Props) {
 
     async function navigateUser(session: Session|null){
         if(!session) {navigate("/auth"); return}
+        setLoading(true)
 
         const { data, error} = await supabase.auth.getUser()
 
@@ -68,6 +69,7 @@ export default function AuthProvider(props: Props) {
             alert("User does not exists in DB: " + error.message)
             await supabase.auth.signOut()
             navigate("/")
+            setLoading(false)
             return
         }
 
@@ -78,9 +80,11 @@ export default function AuthProvider(props: Props) {
 
         if(protectedPaths.includes(currentPath)){
             navigate(currentPath)
+            setLoading(false)
             return
         }
         navigate("/dashboard"); 
+        setLoading(false)
     }
     
     async function createUserEntry(data: User){

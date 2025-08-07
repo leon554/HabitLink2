@@ -13,7 +13,7 @@ export default function GoalTitlePanel() {
             <p className="text-3xl font-semibold text-center">
                 {HC.currentGaol!.name}
             </p>
-            <p className={`text-sm text-subtext2 text-center ${!HC.currentGaol!.description ? "absolute" : ""}`}>
+            <p className={`text-xs text-subtext2 text-center ${!HC.currentGaol!.description ? "absolute" : ""}`}>
                 {HC.currentGaol!.description}
             </p>
             <div className="text-subtext2 hover:cursor-pointer absolute top-3 right-3">

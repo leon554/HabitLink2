@@ -13,7 +13,7 @@ export default function AvgStrengthPanel() {
 
     return (
         <ProgressPanel title="Strength"
-            value={avg}/>
+            value={avg} small={true}/>
 
     )
 }

@@ -21,7 +21,7 @@ export default function GoalProgress() {
                 text={`You have ${Util.pretifyData(currentValue, HC.currentGaol?.type as HabitTypeE)}
                     logged with a goal of ${Util.pretifyData(targetValue, HC.currentGaol?.type as HabitTypeE)} 
                   ${(startValue != 0) ? " starting with " + startValue : ""}`}
-                value={Util.calculateProgress(startValue, currentValue, targetValue)*100}/>
+                value={Util.calculateProgress(startValue, currentValue, targetValue)*100} large={true}/>
         </div>
     )
 }

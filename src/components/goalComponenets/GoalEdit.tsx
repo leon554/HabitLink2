@@ -1,16 +1,18 @@
 import { useState } from "react"
 import Model from "../InputComponents/Model"
 import DeleteArchiveGoal from "./DeleteArchiveGoal"
+import { useScreenWidth } from "../Hooks/UseScreenWidth"
 
 
 
 export default function GoalEdit() {
     const [open, setOpen] = useState(false)
+    const width = useScreenWidth()
 
     return (
         <>
             <div>
-                <button className="bg-panel1 p-2 px-9 rounded-xl text-subtext3 outline-1  outline-border hover:cursor-pointer hover:bg-panel2  hover:scale-[1.02] transition-all duration-150 ease-in-out"
+                <button className={` bg-panel1 p-2 px-9 rounded-xl text-subtext3 outline-1  outline-border hover:cursor-pointer hover:bg-panel2  hover:scale-[1.02] transition-all duration-150 ease-in-out ${width <= 500 ? "w-full" : ""}`}
                     onClick={() => setOpen(true)}>
                         Edit 
                 </button>

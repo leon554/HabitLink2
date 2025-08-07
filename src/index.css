@@ -29,7 +29,7 @@
 .dark {
   --color-panel1: #1f1f1f;  
   --color-panel2: hsl(0, 0%, 15%);    
-  --color-progress-panel: hsl(0, 0%, 25%); 
+  --color-progress-panel: hsl(0, 0%, 20%); 
   --color-btn-text:   oklch(26.9% 0 0);
   --color-btn:   hsl(144, 100%, 39%); 
   --color-title: hsl(0, 0%, 85%);      
@@ -61,6 +61,16 @@
     -ms-overflow-style: none;  
     scrollbar-width: none; 
   }
+  input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Remove number input arrows for Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
 }
 
 input[type="range"].slider-thumb::-webkit-slider-thumb {

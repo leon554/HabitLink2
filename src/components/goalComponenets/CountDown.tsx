@@ -50,7 +50,7 @@ export default function CountDown() {
                     title={timeLeft <= 0 ? "Time Has Ran Out!" : "Time Progress"}
                     text={`Remaining Time: ${ dateUtils.formatTime(timeLeft)}`}
                     value={(1 - (timeLeft)/(completionTime - startTime)) * 100} roundTo={2}
-                    large={false}/>
+                    large={true} />
                 {HC.currentGaol!.type == HabitTypeE.Normal && HC.currentGaol!.linkedHabit ===  null? 
                     "" : 
                     <GoalProgress/>

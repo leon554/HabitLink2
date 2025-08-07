@@ -41,7 +41,7 @@ export default function GoalSummary() {
     }, [HC.currentGaol]);
 
     return (
-        <div className="w-[90%] max-w-[600px] relative bg-panel1 rounded-2xl font outline-1 font-mono outline-border text-title justify-center p-7 pt-5 pb-7 flex flex-col items-center gap-4">
+        <div className="w-[90%] max-w-[600px] relative bg-panel1 rounded-2xl font outline-1 font-mono outline-border text-title justify-center p-7 py-5 pb-7 flex flex-col items-center gap-4">
             <div className="w-full">
                 <p className="text-lg text-leftr mt-1 font-sans font-medium">
                     Overview

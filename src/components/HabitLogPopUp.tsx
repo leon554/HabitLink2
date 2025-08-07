@@ -35,6 +35,15 @@ export default function HabitLogPopUp(p: Props) {
                         <AmountInput amount={p.value} setAmount={p.setValue} max={Number(p.habit.target)}/> 
                         }
                 </div>
+                <div className='flex w-full gap-3'>
+                    <p className='text-subtext2 font-medium text-sm items-center pt-0.5'>
+                        Or
+                    </p>
+                    <input type='number' 
+                    value={p.value == 0 ? "" : p.value}
+                    onChange={e => p.setValue(Number(e.target.value))}
+                    className='outline-1 rounded-lg outline-border2 w-full text-sm px-1.5 text-subtext2 appearance-none'/>
+                </div>
                 <div className="flex justify-stretch  w-full gap-3">
                     <button
                         className="mt-2 grow-4 bg-btn  text-btn-text outline-1 outline-border dark:outline-0 font-mono p-1 rounded-xl pl-2 pr-2 hover:cursor-pointer  flex justify-center items-center"

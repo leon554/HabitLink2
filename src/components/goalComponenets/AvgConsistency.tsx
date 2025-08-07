@@ -14,9 +14,9 @@ export default function AvgConsistency() {
     return (
         <>
             <ProgressPanel title="Consistency"
-                value={avg}/>
+                value={avg} small={true}/>
             <ProgressPanel title="Miss Rate"
-            value={100 - avg}/>
+            value={100 - avg} small={true}/>
         </>
 
     )
