@@ -1,6 +1,7 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 interface TimeProps{
+    duration?: number
     setDuration: (timer: number) => void
 }
 export default function TimeInput(p: TimeProps) {
@@ -14,7 +15,7 @@ export default function TimeInput(p: TimeProps) {
         }
 
         const num = Number(value);
-        const max = key === "h" ? 24 : 60;
+        const max = key === "h" ? 24 : 59;
         const clamped = Math.max(0, Math.min(num, max));
         
         const newTime = { ...time, [key]: clamped };
@@ -23,6 +24,14 @@ export default function TimeInput(p: TimeProps) {
         const totalSeconds = (newTime.h * 3600) + (newTime.m * 60);
         p.setDuration(totalSeconds);
     }
+    useEffect(() => {
+        if(!p.duration) return
+        setTime({
+            h: Math.floor(p.duration/3600),
+            m: p.duration%3600/60,
+            s: 0
+        })
+    }, [p.duration])
     return (
         <div className="flex font-mono p-1 gap-2 rounded-xl text-sm outline-1 outline-border2 justify-stretch">
             <div className="flex items-center  grow-1">

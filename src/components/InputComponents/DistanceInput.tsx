@@ -9,7 +9,7 @@ export default function DistanceInput(p: DistanceProps) {
     return (
         <div className="flex font-mono p-1 gap-2 rounded-xl text-sm outline-1 outline-border2 justify-stretch">
             <div className="flex items-center  grow-1">
-                <p className="text-subtext1 pl-1 pr-2 w-14 overflow-hidden">
+                <p className="text-subtext1 pl-1 pr-2 w-14 overflow-hidden truncate">
                     {p.distance}Km
                 </p>
                 <input

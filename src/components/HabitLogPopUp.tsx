@@ -4,7 +4,7 @@ import AmountInput from './InputComponents/NumberInput';
 import { motion, AnimatePresence } from "motion/react";
 import { HabitTypeE, type HabitType } from '../utils/types';
 import { AiOutlineLoading } from "react-icons/ai";
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface Props{
     habit: HabitType
@@ -15,6 +15,18 @@ interface Props{
 }
 export default function HabitLogPopUp(p: Props) {
     const [loading, setLoading] = useState(false)
+    const [min, setMin] = useState(0)
+    const [hour, setHour] = useState(0)
+    const block = useRef(false)
+
+    useEffect(() => {
+        if(block.current) {
+            block.current = false
+            return
+        }
+        setMin(p.value%3600/60)
+        setHour(Math.floor(p.value/3600))
+    }, [p.value])
 
     return (
         <AnimatePresence>
@@ -24,10 +36,10 @@ export default function HabitLogPopUp(p: Props) {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.1 }}
                 className=" flex flex-col items-center gap-3 z-50 rounded-2xl w-[100%] bg-panel1 dark:bg-panel1 dark:outline-1 outline-border p-8">
-                <h1 className="text-lg font-semibold text-title font-mono leading-0 mb-4">Enter Data</h1>
+                <h1 className="text-lg font-semibold text-title  leading-0 mb-6 mt-1">Enter Data</h1>
                 <div className=" w-full">
                      {p.habit.type == HabitTypeE.Time_Based ? 
-                        <TimeInput setDuration={p.setValue}/> 
+                        <TimeInput setDuration={p.setValue} duration={p.value}/> 
                         : 
                         p.habit.type == HabitTypeE.Distance_Based ? 
                         <DistanceInput distance={p.value} setDistance={p.setValue} max={Number(p.habit.target)}/>
@@ -39,14 +51,48 @@ export default function HabitLogPopUp(p: Props) {
                     <p className='text-subtext2 font-medium text-sm items-center pt-0.5'>
                         Or
                     </p>
+                    {p.habit.type == HabitTypeE.Time_Based ? 
+                    <div className='flex gap-1.5 items-center '>
+                        <input type='number' 
+                        value={hour == 0 ? "" : hour}
+                        onChange={e => {
+                            let inputValue = Number(e.target.value)
+                            if(inputValue > 24) inputValue = 24
+                            block.current = true
+                            setHour(inputValue)
+                            p.setValue(inputValue*60*60 + min * 60)
+                        }}
+                        className='outline-1 rounded-xl outline-border2 w-full text-sm px-1.5 text-subtext2 appearance-none py-0.5'/>
+                        <p className='mr-2 text-subtext2 font-medium text-sm'>
+                            h
+                        </p>
+                        <input type='number' 
+                        value={min == 0 ? "" : min}
+                        onChange={e => {
+                            let inputValue = Number(e.target.value)
+                            if(inputValue > 59) inputValue = 59
+                            block.current = true
+                            setMin(inputValue)
+                            p.setValue(inputValue*60 + hour * 3600)
+                        }}
+                        className='outline-1 rounded-xl outline-border2 w-full text-sm px-1.5 text-subtext2 appearance-none py-0.5'/>
+                        <p className='text-subtext2 text-sm font-medium'>
+                            m
+                        </p>
+                    </div> :
                     <input type='number' 
                     value={p.value == 0 ? "" : p.value}
-                    onChange={e => p.setValue(Number(e.target.value))}
-                    className='outline-1 rounded-lg outline-border2 w-full text-sm px-1.5 text-subtext2 appearance-none'/>
+                    onChange={e => {
+                        let inputValue = Number(e.target.value)
+                        if(inputValue > 2000) return p.setValue(2000)
+                        p.setValue(inputValue)
+                    }}
+                    className='outline-1 rounded-xl outline-border2 w-full text-sm px-1.5 text-subtext2 appearance-none'/>
+                    }
                 </div>
                 <div className="flex justify-stretch  w-full gap-3">
                     <button
-                        className="mt-2 grow-4 bg-btn  text-btn-text outline-1 outline-border dark:outline-0 font-mono p-1 rounded-xl pl-2 pr-2 hover:cursor-pointer  flex justify-center items-center"
+                        className="mt-2 grow-4 bg-btn text-sm font-medium text-btn-text outline-1 outline-border dark:outline-0  p-1 rounded-xl pl-2 pr-2 hover:cursor-pointer  flex justify-center items-center"
                         onClick={async () => {
                             setLoading(true)
                             await p.onSubmit()
@@ -56,7 +102,7 @@ export default function HabitLogPopUp(p: Props) {
                         {loading ? <AiOutlineLoading className="animate-spin" /> : "Submit"}
                     </button>
                     <button
-                        className="mt-2 grow-1 bg-btn text-btn-text font-mono outline-1 outline-border dark:outline-0 p-1 rounded-xl pl-2 pr-2 hover:cursor-pointer "
+                        className="mt-2 grow-1 bg-btn text-sm font-medium text-btn-text  outline-1 outline-border dark:outline-0 p-1 rounded-xl pl-2 pr-2 hover:cursor-pointer "
                         onClick={() => {
                             p.onExit()
                         }}>
