@@ -19,6 +19,7 @@ interface SelectProps {
   blur?: boolean
   largeText?: boolean
   setBlur?: (blur: boolean) => void
+  onBtnClick? : () => void
 }
 export default function Select(props: SelectProps) {
     const focusElement = useRef<null|HTMLDivElement>(null)
@@ -33,6 +34,7 @@ export default function Select(props: SelectProps) {
     }
 
     useEffect(() => {
+        console.log("rasn")
         if(props.blur && props.setBlur && focusElement.current != null){
             setClicked(false)
             focusElement.current.blur()
@@ -55,6 +57,7 @@ export default function Select(props: SelectProps) {
             <button className={`group relative transition-transform z-10  hover:cursor-pointer ${props.style ? props.style : " outline-1 bg-stone-800 text-sm text-stone-300 font-mono p-3 rounded-md flex justify-center  "}`}
                  onClick={(e) => {
                     setClicked(!clicked)
+                    props.onBtnClick?.()
                     e.stopPropagation()
                 }}>
                 {props.setText 

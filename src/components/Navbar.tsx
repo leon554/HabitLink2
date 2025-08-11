@@ -1,4 +1,4 @@
-import { useContext} from "react"
+import { useContext, useEffect, useState} from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { AuthContext } from "./Providers/AuthProvider"
 import { AiOutlineLoading } from "react-icons/ai";
@@ -12,8 +12,14 @@ import { Origin } from "@/utils/types";
 
 export default function Navbar() {
     const {session, logout, loading} = useContext(AuthContext)
+    const [blurCreate, setBlurCreate] = useState(false)
+    const [blurSettings, setBlurSettings] = useState(false)
     const navitgate = useNavigate()
     const screenWidth = useScreenWidth()
+
+    useEffect(() => {
+
+    }, [blurCreate])
     
     return (
         <>
@@ -23,7 +29,7 @@ export default function Navbar() {
                         HabitLink
                     </p>
                     <p className="text-xs text-subtext3">
-                        (Beta 1.0.0)
+                        (Beta 1.0.1)
                     </p>
                 </div>
                 <div className="flex">
@@ -69,23 +75,28 @@ export default function Navbar() {
                                             navitgate("/creategoal")
                                         }
                                     }}
+                                    blur={blurCreate}
+                                    setBlur={setBlurCreate}
+                                    onBtnClick={() => setBlurSettings(true)}
                                     setText="Create"
                                     style="flex justify-end items-center h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 font-medium text-sm font-mono text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer"/>
-
-                            <Select items={[{name: "Settings", id: 0}, {name: "Help", id: 2}, {name: "Log Out", id: 1}]}
-                                    largeText={true}
-                                    selectedItem={null}
-                                    setSelectedItem={(id: number) => {
-                                        if(id == 0){
-                                            navitgate("/settings")
-                                        }else if(id == 1){
-                                            logout()
-                                        }else{
-                                            navitgate("/help")
-                                        }
-                                    }}
-                                    setText={loading? <AiOutlineLoading className="animate-spin"/> : <FaRegUserCircle size={14}/>}
-                                    style="flex justify-end items-center h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 font-medium text-sm font-mono text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer"/>
+                                <Select items={[{name: "Settings", id: 0}, {name: "Help", id: 2}, {name: "Log Out", id: 1}]}
+                                        largeText={true}
+                                        selectedItem={null}
+                                        setSelectedItem={(id: number) => {
+                                            if(id == 0){
+                                                navitgate("/settings")
+                                            }else if(id == 1){
+                                                logout()
+                                            }else{
+                                                navitgate("/help")
+                                            }
+                                        }}
+                                        blur={blurSettings}
+                                        setBlur={setBlurSettings}
+                                        onBtnClick={() => setBlurCreate(true)}
+                                        setText={loading? <AiOutlineLoading className="animate-spin"/> : <FaRegUserCircle size={14}/>}
+                                        style="flex justify-end items-center h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 font-medium text-sm font-mono text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer"/>
                         </> 
                         : 
                         <>

@@ -20,7 +20,8 @@ export default function SettingsPage() {
     const [selectedPage, setSelectedPage] = useState<null | dataFormat>(null)
     const [selectedType, setSelectedType] = useState<null | dataFormat>(null)
     const [description, setDescription] = useState("")
-    const [blur, setBlur] = useState(false)
+    const [blur1, setBlur1] = useState(false)
+    const [blur2, setBlur2] = useState(false)
     const bugs = Util.fetchAllMapItems(HC.issues)
     const btnClicked = useRef(0)
 
@@ -124,7 +125,8 @@ export default function SettingsPage() {
             <Model open={openBug} onClose={() => setOpenBug(false)}>
                 <div className="outline-1 rounded-2xl outline-border bg-panel1 w-[90%] max-w-[400px] p-7 py-6 flex flex-col gap-5" 
                     onClick={e => {
-                        setBlur(true)
+                        setBlur1(true)
+                        setBlur2(true)
                         e.stopPropagation()
                     }}>
                     <p className="text-xl text-title font-medium mb-1">
@@ -136,7 +138,7 @@ export default function SettingsPage() {
                         </p>
                         <div className="w-fit">
                             <Select items={pageItems} defaultText="Select" selectedItem={selectedPage} setSelectedItem={(id) => setSelectedPage(pageItems.find(p => p.id == id) ?? null)} origin={Origin.top} center={true} 
-                            style="outline-1 outline-border2 px-4 rounded-xl text-xs py-0.5 pb-1 text-subtext2 flex items-center" blur={blur} setBlur={setBlur}/>
+                            style="outline-1 outline-border2 px-4 rounded-xl text-xs py-0.5 pb-1 text-subtext2 flex items-center" blur={blur1} setBlur={setBlur1} onBtnClick={() => setBlur2(true)}/>
                         </div>
                     </div>
                      <div className="flex gap-3 items-center">
@@ -145,7 +147,7 @@ export default function SettingsPage() {
                         </p>
                         <div className="w-fit">
                             <Select items={typeItems} defaultText="Select" selectedItem={selectedType} setSelectedItem={(id) => setSelectedType(typeItems.find(p => p.id == id) ?? null)} origin={Origin.top} center={true} 
-                            style="outline-1 outline-border2 px-4 rounded-xl text-xs py-0.5 pb-1 text-subtext2 flex items-center" blur={blur} setBlur={setBlur}/>
+                            style="outline-1 outline-border2 px-4 rounded-xl text-xs py-0.5 pb-1 text-subtext2 flex items-center" blur={blur2} setBlur={setBlur2} onBtnClick={() => setBlur1(true)}/>
                         </div>
                     </div>
                     <div className="flex flex-col gap-2">
