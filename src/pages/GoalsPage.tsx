@@ -31,7 +31,7 @@ export default function GoalsPage() {
 
     useEffect(() => {
         const updateGoal = async () => {
-            if(isGoalFinished){
+            if(isGoalFinished && !HC.currentGaol?.completed){
                 await HC.compleGoal(HC.currentGaol?.id!)
                 HC.setCurrentGoal({...HC.currentGaol, completed: true} as GoalType)
                 const newGoalMap = Util.updateMap<number, GoalType>(HC.goals, HC.currentGaol!.id, {...HC.currentGaol, completed: true} as GoalType)

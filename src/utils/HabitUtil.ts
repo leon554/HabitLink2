@@ -89,29 +89,29 @@ export namespace HabitUtil{
         }
     }
     
-    export function getCompletionRate(habit: HabitType | null, completions: HabitCompletionType[] | undefined, customeDate?: Date){
+    export function getCompletionRate(habit: HabitType | null, completions: HabitCompletionType[] | undefined, customeDate?: Date, creationDate?: boolean){
         if(!habit || !completions || completions.length == 0) return {compRate: 0, missedSessions: 0, validCompletions: 0, completableDays: 0}
         if(habit.completionDays.length == 1){
-            return getCompRateAnyDays(habit, completions, customeDate)
+            return getCompRateAnyDays(habit, completions, customeDate, creationDate)
         }else{
-            return getCompRateFixedDays(habit, completions, customeDate)
+            return getCompRateFixedDays(habit, completions, customeDate, creationDate)
         }
     }
     
-    function getCompRateAnyDays(habit: HabitType, completions: HabitCompletionType[], customeDate?: Date){
+    function getCompRateAnyDays(habit: HabitType, completions: HabitCompletionType[], customeDate?: Date, creationDate?: boolean){
         const { completionDays: wt,  creationDate: cd} = habit
-        const endDate = customeDate ?? new Date()
-        const creationDate = new Date(Number(cd))
+        const today = (customeDate && !creationDate) ? customeDate : new Date()
+        const creationDay = (customeDate && creationDate) ?  customeDate : new Date(Number(cd))
         let weeklyTarget = Number(wt)
 
-        const weeks = eachWeekOfInterval({start: creationDate, end: endDate})
+        const weeks = eachWeekOfInterval({start: creationDay, end: today})
         const mostRecentWeek = weeks.length - 1
         const creationWeek = 0
 
-        let today = customeDate?? new Date()
         if(customeDate){
-            customeDate.setHours(23, 59, 59, 999)
-            completions = completions.filter(c => !isAfter(new Date(Number(c.date)), endDate))
+             customeDate.setHours(23, 59, 59, 999)
+            if(customeDate && creationDate) customeDate.setHours(0, 0, 0, 0)
+            completions = completions.filter(c => !isAfter(new Date(Number(c.date)), today) && !isBefore(new Date(Number(c.date)), creationDay))
         }
 
 
@@ -133,7 +133,7 @@ export namespace HabitUtil{
             completionAmt = Math.min(weeklyTarget, completionAmt)
             
             if(i == creationWeek && i != mostRecentWeek){
-                completableDaysAmt = Math.min(weeklyTarget, dateUtils.daysLeftInWeekIncToday(creationDate))
+                completableDaysAmt = Math.min(weeklyTarget, dateUtils.daysLeftInWeekIncToday(creationDay))
             }
             if(i == mostRecentWeek && i != creationWeek){
                 if(daysleft + completionAmt < weeklyTarget){
@@ -144,7 +144,7 @@ export namespace HabitUtil{
             }
             if(i == mostRecentWeek && i == creationWeek){
                 if(daysleft + completionAmt < weeklyTarget){
-                    const maxDays = (today.getDay()- creationDate.getDay()) + 1 
+                    const maxDays = (today.getDay()- creationDay.getDay()) + 1 
                     completableDaysAmt = Math.min(maxDays, weeklyTarget)
                 }else{
                     completableDaysAmt = completionAmt
@@ -164,19 +164,19 @@ export namespace HabitUtil{
                 completableDays: completionsComponents.totalPossibleComps}
     }
 
-    function getCompRateFixedDays(habit: HabitType, completions: HabitCompletionType[], customeDate?: Date){
+    function getCompRateFixedDays(habit: HabitType, completions: HabitCompletionType[], customeDate?: Date, creationDate?: boolean){
         const { completionDays: compDays,  creationDate: cd} = habit
-        const endDate = customeDate ?? new Date()
-        const creationDate = new Date(Number(cd))
+        const today = (customeDate && !creationDate) ? customeDate : new Date()
+        const creationDay = (customeDate && creationDate) ?  customeDate : new Date(Number(cd))
 
-        const weeks = eachWeekOfInterval({start: creationDate, end: endDate})
+        const weeks = eachWeekOfInterval({start: creationDay, end: today})
         const mostRecentWeek = weeks.length - 1
         const creationWeek = 0
         
-        let today = customeDate ? customeDate : new Date()
         if(customeDate){
             customeDate.setHours(23, 59, 59, 999)
-            completions = completions.filter(c => !isAfter(new Date(Number(c.date)), endDate))
+            if(customeDate && creationDate) customeDate.setHours(0, 0, 0, 0)
+            completions = completions.filter(c => !isAfter(new Date(Number(c.date)), today) && !isBefore(new Date(Number(c.date)), creationDay))
         }
 
         const completionsComponents = {totalCompletions: 0, totalPossibleComps: 0}
@@ -189,12 +189,12 @@ export namespace HabitUtil{
 
             if(i == mostRecentWeek){
                 completableDays = getCompletableNumDaysThisWeekIncToday(compDays, today)
-                completableDays = (isSameWeek(creationDate, customeDate ?? new Date())) ? 
-                getCompletableNumDaysCreationSameWeek(compDays, creationDate, true, today) :
+                completableDays = (isSameWeek(creationDay, customeDate ?? new Date())) ? 
+                getCompletableNumDaysCreationSameWeek(compDays, creationDay, true, today) :
                 completableDays
             }
             else if(i == creationWeek){
-                completableDays = getCompletableNumDaysCreationSameWeek(compDays, creationDate, false, today) 
+                completableDays = getCompletableNumDaysCreationSameWeek(compDays, creationDay, false, today) 
             }
 
             const completionCount = compDaysIndexs.map(d => {
@@ -276,27 +276,29 @@ export namespace HabitUtil{
     export function isNotNormalHabit(habitType: HabitTypeE | string){
         return habitType != HabitTypeE.Normal
     }
-    export function getStrength(habit: HabitType | null, completions: HabitCompletionType[] | undefined, customeDate?: Date){
+    export function getStrength(habit: HabitType | null, completions: HabitCompletionType[] | undefined, customeDate?: Date, creationDate?: boolean){
         if(!completions || !habit) return 0
         if(habit.completionDays.length == 1){
-            return getStrengthAnyDays(habit, completions, customeDate)
+            return getStrengthAnyDays(habit, completions, customeDate, creationDate)
         }
-        return getStrengthFixedDays(habit, completions, customeDate)
+        return getStrengthFixedDays(habit, completions, customeDate, creationDate)
     }
     
     const maxStrengthDays = 30
     const strengthMultiplier = 100/maxStrengthDays
-    function getStrengthAnyDays(habit: HabitType, completions: HabitCompletionType[], customeDate?: Date){
+    function getStrengthAnyDays(habit: HabitType, completions: HabitCompletionType[], customeDate?: Date, creationDate?: boolean){
         const { completionDays: wt} = habit
-        const today = customeDate ?? new Date()
+        const today = (customeDate && !creationDate) ? customeDate : new Date()
+        const creationDay = (customeDate && creationDate) ?  customeDate : new Date(Number(habit.creationDate))
         const weeklyTarget = Number(wt)
 
-        const weeks = eachWeekOfInterval({start: new Date(Number(habit.creationDate)), end: today}).reverse()
+        const weeks = eachWeekOfInterval({start: creationDay, end: today}).reverse()
         const mostRecentWeek = 0
 
         if(customeDate){
-            customeDate.setHours(23, 59, 59, 999)
-            completions = completions.filter(c => !isAfter(new Date(Number(c.date)), today))
+             customeDate.setHours(23, 59, 59, 999)
+            if(customeDate && creationDate) customeDate.setHours(0, 0, 0, 0)
+            completions = completions.filter(c => !isAfter(new Date(Number(c.date)), today) && !isBefore(new Date(Number(c.date)), creationDay))
         }
 
         let completedDays = 0
@@ -331,15 +333,17 @@ export namespace HabitUtil{
         }    
         return completedDays * strengthMultiplier
     }
-    function getStrengthFixedDays(habit: HabitType, completions: HabitCompletionType[], customeDate?: Date){
+    function getStrengthFixedDays(habit: HabitType, completions: HabitCompletionType[], customeDate?: Date, creationDate?: boolean){
         const { completionDays: compDays} = habit
-        const today = customeDate ?? new Date()
+        const today = (customeDate && !creationDate) ? customeDate : new Date()
+        const creationDay = (customeDate && creationDate) ?  customeDate : new Date(Number(habit.creationDate))
 
-        const weeks = eachWeekOfInterval({start: new Date(Number(habit.creationDate)), end: today}).reverse()
+        const weeks = eachWeekOfInterval({start: creationDay, end: today}).reverse()
 
         if(customeDate){
-            customeDate.setHours(23, 59, 59, 999)
-            completions = completions.filter(c => !isAfter(new Date(Number(c.date)), today))
+             customeDate.setHours(23, 59, 59, 999)
+            if(customeDate && creationDate) customeDate.setHours(0, 0, 0, 0)
+            completions = completions.filter(c => !isAfter(new Date(Number(c.date)), today) && !isBefore(new Date(Number(c.date)), creationDay))
         }
 
         let completedDays = 0
@@ -354,11 +358,11 @@ export namespace HabitUtil{
                 completableDaysAmt = getCompletableNumDaysThisWeekIncToday(compDays, today)
             }
             if(i == weeks.length-1){
-                const validCompDays = compDaysIndexs.filter(c => c >= new Date(Number(habit.creationDate)).getDay())
+                const validCompDays = compDaysIndexs.filter(c => c >= new Date(Number(creationDay)).getDay())
                 completableDaysAmt = validCompDays.length
             }
             if(i == weeks.length-1 && i == 0){
-                completableDaysAmt = getCompletableNumDaysCreationSameWeek(compDays, new Date(Number(habit.creationDate)), true, today)
+                completableDaysAmt = getCompletableNumDaysCreationSameWeek(compDays, new Date(Number(creationDay)), true, today)
             }
 
             const completionCount = compDaysIndexs.map(d => {
@@ -661,6 +665,16 @@ export namespace HabitUtil{
         }
 
         return data.reverse()
+    }
+    export function getGoalCompAndStrength(habit: HabitType | null | undefined, completions: HabitCompletionType[] | null | undefined, goalCreationDate: Date){
+        if(!habit || !completions) return []
+        
+        const data = {consistency: 0, strength: 0} 
+
+        data.consistency = Math.round(getCompletionRate(habit, completions, goalCreationDate, true).compRate * 100*10)/10
+        data.strength = Math.round(getStrength(habit, completions, goalCreationDate, true)*10)/10
+
+        return data
     }
     export function normalizeChartDataArrays(arrays: ChartDataType[][]): ChartDataType[][] {
         if (arrays.length === 0) return [];

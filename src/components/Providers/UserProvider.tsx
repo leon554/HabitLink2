@@ -32,6 +32,7 @@ interface UserType{
     goalProgress: Map<number, number>
     issues: Map<number, IssueType>
     habitStats: Map<number, HabitStats>
+    goalStats: Map<number, GaolStats[]>
     setCurrentGoal: (currentGaol: GoalType | null) => void
     setCurrentHabit: (currentHabit: HabitType | null) => void
     compleHabit: (habitId: number, value: number, date?: Date) => Promise<void>,
@@ -62,6 +63,7 @@ const initialValues: UserType = {
     currentGaol: null,
     goalProgress: new Map<number, number>(),
     habitStats: new Map<number, HabitStats>(),
+    goalStats: new Map<number, GaolStats[]>(),
     setCurrentGoal: () => null,
     setCurrentHabit: () => null,
     compleHabit: () => Promise.resolve(undefined),
@@ -90,6 +92,10 @@ export interface HabitStats{
     completableDays: number
     chartData: ChartDataType[]
 }
+export interface GaolStats{
+    consistency: number
+    strength: number
+}
 export default function UserProvider(props: Props) {
     const [loading, setLoading] = useState(false)
     const [currentHabit, setCurrentHabit] = useState<HabitType|null>(null)
@@ -103,6 +109,7 @@ export default function UserProvider(props: Props) {
     const [goalCompletions, setGoalCompletions] = useState<Map<number, GaolCompletionType[]>>(new Map<number, GaolCompletionType[]>())
 
     const [habitStats, setHabitStats] = useState<Map<number, HabitStats>>(new Map<number, HabitStats>())
+    const [goalStats, setGoalStats] = useState<Map<number, GaolStats[]>>(new Map<number, GaolStats[]>())
 
     const auth = useContext(AuthContext)
     const {alert} = useContext(AlertContext)
@@ -147,7 +154,20 @@ export default function UserProvider(props: Props) {
             HabitStatsMap.set(h.id, data)
         })
         setHabitStats(HabitStatsMap)
-    }, [habitsCompletions, auth.session?.user, habits])
+        goals.forEach(g => {
+            const ids = g.habits.split(",").map(id => Number(id))
+            const stats: GaolStats[] = []
+            console.log(g.name)
+            console.log(new Date(g.created_at))
+            ids.forEach(id => {
+                const result = HabitUtil.getGoalCompAndStrength(habits.get(id), habitsCompletions.get(id), new Date(g.created_at))
+                stats.push(result as GaolStats)
+            })
+            console.log(stats)
+            goalStats.set(g.id, stats)
+            setGoalStats(new Map(goalStats))
+        })
+    }, [habitsCompletions, auth.session?.user, habits, goals])
 
     useEffect(() => {
         const values: Map<number, number> = new Map<number, number>()
@@ -635,7 +655,8 @@ export default function UserProvider(props: Props) {
             removeAssociatedHabit,
             goalCompletions,
             goalProgress,
-            habitStats
+            habitStats,
+            goalStats
         }}>
             {props.children}
         </UserContext.Provider>
