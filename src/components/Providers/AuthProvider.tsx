@@ -38,7 +38,7 @@ export default function AuthProvider(props: Props) {
     const [user, setUser] = useState<null|User>(null)
     const [localUser, setLoacalUser] = useState<UserType|null>(null)
     const [loading, setLoading] = useState(false)
-    const protectedPaths = ["/dashboard", "/log", "/create", "/stats", "/goals", "/creategoal", "/settings", "/help"]
+    const protectedPaths = ["/dashboard", "/log", "/create", "/stats", "/goals", "/creategoal", "/settings", "/help", "/studio"]
     
 
     const {alert} = useContext(AlertContext)

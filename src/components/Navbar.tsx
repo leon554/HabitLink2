@@ -25,7 +25,7 @@ export default function Navbar() {
         <>
             <div className="bg-blue-400 dark:bg-neutral-800 dark:border-b-1 dark:border-neutral-700/60 flex justify-between h-13 items-stretch p-0 fixed top-0 left-0 w-full z-30">
                 <div className="flex items-center gap-2">
-                    <p className="ml-4 text-gray-800 dark:text-neutral-100 font-mono text-xl">
+                    <p className="ml-4 text-gray-800 dark:text-neutral-100  text-xl font-mono">
                         HabitLink
                     </p>
                     <p className="text-xs text-subtext3">
@@ -36,7 +36,7 @@ export default function Navbar() {
                     { !session ? 
                         <>
                             <Link to={"/auth"}>
-                                <button className="h-13 pl-4 pr-4 font-medium text-sm font-mono text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer">
+                                <button className="h-13 pl-4 pr-4 text-sm  text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer">
                                     Sign up
                                 </button>
                             </Link>
@@ -45,43 +45,45 @@ export default function Navbar() {
                         screenWidth > 500 ? 
                         <>
                             <Link to={"/dashboard"}>
-                                <button className="h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 font-medium text-sm font-mono text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer">
+                                <button className="h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 text-sm  text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer">
                                     Home
                                 </button>
                             </Link>
                             <Link to={"/log"}>
-                                <button className="h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 font-medium text-sm font-mono text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer">
+                                <button className="h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 text-sm  text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer">
                                     Log
                                 </button>
                             </Link>
                             <Link to={"/stats"}>
-                                <button className="h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 font-medium text-sm font-mono text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer">
+                                <button className="h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 text-sm  text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer">
                                     Habits
                                 </button>
                             </Link>
                             <Link to={"/goals"}>
-                                <button className="h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 font-medium text-sm font-mono text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer">
+                                <button className="h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 text-sm  text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer">
                                     Goals
                                 </button>
                             </Link>
                             
-                            <Select items={[{name: "New Habit", id: 0}, {name: "New Goal", id: 1}]}
+                            <Select items={[{name: "New Habit", id: 0}, {name: "Habit Studio", id: 2}, {name: "New Goal", id: 1}]}
                                     selectedItem={null}
-                                    largeText={true}
+                                    largeText={false}
                                     setSelectedItem={(id: number) => {
                                         if(id == 0){
                                             navitgate("/create")
-                                        }else{
+                                        }else if(id == 1){
                                             navitgate("/creategoal")
+                                        }else{
+                                            navitgate("/studio")
                                         }
                                     }}
                                     blur={blurCreate}
                                     setBlur={setBlurCreate}
                                     onBtnClick={() => setBlurSettings(true)}
                                     setText="Create"
-                                    style="flex justify-end items-center h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 font-medium text-sm font-mono text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer"/>
+                                    style="flex justify-end items-center h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 text-sm  text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer"/>
                                 <Select items={[{name: "Settings", id: 0}, {name: "Help", id: 2}, {name: "Log Out", id: 1}]}
-                                        largeText={true}
+                                        largeText={false}
                                         selectedItem={null}
                                         setSelectedItem={(id: number) => {
                                             if(id == 0){
@@ -96,7 +98,7 @@ export default function Navbar() {
                                         setBlur={setBlurSettings}
                                         onBtnClick={() => setBlurCreate(true)}
                                         setText={loading? <AiOutlineLoading className="animate-spin"/> : <FaRegUserCircle size={14}/>}
-                                        style="flex justify-end items-center h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 font-medium text-sm font-mono text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer"/>
+                                        style="flex justify-end items-center h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 text-sm  text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer"/>
                         </> 
                         : 
                         <>
@@ -106,6 +108,7 @@ export default function Navbar() {
                                             {name: "🎯 Goals", id: 4},
                                             {name: "➕ New Habit", id: 3},
                                             {name: "➕ New Goal", id: 2},
+                                            {name: "➕ Habit Studio", id: 9},
                                             {name: "📘 Help", id: 8}, 
                                             {name: "⚙️ Settings", id: 1}, 
                                             {name: "🚪Log Out", id: 0}, 
@@ -137,13 +140,16 @@ export default function Navbar() {
                                         if(id == 7){
                                             navitgate("/dashboard")
                                         }
-                                         if(id == 8){
+                                        if(id == 8){
                                             navitgate("/help")
+                                        }
+                                        if(id == 9){
+                                            navitgate("/studio")
                                         }
                                     }}
                                     origin={Origin.topRight}
                                     setText={loading? <AiOutlineLoading className="animate-spin"/> : <IoMenu size={20}/>}
-                                    style="flex justify-end items-center h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 font-medium text-sm font-mono text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer"/>
+                                    style="flex justify-end items-center h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 text-sm  text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer"/>
                         </> 
                                 
                         

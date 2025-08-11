@@ -46,8 +46,6 @@ export default function Create({compact, onCreate, initialName} : Props){
         const completionDaysString = (compsPerWeek == 0) ? getCompDaysString() : `${compsPerWeek}`
         const target = getTarget()
 
-        console.log(target)
-
         if(name.trim() == "") {alert("Habit needs a name"); return}
         if(completionDaysString == "" || completionDaysString == "0000000") {alert("Select days to complete the habit on"); return}
         if(selectedTypeIndex == -1) {alert("Select a habit type before creating a habit"); return}
@@ -108,7 +106,7 @@ export default function Create({compact, onCreate, initialName} : Props){
             
             <div className={`flex w-full md:gap-10 md:pl-10 md:pr-10 max-md:flex-col max-md:items-center items-start `}>
                 <div className="w-full flex justify-center flex-col items-center ">
-                    <div className="w-[90%] max-w-[450px]    mb-5">
+                    <div className="w-[90%] max-w-[450px] mb-5">
                         <p className="text-sm font-medium  text-subtext1 mb-2">Habit Name</p>
                         <input type="text" 
                         placeholder="Enter habit name"

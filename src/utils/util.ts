@@ -122,4 +122,20 @@ export namespace Util{
             setFunc(value)
         }
     }
+    export function sunBinrayStringToMon(data: string){
+        const map = [6, 0, 1, 2, 3, 4, 5]
+        let fixed: string[] = []
+        data.split("").forEach((d, i) => {
+            fixed[map[i]] = d
+        })
+        return fixed.join("")
+    }
+    export function monBinrayStringToSun(data: string){
+        const map = [1,2,3,4,5,6,0]
+        let fixed: string[] = []
+        data.split("").forEach((d, i) => {
+            fixed[map[i]] = d
+        })
+        return fixed.join("")
+    }
 }

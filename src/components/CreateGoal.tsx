@@ -104,6 +104,10 @@ export default function CreateGoal() {
         }
     }
     async function genHabits(){
+        if(name == "") {
+            alert("Please enter a goal name first")
+            return
+        }
         setHabits([])
         const habitArr = await HC.askGpt('Given the goal of ' + name + ', identify the essential actions needed to achieve this goal and translate them into specific, measurable, and trackable habits that can be logged daily or weekly in a habit tracking app. Ensure that each habit is actionable, clear, and easy to monitor. Habits must begin with a verb and be concise. Habits must not include the word "daily" or "weekly". ONLY list the habits, separated by commas and nothing else. Some great examples of habits are "Stretch", "morning walk", "take creatinine", "drink protein shake", "measure weight", "code", "go gym" and "run". Habits should be no more than 4 words')
         if(!habitArr){return}
@@ -261,54 +265,56 @@ export default function CreateGoal() {
             <Model open={showModal} onClose={() => setShowModal(false)}>
                 <div className="p-3 flex flex-col  items-center max-w-[600px] w-[90%] bg-panel1 rounded-2xl  "
                  onClick={e => e.stopPropagation()}>
-                    <p className="mb-4 mt-2 text-2xl select-none text-title">
-                        Select Habits
-                    </p>
-                    <div className="flex flex-col p-[1px] gap-2 mb-3 items-stretch w-[90%] max-h-[400px] overflow-y-scroll no-scrollbar rounded-lg">
-                        {Array.from(HC.habits.values()).map((h, i) => {
-                            return(
-                                <div className={`bg-panel1 rounded-md w-full hover:cursor-pointer select-none flex justify-between outline-1 outline-border2 h-10`} key={i} 
-                                    onClick={() => {
-                                        if(selectHabits.includes(Number(h.id))){
-                                            setSelectedHabits(p => [...p.filter(d => d != Number(h.id))])
-                                            setLinkedId(Number(h.id))
-                                        }else{
-                                            if(linkedID == Number(h.id)){
-                                                setLinkedId(-1)
+                    <div className="w-full flex flex-col items-center">
+                        <p className="mb-2 mt-3 font-medium select-none text-title w-[90%]">
+                            Select Habits
+                        </p>
+                        <div className="flex flex-col p-[1px] gap-2 mb-3 items-stretch w-[90%] max-h-[305px] overflow-y-scroll no-scrollbar rounded-lg">
+                            {Array.from(HC.habits.values()).map((h, i) => {
+                                return(
+                                    <div className={`bg-panel1 rounded-md w-full hover:cursor-pointer select-none flex justify-between outline-1 outline-border2 h-10`} key={i} 
+                                        onClick={() => {
+                                            if(selectHabits.includes(Number(h.id))){
+                                                setSelectedHabits(p => [...p.filter(d => d != Number(h.id))])
+                                                setLinkedId(Number(h.id))
+                                            }else{
+                                                if(linkedID == Number(h.id)){
+                                                    setLinkedId(-1)
+                                                }
+                                                else{
+                                                    setSelectedHabits(p => [...p, Number(h.id)])
+                                                }
                                             }
-                                            else{
-                                                setSelectedHabits(p => [...p, Number(h.id)])
-                                            }
-                                        }
-                                    }}>
-                                    <div className="flex items-center">
-                                        <div className={`h-[100%]  w-3 ${selectHabits.includes(Number(h.id)) ? "bg-green-500" : Number(h.id) == linkedID ? "bg-blue-400" : " dark:bg-progress-panel"}  rounded-l-md`}>
+                                        }}>
+                                        <div className="flex items-center">
+                                            <div className={`h-[100%]  w-3 ${selectHabits.includes(Number(h.id)) ? "bg-green-500" : Number(h.id) == linkedID ? "bg-blue-400" : " dark:bg-progress-panel"}  rounded-l-md`}>
+                                            </div>
+                                            <p className="p-2 text-subtext1 text-sm font-medium">
+                                                {h.icon} {h.name}
+                                            </p>  
                                         </div>
-                                        <p className="p-2 text-subtext1">
-                                            {h.icon} {h.name}
-                                        </p>  
+                                        <div className="flex items-center mr-2 text-xs">
+                                            {Number(h.id) == linkedID ? <FaLink className="text-subtext2"/> : ""} 
+                                        </div>
                                     </div>
-                                    <div className="flex items-center mr-2 text-xs">
-                                        {Number(h.id) == linkedID ? <FaLink className="text-subtext2"/> : ""} 
-                                    </div>
-                                </div>
-                            )
-                        })}
+                                )
+                            })}
+                        </div>
                     </div>
                     {habits.length >= 1 ? 
                     <div className="w-[90%] mt-3">
-                        <p className="text-title text-lg">
+                        <p className="text-title font-medium">
                             Possible Habits
                         </p>
                         <div className="flex flex-wrap gap-2 mt-3 w-full justify-stretch mb-7">
                             {habits.map(h => {
                                 return(
-                                    <div className="outline-1 rounded-md outline-border flex-grow-1 p-1 flex justify-center px-2 hover:cursor-pointer hover:bg-panel2 transition-colors duration-150 ease-in-out"
+                                    <div className="outline-1 rounded-md outline-border flex-grow-1 p-1.5 flex justify-center px-2 hover:cursor-pointer hover:bg-panel2 transition-colors duration-150 ease-in-out"
                                         onClick={() => {
                                             setHabitName(Util.capitilizeFirst(h) ?? "jfhfd")
                                             setShowNewHabitModal(true)
                                         }}>
-                                        <p className="text-sm text-subtext2">
+                                        <p className="text-xs text-subtext2 font-medium">
                                             {Util.capitilizeFirst(h)}
                                         </p>
                                     </div>
@@ -318,19 +324,19 @@ export default function CreateGoal() {
                     </div>
                     :""}
                     <div className="flex items-center w-[90%] gap-2">
-                        <button className=" rounded-md outline-1 outline-border2 flex justify-center items-center text-subtext1 text-sm h-8 hover:cursor-pointer w-full hover:bg-panel2 transition-colors duration-150 ease-in-out" 
+                        <button className=" rounded-md outline-1 font-medium outline-border2 flex justify-center items-center text-subtext1 text-sm h-8 hover:cursor-pointer w-full hover:bg-panel2 transition-colors duration-150 ease-in-out" 
                             onClick={async () => {
                                 loadingRef.current = 3
                                 await genHabits()
                             }}>
                             {HC.loading && loadingRef.current == 3 ? <AiOutlineLoading className="animate-spin" /> : "Generate Habits"}
                         </button>
-                        <button className="  rounded-md outline-1 outline-border2 text-subtext1 text-sm  h-8 hover:cursor-pointer w-full hover:bg-panel2 transition-colors duration-150 ease-in-out" 
+                        <button className="  rounded-md outline-1 outline-border2 text-sm font-medium text-subtext1  h-8 hover:cursor-pointer w-full hover:bg-panel2 transition-colors duration-150 ease-in-out" 
                             onClick={() => setShowNewHabitModal(true)}>
                             New Habit
                         </button>
                     </div>
-                    <button className="bg-btn w-[90%] rounded-md outline-1 outline-border1 text-btn-text mb-5 mt-2 h-8 hover:cursor-pointer" 
+                    <button className="bg-btn w-[90%] rounded-md outline-1 text-sm font-medium outline-border1 text-btn-text mb-5 mt-2 h-8 hover:cursor-pointer" 
                         onClick={() => setShowModal(false)}>
                         Done
                     </button>
