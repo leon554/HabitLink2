@@ -22,7 +22,7 @@ export default function AssociatedHabits() {
                 {[...habits].map((h, i) => {
                     if(h){
                         return(
-                            <div key={h.id} className={`flex items-center gap-3   ${i == habitsLength -1 ? "" : "border-border2 border-b-1 pb-5"} w-full py-3  justify-between hover:cursor-pointer h-10`} 
+                            <div key={h.id} className={`flex items-center gap-3   ${i == habitsLength -1 ? "" : "border-border2 border-b-1 pb-5"} w-full py-4  justify-between hover:cursor-pointer h-10`} 
                                 onClick={() => {
                                     HC.setCurrentHabit(h)
                                     navigate("/stats")

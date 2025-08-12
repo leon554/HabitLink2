@@ -32,12 +32,12 @@
   --color-progress-panel: hsl(0, 0%, 13%); 
   --color-btn-text:   oklch(26.9% 0 0);
   --color-btn:   hsl(144, 100%, 39%); 
-  --color-title: hsl(0, 0%, 100%);      
+  --color-title: hsl(0, 0%, 87%);      
   --color-subtext1: hsl(0, 0%, 75%);   
   --color-subtext2: hsl(0, 0%, 63%);    
   --color-subtext3: hsl(0, 0%, 53%); 
   --color-border: color-mix(in oklab, var(--color-neutral-700)  35%, transparent);
-  --color-border2:  var(--color-neutral-700)  ;
+  --color-border2:  var(--color-neutral-800)  ;
   --color-highlight: hsl(144, 100%, 39%);  
   --color-highlight2: hsl(84, 100%, 41%);    
   --texture: #646464;   

@@ -16,6 +16,7 @@ import FullCircleProgressBar from "@/components/InputComponents/FullCircleProgre
 import ToolTip from "@/components/ToolTip"
 import { AuthContext } from "@/components/Providers/AuthProvider"
 import { AiOutlineLoading } from "react-icons/ai"
+import { triggerHaptic } from "tactus"
 
 
 export default function GoalsPage() {
@@ -54,7 +55,10 @@ export default function GoalsPage() {
                         {Array.from(HC.goals.values()).map((g, i) => {
                             return(
                                 <div key={i} className="grow-1 bg-panel1 rounded-2xl outline-1 outline-border p-3.5 items-center flex justify-between"
-                                    onClick={() => HC.setCurrentGoal(g)}>
+                                    onClick={() => {
+                                        triggerHaptic()
+                                        HC.setCurrentGoal(g)
+                                    }}>
                                     <p className="text-subtext2 font-medium truncate overflow-hidden whitespace-nowrap">
                                         🎯 {g.name}
                                     </p>
@@ -88,7 +92,10 @@ export default function GoalsPage() {
                         You currently have no goals, try adding a new goal and then comming back 💪
                     </p>
                     <button className="w-full bg-btn rounded-xl py-1 text-btn-text font-medium text-sm hover:cursor-pointer" 
-                        onClick={() => navigate("/creategoal")}>
+                        onClick={() => {
+                            triggerHaptic()
+                            navigate("/creategoal")
+                        }}>
                         New Goal
                     </button>
                 </div>        

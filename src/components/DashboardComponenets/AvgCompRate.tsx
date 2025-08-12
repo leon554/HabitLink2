@@ -108,7 +108,7 @@ export default function AvgCompRate() {
                     display: true, 
                     stepSzie: 20,
                     borderDash: [50, 50],
-                    color: "hsl(0, 0%, 16%)",
+                    color: "hsl(0, 0%, 13%)",
                     drawBorder: false
                 },
             },

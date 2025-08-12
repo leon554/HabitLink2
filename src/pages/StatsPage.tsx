@@ -14,6 +14,7 @@ import { AiOutlineLoading } from "react-icons/ai";
 import { AuthContext } from "@/components/Providers/AuthProvider";
 import ToolTip from "@/components/ToolTip";
 import FullCircleProgressBar from "@/components/InputComponents/FullCircleProgressBar";
+import { triggerHaptic } from "tactus";
 
 export default function StatsPage() {
     const HC = useContext(UserContext)
@@ -32,7 +33,10 @@ export default function StatsPage() {
                         {Array.from(HC.habits.values()).map((h, i) => {
                             return(
                                 <div key={i} className="flex items-center justify-between gap-3 text-subtext1 p-3 hover:text-stone-300 bg-panel1 border-1 border-border rounded-2xl grow-1 hover:cursor-pointer"
-                                    onClick={() => HC.setCurrentHabit(h)}>
+                                    onClick={() => {
+                                        triggerHaptic()
+                                        HC.setCurrentHabit(h)
+                                    }}>
                                     <p className="font-medium text-subtext2 w-full">
                                         {h.icon} {Util.capitilizeFirst(h.name)}
                                     </p>
@@ -69,7 +73,10 @@ export default function StatsPage() {
                         You currently have no habits, try adding a new habit and then comming back 💪
                     </p>
                     <button className="w-full bg-btn rounded-xl py-1 text-btn-text font-medium text-sm hover:cursor-pointer" 
-                        onClick={() => navigate("/create")}>
+                        onClick={() => {
+                            triggerHaptic()
+                            navigate("/create")
+                        }}>
                         New Habit
                     </button>
                 </div>          

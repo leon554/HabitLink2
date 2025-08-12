@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from "motion/react";
 import { useContext } from "react";
 import { AlertContext } from "./AlertProvider";
+import { triggerHaptic } from "tactus";
 
 export default function Alert() {
   const AlertData = useContext(AlertContext);
@@ -29,6 +30,7 @@ export default function Alert() {
               <button
                 className="mt-2 bg-btn text-btn-text font-medium text-sm p-1 rounded-xl pl-2 pr-2 hover:cursor-pointer w-full"
                 onClick={() => {
+                  triggerHaptic()
                   AlertData.setShowing(false);
                 }}>
                 Done
