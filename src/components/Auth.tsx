@@ -142,20 +142,14 @@ export default function Auth() {
                         }}
                         className="flex items-center h-9 justify-center gap-2.5 px-4 py-1.5 mt-0.5 border border-border2 rounded-md shadow-sm hover:cursor-pointer"
                         >
-                        {auth.loading ? 
-                        <AiOutlineLoading className="animate-spin" />
-                        :
-                            <>
-                                <img
-                                    src="https://www.svgrepo.com/show/355037/google.svg"
-                                    alt="Google logo"
-                                    className="w-4 h-4"
-                                />
-                                <span className="text-sm font-medium text-subtext2 ">
-                                    {(!login ? " Sign up with Google" : " Log in with Google")}
-                                </span>
-                            </>
-                        }
+                            <img
+                                src="https://www.svgrepo.com/show/355037/google.svg"
+                                alt="Google logo"
+                                className="w-4 h-4"
+                            />
+                            <span className="text-sm font-medium text-subtext2 ">
+                                {(!login ? " Sign up with Google" : " Log in with Google")}
+                            </span>                         
                     </button>
 
                     <div className="flex justify-center mt-1.5 mb-8">

@@ -54,7 +54,7 @@ export default function AuthProvider(props: Props) {
 
             if (_event === 'SIGNED_IN' && window.location.hash.includes('access_token')) {
                 setTimeout(() => {
-                    window.location.hash = '/dashboard'
+                    window.location.hash = '/'
                 }, 100)
             }
         })
@@ -167,7 +167,7 @@ export default function AuthProvider(props: Props) {
         const { error } = await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
-            redirectTo: 'https://habitlink2.netlify.app/#/dashboard' // or your production URL
+            redirectTo: 'https://habitlink2.netlify.app/dashboard' // or your production URL
             }
         })
 
