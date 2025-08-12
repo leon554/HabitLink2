@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from "react"
 import InfoBox from "../StatsComponents/InfoBox"
 import { type HabitType } from "@/utils/types"
-import { UserContext, type HabitStats } from "../Providers/UserProvider"
+import { UserContext} from "../Providers/UserProvider"
 import { Util } from "@/utils/util"
 import useCurrentGoalValue from "../Hooks/useCurrentGoalValue"
 import { HabitTypeE } from "@/utils/types"
@@ -15,8 +15,8 @@ export default function GoalSummary() {
 
     const associatedHabitIds = HC.currentGaol?.habits.split(",").map(i => Number(i)) ?? []
     const habits = Util.fetchMapItems<HabitType>(associatedHabitIds, HC.habits)
-    const concistencies = Util.fetchMapItems<HabitStats>(associatedHabitIds, HC.habitStats).map(c => Math.round(c.compRate*100))
-    const strengths = Util.fetchMapItems<HabitStats>(associatedHabitIds, HC.habitStats).map(c => Math.round(c.strength))
+    const concistencies = (HC.goalStats.get(HC.currentGaol?.id!) ?? []).map(s => s.consistency)
+    const strengths = (HC.goalStats.get(HC.currentGaol?.id!) ?? []).map(s => Math.round(s.strength))
     
     const [timeLeft, setTimeLeft] = useState((HC.currentGaol?.completionDate ?? 0) - Date.now());
     const completionTime = HC.currentGaol?.completionDate ?? 0

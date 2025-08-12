@@ -93,6 +93,7 @@ export interface HabitStats{
     chartData: ChartDataType[]
 }
 export interface GaolStats{
+    habitID: number
     consistency: number
     strength: number
 }
@@ -124,6 +125,7 @@ export default function UserProvider(props: Props) {
         getGoalsCompletions()
         getIssues()
     }, [auth.session?.user])
+
     useEffect(() => {
         const HabitStatsMap = new Map<number, HabitStats>()
         habits.forEach(h => {
@@ -161,9 +163,8 @@ export default function UserProvider(props: Props) {
             console.log(new Date(g.created_at))
             ids.forEach(id => {
                 const result = HabitUtil.getGoalCompAndStrength(habits.get(id), habitsCompletions.get(id), new Date(g.created_at))
-                stats.push(result as GaolStats)
+                stats.push({...result, habitID: id} as GaolStats)
             })
-            console.log(stats)
             goalStats.set(g.id, stats)
             setGoalStats(new Map(goalStats))
         })
@@ -192,7 +193,7 @@ export default function UserProvider(props: Props) {
             values.set(g.id, Math.min(progress, 100))
         })
         setGoalProgress(values)
-    }, [goalCompletions])
+    }, [goalCompletions, auth.session?.user])
 
     async function createHabit(name: string, description: string, completionDays:string, emoji: string, type: string, target: number){
         setLoading(true)

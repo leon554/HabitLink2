@@ -29,7 +29,7 @@ export default function AssociatedHabits() {
                                 }}>
                                 <div className="flex items-center gap-3">
                                     <div className="flex items-center gap-2">
-                                        <p className="text-md text-subtext1">
+                                        <p className="text-sm  text-subtext2">
                                             {h.icon} {Util.capitilizeFirst(h.name)}
                                         </p>
                                         <p className="text-stone-500">
@@ -39,10 +39,10 @@ export default function AssociatedHabits() {
                                 </div>
                                 <div className="flex gap-4">
                                     <p className="text-xs text-subtext2">
-                                        📈 {Math.round(Number((HC.habitStats.get(Number(h.id))?.compRate) ?? 0) * 100)}%
+                                        📈 {Math.round((HC.goalStats.get(HC.currentGaol?.id!)?? []).filter(s => s.habitID == h.id)[0].consistency)}%
                                     </p>
                                     <p className="text-xs text-subtext2">
-                                        💪 {Math.round(Number((HC.habitStats.get(h.id)?.strength) ?? 0))}%
+                                        💪 {Math.round((HC.goalStats.get(HC.currentGaol?.id!)?? []).filter(s => s.habitID == h.id)[0].strength)}%
                                     </p>
                                 </div>
                             </div>
