@@ -4,9 +4,9 @@ import type { ReactNode } from "react";
 
 
 
-export default function InfoPanel({ children }: { children: ReactNode}) {
+export default function InfoPanel({ children, full }: { children: ReactNode, full?: boolean}) {
   return (
-    <div className="bg-panel1 flex flex-col  rounded-2xl w-[90%] max-w-[600px]  p-5 outline-1 outline-border">
+    <div className={`bg-panel1 flex flex-col  rounded-2xl ${full ? "w-full" : "w-[90%]"} max-w-[600px]  p-5 outline-1 outline-border`}>
       {children}
     </div>
   )
