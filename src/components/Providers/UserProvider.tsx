@@ -191,7 +191,7 @@ export default function UserProvider(props: Props) {
             values.set(g.id, Math.min(progress, 100))
         })
         setGoalProgress(values)
-    }, [goalCompletions, auth.session?.user])
+    }, [goalCompletions, auth.session])
 
     async function createHabit(name: string, description: string, completionDays:string, emoji: string, type: string, target: number){
         setLoading(true)

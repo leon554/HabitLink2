@@ -49,14 +49,8 @@ export default function AuthProvider(props: Props) {
 
     useEffect(() => {
         const {data: authListener} = supabase.auth.onAuthStateChange(async (_event, session) => {
-            console.log("Event: " + _event + ", Session: " + session)
+            console.log("Event: " + _event + ", Session: " ); console.log(session)
             setSession(session)
-
-            if (_event === 'SIGNED_IN' && window.location.hash.includes('access_token')) {
-                setTimeout(() => {
-                    window.location.hash = '/'
-                }, 100)
-            }
         })
 
         return () => {authListener.subscription.unsubscribe()}
@@ -69,6 +63,7 @@ export default function AuthProvider(props: Props) {
 
     async function navigateUser(session: Session|null){
         if(!session) {navigate("/"); return}
+        navigate("/dashboard")
         setLoading(true)
 
         const { data, error} = await supabase.auth.getUser()
@@ -100,14 +95,7 @@ export default function AuthProvider(props: Props) {
         try {
             const { error } = await supabase
                 .from("users")
-                .upsert([
-                    {
-                        email: user.email?.toLowerCase(), 
-                        name: user.user_metadata.name,
-                        role: "free",
-                        user_id: user.id,
-                    }
-                ], 
+                .upsert([{email: user.email?.toLowerCase(),  name: user.user_metadata.name, role: "free", user_id: user.id,}], 
                 { 
                     onConflict: 'email', 
                     ignoreDuplicates: false 
