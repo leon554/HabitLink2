@@ -13,6 +13,7 @@ interface AuthType{
     loading: boolean
     login: (email: string, password: string) => Promise<void>
     signup: (name: string, email: string, password: string) => Promise<SignUpResponses>
+    signInWithGoogle: () =>  Promise<void>
     logout: () => Promise<void>
     getUserId: () => null|string
 }
@@ -23,6 +24,7 @@ const initialValues: AuthType = {
     loading: false,
     login: async (_: string, _1: string) => {},
     signup: async (_: string, _1: string, _2: string) => Promise.resolve(SignUpResponses.SignUpError),
+    signInWithGoogle: async () =>  Promise.resolve(undefined),
     logout: async() => {},
     getUserId: () => null
 }
@@ -49,6 +51,12 @@ export default function AuthProvider(props: Props) {
         const {data: authListener} = supabase.auth.onAuthStateChange(async (_event, session) => {
             console.log("Event: " + _event + ", Session: " + session)
             setSession(session)
+
+            if (_event === 'SIGNED_IN' && window.location.hash.includes('access_token')) {
+                setTimeout(() => {
+                    window.location.hash = '/dashboard'
+                }, 100)
+            }
         })
 
         return () => {authListener.subscription.unsubscribe()}
@@ -60,7 +68,7 @@ export default function AuthProvider(props: Props) {
     }, [session])
 
     async function navigateUser(session: Session|null){
-        if(!session) {navigate("/auth"); return}
+        if(!session) {navigate("/"); return}
         setLoading(true)
 
         const { data, error} = await supabase.auth.getUser()
@@ -74,12 +82,13 @@ export default function AuthProvider(props: Props) {
         }
 
         setUser(data.user)
-        await createUserEntry(data.user)
+        await createUserEntryIfMissing(data.user)
 
         const currentPath = location.pathname
 
         if(protectedPaths.includes(currentPath)){
-            navigate(currentPath)
+            
+            currentPath.length < 20 ? navigate(currentPath) : ""
             setLoading(false)
             return
         }
@@ -87,34 +96,43 @@ export default function AuthProvider(props: Props) {
         setLoading(false)
     }
     
-    async function createUserEntry(data: User){
-        const exists = await checkIfUserEntryExists(data)
-        if(exists) return
+   async function createUserEntryIfMissing(user: User) {
+        try {
+            const { error } = await supabase
+                .from("users")
+                .upsert([
+                    {
+                        email: user.email?.toLowerCase(), 
+                        name: user.user_metadata.name,
+                        role: "free",
+                        user_id: user.id,
+                    }
+                ], 
+                { 
+                    onConflict: 'email', 
+                    ignoreDuplicates: false 
+                })
 
-        const { error } = await supabase
-            .from('users')
-            .insert([
-                { email: data.email, name: data.user_metadata.name, role: "free", user_id: data.id},
-            ])
-        if(error){
-            alert("insert error: " + error.message)
-            return
-        }
-        navigateUser(session ?? null)
-    }
-    async function checkIfUserEntryExists(data: User){
-        let { data: user, error } = await supabase
-            .from('users')
-            .select()
-            .eq("user_id", data.id)
-        if(error){
-            alert("Fetch Error: " + error.message)
-        }
+            if (error) {
+                alert("Upsert error: " + error.message)
+                return
+            }
 
-        if(user == null) return false
-        setLoacalUser((user ?? [])[0] as UserType)
-        return (user.length != 0) ? true : false
+            const { data } = await supabase
+                .from("users")
+                .select("*")
+                .eq("email", user.email?.toLowerCase())
+                .single()
+
+            if (data) {
+                setLoacalUser(data as UserType)
+            }
+
+        } catch (err) {
+            alert("Unexpected createUserEntry error:" + err)
+        }
     }
+
     async function login(email: string, password: string){
         setLoading(true)
         const {error} = await supabase.auth.signInWithPassword({email, password})
@@ -143,6 +161,23 @@ export default function AuthProvider(props: Props) {
             return SignUpResponses.EmailSent
         }
     }
+    async function signInWithGoogle() {
+        setLoading(true)
+
+        const { error } = await supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+            redirectTo: 'https://habitlink2.netlify.app/#/dashboard' // or your production URL
+            }
+        })
+
+        if (error) {
+            console.error('Google sign-in error:', error.message)
+        } else {
+            console.log('Redirecting to Google sign-in...')
+        }
+        setLoading(false)
+    }
     async function logout(){
         setLoading(true)
         await supabase.auth.signOut()
@@ -162,7 +197,8 @@ export default function AuthProvider(props: Props) {
             signup,
             login,
             logout,
-            getUserId
+            getUserId,
+            signInWithGoogle
         }}>
             {props.children}
         </AuthContext.Provider>

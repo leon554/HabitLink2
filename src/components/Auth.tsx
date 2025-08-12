@@ -129,9 +129,35 @@ export default function Auth() {
                         </div>
                     </div>: ""}
                     <button className="flex justify-center gap-2 bg-btn rounded-sm p-1 text-btn-text font-medium text-sm  outline-border2 darkmode:outline-0 mt-1.5 hover:cursor-pointer  duration-400 ease-in-out  h-8 items-center"
-                    type="submit">
-                         {auth.loading ? <AiOutlineLoading className="animate-spin" /> : (login? "Log In"  : "Sign Up")} {auth.loading ? "" : <LuLogIn />}
+                        type="submit">
+                        {auth.loading ? <AiOutlineLoading className="animate-spin" /> : (login? "Log In"  : "Sign Up")}  {auth.loading ? "" : <LuLogIn />}
                     </button>
+
+                    <button
+                        type="button"
+                        onClick={ async (e) => {
+                            triggerHaptic()
+                            e.preventDefault()
+                            await auth.signInWithGoogle()
+                        }}
+                        className="flex items-center h-9 justify-center gap-2.5 px-4 py-1.5 mt-0.5 border border-border2 rounded-md shadow-sm hover:cursor-pointer"
+                        >
+                        {auth.loading ? 
+                        <AiOutlineLoading className="animate-spin" />
+                        :
+                            <>
+                                <img
+                                    src="https://www.svgrepo.com/show/355037/google.svg"
+                                    alt="Google logo"
+                                    className="w-4 h-4"
+                                />
+                                <span className="text-sm font-medium text-subtext2 ">
+                                    {(!login ? " Sign up with Google" : " Log in with Google")}
+                                </span>
+                            </>
+                        }
+                    </button>
+
                     <div className="flex justify-center mt-1.5 mb-8">
                         <p className="text-[13px] text-subtext3 text-center">
                             {login ? "Don't have and acount?" : "Allready have an acount?"}

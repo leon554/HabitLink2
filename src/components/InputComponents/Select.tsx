@@ -36,7 +36,6 @@ export default function Select(props: SelectProps) {
     }
 
     useEffect(() => {
-        console.log("rasn")
         if(props.blur && props.setBlur && focusElement.current != null){
             setClicked(false)
             focusElement.current.blur()

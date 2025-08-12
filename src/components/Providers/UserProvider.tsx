@@ -159,8 +159,6 @@ export default function UserProvider(props: Props) {
         goals.forEach(g => {
             const ids = g.habits.split(",").map(id => Number(id))
             const stats: GaolStats[] = []
-            console.log(g.name)
-            console.log(new Date(g.created_at))
             ids.forEach(id => {
                 const result = HabitUtil.getGoalCompAndStrength(habits.get(id), habitsCompletions.get(id), new Date(g.created_at))
                 stats.push({...result, habitID: id} as GaolStats)

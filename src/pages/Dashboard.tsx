@@ -40,7 +40,7 @@ export default function Dashboard() {
             <div className="w-full flex flex-col items-center justify-center mt-17 gap-2">
                 <div className="w-[90%] max-w-[600px] bg-panel1 rounded-2xl outline-1 outline-border flex justify-center items-center p-5">
                     <p className="text-2xl font-medium text-title">
-                        {session.localUser ? `Welecome Back, ${Util.capitilizeFirst(session.localUser?.name)}` : <AiOutlineLoading className="animate-spin"/>}
+                        {session.localUser?.name ? `Welecome Back, ${Util.capitilizeFirst(session.localUser?.name)}` : <AiOutlineLoading className="animate-spin"/>}
                     </p>
                 </div>
                 <div className="w-[90%] max-w-[600px] bg-panel1 rounded-2xl outline-1 outline-border mt-2 p-7 flex flex-col gap-4">
