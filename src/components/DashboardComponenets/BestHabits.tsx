@@ -1,7 +1,7 @@
 import { useContext, useState } from "react"
 import { UserContext } from "../Providers/UserProvider"
 import { Util } from "@/utils/util"
-
+import { triggerHaptic } from "tactus"
 
 interface Data{
     name: string
@@ -41,21 +41,30 @@ export default function BestHabits() {
                 </p>
                 <div className="flex gap-1.5">
                     <button className={`text-[11px] text-subtext3 hover:cursor-pointer pb-[3px] ${filter == 2 ? "border-b-1 border-border2" : ""}`} 
-                        onClick={() => setFilter(2)}>
+                        onClick={() => {
+                            triggerHaptic()
+                            setFilter(2)
+                        }}>
                         Strength
                     </button>
                     <p className="text-[11px] text-border2">
                         |
                     </p>
                      <button className={`text-[11px] text-subtext3 hover:cursor-pointer pb-[3px] ${filter == 1 ? "border-b-1 border-border2" : ""}`} 
-                        onClick={() => setFilter(1)}>
+                        onClick={() => {
+                            triggerHaptic()
+                            setFilter(1)
+                        }}>
                         Consistency
                     </button>
                     <p className="text-[11px] text-border2">
                         |
                     </p>
                      <button className={`text-[11px] text-subtext3 hover:cursor-pointer pb-[3px] ${filter == 0 ? "border-b-1 border-border2" : ""}`} 
-                        onClick={() => setFilter(0)}>
+                        onClick={() => {
+                            triggerHaptic()
+                            setFilter(0)
+                        }}>
                         Both
                     </button>
                 </div>

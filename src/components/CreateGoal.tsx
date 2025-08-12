@@ -12,6 +12,7 @@ import Create from "./Create";
 import DateInput from "./InputComponents/DateInput";
 import { Util } from "@/utils/util";
 import { RiAiGenerate } from "react-icons/ri";
+import { triggerHaptic } from "tactus";
 
 
 export default function CreateGoal() {
@@ -158,6 +159,7 @@ export default function CreateGoal() {
                             className="outline-1 text-[12px] h-20 rounded-md resize-none w-full border-0 no-scrollbar outline-border2 text-sm p-1.5 text-subtext1" />
                             <p className="absolute right-2 bottom-6 hover:cursor-pointer text-subtext2 bg-panel1"
                             onClick={async () => {
+                                triggerHaptic()
                                 loadingRef.current = 1
                                 await genDescription()
                             }}>
@@ -173,7 +175,10 @@ export default function CreateGoal() {
                         <div className="w-[90%] max-w-[450px]    mb-6">
                             <p className="text-sm font-medium  text-subtext-1 mb-2">Associated Habits</p>
                             <button className={`outline-1 rounded-md outline-border2 w-full p-1 grow-1 hover:cursor-pointer hover:bg-btn hover:outline-0 text-subtext1 text-sm hover:text-btn-text`}
-                                    onClick={() => setShowModal(true)}>
+                                    onClick={() => {
+                                        triggerHaptic()
+                                        setShowModal(true)
+                                    }}>
                                     {selectHabits.length == 0 && linkedID == -1? "Select Habits" : `${selectHabits.length + ((linkedID != -1) ? 1 : 0)} ${selectHabits.length + ((linkedID != -1) ? 1 : 0) == 1 ? "habit" : "habits"} associated${(linkedID != -1) ? ", 1 Linked" : ""}`}
                             </button>
                         </div>
@@ -186,6 +191,7 @@ export default function CreateGoal() {
                             <div className="flex items-center gap-2 mb-2 w-[90%] max-w-[450px]">
                                 <p className="text-sm font-medium  text-subtext-1">Goal Type </p> 
                                 <IoInformationCircleOutline size={14} color="#f5f5f4" className="hover:cursor-pointer" onClick={() => {
+                                    triggerHaptic()
                                     alert("Normal: e.g. Get promotion at work \n Time Based: e.g Meditate for 20 hour \n Distance Based: e.g Walk 200km \n Itteration Based: E.g Weigh 40kg or drink 20 cups of water")
                                 }}/>
                             </div>
@@ -193,7 +199,10 @@ export default function CreateGoal() {
                                 {habitTypes.map((h, i) => {
                                 return(
                                     <button className={`${selectedTypeIndex == i ? "outline-0 bg-btn text-btn-text" : "outline-1 text-subtext1"} rounded-md outline-border2 p-1 grow-1 hover:cursor-pointer hover:bg-btn hover:outline-0 text-sm px-2 hover:text-stone-900`}
-                                        onClick={() => setSelectedTypeIndex(i)} key={i}>
+                                        onClick={() => {
+                                            triggerHaptic()
+                                            setSelectedTypeIndex(i)
+                                        }} key={i}>
                                         {h}
                                     </button>
                                 )
@@ -237,15 +246,24 @@ export default function CreateGoal() {
                                     Add
                                 </p>
                                 <button className="outline-1 flex-grow-1 h-7 px-3 text-sm rounded-md flex items-center justify-center outline-border2 text-subtext1 hover:cursor-pointer hover:bg-btn hover:text-btn-text transition-colors duration-150 ease-in-out darkmode:hover:outline-0"
-                                    onClick={() => addX({days: 1})}>
+                                    onClick={() => {
+                                        triggerHaptic()
+                                        addX({days: 1})
+                                    }}>
                                     Day
                                 </button>
                                 <button className="outline-1 flex-grow-1 h-7 px-3 text-sm rounded-md flex items-center justify-center outline-border2 text-subtext1 hover:cursor-pointer hover:bg-btn hover:text-btn-text transition-colors duration-150 ease-in-out darkmode:hover:outline-0"
-                                    onClick={() => addX({weeks: 1})}>
+                                    onClick={() => {
+                                        triggerHaptic()
+                                        addX({weeks: 1})
+                                    }}>
                                     Week
                                 </button>
                                 <button className="outline-1 flex-grow-1 h-7 px-3 text-sm rounded-md flex items-center justify-center outline-border2 text-subtext1 hover:cursor-pointer hover:bg-btn hover:text-btn-text transition-colors duration-150 ease-in-out darkmode:hover:outline-0"
-                                    onClick={() => addX({months: 1})}>
+                                    onClick={() => {
+                                        triggerHaptic()
+                                        addX({months: 1})
+                                    }}>
                                     Month
                                 </button>
                             </div>
@@ -254,6 +272,7 @@ export default function CreateGoal() {
 
                         <button className="bg-btn text-btn-text text-sm font-medium outline-1 dark:outline-0 outline-border2 hover:cursor-pointer rounded-md w-[90%] max-w-[450px] py-1 mb-6 h-9 flex justify-center items-center" 
                             onClick={async () => {
+                                triggerHaptic()
                                 loadingRef.current = 2
                                 await submit()
                             }}>
@@ -274,6 +293,7 @@ export default function CreateGoal() {
                                 return(
                                     <div className={`bg-panel1 rounded-md w-full hover:cursor-pointer select-none flex justify-between outline-1 outline-border2 h-10`} key={i} 
                                         onClick={() => {
+                                            triggerHaptic()
                                             if(selectHabits.includes(Number(h.id))){
                                                 setSelectedHabits(p => [...p.filter(d => d != Number(h.id))])
                                                 setLinkedId(Number(h.id))
@@ -311,6 +331,7 @@ export default function CreateGoal() {
                                 return(
                                     <div className="outline-1 rounded-md outline-border flex-grow-1 p-1.5 flex justify-center px-2 hover:cursor-pointer hover:bg-panel2 transition-colors duration-150 ease-in-out"
                                         onClick={() => {
+                                            triggerHaptic()
                                             setHabitName(Util.capitilizeFirst(h) ?? "jfhfd")
                                             setShowNewHabitModal(true)
                                         }}>
@@ -326,18 +347,25 @@ export default function CreateGoal() {
                     <div className="flex items-center w-[90%] gap-2">
                         <button className=" rounded-md outline-1 font-medium outline-border2 flex justify-center items-center text-subtext1 text-sm h-8 hover:cursor-pointer w-full hover:bg-panel2 transition-colors duration-150 ease-in-out" 
                             onClick={async () => {
+                                triggerHaptic()
                                 loadingRef.current = 3
                                 await genHabits()
                             }}>
                             {HC.loading && loadingRef.current == 3 ? <AiOutlineLoading className="animate-spin" /> : "Generate Habits"}
                         </button>
                         <button className="  rounded-md outline-1 outline-border2 text-sm font-medium text-subtext1  h-8 hover:cursor-pointer w-full hover:bg-panel2 transition-colors duration-150 ease-in-out" 
-                            onClick={() => setShowNewHabitModal(true)}>
+                            onClick={() => {
+                                triggerHaptic()
+                                setShowNewHabitModal(true)
+                            }}>
                             New Habit
                         </button>
                     </div>
                     <button className="bg-btn w-[90%] rounded-md outline-1 text-sm font-medium outline-border1 text-btn-text mb-5 mt-2 h-8 hover:cursor-pointer" 
-                        onClick={() => setShowModal(false)}>
+                        onClick={() => {
+                            triggerHaptic()
+                            setShowModal(false)
+                        }}>
                         Done
                     </button>
                 </div>

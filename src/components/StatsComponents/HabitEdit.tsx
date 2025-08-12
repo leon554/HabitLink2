@@ -11,6 +11,7 @@ import DateInput from "../InputComponents/DateInput"
 import AmountInput from "../InputComponents/NumberInput"
 import DistanceInput from "../InputComponents/DistanceInput"
 import TimeInput from "../InputComponents/TimeInput"
+import { triggerHaptic } from "tactus"
 
 export default function HabitEdit() {
 
@@ -94,7 +95,10 @@ export default function HabitEdit() {
     return (
         <>
             <button className="bg-panel1 p-2 px-9 rounded-xl text-subtext3 outline-1  outline-border hover:cursor-pointer hover:bg-panel2  hover:scale-[1.02] transition-all duration-150 ease-in-out"
-                onClick={() => setOpen(true)}>
+                onClick={() => {
+                    triggerHaptic()
+                    setOpen(true)
+                }}>
                     Edit 
             </button>
             <Model open={open} onClose={() => setOpen(false)}>
@@ -123,6 +127,7 @@ export default function HabitEdit() {
                                                 {dateUtils.formatDate(new Date(Number(c.date)))} | Data: {Util.pretifyData(c.data, HC.currentHabit!.type as HabitTypeE)}
                                             </p>
                                             <p className="hover:cursor-pointer" onClick={async () => {
+                                                triggerHaptic()
                                                 btnClicked.current = 10 + i
                                                 await deleteEntry(c.id)
                                             }}>
@@ -136,6 +141,7 @@ export default function HabitEdit() {
                         }
                         <button className="rounded-xl outline-1 outline-border2 w-full text-sm p-1 hover:cursor-pointer"
                             onClick={() => {
+                                triggerHaptic()
                                 setEntryData(0)
                                 setOpenNewComp(true)
                             }}>
@@ -146,6 +152,7 @@ export default function HabitEdit() {
 
                         <button className="rounded-xl text-sm flex-grow-1 bg-btn text-btn-text h-8 p-1 px-5 hover:cursor-pointer"
                             onClick={async () => {
+                                triggerHaptic()
                                 btnClicked.current = 1
                                 await save()
                             }}>
@@ -153,12 +160,14 @@ export default function HabitEdit() {
                         </button>
                         <button className="rounded-xl text-sm font-normal flex-grow-2 bg-btn text-btn-text h-8 p-1 px-5 hover:cursor-pointer"
                             onClick={() => {
+                                triggerHaptic()
                                 setOpen(false)
                             }}>
                             Exit
                         </button>
                         <button className="rounded-xl text-sm truncate overflow-hidden whitespace-nowrap flex justify-center items-center  px-5 outline-1 h-8 hover:cursor-pointer hover:bg-panel2 transition-colors duration-150 ease-in-out w-full outline-red-500 text-red-500"
                             onClick={async () => {
+                                triggerHaptic()
                                 if(btnClicked.current == 2){
                                     await deleteHabit()
                                 }else{
@@ -198,6 +207,7 @@ export default function HabitEdit() {
                     <div className="w-full flex  gap-4 mt-2 mb-3">
                         <button className="rounded-xl text-sm flex-grow-1 bg-btn text-btn-text h-8 p-1 px-5 hover:cursor-pointer flex justify-center items-center"
                             onClick={async () => {
+                                triggerHaptic()
                                 btnClicked.current = 3
                                 await newEntry()
                             }}>
@@ -205,6 +215,7 @@ export default function HabitEdit() {
                         </button>
                         <button className="rounded-xl text-sm font-normal flex-grow-2 bg-btn text-btn-text h-8 p-1 px-5 hover:cursor-pointer"
                             onClick={() => {
+                                triggerHaptic()
                                 setOpenNewComp(false)
                             }}>
                             Exit

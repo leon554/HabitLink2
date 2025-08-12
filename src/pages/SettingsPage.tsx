@@ -9,7 +9,7 @@ import { AlertContext } from "@/components/Alert/AlertProvider"
 import { Util } from "@/utils/util"
 import { AiOutlineLoading } from "react-icons/ai"
 import { TiDelete } from "react-icons/ti"
-
+import { triggerHaptic } from "tactus"
 
 export default function SettingsPage() {
 
@@ -80,7 +80,10 @@ export default function SettingsPage() {
             <InfoPanel>
                 <InfoPanel.Title title="Report Bug"/>
                 <button className="outline-1 rounded-xl py-1.5 text-sm outline-border2 text-subtext2 mt-4 hover:cursor-pointer hover:bg-panel2/70 transition-all duration-150 ease-in-out"
-                    onClick={() => setOpenBug(true)}>
+                    onClick={() => {
+                        triggerHaptic()
+                        setOpenBug(true)
+                    }}>
                     Report
                 </button>
             </InfoPanel>
@@ -99,6 +102,7 @@ export default function SettingsPage() {
                                                 Bug id: {b.id}
                                             </p>
                                             <p  className="text-subtext3 hover:cursor-pointer text-sm" onClick={async () => {
+                                                triggerHaptic()
                                                 btnClicked.current = 10 + i
                                                 await HC.deleteIssue(b.id)
                                             }}>
@@ -125,6 +129,7 @@ export default function SettingsPage() {
             <Model open={openBug} onClose={() => setOpenBug(false)}>
                 <div className="outline-1 rounded-2xl outline-border bg-panel1 w-[90%] max-w-[400px] p-7 py-6 flex flex-col gap-5" 
                     onClick={e => {
+                        triggerHaptic()
                         setBlur1(true)
                         setBlur2(true)
                         e.stopPropagation()
@@ -163,13 +168,17 @@ export default function SettingsPage() {
                     <div className="flex w-full gap-3">
                         <button className="bg-btn text-btn-text rounded-xl h-7 flex  justify-center items-center text-sm  py-1 w-full hover:cursor-pointer"
                             onClick={async () => {
+                                triggerHaptic()
                                await submitBug()
                                setOpenBug(false)
                             }}>
                             {HC.loading ? <AiOutlineLoading className="animate-spin"/>  : "Submit"} 
                         </button>
                         <button className="bg-btn text-btn-text rounded-xl h-7  text-sm font- py-1 w-full hover:cursor-pointer"
-                            onClick={() => setOpenBug(false)}>
+                            onClick={() => {
+                                triggerHaptic()
+                                setOpenBug(false)
+                            }}>
                             Exit
                         </button>
                     </div>

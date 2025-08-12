@@ -9,6 +9,7 @@ import DistanceInput from "./InputComponents/DistanceInput";
 import NumberInput from "./InputComponents/NumberInput";
 import { RiAiGenerate } from "react-icons/ri";
 import { Util } from "@/utils/util";
+import { triggerHaptic } from "tactus";
 
 
 
@@ -128,6 +129,7 @@ export default function Create({compact, onCreate, initialName} : Props){
                         className={`outline-1 text-[12px] ${compact ? "h-7.5" : "h-20"} rounded-md resize-none w-full border-0  outline-border2 text-sm p-1.5 text-subtext1`} />
                         <p className="absolute right-2 bottom-5 hover:cursor-pointer text-subtext2 bg-panel1"
                         onClick={async () => {
+                            triggerHaptic()
                             loadingRef.current = 1
                             await genDescription()
                         }}>
@@ -144,6 +146,7 @@ export default function Create({compact, onCreate, initialName} : Props){
                             <div className="flex items-center gap-2 mb-2">
                                 <p className="text-sm font-medium text-subtext1">Completion Days </p> 
                                 <IoInformationCircleOutline size={14}  className="hover:cursor-pointer text-subtext1" onClick={() => {
+                                    triggerHaptic()
                                     alert("You can either choose specific days of the week to complete your habit, or set a target number of completions per week, regardless of which days they fall on.")
                                 }}/>
                             </div>
@@ -151,7 +154,7 @@ export default function Create({compact, onCreate, initialName} : Props){
                                 {Object.entries(compDays).map((e, i) => {
                                     return(
                                         <button className={`${e[1] ? "bg-highlight outline-1 outline-border dark:outline-0" : "" }  ${e[1] ? "text-stone-900" : "text-subtext1" } ${e[1] ? "outline-0" : "outline-1" } grow-1 pl-2 pr-2 rounded-md outline-border2  hover:cursor-pointer   ease-in-out duration-75`}
-                                            onClick={() => {setCompDays(prev => ({...prev, [e[0]]: !e[1]})); setCompsPerWeek(0)}}
+                                            onClick={() => {triggerHaptic(); setCompDays(prev => ({...prev, [e[0]]: !e[1]})); setCompsPerWeek(0)}}
                                             key={i}>
                                             {e[0][0].toUpperCase()}
                                         </button>
@@ -161,7 +164,10 @@ export default function Create({compact, onCreate, initialName} : Props){
                         </div>
                         <div className="flex items-center  gap-3 mt-2 mb-5 ">
                             <p className="text-subtext1 text-sm  ">Or</p>
-                            <div onClick={() => setCompDays({mon: false, teu: false, wed: false, thu: false, fri: false, sat: false, sun: false})}>
+                            <div onClick={() => {
+                                triggerHaptic()
+                                setCompDays({mon: false, teu: false, wed: false, thu: false, fri: false, sat: false, sun: false})
+                            }}>
                                 <NumericInput value={compsPerWeek} setValue={setCompsPerWeek} increment={1} min={0} max={7}/>
                             </div>
                             <p className="text-subtext1 text-sm self-center mt-2 mb-3  ">days per week</p>
@@ -171,6 +177,7 @@ export default function Create({compact, onCreate, initialName} : Props){
                     <div className="flex items-center gap-2 mb-2 w-[90%] max-w-[450px]">
                         <p className="text-sm font-medium  text-subtext1">Habit Type </p> 
                         <IoInformationCircleOutline size={14}  className="hover:cursor-pointer text-subtext1" onClick={() => {
+                            triggerHaptic()
                             alert("Normal: e.g. go to the gym its yes no \n Time Based: e.g Plank can log 13s \n Distance Based: e.g Walking you walked 12km \n Itteration Based: E.g drink 3 cups of water a day")
                         }}/>
                     </div>
@@ -178,7 +185,10 @@ export default function Create({compact, onCreate, initialName} : Props){
                         {habitTypes.map((h, i) => {
                         return(
                             <button className={`${selectedTypeIndex == i ? "outline-0 bg-btn text-btn-text" : "text-subtext2 outline-1"} rounded-md px-2 text-sm outline-border2 p-1 grow-1 hover:cursor-pointer hover:bg-btn hover:outline-0   hover:text-btn-text`}
-                                onClick={() => setSelectedTypeIndex(i)} key={i}>
+                                onClick={() => {
+                                    triggerHaptic()
+                                    setSelectedTypeIndex(i)
+                                }} key={i}>
                                 {compact ?  h.split(" ")[0]: h}
                             </button>
                         )
@@ -204,6 +214,7 @@ export default function Create({compact, onCreate, initialName} : Props){
                             {compact ? 
                             <button className="text-btn-text bg-btn px-2 rounded-lg h-7 hover:cursor-pointer md:invisible md:absolute"
                                 onClick={() => {
+                                    triggerHaptic()
                                     emojiDiv.current?.scrollBy({
                                         left: -300,
                                         behavior: "smooth"
@@ -215,7 +226,10 @@ export default function Create({compact, onCreate, initialName} : Props){
                                 {habitEmojis.map((h, i) => {
                                     return(
                                         <button className={`${selectedEmojiIndex == i ? "outline-0 bg-btn" : "outline-1"} rounded-md outline-border2 p-1 grow-1 hover:cursor-pointer hover:bg-btn hover:outline-0`}
-                                            onClick={() => setSelectedEmojiIndex(i)} key={i}>
+                                            onClick={() => {
+                                                triggerHaptic()
+                                                setSelectedEmojiIndex(i)
+                                            }} key={i}>
                                             {h}
                                         </button>
                                     )
@@ -224,6 +238,7 @@ export default function Create({compact, onCreate, initialName} : Props){
                             {compact ? 
                             <button className="text-btn-text bg-btn px-2 h-7 rounded-lg hover:cursor-pointer md:invisible md:absolute"
                                 onClick={() => {
+                                    triggerHaptic()
                                     emojiDiv.current?.scrollBy({
                                         left: 300,
                                         behavior: "smooth"
@@ -235,6 +250,7 @@ export default function Create({compact, onCreate, initialName} : Props){
                     
                     <button className=" w-full rounded-md p-1 outline-1 outline-border2 dark:outline-0 bg-btn  text-sm font-medium  hover:cursor-pointer mt-7 flex justify-center h-8 items-center"
                         onClick={async () => {
+                            triggerHaptic()
                             loadingRef.current = 2
                             await createHabit(); 
                             if(!onCreate) return

@@ -74,8 +74,8 @@ export default function HabitCalander() {
                                                     ${v.creation ? "" : "rounded-sm "}
                                                     hover:scale-[1.2] transition-transform duration-200 hover:cursor-default`}
                                                     style={{backgroundColor:  v.completeAmount - v.missAmount < 0 ? 
-                                                        Util.getInterpolatedColor(0, maxMiss, Math.max((v.missAmount), 0), "#1f1f1f", "#ef4444"):
-                                                        Util.getInterpolatedColor(0, maxComp, Math.max((v.completeAmount), 0), "#1f1f1f", "#22c55e")}}>
+                                                        Util.getInterpolatedColor(0, maxMiss, Math.max((v.missAmount), 0), "#0f0f0f", "#ef4444"):
+                                                        Util.getInterpolatedColor(0, maxComp, Math.max((v.completeAmount), 0), "#0f0f0f", "#22c55e")}}>
 
                                                 </p>
                                             </ToolTip>

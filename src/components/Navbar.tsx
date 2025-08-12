@@ -7,6 +7,14 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { useScreenWidth } from "./Hooks/UseScreenWidth";
 import { IoMenu } from "react-icons/io5";
 import { Origin } from "@/utils/types";
+import { FaHome } from "react-icons/fa";
+import { FaClipboard } from "react-icons/fa";
+import { IoStatsChart } from "react-icons/io5";
+import { FaPlus } from "react-icons/fa";
+import { TbTargetArrow } from "react-icons/tb";
+import { IoMdBookmarks } from "react-icons/io";
+import { IoMdSettings } from "react-icons/io";
+import { IoLogOut } from "react-icons/io5";
 
 
 
@@ -23,7 +31,7 @@ export default function Navbar() {
     
     return (
         <>
-            <div className="bg-blue-400 dark:bg-neutral-800 dark:border-b-1 dark:border-neutral-700/60 flex justify-between h-13 items-stretch p-0 fixed top-0 left-0 w-full z-30">
+            <div className="bg-blue-400 dark:bg-panel1 dark:border-b-1 dark:border-border flex justify-between h-13 items-stretch p-0 fixed top-0 left-0 w-full z-30">
                 <div className="flex items-center gap-2">
                     <p className="ml-4 text-gray-800 dark:text-neutral-100  text-xl font-mono">
                         HabitLink
@@ -102,16 +110,16 @@ export default function Navbar() {
                         </> 
                         : 
                         <>
-                            <Select items={[{name: "🏠 Home", id: 7},
-                                            {name: "📒 Log", id: 6},
-                                            {name: "✅ Habits", id: 5},
-                                            {name: "🎯 Goals", id: 4},
-                                            {name: "➕ New Habit", id: 3},
-                                            {name: "➕ New Goal", id: 2},
-                                            {name: "➕ Habit Studio", id: 9},
-                                            {name: "📘 Help", id: 8}, 
-                                            {name: "⚙️ Settings", id: 1}, 
-                                            {name: "🚪Log Out", id: 0}, 
+                            <Select items={[{name: "Home", id: 7, icon: <FaHome  size={15}/>},
+                                            {name: "Log", id: 6, icon: <FaClipboard  size={15}/>},
+                                            {name: "Habits", id: 5, icon: <IoStatsChart  size={15}/>},
+                                            {name: "Goals", id: 4, icon: <TbTargetArrow  size={15}/>},
+                                            {name: "New Habit", id: 3, icon: <FaPlus  size={15}/>},
+                                            {name: "New Goal", id: 2, icon: <FaPlus  size={15}/>},
+                                            {name: "Habit Studio", id: 9, icon: <FaPlus  size={15}/>},
+                                            {name: "Help", id: 8, icon: <IoMdBookmarks  size={15}/>}, 
+                                            {name: "Settings", id: 1, icon: <IoMdSettings  size={15}/>}, 
+                                            {name: "Log Out", id: 0, icon: <IoLogOut  size={15}/>}, 
                                             ]}
                                     selectedItem={null}
                                     largeText={true}

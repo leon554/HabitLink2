@@ -6,6 +6,7 @@ import type { HabitTypeE } from "@/utils/types";
 import { IoInformationCircleOutline } from "react-icons/io5";
 import Model from "../InputComponents/Model";
 import { isMobile } from 'react-device-detect';
+import { triggerHaptic } from "tactus";
 
 export default function Timeline() {
     const HC = useContext(UserContext);
@@ -33,14 +34,20 @@ export default function Timeline() {
                 </p>
                 <div className="flex gap-1.5">
                      <button className={`text-[11px] text-subtext3 hover:cursor-pointer pb-[3px] ${filter == 1 ? "border-b-1 border-border2" : ""}`} 
-                        onClick={() => setFilter(1)}>
+                        onClick={() => {
+                            triggerHaptic()
+                            setFilter(1)
+                        }}>
                         Zoom
                     </button>
                     <p className="text-[11px] text-border2">
                         |
                     </p>
                      <button className={`text-[11px] text-subtext3 hover:cursor-pointer pb-[3px] ${filter == 0 ? "border-b-1 border-border2" : ""}`} 
-                        onClick={() => setFilter(0)}>
+                        onClick={() => {
+                            triggerHaptic()
+                            setFilter(0)
+                        }}>
                         Information
                     </button>
                     <IoInformationCircleOutline size={14} color="#57534E" className="hover:cursor-pointer mt-[1px] ml-[1px]" onClick={() => {

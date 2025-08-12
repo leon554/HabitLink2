@@ -34,11 +34,11 @@ export default function ThemeProvider(props: Props) {
     useEffect(() => {
         if(dark === null) return
         if (dark) {
-        document.documentElement.style.backgroundColor = "hsl(0, 0%, 10%)"; // Dark background
+        document.documentElement.style.backgroundColor = "hsl(0, 0%, 4%)"; // Dark background
         document.documentElement.classList.add("dark")
         localStorage.setItem("theme", "dark");
         } else {
-        document.documentElement.style.backgroundColor = "#ffffff"; // Light background
+        document.documentElement.style.backgroundColor = "hsl(0, 0%, 100%)"; // Light background
         document.documentElement.classList.remove("dark")
         localStorage.setItem("theme", "light");
         }

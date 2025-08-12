@@ -1,8 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Util } from "../../utils/util";
 import type { Origin } from "../../utils/types";
+import { triggerHaptic } from "tactus";
 
 export interface dataFormat{
+    icon?: ReactNode
     name: string,
     id: number
 }
@@ -56,6 +58,7 @@ export default function Select(props: SelectProps) {
         <div className="relative" ref={focusElement}>
             <button className={`group relative transition-transform z-10  hover:cursor-pointer ${props.style ? props.style : " outline-1 bg-stone-800 text-sm text-stone-300 font-mono p-3 rounded-md flex justify-center  "}`}
                  onClick={(e) => {
+                    triggerHaptic()
                     setClicked(!clicked)
                     props.onBtnClick?.()
                     e.stopPropagation()
@@ -73,10 +76,12 @@ export default function Select(props: SelectProps) {
                 {props.items && props.items.map((h) => {
                     return (
                     <p
-                        className={`hover:bg-highlight w-full flex justify-start p-1 ${props.largeText ? "" : "text-sm"} rounded-xl transition duration-100 ease-in-out hover:cursor-pointer text-nowrap hover:text-btn-text px-3`}
-                        onClick={() => setItem(h.id)}
-                    >
-                        {Util.capitilizeFirst(h.name)}
+                        className={`hover:bg-highlight gap-1.5 w-full flex items-center justify-start p-1 ${props.largeText ? "" : "text-sm"} rounded-xl transition duration-100 ease-in-out hover:cursor-pointer text-nowrap hover:text-btn-text px-3`}
+                        onClick={() => {
+                            triggerHaptic()
+                            setItem(h.id)
+                        }}>
+                        {h.icon}{Util.capitilizeFirst(h.name)}
                     </p>
                     );
                 })}

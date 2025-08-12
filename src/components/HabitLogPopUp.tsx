@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { HabitTypeE, type HabitType } from '../utils/types';
 import { AiOutlineLoading } from "react-icons/ai";
 import { useEffect, useRef, useState } from 'react';
+import { triggerHaptic } from 'tactus';
 
 interface Props{
     habit: HabitType
@@ -104,6 +105,7 @@ export default function HabitLogPopUp(p: Props) {
                     <button
                         className="mt-2 grow-1 bg-btn text-sm font-medium text-btn-text  outline-1 outline-border dark:outline-0 p-1 rounded-xl pl-2 pr-2 hover:cursor-pointer "
                         onClick={() => {
+                            triggerHaptic()
                             p.onExit()
                         }}>
                         Exit

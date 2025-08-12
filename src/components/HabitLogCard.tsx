@@ -15,6 +15,7 @@ import { SettingsContext } from './Providers/SettingsProvider';
 import { useNavigate } from 'react-router-dom';
 import useCurrentGoalValue from './Hooks/useCurrentGoalValue';
 import type { GoalType } from '../utils/types';
+import { triggerHaptic } from "tactus";
 
 
 interface HabitProps{
@@ -113,6 +114,7 @@ export default function HabitLogCard({habit: h}: HabitProps) {
                         text-2xl hover:cursor-pointer transition-all hover:scale-[1.04] active:scale-[0.9]
                         ease-in-out duration-250 ${isCompletedToday() ? "dark:outline-highlight outline-highlight outline-1  " : "outline-subtext1 dark:outline-subtext2 outline-1 hover:outline-stone-400  active:bg-stone-800"}`}
                         onClick={async (e) => {
+                            triggerHaptic()
                             e.stopPropagation()
                             await HandleClick()
                         }}>
@@ -122,6 +124,7 @@ export default function HabitLogCard({habit: h}: HabitProps) {
                         <div onClick={e => e.stopPropagation()} className='w-[90%] max-w-[400px]'>
                             <HabitLogPopUp habit={h} onExit={() => setOpen(false)} value={value} setValue={setValue}
                                 onSubmit={async () => {
+                                    triggerHaptic()
                                     await handleSubmit(value)
                                     alert("Succes, Well Done! 🎉🎉🎉")
                                 }} />

@@ -8,6 +8,7 @@ import { AiOutlineLoading } from "react-icons/ai"
 import { HabitTypeE } from "@/utils/types"
 import { HabitUtil } from "@/utils/HabitUtil"
 import Model from "./InputComponents/Model"
+import { triggerHaptic } from "tactus"
 
 
 export interface habitAI{
@@ -102,7 +103,7 @@ export default function HabitStudio() {
     }
 
     return (
-        <div className="w-full flex justify-center flex-col items-center gap-3">
+        <div className="w-full flex justify-center flex-col items-center gap-3 mb-10">
             <div className="mt-18 relative w-[90%] max-w-[500px] flex flex-col items-center bg-panel1 p-7 rounded-2xl outline-1 outline-border gap-5">
                 <p className="text-xl font-medium text-title">
                     Habit Studio
@@ -128,6 +129,7 @@ export default function HabitStudio() {
                         <div className="flex items-center gap-2 mb-2.5">
                             <p className="text-sm font-medium text-subtext1">Avaliable Days</p> 
                             <IoInformationCircleOutline size={14}  className="hover:cursor-pointer text-subtext1" onClick={() => {
+                                triggerHaptic()
                                 alert("You can either choose specific days of the week that your avaliable, or set a target number of days per week, regardless of which days they fall on.")
                             }}/>
                         </div>
@@ -135,7 +137,10 @@ export default function HabitStudio() {
                             {Object.entries(weeklyGoalCompsDay).map((e, i) => {
                                 return(
                                     <button className={`${e[1] ? "bg-highlight outline-1 outline-border dark:outline-0" : "" }  ${e[1] ? "text-stone-900" : "text-subtext1" } ${e[1] ? "outline-0" : "outline-1" } grow-1 pl-2 pr-2 rounded-md outline-border2  hover:cursor-pointer   ease-in-out duration-75 `}
-                                        onClick={() => {setWeeklyGoalCompsDay(prev => ({...prev, [e[0]]: !e[1]})); setWeeklyGoalComps(0)}}
+                                        onClick={() => {
+                                            triggerHaptic()
+                                            setWeeklyGoalCompsDay(prev => ({...prev, [e[0]]: !e[1]})); setWeeklyGoalComps(0)
+                                        }}
                                         key={i}>
                                         {e[0][0].toUpperCase()}
                                     </button>
@@ -145,13 +150,17 @@ export default function HabitStudio() {
                     </div>
                     <div className="flex items-center  gap-3 mt-2 mb-5 ">
                         <p className="text-subtext1 text-sm  ">Or</p>
-                        <div onClick={() => setWeeklyGoalCompsDay({mon: false, teu: false, wed: false, thu: false, fri: false, sat: false, sun: false})}>
+                        <div onClick={() => {
+                            triggerHaptic()
+                            setWeeklyGoalCompsDay({mon: false, teu: false, wed: false, thu: false, fri: false, sat: false, sun: false})
+                        }}>
                             <NumericInput value={weeklyGoalComps} setValue={setWeeklyGoalComps} increment={1} min={0} max={7}/>
                         </div>
                         <p className="text-subtext1 text-sm self-center mt-2 mb-3">days per week</p>
                     </div>
                     <button className="text-sm font-medium text-subtext2 outline-1 outline-border2 rounded-md h-8 flex  items-center justify-center hover:cursor-pointer mt-1"
                         onClick={async () =>  {
+                            triggerHaptic()
                             loadingRef.current = 1
                             await genHabit()
                         }}>
@@ -165,10 +174,10 @@ export default function HabitStudio() {
                             return(
                                 <div key={i} className="outline-1 bg-panel1 w-full items-center p-3 rounded-md outline-border flex  justify-between gap-1">
                                     <div className="flex flex-col gap-0.5">
-                                        <p className="text-title text-sm font-medium">
+                                        <p className="text-title text-sm  font-medium">
                                             {h.emoji} {h.habit}
                                         </p>
-                                        <div className="flex gap-2 ml-1">
+                                        <div className="flex gap-2 ml-1 max-sm:flex-col max-sm:gap-0.5">
                                             <p className="text-xs text-subtext2">
                                                 {HabitUtil.getCompletionDaysString(Util.sunBinrayStringToMon(h.completion_days))}
                                             </p>
@@ -182,16 +191,18 @@ export default function HabitStudio() {
                                             }
                                         </div>
                                     </div>
-                                    <div className="flex gap-2 items-center">
-                                        <button className="outline-1 outline-border2 w-12 text-xs font-medium px-2 text-subtext2 rounded-md h-8 flex  items-center justify-center hover:cursor-pointer hover:bg-panel2 transition-colors duration-150 ease-in-out"
+                                    <div className="flex gap-2 items-center max-sm:flex-col">
+                                        <button className="outline-1 outline-border2 w-12 text-xs font-medium px-2 text-subtext2 rounded-md h-8 max-sm:h-7 flex  items-center justify-center hover:cursor-pointer hover:bg-panel2 transition-colors duration-150 ease-in-out"
                                             onClick={async () => {
+                                                triggerHaptic()
                                                 loadingRef.current = i + 2
                                                 await createHabit(i)
                                             }}>
                                             {HC.loading && loadingRef.current == i + 2? <AiOutlineLoading className="animate-spin"/> : "Create"}
                                         </button>
-                                        <button className="outline-1 outline-border2 text-xs font-medium px-2 text-subtext2 rounded-md h-8 w-full flex  items-center justify-center hover:cursor-pointer hover:bg-panel2 transition-colors duration-150 ease-in-out"
+                                        <button className="outline-1 outline-border2 text-xs font-medium px-2 text-subtext2 rounded-md h-8 max-sm:h-7 w-full flex  items-center justify-center hover:cursor-pointer hover:bg-panel2 transition-colors duration-150 ease-in-out"
                                             onClick={() => {
+                                                triggerHaptic()
                                                 setTempHabit({...h})
                                                 setHabitDaysToState(h.completion_days, setWeeklyHabitCompsDay, setWeeklyHabitComps)
                                                 const habitTypeIndex = habitTypes.findIndex(t => t == h.habit_type)
@@ -237,6 +248,7 @@ export default function HabitStudio() {
                             <div className="flex items-center gap-2 mb-2">
                                 <p className="text-sm font-medium text-subtext1">Completion Days</p> 
                                 <IoInformationCircleOutline size={14}  className="hover:cursor-pointer text-subtext1" onClick={() => {
+                                    triggerHaptic()
                                     alert("You can either choose specific days of the week to complete your habit, or set a target number of completions per week, regardless of which days they fall on.")
                                 }}/>
                             </div>
@@ -244,7 +256,10 @@ export default function HabitStudio() {
                                 {Object.entries(weeklyHabitCompsDay).map((e, i) => {
                                     return(
                                         <button className={`${e[1] ? "bg-highlight outline-1 outline-border dark:outline-0" : "" }  ${e[1] ? "text-stone-900" : "text-subtext1" } ${e[1] ? "outline-0" : "outline-1" } grow-1 pl-2 pr-2 rounded-md outline-border2  hover:cursor-pointer   ease-in-out duration-75 text-sm`}
-                                            onClick={() => {setWeeklyHabitCompsDay(prev => ({...prev, [e[0]]: !e[1]})); setWeeklyHabitComps(0)}}
+                                            onClick={() => {
+                                                triggerHaptic()
+                                                setWeeklyHabitCompsDay(prev => ({...prev, [e[0]]: !e[1]})); setWeeklyHabitComps(0)
+                                            }}
                                             key={i}>
                                             {e[0][0].toUpperCase()}
                                         </button>
@@ -254,7 +269,10 @@ export default function HabitStudio() {
                         </div>
                         <div className="flex items-center  gap-3 mt-2">
                             <p className="text-subtext1 text-sm  ">Or</p>
-                            <div onClick={() => setWeeklyHabitCompsDay({mon: false, teu: false, wed: false, thu: false, fri: false, sat: false, sun: false})}>
+                            <div onClick={() => {
+                                triggerHaptic()
+                                setWeeklyHabitCompsDay({mon: false, teu: false, wed: false, thu: false, fri: false, sat: false, sun: false})
+                            }}>
                                 <NumericInput value={weeklyHabitComps} setValue={setWeeklyHabitComps} increment={1} min={0} max={7}/>
                             </div>
                             <p className="text-subtext1 text-sm self-center">days per week</p>
@@ -276,6 +294,7 @@ export default function HabitStudio() {
                             return(
                                 <button className={`${selectedTypeIndex == i ? "outline-0 bg-btn text-btn-text" : "text-subtext2 outline-1"} rounded-md px-2 text-sm outline-border2 p-1 grow-1 hover:cursor-pointer hover:bg-btn hover:outline-0   hover:text-btn-text`}
                                     onClick={() => {
+                                        triggerHaptic()
                                         setSelectedTypeIndex(i)
                                         setTempHabit({...tempHabit, target: 0, habit_type: habitTypes[i]} as habitAI)
                                     }} key={i}>
@@ -292,6 +311,7 @@ export default function HabitStudio() {
                         <div className="flex items-center gap-2 mb-2 w-full">
                             <p className="text-sm font-medium  text-subtext1">Habit Target</p> 
                             <IoInformationCircleOutline size={14}  className="hover:cursor-pointer text-subtext1" onClick={() => {
+                                triggerHaptic()
                                 alert("Normal: e.g. go to the gym its yes no \n Time Based: e.g Plank can log 13s \n Distance Based: e.g Walking you walked 12km \n Itteration Based: E.g drink 3 cups of water a day")
                             }}/>
                         </div>
@@ -331,6 +351,7 @@ export default function HabitStudio() {
                     }
                     <button className="bg-btn max-w-[450px] text-sm font-medium text-btn-text rounded-md h-8 mb-3 flex w-[90%] items-center justify-center hover:cursor-pointer"
                         onClick={() => {
+                            triggerHaptic()
                             const completionDaysString = (weeklyHabitComps == 0) ? Util.monBinrayStringToSun(getCompDaysString(weeklyHabitCompsDay)) : `${weeklyHabitComps}`
                             habits[selectedHabitIndexRef.current] = {...tempHabit, completion_days: completionDaysString} as habitAI
                             setHabits([...habits])

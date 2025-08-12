@@ -8,6 +8,7 @@ import { HabitUtil } from "../utils/HabitUtil"
 import { SettingsContext } from "../components/Providers/SettingsProvider"
 import { Util } from "@/utils/util"
 import { useNavigate } from "react-router-dom"
+import { triggerHaptic } from "tactus"
 
 export default function LogPage() {
     const [showSettings, setShowSettings] = useState(false)
@@ -24,7 +25,10 @@ export default function LogPage() {
                         Log Your Habits
                     </p>
                     <button className="text-title dark:text-title mr-3 p-1 rounded-md hover:cursor-pointer"
-                        onClick={() => setShowSettings(!showSettings)}>
+                        onClick={() => {
+                            triggerHaptic()
+                            setShowSettings(!showSettings)
+                        }}>
                         <IoSettingsOutline />
                     </button>
                 </div>
@@ -73,7 +77,10 @@ export default function LogPage() {
                     You currently have no habits to log try adding a new habit and then comming back 💪
                 </p>
                 <button className="w-full bg-btn rounded-xl py-1 text-btn-text font-medium text-sm hover:cursor-pointer" 
-                    onClick={() => navigate("/create")}>
+                    onClick={() => {
+                        triggerHaptic()
+                        navigate("/create")
+                    }}>
                     New Habit
                 </button>
             </div>

@@ -7,6 +7,7 @@ import { LuLogIn } from "react-icons/lu";
 import { Util } from "@/utils/util";
 import { IoMdEyeOff } from "react-icons/io";
 import { IoMdEye } from "react-icons/io";
+import { triggerHaptic } from "tactus";
 
 interface FormProps{
     name: string
@@ -92,8 +93,8 @@ export default function Auth() {
                     <div>
                         <div className="relative">
                             {!showPass ? 
-                            <IoMdEyeOff className="absolute right-2 top-[33px] text-subtext3 hover:cursor-pointer" size={15} onClick={() => setShowPass(true)}/> :
-                            <IoMdEye className="absolute right-2 top-[33px] text-subtext3 hover:cursor-pointer" size={15} onClick={() => setShowPass(false)}/>}
+                            <IoMdEyeOff className="absolute right-2 top-[33px] text-subtext3 hover:cursor-pointer" size={15} onClick={() => {setShowPass(true); triggerHaptic()}}/> :
+                            <IoMdEye className="absolute right-2 top-[33px] text-subtext3 hover:cursor-pointer" size={15} onClick={() => {setShowPass(false); triggerHaptic()}}/>}
                             <p className="mb-1.5 text-sm font-medium">Password</p>
                             <input type={showPass ? "text" : "password"}  
                             onChange={(e) => Util.setValueLim((v: string) => setFormData(prev => ({...prev, password: v})), e.target.value, 40)}
@@ -111,8 +112,8 @@ export default function Auth() {
                     {!login ? <div>
                         <div className="relative">
                             {!showConPass ? 
-                            <IoMdEyeOff className="absolute right-2 top-[33px] text-subtext3 hover:cursor-pointer" size={15} onClick={() => setShowConPass(true)}/> :
-                            <IoMdEye className="absolute right-2 top-[33px] text-subtext3 hover:cursor-pointer" size={15} onClick={() => setShowConPass(false)}/>}
+                            <IoMdEyeOff className="absolute right-2 top-[33px] text-subtext3 hover:cursor-pointer" size={15} onClick={() => {setShowConPass(true); triggerHaptic()}}/> :
+                            <IoMdEye className="absolute right-2 top-[33px] text-subtext3 hover:cursor-pointer" size={15} onClick={() => {setShowConPass(false); triggerHaptic()}}/>}
                             <p className="mb-1.5 text-sm font-medium">Confirm Password</p>
                             <input type={showConPass ? "text" : "password"}  
                             onChange={(e) => Util.setValueLim((v: string) => setFormData(prev => ({...prev, confirmPassword: v})), e.target.value, 40)}
@@ -135,7 +136,10 @@ export default function Auth() {
                         <p className="text-[13px] text-subtext3 text-center">
                             {login ? "Don't have and acount?" : "Allready have an acount?"}
                             <a className="text-highlight hover:cursor-pointer" 
-                                onClick={() => setLogin(!login)}> 
+                                onClick={() => {
+                                    triggerHaptic()
+                                    setLogin(!login)
+                                }}> 
                                  {(login ? " Sign Up" : " Log In")}
                             </a>
                         </p>
