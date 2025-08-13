@@ -68,10 +68,16 @@ export default function UpcomingGoals() {
                 <p className="text-lg text-title font-medium">
                     Habits Due Today
                 </p>
-                {tasksToday.length == 0 ? 
+                {HC.isCalculating.current.isLoading() ? 
+                <div>
+                    <p className="text-xs text-subtext2 animate-pulse">
+                        Analyzing your progress today…
+                    </p>
+                </div>
+                : tasksToday.length == 0 ? 
                 Util.fetchAllMapItems(HC.habits).length == 0 ?
                  <div className="h-10 flex items-center">
-                    <p className="text-subtext2 text-xs">
+                    <p className="text-subtext2 text-xs ">
                         No habits, Try creating one
                     </p>
                 </div>

@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react"
+import { createContext, useContext, useEffect, useRef, useState } from "react"
 import { AuthContext } from "./AuthProvider";
 import { supabase } from "../../supabase-client";
 import { AlertContext } from "../Alert/AlertProvider";
@@ -8,6 +8,8 @@ import { HabitUtil } from "../../utils/HabitUtil";
 import { HabitTypeE } from "../../utils/types";
 import { Util } from "../../utils/util";
 import { GOAL_LIM_FREE, HABIT_LIM_FREE } from "../../utils/Constants";
+import { LockingLoading } from "@/utils/LockingLoad";
+import { type RefObject } from "react";
 
 
 interface UserType{
@@ -25,6 +27,7 @@ interface UserType{
     habits: Map<number, HabitType>
     habitsCompletions: Map<number, HabitCompletionType[]>,
     loading: boolean,
+    isCalculating: RefObject<LockingLoading>
     currentHabit: HabitType | null
     currentGaol: GoalType | null
     goals: Map<number, GoalType>
@@ -59,6 +62,7 @@ const initialValues: UserType = {
     issues: new Map<number, IssueType>(),
     habitsCompletions: new Map<number, HabitCompletionType[]>(),
     loading: false,
+    isCalculating: {current: new LockingLoading()},
     currentHabit: null,
     currentGaol: null,
     goalProgress: new Map<number, number>(),
@@ -99,6 +103,7 @@ export interface GaolStats{
 }
 export default function UserProvider(props: Props) {
     const [loading, setLoading] = useState(false)
+    const isCalculating = useRef(new LockingLoading())
     const [currentHabit, setCurrentHabit] = useState<HabitType|null>(null)
     const [currentGaol, setCurrentGoal] = useState<GoalType|null>(null)
     const [habits, setHabits] = useState<Map<number, HabitType>>(new Map<number, HabitType>())
@@ -118,15 +123,22 @@ export default function UserProvider(props: Props) {
     useEffect(() => {
         const userid = auth.getUserId()
         if(!userid) return
-        //make this properly async 
-        getHabits()
-        getGoals()
-        getHabitsCompletions()
-        getGoalsCompletions()
-        getIssues()
-    }, [auth.session?.user])
+        
+        const fetchData = async () => {
+            lock()
+            await getHabits()
+            await getGoals()
+            await getHabitsCompletions()
+            await getGoalsCompletions()
+            await getIssues()
+            unLock()
+        }
+        fetchData()
+
+    }, [auth.session])
 
     useEffect(() => {
+        lock()
         const HabitStatsMap = new Map<number, HabitStats>()
         habits.forEach(h => {
             const currentHabitComps = habitsCompletions.get(h.id)
@@ -166,9 +178,11 @@ export default function UserProvider(props: Props) {
             goalStats.set(g.id, stats)
             setGoalStats(new Map(goalStats))
         })
+        unLock()
     }, [habitsCompletions, auth.session?.user, habits, goals])
 
     useEffect(() => {
+        lock()
         const values: Map<number, number> = new Map<number, number>()
         goals.forEach(g => {
             let currentValue: undefined | number
@@ -191,8 +205,19 @@ export default function UserProvider(props: Props) {
             values.set(g.id, Math.min(progress, 100))
         })
         setGoalProgress(values)
-    }, [goalCompletions, auth.session])
+        unLock()
+        console.log("set goal progress")
+    }, [goalCompletions, auth.session, auth.localUser])
 
+
+    function lock(){
+        isCalculating.current.setTrue()
+        isCalculating.current.lock()
+    }
+    function unLock(){
+        isCalculating.current.unLock()
+        isCalculating.current.setFalse()
+    }
     async function createHabit(name: string, description: string, completionDays:string, emoji: string, type: string, target: number){
         setLoading(true)
 
@@ -627,6 +652,7 @@ export default function UserProvider(props: Props) {
     return (
         
         <UserContext.Provider value={{
+            isCalculating,
             createHabit,
             createGoal,
             updateHabitName,

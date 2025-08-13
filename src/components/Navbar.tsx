@@ -19,7 +19,7 @@ import { IoLogOut } from "react-icons/io5";
 
 
 export default function Navbar() {
-    const {session, logout, loading} = useContext(AuthContext)
+    const {session, logout, logOutLoading} = useContext(AuthContext)
     const [blurCreate, setBlurCreate] = useState(false)
     const [blurSettings, setBlurSettings] = useState(false)
     const navitgate = useNavigate()
@@ -105,7 +105,7 @@ export default function Navbar() {
                                         blur={blurSettings}
                                         setBlur={setBlurSettings}
                                         onBtnClick={() => setBlurCreate(true)}
-                                        setText={loading? <AiOutlineLoading className="animate-spin"/> : <FaRegUserCircle size={14}/>}
+                                        setText={logOutLoading? <AiOutlineLoading className="animate-spin"/> : <FaRegUserCircle size={14}/>}
                                         style="flex justify-end items-center h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 text-sm  text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer"/>
                         </> 
                         : 
@@ -156,7 +156,7 @@ export default function Navbar() {
                                         }
                                     }}
                                     origin={Origin.topRight}
-                                    setText={loading? <AiOutlineLoading className="animate-spin"/> : <IoMenu size={20}/>}
+                                    setText={logOutLoading? <AiOutlineLoading className="animate-spin"/> : <IoMenu size={20}/>}
                                     style="flex justify-end items-center h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 text-sm  text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer"/>
                         </> 
                                 

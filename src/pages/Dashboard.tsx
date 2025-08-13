@@ -40,7 +40,7 @@ export default function Dashboard() {
             <div className="w-full flex flex-col items-center justify-center mt-17 gap-2">
                 <div className="w-[90%] max-w-[600px] bg-panel1 rounded-2xl outline-1 outline-border flex justify-center items-center p-5">
                     <p className="text-2xl font-medium text-title">
-                        {session.localUser?.name ? `Welecome Back, ${Util.capitilizeFirst(session.localUser?.name)}` : <AiOutlineLoading className="animate-spin"/>}
+                        {!session.loading ? `Welecome Back, ${Util.capitilizeFirst(session.localUser?.name)?.split(" ")[0]}` : <AiOutlineLoading className="animate-spin"/>}
                     </p>
                 </div>
                 <div className="w-[90%] max-w-[600px] bg-panel1 rounded-2xl outline-1 outline-border mt-2 p-7 flex flex-col gap-4">
@@ -59,19 +59,19 @@ export default function Dashboard() {
         : 
         <div className="flex flex-col items-center w-full mt-18 gap-5 mb-10">
             <div className="  flex max-md:flex-col gap-5 justify-center max-md:items-center  md:w-[90%] max-md:w-full">
-                <div className="rounded-2xl w-[90%] max-w-[600px] flex flex-col gap-5 md:max-w-[400px]">
+                <div className="rounded-2xl w-[90%] max-w-[600px] flex flex-col gap-5 md:max-w-[400px] h-89">
                     <div className="w-full bg-panel1 rounded-2xl outline-1 outline-border flex justify-center items-center p-5">
                         <p className="text-2xl font-medium text-title">
-                            {session.localUser ? `Welecome Back, ${Util.capitilizeFirst(session.localUser?.name)}` : <AiOutlineLoading className="animate-spin"/>}
+                            {!session.loading ? `Welecome Back, ${Util.capitilizeFirst(session.localUser?.name)?.split(" ")[0]}` : <AiOutlineLoading className="animate-spin"/>}
                         </p>
                     </div>
-                    <div className="w-full  bg-panel1 rounded-2xl outline-1 outline-border p-7 flex flex-col gap-5">
+                    <div className="w-full  bg-panel1 rounded-2xl outline-1 outline-border p-7 flex flex-col gap-5 h-full">
                         <p className="text-title text-lg font-medium">
                             Progression
                         </p>
-                        <ProgressPanel title="Average Habit Consistency" value={isNaN(avgHabitComp) ? 0 : avgHabitComp} small={true}/>
-                        <ProgressPanel title="Average Habit Strength" value={isNaN(avgHabitStrength) ? 0 : avgHabitStrength} small={true}/>
-                        <ProgressPanel title="Average Goal Progress" value={isNaN(avgGoalProgress) ? 0 : avgGoalProgress} small={true}/>
+                        <ProgressPanel title="Average Habit Consistency" value={isNaN(avgHabitComp) ? 0 : avgHabitComp} small={true} load={true}/>
+                        <ProgressPanel title="Average Habit Strength" value={isNaN(avgHabitStrength) ? 0 : avgHabitStrength} small={true} load={true}/>
+                        <ProgressPanel title="Average Goal Progress" value={isNaN(avgGoalProgress) ? 0 : avgGoalProgress} small={true} load={true}/>
                     </div>
                 </div>
                 <div className="h-89 rounded-2xl bg-panel1 w-[90%] max-w-[600px] outline-1 outline-border flex flex-col gap-5 ">

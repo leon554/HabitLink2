@@ -72,8 +72,8 @@ export default function HabitCalander() {
                                                 <p className={`w-full h-4  border-border2/70 
                                                     ${v.completeAmount != 0 || v.missAmount != 0? "border-0" : "border-1"}  
                                                     ${v.creation ? "" : "rounded-sm "}
-                                                    hover:scale-[1.2] transition-transform duration-200 hover:cursor-default`}
-                                                    style={{backgroundColor:  v.completeAmount - v.missAmount < 0 ? 
+                                                    hover:scale-[1.2] transition-all hover:cursor-default ${HC.isCalculating.current.isLoading() ? "animate-pulse duration-1000 border-1" : "duration-200"}`}
+                                                    style={{backgroundColor:  HC.isCalculating.current.isLoading() ? "#1a1a1a": v.completeAmount - v.missAmount < 0 ? 
                                                         Util.getInterpolatedColor(0, maxMiss, Math.max((v.missAmount), 0), "#0f0f0f", "#ef4444"):
                                                         Util.getInterpolatedColor(0, maxComp, Math.max((v.completeAmount), 0), "#0f0f0f", "#22c55e")}}>
 

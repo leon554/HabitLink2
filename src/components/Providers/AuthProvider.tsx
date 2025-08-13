@@ -11,6 +11,7 @@ interface AuthType{
     user: User | null
     localUser: UserType | null
     loading: boolean
+    logOutLoading: boolean
     login: (email: string, password: string) => Promise<void>
     signup: (name: string, email: string, password: string) => Promise<SignUpResponses>
     signInWithGoogle: () =>  Promise<void>
@@ -22,6 +23,7 @@ const initialValues: AuthType = {
     user: null,
     localUser: null,
     loading: false,
+    logOutLoading: false,
     login: async (_: string, _1: string) => {},
     signup: async (_: string, _1: string, _2: string) => Promise.resolve(SignUpResponses.SignUpError),
     signInWithGoogle: async () =>  Promise.resolve(undefined),
@@ -40,7 +42,9 @@ export default function AuthProvider(props: Props) {
     const [user, setUser] = useState<null|User>(null)
     const [localUser, setLoacalUser] = useState<UserType|null>(null)
     const [loading, setLoading] = useState(false)
+    const [logOutLoading, setLogOutLoading] = useState(false)
     const protectedPaths = ["/dashboard", "/log", "/create", "/stats", "/goals", "/creategoal", "/settings", "/help", "/studio"]
+    const unprotectedPaths = ["/", "/auth"]
     
 
     const {alert} = useContext(AlertContext)
@@ -49,7 +53,10 @@ export default function AuthProvider(props: Props) {
 
     useEffect(() => {
         const {data: authListener} = supabase.auth.onAuthStateChange(async (_event, session) => {
-            console.log("Event: " + _event + ", Session: " ); console.log(session)
+            console.log("------------------------------------")
+            console.log("Event: " + _event + ", Session: " );
+            console.log(session)
+            console.log("------------------------------------")
             setSession(session)
         })
 
@@ -61,15 +68,21 @@ export default function AuthProvider(props: Props) {
         navigateUser(session)
     }, [session])
 
-    async function navigateUser(session: Session|null){
-        if(!session) {navigate("/"); return}
-        navigate("/dashboard")
+    async function navigateUser(session: Session | null){
+        const currentPath = location.pathname
+        if(session === null) {
+            unprotectedPaths.includes(currentPath) ? navigate(currentPath) : navigate("/"); 
+            return
+        }else{
+            protectedPaths.includes(currentPath) ? navigate(currentPath) : navigate("/dashboard"); 
+        }
+
         setLoading(true)
 
         const { data, error} = await supabase.auth.getUser()
 
         if(error){
-            alert("User does not exists in DB: " + error.message)
+            alert(error.message)
             await supabase.auth.signOut()
             navigate("/")
             setLoading(false)
@@ -78,53 +91,35 @@ export default function AuthProvider(props: Props) {
 
         setUser(data.user)
         await createUserEntryIfMissing(data.user)
-
-        const currentPath = location.pathname
-
-        if(protectedPaths.includes(currentPath)){
-            
-            currentPath.length < 20 ? navigate(currentPath) : ""
-            setLoading(false)
-            return
-        }
-        navigate("/dashboard"); 
         setLoading(false)
     }
     
-   async function createUserEntryIfMissing(user: User) {
-        try {
-            const { error } = await supabase
-                .from("users")
-                .upsert([{email: user.email?.toLowerCase(),  name: user.user_metadata.name, role: "free", user_id: user.id,}], 
-                { 
-                    onConflict: 'email', 
-                    ignoreDuplicates: false 
-                })
+    async function createUserEntryIfMissing(user: User) {
 
-            if (error) {
-                alert("Upsert error: " + error.message)
-                return
-            }
+        const { data, error } = await supabase
+            .from("users")
+            .upsert([{email: user.email?.toLowerCase(),  name: user.user_metadata.name, user_id: user.id,}], 
+            { 
+                onConflict: 'email', 
+                ignoreDuplicates: false 
+            })
+            .select("*")
+            .single()
 
-            const { data } = await supabase
-                .from("users")
-                .select("*")
-                .eq("email", user.email?.toLowerCase())
-                .single()
-
-            if (data) {
-                setLoacalUser(data as UserType)
-            }
-
-        } catch (err) {
-            alert("Unexpected createUserEntry error:" + err)
+        if (error) {
+            alert("Upsert error: " + error.message)
+            return
         }
+
+        if (data) {
+            setLoacalUser(data as UserType)
+        }
+
     }
 
     async function login(email: string, password: string){
         setLoading(true)
         const {error} = await supabase.auth.signInWithPassword({email, password})
-        setLoading(false)
 
         if(error){
             alert("Log In Error: " + error.message)
@@ -132,6 +127,7 @@ export default function AuthProvider(props: Props) {
             
         }
     }
+
     async function signup(name: string, email: string, password: string) {
         setLoading(true)
         const {error, data} = await supabase.auth.signUp({email, password, options: {data: {name}}})
@@ -149,6 +145,7 @@ export default function AuthProvider(props: Props) {
             return SignUpResponses.EmailSent
         }
     }
+
     async function signInWithGoogle() {
         setLoading(true)
 
@@ -164,12 +161,12 @@ export default function AuthProvider(props: Props) {
         } else {
             console.log('Redirecting to Google sign-in...')
         }
-        setLoading(false)
     }
     async function logout(){
-        setLoading(true)
+        setLogOutLoading(true)
         await supabase.auth.signOut()
-        setLoading(false)
+        navigate("/")
+        setLogOutLoading(false)
     }
     function getUserId(){
         if(!session) return null
@@ -182,6 +179,7 @@ export default function AuthProvider(props: Props) {
             user,
             localUser,
             loading,
+            logOutLoading,
             signup,
             login,
             logout,
