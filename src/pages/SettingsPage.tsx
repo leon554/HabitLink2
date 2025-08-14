@@ -10,6 +10,7 @@ import { Util } from "@/utils/util"
 import { AiOutlineLoading } from "react-icons/ai"
 import { TiDelete } from "react-icons/ti"
 import { triggerHaptic } from "tactus"
+import Premium from "@/components/Premium"
 
 export default function SettingsPage() {
 
@@ -64,7 +65,7 @@ export default function SettingsPage() {
                 <InfoPanel.Title title="Acount"/>
                 <InfoPanel.BodyContainer>
                     <InfoPanel.BubbleText text="Status:" bubbleText={`${Util.capitilizeFirst(auth.user?.role)}`} mb={4}/>
-                    <InfoPanel.BubbleText text="Tier:" bubbleText={`${Util.capitilizeFirst(auth.localUser?.role)}`} mb={0}/>
+                    <InfoPanel.BubbleText text="AI Tokens:" bubbleText={`${auth.localUser?.tokens}`} mb={0}/>
                     <InfoPanel.SubText text={`Acount created: ${auth.user?.created_at}`}/>
                 </InfoPanel.BodyContainer>
             </InfoPanel>
@@ -77,6 +78,7 @@ export default function SettingsPage() {
                     <InfoPanel.SubText text={`Total goal completions: ${String(goalComps)}`}/>
                 </InfoPanel.BodyContainer>
             </InfoPanel>
+            <Premium/>
             <InfoPanel>
                 <InfoPanel.Title title="Report Bug"/>
                 <button className="outline-1 rounded-xl py-1.5 text-sm outline-border2 text-subtext2 mt-4 hover:cursor-pointer hover:bg-panel2/70 transition-all duration-150 ease-in-out"

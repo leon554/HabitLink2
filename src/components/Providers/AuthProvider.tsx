@@ -2,7 +2,7 @@ import type { Session, User } from "@supabase/supabase-js";
 import { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "../../supabase-client";
 import { AlertContext } from "../Alert/AlertProvider";
-import { SignUpResponses, type UserType } from "../../utils/types";
+import { SignUpResponses, type LemonSqueezyProduct, type UserType } from "../../utils/types";
 import { useLocation, useNavigate } from "react-router-dom";
 
 
@@ -12,6 +12,7 @@ interface AuthType{
     localUser: UserType | null
     loading: boolean
     logOutLoading: boolean
+    products: LemonSqueezyProduct[]
     login: (email: string, password: string) => Promise<void>
     signup: (name: string, email: string, password: string) => Promise<SignUpResponses>
     signInWithGoogle: () =>  Promise<void>
@@ -24,11 +25,12 @@ const initialValues: AuthType = {
     localUser: null,
     loading: false,
     logOutLoading: false,
+    products: [],
     login: async (_: string, _1: string) => {},
     signup: async (_: string, _1: string, _2: string) => Promise.resolve(SignUpResponses.SignUpError),
     signInWithGoogle: async () =>  Promise.resolve(undefined),
     logout: async() => {},
-    getUserId: () => null
+    getUserId: () => null,
 }
 
 export const AuthContext = createContext<AuthType>(initialValues)
@@ -43,7 +45,8 @@ export default function AuthProvider(props: Props) {
     const [localUser, setLoacalUser] = useState<UserType|null>(null)
     const [loading, setLoading] = useState(false)
     const [logOutLoading, setLogOutLoading] = useState(false)
-    const protectedPaths = ["/dashboard", "/log", "/create", "/stats", "/goals", "/creategoal", "/settings", "/help", "/studio"]
+    const [products, setProducts] = useState<LemonSqueezyProduct[]>([])
+    const protectedPaths = ["/dashboard", "/log", "/create", "/stats", "/goals", "/creategoal", "/settings", "/help", "/studio", "/thanks"]
     const unprotectedPaths = ["/", "/auth"]
     
 
@@ -67,6 +70,26 @@ export default function AuthProvider(props: Props) {
         if(session === undefined) return
         navigateUser(session)
     }, [session])
+
+    useEffect(() => {
+        if(localUser === null || session === null || session == undefined) return
+        getProducst()
+    }, [localUser])
+
+
+    async function getProducst(){
+        const { data, error } = await supabase.functions.invoke('getProducts', {
+            body: { },
+        });
+
+        if(error){
+            alert("Product fetch error: " + error.message)
+            setLoading(false)
+            return
+        }
+        console.log(data)
+        setProducts(data)
+    }
 
     async function navigateUser(session: Session | null){
         const currentPath = location.pathname
@@ -123,8 +146,7 @@ export default function AuthProvider(props: Props) {
 
         if(error){
             alert("Log In Error: " + error.message)
-        }else{
-            
+            setLoading(false)
         }
     }
 
@@ -180,11 +202,12 @@ export default function AuthProvider(props: Props) {
             localUser,
             loading,
             logOutLoading,
+            products,
             signup,
             login,
             logout,
             getUserId,
-            signInWithGoogle
+            signInWithGoogle,
         }}>
             {props.children}
         </AuthContext.Provider>

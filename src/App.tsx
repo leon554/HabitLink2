@@ -17,6 +17,7 @@ import SettingsPage from "./pages/SettingsPage"
 import { themeContext } from "./components/Providers/ThemeProvider"
 import Help from "./pages/Help"
 import HabitStudioPage from "./pages/HabitStudioPage"
+import Thankyou from "./pages/Thankyou"
 
 function App() {
   const {dark, setDark} = useContext(themeContext)
@@ -43,6 +44,7 @@ function App() {
               <Route path="settings" element={<SettingsPage/>}/>
               <Route path="help" element={<Help/>}/>
               <Route path="studio" element={<HabitStudioPage/>}/>
+              <Route path="thanks" element={<Thankyou/>}/>
             </Route>
           </Routes>
           
