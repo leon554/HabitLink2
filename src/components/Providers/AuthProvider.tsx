@@ -18,6 +18,7 @@ interface AuthType{
     signInWithGoogle: () =>  Promise<void>
     logout: () => Promise<void>
     getUserId: () => null|string
+    setLocalUser: (localUser: UserType) => void
 }
 const initialValues: AuthType = {
     session: undefined,
@@ -31,6 +32,7 @@ const initialValues: AuthType = {
     signInWithGoogle: async () =>  Promise.resolve(undefined),
     logout: async() => {},
     getUserId: () => null,
+    setLocalUser: () => null,
 }
 
 export const AuthContext = createContext<AuthType>(initialValues)
@@ -42,12 +44,12 @@ interface Props {
 export default function AuthProvider(props: Props) {
     const [session, setSession] = useState<null|Session|undefined>(undefined)
     const [user, setUser] = useState<null|User>(null)
-    const [localUser, setLoacalUser] = useState<UserType|null>(null)
+    const [localUser, setLocalUser] = useState<UserType|null>(null)
     const [loading, setLoading] = useState(false)
     const [logOutLoading, setLogOutLoading] = useState(false)
     const [products, setProducts] = useState<LemonSqueezyProduct[]>([])
-    const protectedPaths = ["/dashboard", "/log", "/create", "/stats", "/goals", "/creategoal", "/settings", "/help", "/studio", "/thanks"]
-    const unprotectedPaths = ["/", "/auth"]
+    const protectedPaths = ["/dashboard", "/log", "/create", "/stats", "/goals", "/creategoal", "/settings", "/help", "/studio", "/thanks", "/priv", "/refund", "/terms"]
+    const unprotectedPaths = ["/", "/auth", "/priv", "/refund", "/terms"]
     
 
     const {alert} = useContext(AlertContext)
@@ -135,7 +137,7 @@ export default function AuthProvider(props: Props) {
         }
 
         if (data) {
-            setLoacalUser(data as UserType)
+            setLocalUser(data as UserType)
         }
 
     }
@@ -208,6 +210,7 @@ export default function AuthProvider(props: Props) {
             logout,
             getUserId,
             signInWithGoogle,
+            setLocalUser
         }}>
             {props.children}
         </AuthContext.Provider>

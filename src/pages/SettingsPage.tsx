@@ -11,11 +11,13 @@ import { AiOutlineLoading } from "react-icons/ai"
 import { TiDelete } from "react-icons/ti"
 import { triggerHaptic } from "tactus"
 import Premium from "@/components/Premium"
+import { useNavigate } from "react-router-dom"
 
 export default function SettingsPage() {
 
     const HC = useContext(UserContext)
     const auth = useContext(AuthContext)
+    const navigate =useNavigate()
     const {alert} = useContext(AlertContext)
     const [openBug, setOpenBug] = useState(false)
     const [selectedPage, setSelectedPage] = useState<null | dataFormat>(null)
@@ -90,7 +92,7 @@ export default function SettingsPage() {
                 </button>
             </InfoPanel>
             {bugs.length == 0 ? "" :
-                <div className="outline-1 rounded-2xl outline-border bg-panel1 w-[90%] max-w-[600px] p-7 py-6 flex flex-col gap-5 mb-10">
+                <div className="outline-1 rounded-2xl outline-border bg-panel1 w-[90%] max-w-[600px] p-7 py-6 flex flex-col gap-5">
                     <p className="text-lg text-title font-medium mb-1">
                         Reported Bugs
                     </p>
@@ -128,6 +130,25 @@ export default function SettingsPage() {
                         })}
                     </div>
                 </div>}
+                <div className="w-full mb-10 flex justify-center">
+                    <InfoPanel>
+                        <InfoPanel.Title title="Policies"/>
+                        <div className="flex mt-3 gap-3 max-sm:flex-col">
+                            <p className="text-sm text-subtext3 underline hover:cursor-pointer" 
+                                onClick={() => navigate("/terms")}>
+                                Terms & Conditions
+                            </p>
+                            <p className="text-sm text-subtext3 underline hover:cursor-pointer" 
+                                onClick={() => navigate("/refund")}>
+                                Refund Policy
+                            </p>
+                            <p className="text-sm text-subtext3 underline hover:cursor-pointer" 
+                                onClick={() => navigate("/priv")}>
+                                Privacy Policy
+                            </p>
+                        </div>
+                    </InfoPanel>
+                </div>
             <Model open={openBug} onClose={() => setOpenBug(false)}>
                 <div className="outline-1 rounded-2xl outline-border bg-panel1 w-[90%] max-w-[400px] p-7 py-6 flex flex-col gap-5" 
                     onClick={e => {

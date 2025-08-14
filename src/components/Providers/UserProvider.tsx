@@ -522,12 +522,14 @@ export default function UserProvider(props: Props) {
         setLoading(false)
     }
     async function askGpt(promt: string){
-        if(auth.localUser?.role != "premium") {
-            alert("You need premuim for this feature")
+        if((auth.localUser?.tokens ?? 0) <= 0) {
+            alert("You don't have enough tokens ")
             return null
         }
         if(loading) return null
         setLoading(true)
+        auth.localUser!.tokens--
+        auth.setLocalUser(auth.localUser!)
 
         const { data, error } = await supabase.functions.invoke('habitNameGen', {
             body: { promt: promt},

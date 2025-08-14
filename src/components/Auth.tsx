@@ -8,6 +8,8 @@ import { Util } from "@/utils/util";
 import { IoMdEyeOff } from "react-icons/io";
 import { IoMdEye } from "react-icons/io";
 import { triggerHaptic } from "tactus";
+import CheckBox from "./InputComponents/CheckBox";
+import { useNavigate } from "react-router-dom";
 
 interface FormProps{
     name: string
@@ -18,17 +20,23 @@ interface FormProps{
 export default function Auth() {
     const [formData, setFormData] = useState<FormProps>({name: "", email: "", password: "", confirmPassword: ""})
     const [login, setLogin] = useState(false)
+    const navigate = useNavigate()
 
     const auth = useContext(AuthContext)
     const {alert} = useContext(AlertContext)
     const [showPass, setShowPass] = useState(false)
     const [showConPass, setShowConPass] = useState(false)
+    const [checked, setChecked] = useState(false)
 
     const submit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if(login){
             await logIn()
         }else{
+            if(!checked){
+                alert("Please read and agree to Terms & Conditions and Privacy Policy")
+                return
+            }
             await signUp()
         }
     }
@@ -128,6 +136,26 @@ export default function Auth() {
                             </div>
                         </div>
                     </div>: ""}
+
+                    {!login ? 
+                    <div>
+                        <label className="flex items-start space-x-2 text-xs mt-1 mb-2 text-subtext3">
+                            <div className=" pt-1">
+                                <CheckBox checked={checked} setChecked={setChecked}/>
+                            </div>
+                            <span className="text-justify">
+                                I have read and agree to the{" "}
+                                <a className="text-subtext3 underline leading-none hover:cursor-pointer" onClick={() => navigate("/terms")}>
+                                Terms & Conditions
+                                </a>{" "}
+                                and{" "}
+                                <a  className="text-subtext3 underline hover:cursor-pointer" onClick={() => navigate("/priv")}>
+                                Privacy Policy
+                                </a>.
+                            </span>
+                        </label>
+                    </div>
+                    : "" }
                     <button className="flex justify-center gap-2 bg-btn rounded-sm p-1 text-btn-text font-medium text-sm  outline-border2 darkmode:outline-0 mt-1.5 hover:cursor-pointer  duration-400 ease-in-out  h-8 items-center"
                         type="submit">
                         {auth.loading ? <AiOutlineLoading className="animate-spin" /> : (login? "Log In"  : "Sign Up")}  {auth.loading ? "" : <LuLogIn />}

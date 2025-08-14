@@ -40,7 +40,7 @@ export default function Dashboard() {
             <div className="w-full flex flex-col items-center justify-center mt-17 gap-2">
                 <div className="w-[90%] max-w-[600px] bg-panel1 rounded-2xl outline-1 outline-border flex justify-center items-center p-5">
                     <p className="text-2xl font-medium text-title">
-                        {!session.loading ? `Welecome Back, ${Util.capitilizeFirst(session.localUser?.name)?.split(" ")[0]}` : <AiOutlineLoading className="animate-spin"/>}
+                        {!session.loading ? `Welcome Back, ${Util.capitilizeFirst(session.localUser?.name)?.split(" ")[0]}` : <AiOutlineLoading className="animate-spin"/>}
                     </p>
                 </div>
                 <div className="w-[90%] max-w-[600px] bg-panel1 rounded-2xl outline-1 outline-border mt-2 p-7 flex flex-col gap-4">
@@ -62,7 +62,7 @@ export default function Dashboard() {
                 <div className="rounded-2xl w-[90%] max-w-[600px] flex flex-col gap-5 md:max-w-[400px] h-89">
                     <div className="w-full bg-panel1 rounded-2xl outline-1 outline-border flex justify-center items-center p-5">
                         <p className="text-2xl font-medium text-title">
-                            {!session.loading ? `Welecome Back, ${Util.capitilizeFirst(session.localUser?.name)?.split(" ")[0]}` : <AiOutlineLoading className="animate-spin"/>}
+                            {!session.loading ? `Welcome Back, ${Util.capitilizeFirst(session.localUser?.name)?.split(" ")[0]}` : <AiOutlineLoading className="animate-spin"/>}
                         </p>
                     </div>
                     <div className="w-full  bg-panel1 rounded-2xl outline-1 outline-border p-7 flex flex-col gap-5 h-full">

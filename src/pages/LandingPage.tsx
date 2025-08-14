@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { TbTargetArrow } from "react-icons/tb"
 import { FaLink, FaRegCheckCircle, FaRegClock, FaMagic } from "react-icons/fa"
 import InfoPanel from "@/components/InfoPanel"
@@ -6,6 +6,7 @@ import ProgressBar from "@/components/InputComponents/ProgressBar"
 import InfoBox from "@/components/StatsComponents/InfoBox"
 
 export default function LandingPage() {
+  const navigate = useNavigate()
   return (
     <div className="relative">
       <div className="absolute inset-0 texture opacity-20 dark:opacity-10 pointer-events-none" />
@@ -180,6 +181,20 @@ export default function LandingPage() {
         <footer className="border-t border-border/70 py-8">
           <div className="mx-auto w-[90%] md:w-auto md:max-w-7xl md:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-subtext3">
             <p>© {new Date().getFullYear()} HabitLink. All rights reserved.</p>
+            <div className="flex gap-3 ">
+              <p className="text-sm text-subtext3 underline hover:cursor-pointer" 
+                  onClick={() => navigate("/terms")}>
+                  Terms & Conditions
+              </p>
+              <p className="text-sm text-subtext3 underline hover:cursor-pointer" 
+                  onClick={() => navigate("/refund")}>
+                  Refund Policy
+              </p>
+              <p className="text-sm text-subtext3 underline hover:cursor-pointer" 
+                  onClick={() => navigate("/priv")}>
+                  Privacy Policy
+              </p>
+          </div>
           </div>
         </footer>
       </div>
