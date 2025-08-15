@@ -8,13 +8,15 @@ import Model from "../InputComponents/Model";
 import { isMobile } from 'react-device-detect';
 import { triggerHaptic } from "tactus";
 import { TbClock24 } from "react-icons/tb";
+import Select from "../InputComponents/Select";
 
 export default function Timeline() {
     const HC = useContext(UserContext);
     const [open, setOpen] = useState(false);
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
     const [hoveredIndex2, setHoveredIndex2] = useState<number | null>(null);
-    const [filter, setFilter] = useState(0)
+    const [filter, setFilter] = useState(1)
+    const items = [{name: "Info", id: 0}, {name: "Zoom", id: 1}]
     const [oneHourMs, setOneHourMs] = useState(1800000)
 
     const now = new Date();
@@ -27,35 +29,23 @@ export default function Timeline() {
         .filter(c => new Date(Number(c.date)).getTime() >= startDay);
 
     return (
-        <div className="m-7 my-6 flex flex-col gap-4 relative"
+        <div className="m-7 my-6 mt-4 flex flex-col gap-4 relative"
             onClick={() => setHoveredIndex(null)}>
             <div className="flex justify-between items-center">
-                 <div className="flex items-center gap-4 mb-2 mt-2">
+                 <div className="flex items-center gap-3 mb-2 mt-2">
                     <div className="bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
                         <TbClock24 />
                     </div>
-                    <p className="text-lg text-title font-semibold leading-none pb-1">
+                    <p className="sm:text-lg text-title font-semibold leading-none pb-1">
                         Today's Timeline
                     </p>
                 </div>
-                <div className="flex gap-1.5">
-                     <button className={`text-[11px] text-subtext3 hover:cursor-pointer pb-[3px] ${filter == 1 ? "border-b-1 border-highlight/40" : ""}`} 
-                        onClick={() => {
-                            triggerHaptic()
-                            setFilter(1)
-                        }}>
-                        Zoom
-                    </button>
-                    <p className="text-[11px] text-border2">
-                        |
-                    </p>
-                     <button className={`text-[11px] text-subtext3 hover:cursor-pointer pb-[3px] ${filter == 0 ? "border-b-1 border-highlight/40" : ""}`} 
-                        onClick={() => {
-                            triggerHaptic()
-                            setFilter(0)
-                        }}>
-                        Information
-                    </button>
+                <div className="flex gap-1.5 items-center">
+                    <Select items={items}
+                        selectedItem={items[filter]} 
+                        setSelectedItem={(id) => setFilter(id)}
+                        style="text-xs bg-panel2 text-subtext3 px-2 py-0.5 rounded-lg border-1 border-border2 z-10"/>
+                     
                     <IoInformationCircleOutline size={14} color="#57534E" className="hover:cursor-pointer mt-[1px] ml-[1px]" onClick={() => {
                         setOpen(true);
                     }} />
@@ -88,7 +78,7 @@ export default function Timeline() {
                                 <div
                                     className={`p-2 px-4 bg-panel1 absolute left-1/2 transform -translate-x-1/2 bottom-5
                                     ${hoveredIndex === index ? 'scale-100 delay-200' : 'scale-0 delay-300'}
-                                    transition-transform duration-200 ease-in-out rounded-2xl border-1 border-border`}
+                                    transition-transform duration-200 ease-in-out rounded-2xl border-1 border-border z-30`}
                                     
                                 >
                                     {filter == 0 ?
@@ -104,7 +94,7 @@ export default function Timeline() {
                                             </p>
                                         </div>
                                     :
-                                        <div className="flex flex-col w-40 p-2 px-0 gap-6 "
+                                        <div className="flex flex-col w-40 p-2 px-0 gap-6 z-30 "
                                          onClick={e => e.stopPropagation()}>
                                            
                                             <div className="w-full h-1 bg-progress-panel rounded-2xl relative mt-2">
@@ -116,12 +106,12 @@ export default function Timeline() {
                                                                 style={{ left: `${(( (Number(c1.date) - min)) / oneHourMs) * 100}%` }}
                                                                 onMouseEnter={() => setHoveredIndex2(i)} 
                                                                 onMouseLeave={() => setHoveredIndex2(null)} 
-                                                                onTouchStart={() => setHoveredIndex2(i)}
+                                                                onTouchStart={() => {setHoveredIndex2(i); triggerHaptic()}}
                                                                 onTouchEnd={() => setHoveredIndex2(null)}>
                                                                 {hoveredIndex2 === i && (
                                                                     <div
                                                                         className={`p-2 px-4 bg-panel1 absolute left-1/2 transform -translate-x-1/2 bottom-5
-                                                                                    scale-100 transition-transform duration-200 ease-in-out rounded-2xl border-1 border-border`}
+                                                                                    scale-100 transition-transform duration-200 ease-in-out rounded-2xl border-1 border-border z-20`}
                                                                     >
                                                                             <div className="flex flex-col items-center">
                                                                                 <p className="text-sm text-subtext2 whitespace-nowrap">

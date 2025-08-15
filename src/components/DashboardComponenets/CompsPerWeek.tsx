@@ -6,6 +6,7 @@ import { TbChartBarPopular } from "react-icons/tb";
 import {Bar} from "react-chartjs-2"
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, BarElement, Title, Tooltip, type ChartData} from "chart.js"
 import { dateUtils } from "@/utils/dateUtils"
+import Select from "../InputComponents/Select";
 
 
 ChartJS.register(
@@ -18,24 +19,33 @@ ChartJS.register(
  
 )
 
-export default function CompsPerWeek() {
+interface Props{
+    habitId?: number
+}
+export default function CompsPerWeek(p: Props) {
     const HC = useContext(UserContext)
-    const rawData = useMemo(() => {return Util.fetchAllMapItems(HC.habitStats).map(i => i.compsPerWeek).flat()}, [HC.habitStats]) 
-    const [formatedChartData, setFormatedChartData] = useState(new Map<string, number>()) 
+    const rawData = useMemo(() => {return p.habitId ? HC.habitStats.get(p.habitId)!.compsPerWeek : Util.fetchAllMapItems(HC.habitStats).map(i => i.compsPerWeek).flat()}, [HC.habitStats, HC.currentHabit]) 
+    const [formatedChartData, setFormatedChartData] = useState(new Map<string|number, number>()) 
+
+    const [filter, setFilter] = useState(0)
+    const items = [{name: "Week", id: 0}, {name: "Month", id: 1}]
+    const monthMap = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
+    const [labels, setLabels] = useState<string[]>([])
 
     useEffect(() => {
-        console.log(formatedData)
-        const temp = new Map<string, number>()
+        const temp = new Map<string|number, number>()
         rawData.forEach(d => {
-            if(temp.has(dateUtils.formatDate(d.week))){
-                const prevComps = temp.get(dateUtils.formatDate(d.week))!
-                temp.set(dateUtils.formatDate(d.week), prevComps + d.completions)
+            if(temp.has(filter == 0 ? dateUtils.formatDate(d.week) : d.week.getMonth())){
+                const prevComps = temp.get(filter == 0 ? dateUtils.formatDate(d.week) : d.week.getMonth())!
+                temp.set(filter == 0 ? dateUtils.formatDate(d.week) : d.week.getMonth(), prevComps + d.completions)
             }else{
-                temp.set(dateUtils.formatDate(d.week), d.completions)
+                temp.set(filter == 0 ? dateUtils.formatDate(d.week) : d.week.getMonth(), d.completions)
             }
         })
+        setLabels([...filter == 0 ? Array.from(temp.keys()).map(v => String(v).slice(0, 5)) : Array.from(temp.keys()).map(v => monthMap[Number(v)])])
         setFormatedChartData(temp)
-    }, [rawData])
+    }, [rawData, filter, HC.currentHabit])
 
     const rootStyles = getComputedStyle(document.documentElement)
 
@@ -45,7 +55,7 @@ export default function CompsPerWeek() {
     const border = rootStyles.getPropertyValue('--color-border').trim()
 
     const formatedData = {
-        labels: Array.from(formatedChartData.keys()),
+        labels: labels,
         datasets: [
             {
                 label: "Completions",
@@ -55,6 +65,7 @@ export default function CompsPerWeek() {
         ]
     }
     const options = {
+        
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
@@ -89,17 +100,17 @@ export default function CompsPerWeek() {
         },
         scales: {
             x: {
-                display: false,
+                display: true, 
                 ticks: {
-                    display: true, 
+                    display: true,
+                    stepSize: 20, 
                 },
                 grid: {
-                    display: false, 
-                    stepSzie: 20,
+                    display: false,
                     borderDash: [50, 50],
                     color: "hsl(0, 0%, 10%)",
                     drawBorder: false
-                },
+                }
             },
             y: {
                 border: {
@@ -122,34 +133,34 @@ export default function CompsPerWeek() {
     }
     return (
         <div className="m-7 my-6 flex flex-col gap-7 overflow-clip">
-             <div className="flex items-center gap-4 mb-2 mt-2">
-                <div className="bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
-                    <TbChartBarPopular />
+            <div className="w-full flex justify-between  items-center">
+                <div className="flex items-center gap-3 mb-2 mt-2">
+                    <div className="bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
+                        <TbChartBarPopular />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                        <p className="text-lg text-title font-semibold leading-none pb-1">
+                            Completions Per {filter == 0 ? "Week" : "Month"}
+                        </p>
+                    </div>
                 </div>
-                <div className="flex flex-col gap-1">
-                    <p className="text-lg text-title font-semibold leading-none pb-1">
-                        Completions Per Week
-                    </p>
-                    
-                </div>
+                <Select items={items}
+                    selectedItem={items[filter]} 
+                    setSelectedItem={(id) => setFilter(id)}
+                    style="text-xs bg-panel2 text-subtext3 px-2 py-0.5 rounded-lg border-1 border-border2 z-10"/>
             </div>
-            {formatedChartData.size < 10 ? 
+            {formatedChartData.size < 2 ? 
             <div className="h-55 border-1 border-border2 flex justify-center items-center rounded-2xl">
                 <p className="text-sm p-6 max-sm:text-xs text-subtext3 flex flex-wrap text-center justify-center items-center gap-2">
-                    Log your habits for {10-formatedChartData.size} more days to see this graph <FaChartLine />
+                    Log your habits for {2-formatedChartData.size} more {filter == 0 ? "week/s" : "month/s"} to see this graph <FaChartLine />
                 </p>
             </div>
             :
             <>
-                <div className="h-35 bg">
-                    <Bar options={options} data={formatedData as ChartData<"bar", number[], string>}/>
+                <div className="h-47 bg">
+                    <Bar options={options} data={formatedData as ChartData<"bar", number[], string>} key={filter}/>
                 </div>
-                <div className="flex justify-center items-center gap-2 w-full ">
-                    <div className="w-3.5 h-3.5 bg-highlight rounded-md"></div>
-                    <p className="text-xs text-subtext3">
-                        Completions
-                    </p>
-                </div>
+                
             </>
             }
         </div>

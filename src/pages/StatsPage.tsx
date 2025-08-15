@@ -15,6 +15,7 @@ import { AuthContext } from "@/components/Providers/AuthProvider";
 import ToolTip from "@/components/ToolTip";
 import FullCircleProgressBar from "@/components/InputComponents/FullCircleProgressBar";
 import { triggerHaptic } from "tactus";
+import CompsPerWeek from "@/components/DashboardComponenets/CompsPerWeek";
 
 export default function StatsPage() {
     const HC = useContext(UserContext)
@@ -91,6 +92,9 @@ export default function StatsPage() {
                     <div className={`flex flex-col  gap-3 w-full  `}>
                         <MostCommonDays/>
                         <ConsistencyOverTime/>
+                        <div className="bg-panel1 outline-1 outline-border rounded-2xl">
+                            <CompsPerWeek habitId={HC.currentHabit!.id}/>
+                        </div>
                     </div>
                     <HabitEdit/>
                 </div>

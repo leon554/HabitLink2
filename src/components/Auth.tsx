@@ -165,7 +165,7 @@ export default function Auth() {
                         type="button"
                         onClick={ async (e) => {
                             triggerHaptic()
-                            if(!checked){
+                            if(!checked && !login){
                                 alert("Please read and agree to Terms & Conditions and Privacy Policy")
                                 return
                             }

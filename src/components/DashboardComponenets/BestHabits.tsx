@@ -1,9 +1,9 @@
 import { useContext, useState } from "react"
 import { UserContext } from "../Providers/UserProvider"
 import { Util } from "@/utils/util"
-import { triggerHaptic } from "tactus"
 import { TbTrophy } from "react-icons/tb";
 import { TbArrowBigDownLines } from "react-icons/tb";
+import Select from "../InputComponents/Select";
 
 
 interface Data{
@@ -16,6 +16,8 @@ export default function BestHabits() {
 
     const HC = useContext(UserContext)
     const [filter, setFilter] = useState(0)
+    const items = [{name: "Both", id: 0}, {name: "Consistency", id: 1}, {name: "Strength", id: 2}]
+
     const habits = Util.fetchAllMapItems(HC.habits).map(h => {
         return {
             name: h.name,
@@ -47,34 +49,12 @@ export default function BestHabits() {
                         Best Habits
                     </p>
                 </div>
-                <div className="flex gap-1.5">
-                    <button className={`text-[11px] text-subtext3 hover:cursor-pointer pb-[3px] ${filter == 2 ? "border-b-1 border-highlight/40" : ""}`} 
-                        onClick={() => {
-                            triggerHaptic()
-                            setFilter(2)
-                        }}>
-                        Strength
-                    </button>
-                    <p className="text-[11px] text-border2">
-                        |
-                    </p>
-                     <button className={`text-[11px] text-subtext3 hover:cursor-pointer pb-[3px] ${filter == 1 ? "border-b-1 border-highlight/40" : ""}`} 
-                        onClick={() => {
-                            triggerHaptic()
-                            setFilter(1)
-                        }}>
-                        Consistency
-                    </button>
-                    <p className="text-[11px] text-border2">
-                        |
-                    </p>
-                     <button className={`text-[11px] text-subtext3 hover:cursor-pointer pb-[3px] ${filter == 0 ? "border-b-1 border-highlight/40" : ""}`} 
-                        onClick={() => {
-                            triggerHaptic()
-                            setFilter(0)
-                        }}>
-                        Both
-                    </button>
+                <div className="flex gap-1.5 items-center mb-2">
+                     <Select items={items}
+                            selectedItem={items[filter]} 
+                            setSelectedItem={(id) => setFilter(id)}
+                            style="text-xs bg-panel2 text-subtext3 px-2 py-0.5 rounded-lg border-1 border-border2 z-10"/>
+                    
                 </div>
             </div>
             <div className="flex flex-col gap-2">

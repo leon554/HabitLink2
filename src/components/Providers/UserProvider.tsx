@@ -126,19 +126,22 @@ export default function UserProvider(props: Props) {
         if(!userid) return
         
         const fetchData = async () => {
+            console.time("DataFetch")
             lock()
             await getHabits()
             await getGoals()
             await getHabitsCompletions()
             await getGoalsCompletions()
-            await getIssues()
             unLock()
+            await getIssues()
+            console.timeEnd("DataFetch")
         }
         fetchData()
 
     }, [auth.session])
 
     useEffect(() => {
+        console.time("HabitGoalStats")
         lock()
         const HabitStatsMap = new Map<number, HabitStats>()
         habits.forEach(h => {
@@ -181,9 +184,11 @@ export default function UserProvider(props: Props) {
             setGoalStats(new Map(goalStats))
         })
         unLock()
-    }, [habitsCompletions, auth.session?.user, habits, goals])
+        console.timeEnd("HabitGoalStats")
+    }, [habitsCompletions, habits, goals])
 
     useEffect(() => {
+        console.time("GoalProgress")
         lock()
         const values: Map<number, number> = new Map<number, number>()
         goals.forEach(g => {
@@ -208,8 +213,8 @@ export default function UserProvider(props: Props) {
         })
         setGoalProgress(values)
         unLock()
-        console.log("set goal progress")
-    }, [goalCompletions, auth.session, auth.localUser])
+        console.timeEnd("GoalProgress")
+    }, [goalCompletions])
 
 
     function lock(){

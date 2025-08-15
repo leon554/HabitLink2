@@ -44,16 +44,14 @@ export function ConsistencyOverTime() {
                 data: data?.map(d => d.strength ?? 0) ?? [],
                 borderColor: "hsl(144, 100%, 39%)",
                 borderWidth: 2,
-                stepped: 'middle', 
-                tension: 0,
+                tension: 0.3,
             },
             {
                 label: "Concistency",
                 data: data?.map(d => d.consistency ?? 0) ?? [],
                 borderColor: "hsl(84, 100%, 41%",
                 borderWidth: 2,
-                stepped: 'middle', 
-                tension: 0,
+                tension: 0.3,
             }
         ]
     }

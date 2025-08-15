@@ -60,8 +60,8 @@ export default function Dashboard() {
             </div>
         : 
         <div className="flex flex-col items-center w-full mt-18 gap-5 mb-10">
-                    <div className="w-full rounded-2xl flex justify-center items-center p-5">
-                        <p className="text-4xl font-bold text-title text-center">
+                    <div className="w-full rounded-2xl flex justify-center items-center p-5 max-sm:p-2">
+                        <p className="text-4xl max-sm:text-2xl font-bold text-title text-center">
                             {!session.loading ? `Welcome Back, ${Util.capitilizeFirst(session.localUser?.name)?.split(" ")[0]} 👋` : <AiOutlineLoading className="animate-spin"/>}
                         </p>
                     </div>

@@ -89,7 +89,6 @@ export default function AuthProvider(props: Props) {
             setLoading(false)
             return
         }
-        console.log(data)
         setProducts(data)
     }
 
