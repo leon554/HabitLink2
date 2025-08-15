@@ -31,7 +31,7 @@ export default function Timeline() {
             onClick={() => setHoveredIndex(null)}>
             <div className="flex justify-between items-center">
                  <div className="flex items-center gap-4 mb-2 mt-2">
-                    <div className="bg-highlight/60 p-1.5 rounded-lg">
+                    <div className="bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
                         <TbClock24 />
                     </div>
                     <p className="text-lg text-title font-semibold leading-none pb-1">

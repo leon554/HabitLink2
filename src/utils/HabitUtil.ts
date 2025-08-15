@@ -90,7 +90,7 @@ export namespace HabitUtil{
     }
     
     export function getCompletionRate(habit: HabitType | null, completions: HabitCompletionType[] | undefined, customeDate?: Date, creationDate?: boolean){
-        if(!habit || !completions || completions.length == 0) return {compRate: 0, missedSessions: 0, validCompletions: 0, completableDays: 0}
+        if(!habit || !completions || completions.length == 0) return {compRate: 0, missedSessions: 0, validCompletions: 0, completableDays: 0, compsPerWeek: []}
         if(habit.completionDays.length == 1){
             return getCompRateAnyDays(habit, completions, customeDate, creationDate)
         }else{
@@ -114,7 +114,7 @@ export namespace HabitUtil{
             completions = completions.filter(c => !isAfter(new Date(Number(c.date)), today) && !isBefore(new Date(Number(c.date)), creationDay))
         }
 
-
+        const compsPerWeek: {completions: number, week: Date}[] = []
         const completionsComponents = {totalCompletions: 0, totalPossibleComps: 0}
         let missedSessions = 0 
 
@@ -154,6 +154,7 @@ export namespace HabitUtil{
             completionsComponents.totalCompletions += Math.min(completionAmt, weeklyTarget)
             completionsComponents.totalPossibleComps += completableDaysAmt
             missedSessions += Math.abs(Math.min(completionAmt, weeklyTarget) - completableDaysAmt)
+            compsPerWeek.push({completions: Math.min(completionAmt, weeklyTarget), week: weeks[i]})
 
         } 
         let compRate = completionsComponents.totalCompletions/completionsComponents.totalPossibleComps
@@ -161,7 +162,8 @@ export namespace HabitUtil{
         return {compRate: compRate, 
                 missedSessions,
                 validCompletions: completionsComponents.totalCompletions,
-                completableDays: completionsComponents.totalPossibleComps}
+                completableDays: completionsComponents.totalPossibleComps,
+                compsPerWeek}
     }
 
     function getCompRateFixedDays(habit: HabitType, completions: HabitCompletionType[], customeDate?: Date, creationDate?: boolean){
@@ -179,6 +181,7 @@ export namespace HabitUtil{
             completions = completions.filter(c => !isAfter(new Date(Number(c.date)), today) && !isBefore(new Date(Number(c.date)), creationDay))
         }
 
+        const compsPerWeek: {completions: number, week: Date}[] = []
         const completionsComponents = {totalCompletions: 0, totalPossibleComps: 0}
         let missedSessions = 0
         for(let i = 0; i < weeks.length; i++){
@@ -209,13 +212,15 @@ export namespace HabitUtil{
 
             completionsComponents.totalPossibleComps += completableDays
             completionsComponents.totalCompletions += Math.min(completionCount.length, completableDays)
+            compsPerWeek.push({completions: Math.min(completionCount.length, completableDays), week: weeks[i]})
         }
         let compRate = completionsComponents.totalCompletions/completionsComponents.totalPossibleComps
         if(isNaN(compRate)) compRate = 0
         return {compRate: compRate, 
                 missedSessions,
                 validCompletions: completionsComponents.totalCompletions,
-                completableDays: completionsComponents.totalPossibleComps}
+                completableDays: completionsComponents.totalPossibleComps,
+                compsPerWeek}
     }
 
     function hasCompletionToday(habit: HabitType, completions: HabitCompletionType[], todayDate? : Date){

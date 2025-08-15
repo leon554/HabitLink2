@@ -41,11 +41,11 @@ export default function HabitCalander() {
     return (
         <div className="m-7 mt-5 flex flex-col  gap-5">
             <div className="flex items-center gap-4 mb-2 mt-2">
-                <div className="bg-highlight/60 p-1.5 rounded-lg">
+                <div className="bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
                     <TbCalendarMonthFilled />
                 </div>
                 <p className="text-lg text-title font-semibold leading-none pb-1">
-                    Habit Entries
+                    Habit Completions
                 </p>
             </div>
             <IoInformationCircleOutline size={14} color="#57534E" className="hover:cursor-pointer absolute top-3 right-3" onClick={() => {

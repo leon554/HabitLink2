@@ -44,13 +44,19 @@ export default function UpcomingGoals() {
         <div className="flex flex-col gap-3 m-7 mb-0 ">
             <div className="flex flex-col gap-3">
                 <div className="flex items-center gap-4 mb-2">
-                    <div className="bg-panel2 text-subtext3 outline-1 outline-border2 p-1.5 rounded-lg">
+                    <div className="bg-panel2 text-subtext2 outline-1 outline-border2 p-1.5 rounded-lg">
                         <TbTargetArrow />
                     </div>
                     <p className="text-lg text-title font-semibold leading-none pb-1">
                         Upcomming Goals
                     </p>
                 </div>
+                {HC.isCalculating.current.isLoading() ? 
+                <div>
+                    <p className="text-xs text-subtext2 animate-pulse">
+                        Fteching you're upcomming goals…
+                    </p>
+                </div> :
                 <div className="w-full flex flex-col gap-2">
                     {upcommingGoals.length == 0 ?
                     <p className="text-subtext2 text-xs">
@@ -74,10 +80,11 @@ export default function UpcomingGoals() {
                     })
                     }
                 </div>
+                }
             </div>
             <div className="mt-3 flex flex-col gap-3">
                 <div className="flex items-center gap-4 mb-2 mt-2">
-                    <div className="bg-highlight/60 p-1.5 rounded-lg">
+                    <div className="bg-panel2 text-subtext2 outline-1 outline-border2 p-1.5 rounded-lg">
                         <TbCalendarCheck className=""/>
                     </div>
                     <p className="text-lg text-title font-semibold leading-none pb-1">

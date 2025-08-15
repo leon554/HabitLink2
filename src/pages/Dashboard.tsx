@@ -10,8 +10,10 @@ import Timeline from "@/components/DashboardComponenets/Timeline"
 import DashBoardStats from "@/components/DashboardComponenets/DashBoardStats"
 import AvgCompRate from "@/components/DashboardComponenets/AvgCompRate"
 import { useNavigate } from "react-router-dom"
-import ProgressPanelBox from "@/components/DashboardComponenets/ProgressPanelBox"
 import { HabitUtil } from "@/utils/HabitUtil"
+import { TbChartHistogram } from "react-icons/tb";
+import ProgressPanel from "@/components/goalComponenets/ProgressPanel"
+import CompsPerWeek from "@/components/DashboardComponenets/CompsPerWeek"
 
 
 export default function Dashboard() {
@@ -76,9 +78,20 @@ export default function Dashboard() {
                                 </p>
                             </div>
                         </div>
-                        <ProgressPanelBox value={isNaN(avgHabitComp) ? 0 : avgHabitComp} title="Average Habit Consistency"/>
-                        <ProgressPanelBox value={isNaN(avgHabitStrength) ? 0 : avgHabitStrength} title="Average Habit Strength"/>
-                        <ProgressPanelBox value={isNaN(avgGoalProgress) ? 0 : avgGoalProgress} title="Average Goal Progress"/>
+                        <div className="bg-panel1 p-7 rounded-2xl  outline-1 outline-border flex flex-col gap-4.5">
+                            <div className="flex items-center gap-4 mb-2">
+                                <div className="bg-panel2 text-subtext2 outline-1 outline-border2 p-1.5 rounded-lg">
+                                    <TbChartHistogram />
+                                </div>
+                                <p className="text-lg text-title font-semibold leading-none pb-1">
+                                    Progression
+                                </p>
+                            </div>
+                            <ProgressPanel value={isNaN(avgHabitComp) ? 0 : avgHabitComp} title="Average Habit Consistency" small={true} load={true}/>
+                            <ProgressPanel value={isNaN(avgHabitStrength) ? 0 : avgHabitStrength} title="Average Habit Strength" small={true} load={true}/>
+                            <ProgressPanel value={100 - (isNaN(avgHabitComp) ? 0 : avgHabitComp)} title="Miss Rate" small={true} load={true}/>
+                            <ProgressPanel value={isNaN(avgGoalProgress) ? 0 : avgGoalProgress} title="Average Goal Progress" small={true} load={true}/>
+                        </div>
                     </div>
                 </div>
                 <div className="h-102 rounded-2xl bg-panel1 w-[90%] max-w-[600px] outline-1 outline-border flex flex-col gap-5 ">
@@ -99,10 +112,14 @@ export default function Dashboard() {
                 </div>
             </div>
             <div className="p-[1px] flex max-md:flex-col gap-5 justify-center max-md:items-center md:w-[90%] max-md:w-full">
-                <div className="h-96 flex-1 min-w-0 flex flex-col gap-5 rounded-2xl bg-panel1  outline-1 outline-border w-[90%] max-w-[600px] md:max-w-[400px]">
-                    <AvgCompRate />
+                <div className="w-[90%] max-w-[600px] md:max-w-[400px] flex flex-col gap-5">
+                    <div className="h-96 flex-1 min-w-0 flex flex-col gap-5 rounded-2xl bg-panel1  outline-1 outline-border w-full">
+                        <AvgCompRate />
+                    </div>
+                    <div className="h-50 flex-1 min-w-0 flex-col gap-5 rounded-2xl bg-panel1  outline-1 outline-border w-full">
+                        <CompsPerWeek />
+                    </div>
                 </div>
-
                 <div className=" flex-1 min-w-0 rounded-2xl bg-panel1 outline-1 outline-border relative w-[90%] max-w-[600px] ">
                     <DashBoardStats />
                 </div>

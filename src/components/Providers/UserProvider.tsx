@@ -95,6 +95,7 @@ export interface HabitStats{
     validComps: number
     completableDays: number
     chartData: ChartDataType[]
+    compsPerWeek: {completions: number, week: Date}[]
 }
 export interface GaolStats{
     habitID: number
@@ -143,7 +144,7 @@ export default function UserProvider(props: Props) {
         habits.forEach(h => {
             const currentHabitComps = habitsCompletions.get(h.id)
 
-            const {compRate, missedSessions, validCompletions: validComps, completableDays} = HabitUtil.getCompletionRate(h, currentHabitComps)
+            const {compRate, missedSessions, validCompletions: validComps, completableDays, compsPerWeek} = HabitUtil.getCompletionRate(h, currentHabitComps)
             const strength = HabitUtil.getStrength(h, currentHabitComps)
             const streak = HabitUtil.getStreak(h, currentHabitComps)
             const {validComps: completions, partialComps} = HabitUtil.getCompletions(h, currentHabitComps)
@@ -163,7 +164,8 @@ export default function UserProvider(props: Props) {
                 partialComps,
                 entries,
                 dataSum,
-                chartData
+                chartData,
+                compsPerWeek
             } as HabitStats
             HabitStatsMap.set(h.id, data)
         })

@@ -40,7 +40,7 @@ export default function BestHabits() {
         <div className="flex flex-col gap-3 m-7 ">
             <div className="flex justify-between items-center">
                 <div className="flex items-center gap-4 mb-2">
-                    <div className="bg-highlight/60 p-1.5 rounded-lg">
+                    <div className="bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
                         <TbTrophy />
                     </div>
                     <p className="text-lg text-title font-semibold leading-none pb-1">
@@ -105,8 +105,8 @@ export default function BestHabits() {
                     )
                 })}
             </div>
-            <div className="flex items-center gap-4 mb-2 mt-2">
-                <div className="bg-highlight/60 p-1.5 rounded-lg">
+            <div className="flex items-center gap-4 mb-1.5 mt-2.5">
+                <div className="bg-panel2 outline-1 outline-border2 text-subtext2  p-1.5 rounded-lg">
                     <TbArrowBigDownLines />
                 </div>
                 <p className="text-lg text-title font-semibold leading-none pb-1">

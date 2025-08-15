@@ -1,27 +1,41 @@
-import { useContext} from "react"
+import { useContext, useEffect, useMemo, useState} from "react"
 import { UserContext } from "../Providers/UserProvider"
-import { HabitUtil } from "@/utils/HabitUtil"
 import { Util } from "@/utils/util"
 import { FaChartLine } from "react-icons/fa"
 import { TbChartBarPopular } from "react-icons/tb";
-import {Line} from "react-chartjs-2"
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, type ChartData} from "chart.js"
+import {Bar} from "react-chartjs-2"
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, BarElement, Title, Tooltip, type ChartData} from "chart.js"
+import { dateUtils } from "@/utils/dateUtils"
 
 
 ChartJS.register(
     CategoryScale, 
     LinearScale, 
     PointElement, 
-    LineElement, 
+    BarElement, 
     Title, 
     Tooltip,  
+ 
 )
 
-export default function AvgCompRate() {
-
+export default function CompsPerWeek() {
     const HC = useContext(UserContext)
-    const rawData = Util.fetchAllMapItems(HC.habitStats).map(i => i.chartData)
-    const data = HabitUtil.avgSameLengthChartDataArrs(HabitUtil.normalizeChartDataArrays(rawData)) ?? []
+    const rawData = useMemo(() => {return Util.fetchAllMapItems(HC.habitStats).map(i => i.compsPerWeek).flat()}, [HC.habitStats]) 
+    const [formatedChartData, setFormatedChartData] = useState(new Map<string, number>()) 
+
+    useEffect(() => {
+        console.log(formatedData)
+        const temp = new Map<string, number>()
+        rawData.forEach(d => {
+            if(temp.has(dateUtils.formatDate(d.week))){
+                const prevComps = temp.get(dateUtils.formatDate(d.week))!
+                temp.set(dateUtils.formatDate(d.week), prevComps + d.completions)
+            }else{
+                temp.set(dateUtils.formatDate(d.week), d.completions)
+            }
+        })
+        setFormatedChartData(temp)
+    }, [rawData])
 
     const rootStyles = getComputedStyle(document.documentElement)
 
@@ -31,21 +45,12 @@ export default function AvgCompRate() {
     const border = rootStyles.getPropertyValue('--color-border').trim()
 
     const formatedData = {
-        labels: data?.map(d => d.date),
+        labels: Array.from(formatedChartData.keys()),
         datasets: [
             {
-                label: "Strength",
-                data: data?.map(d => d.strength ?? 0) ?? [],
-                borderColor: "hsl(144, 100%, 39%)",
-                borderWidth: 2, 
-                tension: 0.1,
-            },
-            {
-                label: "Concistency",
-                data: data?.map(d => d.consistency ?? 0) ?? [],
-                borderColor: "hsl(84, 100%, 41%",
-                borderWidth: 2,
-                tension: 0.4,
+                label: "Completions",
+                data: Array.from(formatedChartData.values()) ?? [],
+                backgroundColor: "hsl(144, 100%, 39%)",
             }
         ]
     }
@@ -123,32 +128,26 @@ export default function AvgCompRate() {
                 </div>
                 <div className="flex flex-col gap-1">
                     <p className="text-lg text-title font-semibold leading-none pb-1">
-                        Avg Consistency & Strength
+                        Completions Per Week
                     </p>
-                    <p className="text-xs text-subtext2">
-                        You're completion rate and strength of all your habits over time 
-                    </p>
+                    
                 </div>
             </div>
-            {data.length < 10 ? 
+            {formatedChartData.size < 10 ? 
             <div className="h-55 border-1 border-border2 flex justify-center items-center rounded-2xl">
                 <p className="text-sm p-6 max-sm:text-xs text-subtext3 flex flex-wrap text-center justify-center items-center gap-2">
-                    Log your habits for {10-data.length} more days to see this graph <FaChartLine />
+                    Log your habits for {10-formatedChartData.size} more days to see this graph <FaChartLine />
                 </p>
             </div>
             :
             <>
-                <div className="h-50 bg">
-                    <Line options={options} data={formatedData as ChartData<"line", number[], string>}/>
+                <div className="h-35 bg">
+                    <Bar options={options} data={formatedData as ChartData<"bar", number[], string>}/>
                 </div>
                 <div className="flex justify-center items-center gap-2 w-full ">
-                    <div className="w-3.5 h-3.5 bg-highlight2 rounded-md"></div>
-                    <p className="text-xs text-subtext3">
-                        Consistency
-                    </p>
                     <div className="w-3.5 h-3.5 bg-highlight rounded-md"></div>
                     <p className="text-xs text-subtext3">
-                        Strength
+                        Completions
                     </p>
                 </div>
             </>
