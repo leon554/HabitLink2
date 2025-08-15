@@ -255,7 +255,7 @@ export default function HabitStudio() {
                             <div className=" flex justify-stretch gap-2">
                                 {Object.entries(weeklyHabitCompsDay).map((e, i) => {
                                     return(
-                                        <button className={`${e[1] ? "bg-highlight outline-1 outline-border dark:outline-0" : "" }  ${e[1] ? "text-stone-900" : "text-subtext1" } ${e[1] ? "outline-0" : "outline-1" } grow-1 pl-2 pr-2 rounded-md outline-border2  hover:cursor-pointer   ease-in-out duration-75 text-sm`}
+                                        <button className={`${e[1] ? "bg-highlight outline-1 outline-border dark:outline-0" : "" }  ${e[1] ? "text-stone-900" : "text-subtext1" } ${e[1] ? "outline-0" : "outline-1" } grow-1 pl-2 pr-2 rounded-md outline-border2  hover:cursor-pointer  text-sm`}
                                             onClick={() => {
                                                 triggerHaptic()
                                                 setWeeklyHabitCompsDay(prev => ({...prev, [e[0]]: !e[1]})); setWeeklyHabitComps(0)

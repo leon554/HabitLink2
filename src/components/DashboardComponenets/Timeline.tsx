@@ -7,6 +7,7 @@ import { IoInformationCircleOutline } from "react-icons/io5";
 import Model from "../InputComponents/Model";
 import { isMobile } from 'react-device-detect';
 import { triggerHaptic } from "tactus";
+import { TbClock24 } from "react-icons/tb";
 
 export default function Timeline() {
     const HC = useContext(UserContext);
@@ -29,11 +30,16 @@ export default function Timeline() {
         <div className="m-7 my-6 flex flex-col gap-4 relative"
             onClick={() => setHoveredIndex(null)}>
             <div className="flex justify-between items-center">
-                <p className="text-title text-lg font-medium">
-                    Today's Time Line
-                </p>
+                 <div className="flex items-center gap-4 mb-2 mt-2">
+                    <div className="bg-highlight/60 p-1.5 rounded-lg">
+                        <TbClock24 />
+                    </div>
+                    <p className="text-lg text-title font-semibold leading-none pb-1">
+                        Today's Timeline
+                    </p>
+                </div>
                 <div className="flex gap-1.5">
-                     <button className={`text-[11px] text-subtext3 hover:cursor-pointer pb-[3px] ${filter == 1 ? "border-b-1 border-border2" : ""}`} 
+                     <button className={`text-[11px] text-subtext3 hover:cursor-pointer pb-[3px] ${filter == 1 ? "border-b-1 border-highlight/40" : ""}`} 
                         onClick={() => {
                             triggerHaptic()
                             setFilter(1)
@@ -43,7 +49,7 @@ export default function Timeline() {
                     <p className="text-[11px] text-border2">
                         |
                     </p>
-                     <button className={`text-[11px] text-subtext3 hover:cursor-pointer pb-[3px] ${filter == 0 ? "border-b-1 border-border2" : ""}`} 
+                     <button className={`text-[11px] text-subtext3 hover:cursor-pointer pb-[3px] ${filter == 0 ? "border-b-1 border-highlight/40" : ""}`} 
                         onClick={() => {
                             triggerHaptic()
                             setFilter(0)
@@ -57,11 +63,12 @@ export default function Timeline() {
             </div>
             <div className="flex flex-col gap-1">
                 <div className="relative h-4 w-full flex items-center">
-                    <div className="w-full h-1 bg-progress-panel rounded-2xl"></div>
+                    <div className="w-full h-2 bg-progress-panel rounded-2xl"></div>
+                   
                     {completionsToday.map((c, index) => {
                         return (
                             <div
-                                className="absolute h-4 w-1 bg-highlight rounded-2xl hover:cursor-pointer group"
+                                className="absolute h-5 w-1 bg-highlight rounded-2xl hover:cursor-pointer group"
                                 style={{ left: `${((Number(c.date) - startDay) / totalDayMs) * 100}%` }}
                                 onMouseEnter={() => {
                                     if(!isMobile){

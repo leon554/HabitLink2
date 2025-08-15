@@ -5,6 +5,8 @@ import { dateUtils } from "@/utils/dateUtils"
 import { FaHourglassHalf } from "react-icons/fa"
 import { HabitUtil } from "@/utils/HabitUtil"
 import { useNavigate } from "react-router-dom"
+import { TbTargetArrow } from "react-icons/tb";
+import { TbCalendarCheck } from "react-icons/tb";
 
 
 export default function UpcomingGoals() {
@@ -39,24 +41,33 @@ export default function UpcomingGoals() {
     }
 
     return (
-        <div className="flex flex-col gap-3 m-7 mb-0">
+        <div className="flex flex-col gap-3 m-7 mb-0 ">
             <div className="flex flex-col gap-3">
-                <p className="text-lg text-title font-medium">
-                    Upcomming Goals
-                </p>
-                <div className="w-full">
+                <div className="flex items-center gap-4 mb-2">
+                    <div className="bg-panel2 text-subtext3 outline-1 outline-border2 p-1.5 rounded-lg">
+                        <TbTargetArrow />
+                    </div>
+                    <p className="text-lg text-title font-semibold leading-none pb-1">
+                        Upcomming Goals
+                    </p>
+                </div>
+                <div className="w-full flex flex-col gap-2">
                     {upcommingGoals.length == 0 ?
                     <p className="text-subtext2 text-xs">
                         No upcomming goals, try and create a new goal
                     </p>:
                     upcommingGoals.map((g, i) => {
                         return(
-                            <div className={`${i < upcommingGoals.length-1 ? "border-b-1" : ""} text-sm border-border2 py-2 pb-3 flex justify-between items-center gap-2`} key={i}>
+                            <div className={`bg-panel2 px-2 rounded-xl border-1 border-border2 hover:cursor-pointer hover:scale-101 transition-all duration-150 ease-in-out text-sm  py-2  flex justify-between items-center gap-2`} key={i}
+                                onClick={() => {
+                                    HC.setCurrentGoal(g)
+                                    navigate("/goals")
+                                }}>
                                 <p className="text-subtext1 truncate overflow-hidden whitespace-nowrap">
                                     🎯 {Util.capitilizeFirst(g.name)}
                                 </p>
                                 <p className="text-subtext3 text-xs flex items-center gap-1 whitespace-nowrap">
-                                  <FaHourglassHalf size={9} className="mt-[1px]"/> {dateUtils.formatTime(timeLeft[i])}
+                                  <FaHourglassHalf size={9} className="mt-[1px]"/> {dateUtils.formatTime(timeLeft[i], true)}
                                 </p>
                             </div>
                         )
@@ -65,9 +76,14 @@ export default function UpcomingGoals() {
                 </div>
             </div>
             <div className="mt-3 flex flex-col gap-3">
-                <p className="text-lg text-title font-medium">
-                    Habits Due Today
-                </p>
+                <div className="flex items-center gap-4 mb-2 mt-2">
+                    <div className="bg-highlight/60 p-1.5 rounded-lg">
+                        <TbCalendarCheck className=""/>
+                    </div>
+                    <p className="text-lg text-title font-semibold leading-none pb-1">
+                        Today's Habits
+                    </p>
+                </div>
                 {HC.isCalculating.current.isLoading() ? 
                 <div>
                     <p className="text-xs text-subtext2 animate-pulse">
@@ -87,11 +103,11 @@ export default function UpcomingGoals() {
                         🎉 Congratulations! You've completed all your habits for today — well done! 🎉
                     </p>
                 </div>:
-                <div className="w-full max-h-28 overflow-y-scroll no-scrollbar  p-[1px] justify-stretch items-center">
-                    {tasksToday.map((t, i) => {
+                <div className="w-full max-h-36 overflow-y-scroll no-scrollbar flex flex-col gap-2  p-[1px] justify-stretch items-center">
+                    {tasksToday.map((t, _) => {
                         return(
                             <>
-                                <div className={`${i < tasksToday.length-1 ? "border-b-1" : ""}  flex justify-between  items-center py-2 pb-3  border-border2 w-full outline-border2   hover:cursor-pointer`}
+                                <div className={`bg-panel2 px-2 rounded-xl border-1 hover:scale-101 transition-all duration-150 ease-in-out flex justify-between  items-center py-2 pb-3  border-border2 w-full outline-border2   hover:cursor-pointer`}
                                     onClick={() => navigate("/log")}>
                                     <p className="text-subtext1 text-sm">
                                         {t.icon} {Util.capitilizeFirst(t.name)}

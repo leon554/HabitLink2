@@ -6,6 +6,7 @@ import { HabitUtil } from "@/utils/HabitUtil"
 import { Util } from "@/utils/util"
 import { IoInformationCircleOutline } from "react-icons/io5"
 import Model from "../InputComponents/Model"
+import { TbCalendarMonthFilled } from "react-icons/tb";
 
 
 export default function HabitCalander() {
@@ -38,10 +39,15 @@ export default function HabitCalander() {
 
 
     return (
-        <div className="m-7 flex flex-col  gap-5">
-            <p className="text-title text-lg font-medium">
-                Habit Entries
-            </p>
+        <div className="m-7 mt-5 flex flex-col  gap-5">
+            <div className="flex items-center gap-4 mb-2 mt-2">
+                <div className="bg-highlight/60 p-1.5 rounded-lg">
+                    <TbCalendarMonthFilled />
+                </div>
+                <p className="text-lg text-title font-semibold leading-none pb-1">
+                    Habit Entries
+                </p>
+            </div>
             <IoInformationCircleOutline size={14} color="#57534E" className="hover:cursor-pointer absolute top-3 right-3" onClick={() => {
                 setOpen(true)
             }}/>
@@ -70,12 +76,12 @@ export default function HabitCalander() {
                                                 </div>
                                             }>
                                                 <p className={`w-full h-4  border-border2/70 
-                                                    ${v.completeAmount != 0 || v.missAmount != 0? "border-0" : "border-1"}  
+                                                    ${v.completeAmount != 0 || v.missAmount != 0? "border-0" : ""}  
                                                     ${v.creation ? "" : "rounded-sm "}
-                                                    hover:scale-[1.2] transition-all hover:cursor-default ${HC.isCalculating.current.isLoading() ? "animate-pulse duration-1000 border-1" : "duration-200"}`}
+                                                    hover:scale-[1.2] transition-all hover:cursor-default ${HC.isCalculating.current.isLoading() ? "animate-pulse duration-1000 " : "duration-200"}`}
                                                     style={{backgroundColor:  HC.isCalculating.current.isLoading() ? "#1a1a1a": v.completeAmount - v.missAmount < 0 ? 
-                                                        Util.getInterpolatedColor(0, maxMiss, Math.max((v.missAmount), 0), "#0f0f0f", "#ef4444"):
-                                                        Util.getInterpolatedColor(0, maxComp, Math.max((v.completeAmount), 0), "#0f0f0f", "#22c55e")}}>
+                                                        Util.getInterpolatedColor(0, maxMiss, Math.max((v.missAmount), 0), "#1a1a1a", "#ef4444"):
+                                                        Util.getInterpolatedColor(0, maxComp, Math.max((v.completeAmount), 0), "#1a1a1a", "#22c55e")}}>
 
                                                 </p>
                                             </ToolTip>
@@ -85,6 +91,26 @@ export default function HabitCalander() {
                             )
                         }
                     })}
+                </div>
+                <div className="flex gap-4 justify-center mt-4">
+                    <div className="flex gap-2 items-center">
+                        <div className="w-2 h-2 rounded-sm bg-highlight"></div>
+                        <p className="text-xs text-subtext3">
+                            Completed
+                        </p>
+                    </div>
+                    <div className="flex gap-2 items-center">
+                        <div className="w-2 h-2 rounded-sm bg-red-500"></div>
+                        <p className="text-xs text-subtext3">
+                            Missed
+                        </p>
+                    </div>
+                    <div className="flex gap-2 items-center">
+                        <div className="w-2 h-2 rounded-sm bg-[#1a1a1a]"></div>
+                        <p className="text-xs text-subtext3">
+                            No Data
+                        </p>
+                    </div>
                 </div>
             </div>
             <Model open={open} onClose={() => setOpen(false)}>

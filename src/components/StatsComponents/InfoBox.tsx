@@ -15,7 +15,7 @@ export default function InfoBox(p: Props) {
                 </p>
             </div>
         }>
-            <div className="flex relative group items-center justify-between rounded-2xl gap-2 hover:scale-[1.03] transition-transform duration-200 hover:cursor-default w-full font-s">
+            <div className="flex relative group items-center justify-between rounded-2xl gap-2 hover:scale-[1.01] transition-transform duration-200 hover:cursor-default w-full font-s">
                 <p className="text-[12px]  text-subtext2 truncate overflow-hidden whitespace-nowrap text-center font-sans  ">
                     {p.text}
                 </p>

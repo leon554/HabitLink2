@@ -2,6 +2,9 @@ import { useContext, useState } from "react"
 import { UserContext } from "../Providers/UserProvider"
 import { Util } from "@/utils/util"
 import { triggerHaptic } from "tactus"
+import { TbTrophy } from "react-icons/tb";
+import { TbArrowBigDownLines } from "react-icons/tb";
+
 
 interface Data{
     name: string
@@ -34,13 +37,18 @@ export default function BestHabits() {
     }
 
     return (
-        <div className="flex flex-col gap-3 m-7">
+        <div className="flex flex-col gap-3 m-7 ">
             <div className="flex justify-between items-center">
-                <p className="text-title text-lg font-medium">
-                    Best Habits
-                </p>
+                <div className="flex items-center gap-4 mb-2">
+                    <div className="bg-highlight/60 p-1.5 rounded-lg">
+                        <TbTrophy />
+                    </div>
+                    <p className="text-lg text-title font-semibold leading-none pb-1">
+                        Best Habits
+                    </p>
+                </div>
                 <div className="flex gap-1.5">
-                    <button className={`text-[11px] text-subtext3 hover:cursor-pointer pb-[3px] ${filter == 2 ? "border-b-1 border-border2" : ""}`} 
+                    <button className={`text-[11px] text-subtext3 hover:cursor-pointer pb-[3px] ${filter == 2 ? "border-b-1 border-highlight/40" : ""}`} 
                         onClick={() => {
                             triggerHaptic()
                             setFilter(2)
@@ -50,7 +58,7 @@ export default function BestHabits() {
                     <p className="text-[11px] text-border2">
                         |
                     </p>
-                     <button className={`text-[11px] text-subtext3 hover:cursor-pointer pb-[3px] ${filter == 1 ? "border-b-1 border-border2" : ""}`} 
+                     <button className={`text-[11px] text-subtext3 hover:cursor-pointer pb-[3px] ${filter == 1 ? "border-b-1 border-highlight/40" : ""}`} 
                         onClick={() => {
                             triggerHaptic()
                             setFilter(1)
@@ -60,7 +68,7 @@ export default function BestHabits() {
                     <p className="text-[11px] text-border2">
                         |
                     </p>
-                     <button className={`text-[11px] text-subtext3 hover:cursor-pointer pb-[3px] ${filter == 0 ? "border-b-1 border-border2" : ""}`} 
+                     <button className={`text-[11px] text-subtext3 hover:cursor-pointer pb-[3px] ${filter == 0 ? "border-b-1 border-highlight/40" : ""}`} 
                         onClick={() => {
                             triggerHaptic()
                             setFilter(0)
@@ -69,15 +77,18 @@ export default function BestHabits() {
                     </button>
                 </div>
             </div>
-            <div>
-                {habits.slice(0, 3).map(h => {
+            <div className="flex flex-col gap-2">
+                {habits.slice(0, 3).map((h, _) => {
                     return(
-                        <div className="flex justify-between items-center text-sm text-subtext1 py-2 border-b-1 border-border2 pb-3">
-                            <p>
+                        <div className= {`bg-panel2 px-2 rounded-xl border-1  flex justify-between items-center text-sm text-subtext1 py-2 border-b-1 border-border2  pb-3`}>
+                            <p className="font-medium text-md">
                                 {h.icon} {Util.capitilizeFirst(h.name)}
                             </p>
+                            <p>
+
+                            </p>
                             <div className="flex gap-2 items-center">
-                                <div className="flex gap-0.5 items-center">
+                                <div className="flex gap-1 items-center">
                                     📈 
                                     <p className="text-xs w-8 ">
                                         {Math.round(h.consistency*100)}% 
@@ -94,18 +105,23 @@ export default function BestHabits() {
                     )
                 })}
             </div>
-             <p className="text-title text-lg font-medium mt-5">
-                Worst Habits
-            </p>
-            <div>
-                {habits.slice(-3).map(h => {
+            <div className="flex items-center gap-4 mb-2 mt-2">
+                <div className="bg-highlight/60 p-1.5 rounded-lg">
+                    <TbArrowBigDownLines />
+                </div>
+                <p className="text-lg text-title font-semibold leading-none pb-1">
+                    Worst Habits
+                </p>
+            </div>
+            <div className="flex flex-col gap-2">
+                {habits.slice(-3).reverse().map((h, _) => {
                     return(
-                        <div className="flex justify-between items-center text-sm text-subtext1 py-2 border-b-1 border-border2 pb-3">
+                        <div className={`bg-panel2 px-2 rounded-xl border-1  flex justify-between items-center text-sm text-subtext1 py-2 border-b-1 border-border2  pb-3`}>
                             <p>
                                 {h.icon} {Util.capitilizeFirst(h.name)}
                             </p>
                              <div className="flex gap-1.5 items-center">
-                                <div className="flex gap-0.5 items-center">
+                                <div className="flex gap-1 items-center">
                                     📈
                                     <p className="text-xs w-8 ">
                                         {Math.round(h.consistency*100)}% 

@@ -10,7 +10,7 @@ export default function Layout() {
     const auth = useContext(AuthContext)
     return (
         <>
-            <div className="absolute inset-0 texture opacity-20 dark:opacity-10 pointer-events-none -z-30 h-screen" />
+            <div className="absolute inset-0  opacity-20 dark:opacity-10 pointer-events-none -z-30 h-screen" />
             <Alert/>
             <Navbar/>
             {auth.loading? 

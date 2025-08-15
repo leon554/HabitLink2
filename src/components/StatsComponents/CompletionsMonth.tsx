@@ -82,7 +82,7 @@ export default function CompletionsMonth() {
                                                     "bg-highlight rounded-sm" : 
                                                     v.complete ? 
                                                     "bg-red-400 rounded-sm" : 
-                                                    "border-1 border-border2/70 rounded-sm"}  hover:scale-[1.2] transition-transform duration-200 hover:cursor-default`}>
+                                                    " bg-panel2 border-border2/70 rounded-sm"}  hover:scale-[1.2] transition-transform duration-200 hover:cursor-default`}>
 
                                                 </p>
                                             </ToolTip>

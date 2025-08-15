@@ -92,7 +92,7 @@ export namespace dateUtils{
         const componets = date.split("/").map(c => Number(c)).filter(c => !isNaN(c))
         return new Date(`${componets[2]}-${String(componets[1]).padStart(2, "0")}-${String(componets[0]).padStart(2, "0")}T${dateUtils.getCurrentTime()}`)
     }
-    export function formatTime(ms: number): string {
+    export function formatTime(ms: number, short?: boolean): string {
         if (ms <= 0) return "0d 00h 00m 00s";
 
         const totalSeconds = Math.floor(ms / 1000);
@@ -102,6 +102,9 @@ export namespace dateUtils{
         const minutes = Math.floor((totalSeconds % 3600) / 60);
         const seconds = totalSeconds % 60;
 
+        if(short){
+            return `${days}d ${String(hours).padStart(2, "0")}h`;
+        }
         return `${days}d ${String(hours).padStart(2, "0")}h ${String(minutes).padStart(2, "0")}m ${String(seconds).padStart(2, "0")}s`;
     }
     export function getDayStringFromDay(date: Date, charAmount?: number){

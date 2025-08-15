@@ -20,7 +20,7 @@ export default function ProgressPanel(p: Props) {
 
     return (
         <div className="w-full max-w-[700px] text-title  flex flex-col ">
-            <p className={` ${p.small ? "font-normal text-subtext1 text-sm" : "font-medium"} mt-[-4px] ${p.large ? "text-lg" : ""}`}>
+            <p className={` ${p.small ? "font-normal text-subtext2 text-sm" : "font-medium"} mt-[-4px] ${p.large ? "text-lg" : ""}`}>
                 {p.title}
             </p>
             {p.text ? 

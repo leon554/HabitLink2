@@ -29,14 +29,14 @@ export default function NumericInput(p: NumericProps) {
         <div className="outline-1 rounded-md outline-border2 flex justify-between p-0 w-fit">
             <button 
                 onClick={decrement}
-                className="pl-3 pr-3 text-subtext1 hover:bg-highlight font-mono rounded-md hover:text-stone-900 duration-150 ease-in-out hover:cursor-pointer">
+                className="pl-3 pr-3 text-subtext1 hover:bg-highlight font-mono rounded-md hover:text-stone-900  hover:cursor-pointer">
                 -
             </button>
             <input type="text" className="w-7 text-center text-subtext1 border-0 outline-0 text-[14px]" value={p.value} 
             onChange={e => handleOnChange(e)}/>
             <button 
                 onClick={increment}
-                className="pl-3 pr-3 text-subtext1 hover:bg-highlight font-mono rounded-md hover:text-stone-900 duration-150 ease-in-out hover:cursor-pointer">
+                className="pl-3 pr-3 text-subtext1 hover:bg-highlight font-mono rounded-md hover:text-stone-900 hover:cursor-pointer">
                 +
             </button>
         </div>

@@ -1,7 +1,6 @@
 import {useContext, useEffect, useState} from "react"
 import {AuthContext} from "../components/Providers/AuthProvider"
 import { Util } from "../utils/util"
-import ProgressPanel from "@/components/goalComponenets/ProgressPanel"
 import { UserContext } from "@/components/Providers/UserProvider"
 import { AiOutlineLoading } from "react-icons/ai"
 import UpcomingGoals from "@/components/DashboardComponenets/UpcomingGoals"
@@ -11,14 +10,15 @@ import Timeline from "@/components/DashboardComponenets/Timeline"
 import DashBoardStats from "@/components/DashboardComponenets/DashBoardStats"
 import AvgCompRate from "@/components/DashboardComponenets/AvgCompRate"
 import { useNavigate } from "react-router-dom"
-
+import ProgressPanelBox from "@/components/DashboardComponenets/ProgressPanelBox"
+import { HabitUtil } from "@/utils/HabitUtil"
 
 
 export default function Dashboard() {
     const session = useContext(AuthContext);
     const HC = useContext(UserContext);
     const habitStats = Util.fetchAllMapItems(HC.habitStats);
-
+    const tasksToday = Util.fetchAllMapItems(HC.habits).filter(h => HabitUtil.isCompleteableToday(h, HC.habitsCompletions.get(h.id)))
     const [avgHabitComp, setAvgHabitComp] = useState(0);
     const [avgHabitStrength, setAvgHabitStrength] = useState(0);
     const [avgGoalProgress, setAvgGoalProgress] = useState(0);
@@ -58,32 +58,39 @@ export default function Dashboard() {
             </div>
         : 
         <div className="flex flex-col items-center w-full mt-18 gap-5 mb-10">
-            <div className="  flex max-md:flex-col gap-5 justify-center max-md:items-center  md:w-[90%] max-md:w-full">
-                <div className="rounded-2xl w-[90%] max-w-[600px] flex flex-col gap-5 md:max-w-[400px] h-89">
-                    <div className="w-full bg-panel1 rounded-2xl outline-1 outline-border flex justify-center items-center p-5">
-                        <p className="text-2xl font-medium text-title">
-                            {!session.loading ? `Welcome Back, ${Util.capitilizeFirst(session.localUser?.name)?.split(" ")[0]}` : <AiOutlineLoading className="animate-spin"/>}
+                    <div className="w-full rounded-2xl flex justify-center items-center p-5">
+                        <p className="text-4xl font-bold text-title text-center">
+                            {!session.loading ? `Welcome Back, ${Util.capitilizeFirst(session.localUser?.name)?.split(" ")[0]} 👋` : <AiOutlineLoading className="animate-spin"/>}
                         </p>
                     </div>
-                    <div className="w-full  bg-panel1 rounded-2xl outline-1 outline-border p-7 flex flex-col gap-5 h-full">
-                        <p className="text-title text-lg font-medium">
-                            Progression
-                        </p>
-                        <ProgressPanel title="Average Habit Consistency" value={isNaN(avgHabitComp) ? 0 : avgHabitComp} small={true} load={true}/>
-                        <ProgressPanel title="Average Habit Strength" value={isNaN(avgHabitStrength) ? 0 : avgHabitStrength} small={true} load={true}/>
-                        <ProgressPanel title="Average Goal Progress" value={isNaN(avgGoalProgress) ? 0 : avgGoalProgress} small={true} load={true}/>
+            <div className="  flex max-md:flex-col gap-5 justify-center max-md:items-center  md:w-[90%] max-md:w-full">
+                <div className="rounded-2xl w-[90%] max-w-[600px] flex flex-col gap-5 md:max-w-[400px] h-102">
+                    <div className="w-full flex flex-col gap-5 h-full">
+                        <div className="rounded-2xl bg-panel1 outline-1 outline-border h-16 flex items-center justify-center">
+                            <div className="flex  gap-3 items-center">
+                                <div className="h-2 w-2 bg-highlight rounded-full ">
+                                <div className="h-2 w-2 bg-highlight rounded-full"></div>
+                                </div>
+                                <p className="text-title font-medium">
+                                    {tasksToday.length} Habit To Do Today
+                                </p>
+                            </div>
+                        </div>
+                        <ProgressPanelBox value={isNaN(avgHabitComp) ? 0 : avgHabitComp} title="Average Habit Consistency"/>
+                        <ProgressPanelBox value={isNaN(avgHabitStrength) ? 0 : avgHabitStrength} title="Average Habit Strength"/>
+                        <ProgressPanelBox value={isNaN(avgGoalProgress) ? 0 : avgGoalProgress} title="Average Goal Progress"/>
                     </div>
                 </div>
-                <div className="h-89 rounded-2xl bg-panel1 w-[90%] max-w-[600px] outline-1 outline-border flex flex-col gap-5 ">
+                <div className="h-102 rounded-2xl bg-panel1 w-[90%] max-w-[600px] outline-1 outline-border flex flex-col gap-5 ">
                     <UpcomingGoals/>
                 </div>
             </div>
             <div className=" p-[1px] flex max-md:flex-col gap-5 justify-center max-md:items-center  md:w-[90%] max-md:w-full">
-                <div className=" h-105  flex flex-col gap-5 rounded-2xl bg-panel1 w-[90%] max-w-[600px] md:max-w-[400px] outline-1 outline-border grow-1">
+                <div className=" h-114  flex flex-col gap-5 rounded-2xl bg-panel1 w-[90%] max-w-[600px] md:max-w-[400px] outline-1 outline-border grow-1">
                     <BestHabits/>
                 </div>
                 <div className="rounded-2xl  w-[90%] max-w-[600px] flex flex-col gap-5">
-                    <div className=" h-64 rounded-2xl bg-panel1  outline-1 outline-border relative">
+                    <div className=" h-73 rounded-2xl bg-panel1  outline-1 outline-border relative">
                         <HabitCalander/>
                     </div>
                     <div className=" h-36 rounded-2xl bg-panel1  outline-1 outline-border relative">
@@ -96,7 +103,7 @@ export default function Dashboard() {
                     <AvgCompRate />
                 </div>
 
-                <div className="sm:h-96 flex-1 min-w-0 rounded-2xl bg-panel1 outline-1 outline-border relative w-[90%] max-w-[600px] ">
+                <div className=" flex-1 min-w-0 rounded-2xl bg-panel1 outline-1 outline-border relative w-[90%] max-w-[600px] ">
                     <DashBoardStats />
                 </div>
             </div>

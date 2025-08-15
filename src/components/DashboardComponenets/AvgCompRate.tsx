@@ -3,7 +3,7 @@ import { UserContext } from "../Providers/UserProvider"
 import { HabitUtil } from "@/utils/HabitUtil"
 import { Util } from "@/utils/util"
 import { FaChartLine } from "react-icons/fa"
-
+import { TbChartBarPopular } from "react-icons/tb";
 import {Line} from "react-chartjs-2"
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, type ChartData} from "chart.js"
 
@@ -37,17 +37,15 @@ export default function AvgCompRate() {
                 label: "Strength",
                 data: data?.map(d => d.strength ?? 0) ?? [],
                 borderColor: "hsl(144, 100%, 39%)",
-                borderWidth: 2,
-                stepped: 'middle', 
-                tension: 0,
+                borderWidth: 2, 
+                tension: 0.1,
             },
             {
                 label: "Concistency",
                 data: data?.map(d => d.consistency ?? 0) ?? [],
                 borderColor: "hsl(84, 100%, 41%",
                 borderWidth: 2,
-                stepped: 'middle', 
-                tension: 0,
+                tension: 0.4,
             }
         ]
     }
@@ -88,10 +86,13 @@ export default function AvgCompRate() {
             x: {
                 display: false,
                 ticks: {
-                    display: false, 
+                    display: true, 
                 },
                 grid: {
-                    display: false,  
+                    display: false, 
+                    stepSzie: 20,
+                    borderDash: [50, 50],
+                    color: "hsl(0, 0%, 10%)",
                     drawBorder: false
                 },
             },
@@ -108,19 +109,29 @@ export default function AvgCompRate() {
                     display: true, 
                     stepSzie: 20,
                     borderDash: [50, 50],
-                    color: "hsl(0, 0%, 13%)",
+                    color: "hsl(0, 0%, 10%)",
                     drawBorder: false
                 },
             },
         },
     }
     return (
-        <div className="m-7 my-6 flex flex-col gap-7 overflow-clip ">
-            <p className="text-title text-lg font-medium">
-                Avg Consistency & Strength 
-            </p>
+        <div className="m-7 my-6 flex flex-col gap-7 overflow-clip">
+             <div className="flex items-center gap-4 mb-2 mt-2">
+                <div className="bg-highlight/60 p-1.5 rounded-lg">
+                    <TbChartBarPopular />
+                </div>
+                <div className="flex flex-col gap-1">
+                    <p className="text-lg text-title font-semibold leading-none pb-1">
+                        Avg Consistency & Strength
+                    </p>
+                    <p className="text-xs text-subtext2">
+                        You're completion rate and strength of all your habits over time 
+                    </p>
+                </div>
+            </div>
             {data.length < 10 ? 
-            <div className="h-70 border-1 border-border2 flex justify-center items-center rounded-2xl">
+            <div className="h-55 border-1 border-border2 flex justify-center items-center rounded-2xl">
                 <p className="text-sm p-6 max-sm:text-xs text-subtext3 flex flex-wrap text-center justify-center items-center gap-2">
                     Log your habits for {10-data.length} more days to see this graph <FaChartLine />
                 </p>

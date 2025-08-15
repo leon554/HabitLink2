@@ -4,6 +4,7 @@ import { FaLink, FaRegCheckCircle, FaRegClock, FaMagic } from "react-icons/fa"
 import InfoPanel from "@/components/InfoPanel"
 import ProgressBar from "@/components/InputComponents/ProgressBar"
 import InfoBox from "@/components/StatsComponents/InfoBox"
+import { motion } from "motion/react";
 
 export default function LandingPage() {
   const navigate = useNavigate()
@@ -13,7 +14,12 @@ export default function LandingPage() {
       <div className="pt-16  ">
         {/* Hero */}
         <section className="relative overflow-hidden">
-          
+           <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            className="w-full"
+          >
           <div className="relative mx-auto w-[90%] md:w-auto md:max-w-7xl md:px-6 lg:px-8 py-14 md:py-20">
             <div className="grid md:grid-cols-2 items-center gap-10">
               <div>
@@ -21,9 +27,7 @@ export default function LandingPage() {
                   Build habits. Hit goals. Understand your patterns.
                 </h1>
                 <p className="mt-4 text-subtext1 leading-relaxed text-center md:text-left">
-                  HabitLink gives super‑detailed analytics so you can see how habits
-                  influence each other, associate habits to habits, and track goal
-                  progress and consistency with clarity.
+                  HabitLink gives you detailed analytics so you can see your progress clearly, track consistency over time, and link habits to goals for effortless goal tracking and analytics.
                 </p>
 
                 <div className="mt-6 flex max-sm:flex-row max-sm:w-full gap-3 justify-center md:justify-start">
@@ -33,7 +37,7 @@ export default function LandingPage() {
                     </button>
                   </Link>
                   <Link to="/dashboard">
-                    <button className="w-full sm:w-auto inline-flex items-center justify-center rounded-lg border border-border bg-panel2/70 px-5 py-3 font-medium text-subtext1 hover:bg-panel2 transition">
+                    <button className="w-full sm:w-auto inline-flex items-center justify-center rounded-lg border border-border bg-panel2 px-5 py-3 font-medium text-subtext1 hover:bg-panel2 transition">
                       View demo
                     </button>
                   </Link>
@@ -86,96 +90,118 @@ export default function LandingPage() {
               </div>
             </div>
           </div>
+          </motion.div>
         </section>
 
         {/* Feature grid */}
-        <section className="relative">
-          <div className="mx-auto w-[90%] md:w-auto md:max-w-7xl md:px-6 lg:px-8 py-10 md:py-16">
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-              <FeatureCard
-                icon={<TbTargetArrow className="text-blue-500 dark:text-highlight" size={20} />}
-                title="Goal‑centric tracking"
-                text="Associate habits to goals and measure real progress, not just streaks."
-              />
-              <FeatureCard
-                icon={<FaLink className="text-blue-500 dark:text-highlight" size={18} />}
-                title="Habit linking"
-                text="Connect habits to other habits to understand cause‑and‑effect in your routine."
-              />
-              <FeatureCard
-                icon={<FaRegClock className="text-blue-500 dark:text-highlight" size={18} />}
-                title="Consistency & streaks"
-                text="See adherence, streaks, and momentum at a glance to stay on track."
-              />
-              <FeatureCard
-                icon={<FaMagic className="text-blue-500 dark:text-highlight" size={18} />}
-                title="AI habit generation"
-                text="Describe a goal and get instant habit ideas."
-              />
+         <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            className=" w-full"
+          >
+          <section className="relative">
+            <div className="mx-auto w-[90%] md:w-auto md:max-w-7xl md:px-6 lg:px-8 py-10 md:py-16">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                <FeatureCard
+                  icon={<TbTargetArrow className="text-blue-500 dark:text-highlight" size={20} />}
+                  title="Goal‑centric tracking"
+                  text="Associate and link habits to goals and measure real progress, not just streaks."
+                />
+                <FeatureCard
+                  icon={<FaLink className="text-blue-500 dark:text-highlight" size={18} />}
+                  title="Detailed Charts"
+                  text="See detailed charts of your consisency and strength over time to see real improvement"
+                />
+                <FeatureCard
+                  icon={<FaRegClock className="text-blue-500 dark:text-highlight" size={18} />}
+                  title="Consistency & streaks"
+                  text="See concistency, streaks, and strength at a glance to stay on track."
+                />
+                <FeatureCard
+                  icon={<FaMagic className="text-blue-500 dark:text-highlight" size={18} />}
+                  title="AI habit generation"
+                  text="Describe a goal and get instant habit ideas."
+                />
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+          </motion.div>
 
         {/* How it works */}
-        <section className="relative">
-          <div className="mx-auto w-[90%] md:w-auto md:max-w-7xl md:px-6 lg:px-8 py-10 md:py-16">
-            <div className="rounded-2xl border bg-panel1 border-border p-6 md:p-10">
-              <div className="grid md:grid-cols-3 ">
-                <HowItWorksStep
-                  step="1"
-                  title="Create habits & goals"
-                  text="Define what you want to achieve and the habits that move the needle."
-                />
-                <HowItWorksStep
-                  step="2"
-                  title="Log with ease"
-                  text="Capture your activity daily—fast, simple, and on any device."
-                />
-                <HowItWorksStep
-                  skip={true}
-                  step="3"
-                  title="Discover insights"
-                  text="See correlations, trends, and bottlenecks so you can iterate intelligently."
-                />
-              </div>
-              <div className=" max-md:mt-5 flex justify-center md:justify-start">
-                <Link to="/auth">
-                  <button className=" m-3 inline-flex items-center justify-center rounded-lg bg-blue-500 dark:bg-highlight text-white dark:text-btn-text px-5 py-3 font-medium shadow-sm hover:opacity-90 transition">
-                    Start tracking now
-                  </button>
-                </Link>
+         <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            className=" w-full"
+          >
+          <section className="relative">
+            <div className="mx-auto w-[90%] md:w-auto md:max-w-7xl md:px-6 lg:px-8 py-10 md:py-16">
+              <div className="rounded-2xl border bg-panel1 border-border p-6 md:p-10">
+                <div className="grid md:grid-cols-3 ">
+                  <HowItWorksStep
+                    step="1"
+                    title="Create habits & goals"
+                    text="Define what you want to achieve and the habits that move the needle."
+                  />
+                  <HowItWorksStep
+                    step="2"
+                    title="Log with ease"
+                    text="Capture your activity daily—fast, simple, and on any device."
+                  />
+                  <HowItWorksStep
+                    skip={true}
+                    step="3"
+                    title="Discover insights"
+                    text="See correlations, trends, and bottlenecks so you can iterate intelligently."
+                  />
+                </div>
+                <div className=" max-md:mt-5 flex justify-center md:justify-start">
+                  <Link to="/auth">
+                    <button className=" m-3 inline-flex items-center justify-center rounded-lg bg-blue-500 dark:bg-highlight text-white dark:text-btn-text px-5 py-3 font-medium shadow-sm hover:opacity-90 transition">
+                      Start tracking now
+                    </button>
+                  </Link>
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+          </motion.div>
 
-        {/* CTA banner */}
-        <section className="relative">
-          <div className="mx-auto w-[90%] md:w-auto md:max-w-7xl md:px-6 lg:px-8 pb-14 md:pb-20 mt-8 md:mt-16">
-            <div className="rounded-2xl border border-border bg-panel1 p-6 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6">
-              <div className="text-center md:text-left">
-                <h2 className="text-xl md:text-2xl font-semibold text-title">
-                  Ready to build habits that actually stick?
-                </h2>
-                <p className="mt-2 text-subtext2">
-                  Join HabitLink and turn intention into measurable progress.
-                </p>
-              </div>
-              <div className="flex gap-3 w-full md:w-auto">
-                <Link to="/auth" className="flex-1 md:flex-none">
-                  <button className="w-full inline-flex items-center max-sm:text-sm justify-center rounded-lg bg-blue-500 dark:bg-highlight text-white dark:text-btn-text px-5 py-3 font-medium shadow-sm hover:opacity-90 transition">
-                    Create account
-                  </button>
-                </Link>
-                <Link to="/dashboard" className="flex-1 md:flex-none">
-                  <button className="w-full inline-flex items-center max-sm:text-sm justify-center rounded-lg border border-border bg-panel2 px-5 py-3 font-medium text-subtext1 hover:bg-panel2/70 transition">
-                    Explore demo
-                  </button>
-                </Link>
+         <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            className=" w-full"
+          >
+          {/* CTA banner */}
+          <section className="relative">
+            <div className="mx-auto w-[90%] md:w-auto md:max-w-7xl md:px-6 lg:px-8 pb-14 md:pb-20 mt-8 md:mt-16">
+              <div className="rounded-2xl border border-border bg-panel1 p-6 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div className="text-center md:text-left">
+                  <h2 className="text-xl md:text-2xl font-semibold text-title">
+                    Ready to build habits that actually stick?
+                  </h2>
+                  <p className="mt-2 text-subtext2">
+                    Join HabitLink and turn intention into measurable progress.
+                  </p>
+                </div>
+                <div className="flex gap-3 w-full md:w-auto">
+                  <Link to="/auth" className="flex-1 md:flex-none">
+                    <button className="w-full inline-flex items-center max-sm:text-sm justify-center rounded-lg bg-blue-500 dark:bg-highlight text-white dark:text-btn-text px-5 py-3 font-medium shadow-sm hover:opacity-90 transition">
+                      Create account
+                    </button>
+                  </Link>
+                  <Link to="/dashboard" className="flex-1 md:flex-none">
+                    <button className="w-full inline-flex items-center max-sm:text-sm justify-center rounded-lg border border-border bg-panel2 px-5 py-3 font-medium text-subtext1 hover:bg-panel2/70 transition">
+                      Explore demo
+                    </button>
+                  </Link>
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+          </motion.div>
 
         {/* Footer */}
         <footer className="border-t border-border/70 py-8">

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect} from "react";
 
 interface ProgressBarProps {
   min: number;
@@ -17,7 +17,7 @@ export default function ProgressBar({ min, max, current, height }: ProgressBarPr
 
   return (
     <div
-      className="bg-progress-panel rounded-full box-border flex items-center"
+      className={`bg-progress-panel rounded-full box-border flex items-center`}
       style={{ height: height ? `${height}px` : "12px" }}
     >
       <div
