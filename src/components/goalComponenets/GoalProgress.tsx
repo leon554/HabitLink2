@@ -18,8 +18,8 @@ export default function GoalProgress() {
         <div className="mt-4">
             <ProgressPanel 
                 title="Actaul Progress"
-                text={`You have ${Util.pretifyData(currentValue, HC.currentGaol?.type as HabitTypeE)}
-                    logged with a goal of ${Util.pretifyData(targetValue, HC.currentGaol?.type as HabitTypeE)} 
+                text={`You have ${Util.pretifyGoalData(currentValue, HC.currentGaol?.type as HabitTypeE)}
+                    logged with a goal of ${Util.pretifyGoalData(targetValue, HC.currentGaol?.type as HabitTypeE)} 
                   ${(startValue != 0) ? " starting with " + startValue : ""}`}
                 value={Util.calculateProgress(startValue, currentValue, targetValue)*100} large={true}/>
         </div>

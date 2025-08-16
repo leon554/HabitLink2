@@ -10,13 +10,14 @@ import GoalCompletionPanel from "@/components/goalComponenets/GoalCompletionPane
 import AvgStrengthPanel from "../AvgStrengthPanel"
 import GoalSummary from "@/components/goalComponenets/GoalSummary"
 import GoalEdit from "@/components/goalComponenets/GoalEdit"
-import type { GoalType } from "@/utils/types"
+import { HabitTypeE, type GoalType } from "@/utils/types"
 import { useNavigate } from "react-router-dom"
 import FullCircleProgressBar from "@/components/InputComponents/FullCircleProgressBar"
 import ToolTip from "@/components/ToolTip"
 import { AuthContext } from "@/components/Providers/AuthProvider"
 import { AiOutlineLoading } from "react-icons/ai"
 import { triggerHaptic } from "tactus"
+import LogChart from "@/components/goalComponenets/LogChart"
 
 
 export default function GoalsPage() {
@@ -28,6 +29,7 @@ export default function GoalsPage() {
     const targetValue = HC.currentGaol?.targetValue ?? 0
     const progress = Util.calculateProgress(startValue, currenValue, targetValue)
     const isGoalFinished =   progress >= 1;
+    const goal = HC.currentGaol
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -81,7 +83,7 @@ export default function GoalsPage() {
                         })}
                     </div>
                 </div>
-            : HC.loading || auth.loading ?
+            : HC.isCalculating.current.isLoading() || auth.loading ?
             <AiOutlineLoading className="animate-spin text-subtext1 mt-25" size={30}/> :
             Util.fetchAllMapItems(HC.goals).length == 0 ? 
                 <div className="w-[90%] max-w-[600px] bg-panel1 rounded-2xl outline-1 outline-border  p-7 flex flex-col gap-4 mt-18">
@@ -114,6 +116,9 @@ export default function GoalsPage() {
                     <AvgStrengthPanel/>
                 </div>
                 <GoalSummary/>
+                {goal?.type != HabitTypeE.Normal ?
+                    <LogChart/> : null
+                }
                 <AssociatedHabits/>
                 <GoalEdit/>
             </div>}

@@ -15,8 +15,8 @@ export default function GoalSummary() {
 
     const associatedHabitIds = HC.currentGaol?.habits.split(",").map(i => Number(i)) ?? []
     const habits = Util.fetchMapItems<HabitType>(associatedHabitIds, HC.habits)
-    const concistencies = (HC.goalStats.get(HC.currentGaol?.id!) ?? []).map(s => s.consistency)
-    const strengths = (HC.goalStats.get(HC.currentGaol?.id!) ?? []).map(s => Math.round(s.strength))
+    const concistencies = (HC.goalStats.get(HC.currentGaol?.id!) ?? []).map(s => s.consistency).filter(n => !isNaN(n))
+    const strengths = (HC.goalStats.get(HC.currentGaol?.id!) ?? []).map(s => Math.round(s.strength)).filter(n => !isNaN(n))
     
     const [timeLeft, setTimeLeft] = useState((HC.currentGaol?.completionDate ?? 0) - Date.now());
     const completionTime = HC.currentGaol?.completionDate ?? 0

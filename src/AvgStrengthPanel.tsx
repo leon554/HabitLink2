@@ -6,7 +6,7 @@ import ProgressPanel from "./components/goalComponenets/ProgressPanel"
 export default function AvgStrengthPanel() {
 
     const HC = useContext(UserContext)
-    const strengths = HC.goalStats.get(HC.currentGaol?.id ?? 0)?.map(s => s.strength) ?? []
+    const strengths = (HC.goalStats.get(HC.currentGaol?.id ?? 0)?.map(s => s.strength) ?? []).filter(c => !isNaN(c))
     const avg = Util.avgNumArr(strengths)
 
     return (

@@ -35,6 +35,16 @@ export namespace Util{
         }
         return Number(data)
     }
+    export function pretifyGoalData(data: string | undefined | number, type: HabitTypeE | undefined){
+        if(data == undefined || !HabitTypeE) return "Loading..."
+        if(type == HabitTypeE.Distance_Based){
+            return `${Number(data)}km`
+        }
+        if(type == HabitTypeE.Time_Based){
+            return `${data}h`
+        }
+        return Number(data)
+    }
 
     function secondsToString(time: number){
         let mins = time/60

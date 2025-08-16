@@ -103,7 +103,7 @@ export default function HabitLogCard({habit: h}: HabitProps) {
     }
     function isSkippedToday(){
         const completions = UC.habitsCompletions.get(h.id) ?? []
-        return completions.some(c => c.skip)
+        return completions.some(c => c.skip && dateUtils.isDatesSameDay(new Date(Number(c.date)), new Date()))
     }
     function getLoadingColor(){
         return isCompletedToday() && isNormalHabit() && !isSkippedToday() ? "text-green-500" : "text-stone-500"
