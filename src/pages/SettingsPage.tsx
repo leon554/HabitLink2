@@ -12,6 +12,7 @@ import { TiDelete } from "react-icons/ti"
 import { triggerHaptic } from "tactus"
 import Premium from "@/components/Premium"
 import { useNavigate } from "react-router-dom"
+import SettingsToggles from "@/components/SettingsToggles"
 
 export default function SettingsPage() {
 
@@ -80,6 +81,7 @@ export default function SettingsPage() {
                     <InfoPanel.SubText text={`Total goal completions: ${String(goalComps)}`}/>
                 </InfoPanel.BodyContainer>
             </InfoPanel>
+            <SettingsToggles/>
             <Premium/>
             <InfoPanel>
                 <InfoPanel.Title title="Report Bug"/>

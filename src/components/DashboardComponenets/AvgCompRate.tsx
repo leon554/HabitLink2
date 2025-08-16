@@ -116,7 +116,7 @@ export default function AvgCompRate() {
         },
     }
     return (
-        <div className="m-7 my-6 flex flex-col gap-7 overflow-clip">
+        <div className="m-7 my-4 flex flex-col gap-7 overflow-clip">
              <div className="flex items-center gap-4 mb-2 mt-2">
                 <div className="bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
                     <TbChartBarPopular />
@@ -128,7 +128,7 @@ export default function AvgCompRate() {
                 </div>
             </div>
             {data.length < 10 ? 
-            <div className="h-55 border-1 border-border2 flex justify-center items-center rounded-2xl">
+            <div className="h-44 border-1 border-border2 flex justify-center items-center rounded-2xl">
                 <p className="text-sm p-6 max-sm:text-xs text-subtext3 flex flex-wrap text-center justify-center items-center gap-2">
                     Log your habits for {10-data.length} more days to see this graph <FaChartLine />
                 </p>

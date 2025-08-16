@@ -39,7 +39,7 @@ export default function HabitCalander() {
 
 
     return (
-        <div className="m-7 mt-5 flex flex-col  gap-5">
+        <div className="m-7 mt-4 flex flex-col  gap-5">
             <div className="flex items-center gap-4 mb-2 mt-2">
                 <div className="bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
                     <TbCalendarMonthFilled />

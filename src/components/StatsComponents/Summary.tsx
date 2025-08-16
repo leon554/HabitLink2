@@ -22,10 +22,10 @@ export default function Summary() {
                 </p>
             </div>
             <div className="gap-3 gap-x-14 grid-cols-2 max-sm:grid-cols-1 grid  items-stretch w-full">
-                <InfoBox value={`${p.streak}`} text="Current Streak" toolTipText="This is the current streak of your habit"/>
-                <InfoBox value={`${p.completions}`} text="Total Completions" toolTipText="This is the total number of times you've completed a habit, regardless of the day. For non-normal habits, only completions that met the goal are counted."/>
+                <InfoBox value={`${p.streak??0}`} text="Current Streak" toolTipText="This is the current streak of your habit"/>
+                <InfoBox value={`${Math.abs(p.validComps- p.completions)}`} text="Unscheduled Completions" toolTipText="This is the total number of times you've completed a habit, regardless of the day. For non-normal habits, only completions that met the goal are counted."/>
                 <InfoBox value={`${Math.round((p.missedSessions + p.validComps) === 0 ? 0 : (p.missedSessions / (p.missedSessions + p.validComps)) * 100)}%`} text="Miss Rate" toolTipText="This is the percentage of scheduled days that for the current habit that were missed."/>
-                <InfoBox value={`${p.validComps}`} text="Valid Completions" toolTipText="This is the number of times you've completed the current habit that met its goal and was done on one of the habit's scheduled completion days."/>
+                <InfoBox value={`${p.validComps}`} text="Scheduled Completions" toolTipText="This is the number of times you've completed the current habit that met its goal and was done on one of the habit's scheduled completion days."/>
                 <InfoBox value={`${p.completableDays}`} text="Completable Days" toolTipText="This is the number of scheduled days that could've/has bean completed since its creation"/>
                 <InfoBox value={`${p.missedSessions}`} text="Missed Completions" toolTipText="This is the number of days the current habit was scheduled but had no recorded completion."/>
 

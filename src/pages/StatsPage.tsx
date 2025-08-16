@@ -97,7 +97,7 @@ export default function StatsPage() {
                             <CompsPerWeek habitId={HC.currentHabit!.id}/>
                         </div>
                         <div className="bg-panel1 outline-1 outline-border rounded-2xl">
-                            <SkipChart habitId={HC.currentHabit!.id}/>
+                            <SkipChart habitId={HC.currentHabit!.id} vertical={true}/>
                         </div>
                     </div>
                     <HabitEdit/>

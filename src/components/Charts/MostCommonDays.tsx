@@ -114,7 +114,7 @@ export default function MostCommonDays(p: Props) {
         },
     }
     return (
-        <div className="flex flex-col gap-4 pb-8 bg-panel1 p-7 py-5 rounded-2xl outline-1 outline-border flex-1 h-75">
+        <div className="flex flex-col gap-4 pb-8 bg-panel1 p-7 py-4 rounded-2xl outline-1 outline-border flex-1 h-75">
             <div className="w-full flex justify-between items-center">
                 <div className="flex items-center gap-3 mb-2 mt-2">
                     <div className="bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
@@ -122,13 +122,13 @@ export default function MostCommonDays(p: Props) {
                     </div>
                     <div className="flex flex-col gap-1">
                         <p className="text-title font-semibold leading-none pb-1">
-                            Completion Distribution
+                            Completion Days
                         </p>
                     </div>
                 </div>
             </div>
             {comps.length < 5 ? 
-                <div className="w-full flex justify-center items-center  outline-1 rounded-2xl outline-border2">
+                <div className="h-44 w-full flex justify-center items-center  outline-1 rounded-2xl outline-border2">
                     <p className="flex items-center gap-1.5 text-subtext2 text-sm">
                         Log 5 or more entries to unlock <FaChartLine />
                     </p>

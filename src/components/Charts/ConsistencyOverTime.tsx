@@ -1,5 +1,5 @@
 
-
+import { TbChartBarPopular } from "react-icons/tb";
 import { useContext} from "react"
 import { UserContext } from "../Providers/UserProvider"
 import { HabitUtil } from "@/utils/HabitUtil"
@@ -120,12 +120,22 @@ export function ConsistencyOverTime() {
     }
 
     return (
-        <div className=" flex flex-col h-70 gap-4  bg-panel1 p-7  rounded-2xl outline-1 outline-border flex-1">
-            <p className="text-title mt-1 mb-0 font-medium">
-                Consistency & Strength Over Time
-            </p>
+        <div className=" flex flex-col h-70 gap-7  bg-panel1 p-7  py-4 rounded-2xl outline-1 outline-border flex-1">
+            <div className="w-full flex justify-between items-center">
+                <div className="flex items-center gap-3  mt-2">
+                    <div className="bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
+                        <TbChartBarPopular />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                        <p className="text-title font-semibold leading-none pb-1">
+                            Consitency & Strength Over Time
+                        </p>
+                    </div>
+                </div>
+                
+            </div>
             {comps!.length < 5 ? 
-                <div className="w-full flex justify-center items-center h-full outline-1 rounded-2xl outline-border2">
+                <div className="w-full h-44 flex justify-center items-center outline-1 mt-3 mb-3 rounded-2xl outline-border2">
                     <p className="flex items-center gap-1.5 text-subtext2 text-sm">
                         Log 5 or more entries to unlock <FaChartLine />
                     </p>

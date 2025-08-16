@@ -80,7 +80,7 @@ export default function Dashboard() {
                                 </p>
                             </div>
                         </div>
-                        <div className="bg-panel1 p-7 rounded-2xl  outline-1 outline-border flex flex-col gap-4.5">
+                        <div className="bg-panel1 p-7 py-6 rounded-2xl  outline-1 outline-border flex flex-col gap-4.5">
                             <div className="flex items-center gap-4 mb-2">
                                 <div className="bg-panel2 text-subtext2 outline-1 outline-border2 p-1.5 rounded-lg">
                                     <TbChartHistogram />
@@ -115,7 +115,6 @@ export default function Dashboard() {
             </div>
             <div className="flex flex-col items-center gap-5 
                     md:flex-row md:gap-5 md:justify-center md:items-start md:w-full md:max-w-[90%] w-full  md:mx-auto max-md:h-335">
-                {/* First column */}
                 <div className="flex flex-col gap-5 flex-1 basis-0 min-w-0 max-w-[400px] max-md:w-[90%] max-md:max-w-[600px] ">
                     <div className="h-75 rounded-2xl relative">
                     <MostCommonDays />
@@ -124,8 +123,6 @@ export default function Dashboard() {
                     <SkipChart vertical={true} />
                     </div>
                 </div>
-
-                {/* Second column */}
                 <div className="flex flex-col gap-5 flex-1 basis-0 min-w-0 max-w-[600px]  max-md:w-[90%] ">
                     <div className="h-75 rounded-2xl bg-panel1 outline-1 outline-border relative">
                     <AvgCompRate />

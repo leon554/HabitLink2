@@ -41,7 +41,7 @@ export default function UpcomingGoals() {
     }
 
     return (
-        <div className="flex flex-col gap-3 m-7 mb-0 ">
+        <div className="flex flex-col gap-3 m-7 mt-6 mb-0 ">
             <div className="flex flex-col gap-3">
                 <div className="flex items-center gap-4 mb-2">
                     <div className="bg-panel2 text-subtext2 outline-1 outline-border2 p-1.5 rounded-lg">

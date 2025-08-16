@@ -95,7 +95,7 @@ export interface HabitStats{
     validComps: number
     completableDays: number
     chartData: ChartDataType[]
-    compsPerWeek: {completions: number, week: Date}[]
+    compsPerWeek: {completions: number, allCompletions: number, week: Date}[]
 }
 export interface GaolStats{
     habitID: number

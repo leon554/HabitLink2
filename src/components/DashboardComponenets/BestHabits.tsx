@@ -39,7 +39,7 @@ export default function BestHabits() {
     }
 
     return (
-        <div className="flex flex-col gap-3 m-7 ">
+        <div className="flex flex-col gap-3 m-7 my-6">
             <div className="flex justify-between items-center">
                 <div className="flex items-center gap-4 mb-2">
                     <div className="bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">

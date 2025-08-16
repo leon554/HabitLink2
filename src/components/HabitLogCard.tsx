@@ -169,7 +169,7 @@ export default function HabitLogCard({habit: h}: HabitProps) {
                                 Skip Habit Today
                             </p>
                             <p className='text-subtext2 text-xs'>
-                                This will skip your habit today without loosing your streak or other related stats. However it won't count as a completed day.
+                                This will skip your habit today without loosing your streak or other related stats.
                             </p>
                              <p className='text-subtext2 text-xs'>
                                 Note: if you skip this habit it will remove all other entries for this habit that happend today.

@@ -7,7 +7,9 @@ import {Bar} from "react-chartjs-2"
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, BarElement, Title, Tooltip, type ChartData} from "chart.js"
 import { dateUtils } from "@/utils/dateUtils"
 import Select from "../InputComponents/Select";
-
+import { SettingsContext } from "../Providers/SettingsProvider";
+import { IoInformationCircleOutline } from "react-icons/io5";
+import Model from "../InputComponents/Model";
 
 ChartJS.register(
     CategoryScale, 
@@ -24,8 +26,10 @@ interface Props{
 }
 export default function CompsPerWeek(p: Props) {
     const HC = useContext(UserContext)
-    const rawData = useMemo(() => {return p.habitId ? HC.habitStats.get(p.habitId)!.compsPerWeek : Util.fetchAllMapItems(HC.habitStats).map(i => i.compsPerWeek).flat()}, [HC.habitStats, HC.currentHabit]) 
+    const {settings} = useContext(SettingsContext)
+    const rawData = useMemo(() => {return p.habitId ? HC.habitStats.get(p.habitId)!.compsPerWeek : Util.fetchAllMapItems(HC.habitStats).map(i => i.compsPerWeek).flat()}, [HC.habitStats, HC.currentHabit, settings]) 
     const [formatedChartData, setFormatedChartData] = useState(new Map<string|number, number>()) 
+    const [open, setOpen] = useState(false)
 
     const [filter, setFilter] = useState(0)
     const items = [{name: "Week", id: 0}, {name: "Month", id: 1}]
@@ -38,9 +42,9 @@ export default function CompsPerWeek(p: Props) {
         rawData.forEach(d => {
             if(temp.has(filter == 0 ? dateUtils.formatDate(d.week) : d.week.getMonth())){
                 const prevComps = temp.get(filter == 0 ? dateUtils.formatDate(d.week) : d.week.getMonth())!
-                temp.set(filter == 0 ? dateUtils.formatDate(d.week) : d.week.getMonth(), prevComps + d.completions)
+                temp.set(filter == 0 ? dateUtils.formatDate(d.week) : d.week.getMonth(), prevComps + (settings.countUnscheduledCompletions ? d.allCompletions : d.completions))
             }else{
-                temp.set(filter == 0 ? dateUtils.formatDate(d.week) : d.week.getMonth(), d.completions)
+                temp.set(filter == 0 ? dateUtils.formatDate(d.week) : d.week.getMonth(), (settings.countUnscheduledCompletions ? d.allCompletions : d.completions))
             }
         })
         setLabels([...filter == 0 ? Array.from(temp.keys()).map(v => String(v).slice(0, 5)) : Array.from(temp.keys()).map(v => monthMap[Number(v)])])
@@ -133,25 +137,30 @@ export default function CompsPerWeek(p: Props) {
         },
     }
     return (
-        <div className="m-7 my-6 flex flex-col gap-7 overflow-clip">
+        <div className="m-7 my-4 flex flex-col gap-7 overflow-clip">
             <div className="w-full flex justify-between  items-center">
                 <div className="flex items-center gap-3 mb-2 mt-2">
                     <div className="bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
                         <TbChartBarPopular />
                     </div>
                     <div className="flex flex-col gap-1">
-                        <p className=" text-title font-semibold leading-none pb-1">
+                        <p className=" text-title font-semibold leading-none">
                             Completions Per {filter == 0 ? "Week" : "Month"}
                         </p>
                     </div>
                 </div>
-                <Select items={items}
-                    selectedItem={items[filter]} 
-                    setSelectedItem={(id) => setFilter(id)}
-                    style="text-xs bg-panel2 text-subtext3 px-2 py-0.5 rounded-lg border-1 border-border2 z-10"/>
+                <div className="flex items-center gap-2">
+                    <Select items={items}
+                        selectedItem={items[filter]} 
+                        setSelectedItem={(id) => setFilter(id)}
+                        style="text-xs bg-panel2 text-subtext3 px-2 py-0.5 rounded-lg border-1 border-border2 z-10"/>
+                    <IoInformationCircleOutline size={14} color="#57534E" className="hover:cursor-pointer" onClick={() => {
+                        setOpen(true)
+                    }}/>
+                </div>
             </div>
             {formatedChartData.size < 2 ? 
-            <div className="h-55 border-1 border-border2 flex justify-center items-center rounded-2xl">
+            <div className="h-55 border-1 border-border2 flex justify-center items-center rounded-2xl mt-[-9px]">
                 <p className="text-sm p-6 max-sm:text-xs text-subtext3 flex flex-wrap text-center justify-center items-center gap-2">
                     Log your habits for {2-formatedChartData.size} more {filter == 0 ? "week/s" : "month/s"} to see this graph <FaChartLine />
                 </p>
@@ -164,6 +173,23 @@ export default function CompsPerWeek(p: Props) {
                 
             </>
             }
+            <Model open={open} onClose={() => setOpen(false)}>
+                <div className="bg-panel1 outline-1 outline-border rounded-2xl max-w-[400px] w-[90%] p-7 py-4 flex flex-col gap-3" onClick={e => e.stopPropagation()}>
+                    <p className="text-lg text-title font-medium">
+                        Info
+                    </p>
+                    <p className="text-sm text-subtext2">
+                        This graph shows completions per week or per month. In the settings page, you can choose whether to count only scheduled completions or both scheduled and unscheduled completions.
+                    </p>
+                    <p className="text-sm text-subtext2">
+                        NOTE: Monthly completions are calculated based on the weeks that start within a specific month.
+                    </p>
+                    <button className="h-8 bg-btn text-sm font-medium text-btn-text rounded-xl mt-2 mb-2 hover:cursor-pointer"
+                        onClick={() => setOpen(false)}>
+                        Done
+                    </button>
+                </div>
+            </Model>
         </div>
     ) 
 }

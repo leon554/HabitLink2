@@ -107,9 +107,9 @@ export default function SkipChart(p: Props) {
 
 
     return (
-        <div className="p-7 py-5 h-85 flex flex-col gap-7 overflow-clip bg-panel1 rounded-2xl outline-1 outline-border">
+        <div className="p-7 py-4 h-85 flex flex-col gap-7 overflow-clip bg-panel1 rounded-2xl outline-1 outline-border">
             <div className="w-full flex justify-between items-center">
-                <div className="flex items-center gap-3 mb-2 mt-2">
+                <div className="flex items-center gap-3  mt-2">
                 <div className="bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
                     <TbChartBarPopular />
                 </div>
@@ -136,19 +136,19 @@ export default function SkipChart(p: Props) {
                         <div className="flex items-center gap-1.5">
                             <div className="w-4 h-4 bg-[#00c742] rounded-md"></div>
                             <p className="text-xs font-medium text-subtext2">
-                                Valid Completions
+                                Scheduled Comps
                             </p>
                         </div>
                         <div className="flex items-center gap-1.5">
-                            <div className="w-4 h-4 bg-[#00c785] rounded-md"></div>
+                            <div className="w-4 h-4 bg-[hsl(150,100%,39%)] rounded-md"></div>
                             <p className="text-xs font-medium text-subtext2">
-                                Unscheduled Completions
+                                Unscheduled Comps
                             </p>
                         </div>
                         <div className="flex items-center gap-1.5">
                             <div className="w-4 h-4 bg-[#0085c7] rounded-md"></div>
                             <p className="text-xs font-medium text-subtext2">
-                                Partial Completions
+                                Partial Comps
                             </p>
                         </div>
                         <div className="flex items-center gap-1.5">
