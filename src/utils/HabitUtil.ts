@@ -430,7 +430,7 @@ export namespace HabitUtil{
                     dateUtils.daysLeftInWeekExToday():
                     dateUtils.daysLeftInWeekIncToday()
                 if(completionsThisWeek + daysLeftInWeek < weeklyTarget) return 0
-                streak += completionsThisWeek
+                streak += Math.min(completionsThisWeek, completableDays)
                 continue
             }
 
@@ -440,7 +440,7 @@ export namespace HabitUtil{
             }
 
             if(Math.min(completionsThisWeek, completableDays) >= completableDays){
-                streak += completableDays 
+                streak += Math.min(completionsThisWeek, completableDays)
             }else{
                 return streak
             }
@@ -559,9 +559,9 @@ export namespace HabitUtil{
 
     }
 
-    export type compDaysType = {day: Date, done: boolean, complete: boolean, habitCreation: boolean, existed: boolean}
+    export type compDaysType = {day: Date, done: boolean, complete: boolean, habitCreation: boolean, existed: boolean, skip: boolean}
     export function getCompletionDaysThisPeriod(habit: HabitType, completions: HabitCompletionType[] = []){
-        let output = Array(113).fill(null).map(() => ({day: new Date(), done: false, complete: false, habitCreation: false, existed: true})) 
+        let output = Array(113).fill(null).map(() => ({day: new Date(), done: false, complete: false, habitCreation: false, existed: true, skip: false})) 
 
         let subarrs: compDaysType[][] = [] 
         let date = dateUtils.getEndOfWeekDate()
@@ -576,6 +576,8 @@ export namespace HabitUtil{
                 output[i].complete = compDays.includes(date.getDay())
             }
             
+            output[i].skip = (completions.some(c => dateUtils.isDatesSameDay(date, new Date(Number(c.date))) && c.skip)) ? true : false
+
             if(habit.type == HabitTypeE.Normal){
                 output[i].done = (completions.some(c => dateUtils.isDatesSameDay(date, new Date(Number(c.date))))) ? true : false
             }else{
@@ -647,7 +649,6 @@ export namespace HabitUtil{
     
     export function getDaysOfWeekCompletions(completions: HabitCompletionType[]){ 
         let map = {'0': 0, '1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0}
-
         completions.forEach(c => {
             const day = new Date(Number(c.date)).getDay()
             map[`${day}` as DayType]++

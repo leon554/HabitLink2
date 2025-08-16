@@ -37,7 +37,7 @@
   --color-subtext2: hsl(0, 0%, 65%);    
   --color-subtext3: hsl(0, 0%, 53%); 
   --color-border: color-mix(in oklab, var(--color-neutral-700)  35%, transparent);
-  --color-border2:  var(--color-neutral-900)  ;
+  --color-border2:  hsl(0, 0%, 11%);
   --color-highlight: hsl(144, 100%, 39%);  
   --color-highlight2: hsl(84, 100%, 41%);    
   --color-highlight3: hsl(144, 100%, 6%);  

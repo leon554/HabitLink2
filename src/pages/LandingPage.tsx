@@ -36,11 +36,7 @@ export default function LandingPage() {
                       Get started free
                     </button>
                   </Link>
-                  <Link to="/dashboard">
-                    <button className="w-full sm:w-auto inline-flex items-center justify-center rounded-lg border border-border bg-panel2 px-5 py-3 font-medium text-subtext1 hover:bg-panel2 transition">
-                      View demo
-                    </button>
-                  </Link>
+
                 </div>
 
                 <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-subtext2 justify-center md:justify-start">
@@ -192,11 +188,7 @@ export default function LandingPage() {
                       Create account
                     </button>
                   </Link>
-                  <Link to="/dashboard" className="flex-1 md:flex-none">
-                    <button className="w-full inline-flex items-center max-sm:text-sm justify-center rounded-lg border border-border bg-panel2 px-5 py-3 font-medium text-subtext1 hover:bg-panel2/70 transition">
-                      Explore demo
-                    </button>
-                  </Link>
+                  
                 </div>
               </div>
             </div>

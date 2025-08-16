@@ -16,6 +16,7 @@ import ToolTip from "@/components/ToolTip";
 import FullCircleProgressBar from "@/components/InputComponents/FullCircleProgressBar";
 import { triggerHaptic } from "tactus";
 import CompsPerWeek from "@/components/DashboardComponenets/CompsPerWeek";
+import SkipChart from "@/components/StatsComponents/SkipChart";
 
 export default function StatsPage() {
     const HC = useContext(UserContext)
@@ -63,7 +64,7 @@ export default function StatsPage() {
                         })}
                     </div>
                 </div>
-            : HC.loading || auth.loading? 
+            : HC.isCalculating.current.isLoading() || auth.loading? 
             <AiOutlineLoading className="animate-spin text-subtext1 mt-25" size={30}/> :
             Util.fetchAllMapItems(HC.habits).length == 0 && !HC.currentHabit ? 
                <div className="w-[90%] max-w-[600px] bg-panel1 rounded-2xl outline-1 outline-border  p-7 flex flex-col gap-4 mt-18">
@@ -94,6 +95,9 @@ export default function StatsPage() {
                         <ConsistencyOverTime/>
                         <div className="bg-panel1 outline-1 outline-border rounded-2xl">
                             <CompsPerWeek habitId={HC.currentHabit!.id}/>
+                        </div>
+                        <div className="bg-panel1 outline-1 outline-border rounded-2xl">
+                            <SkipChart habitId={HC.currentHabit!.id}/>
                         </div>
                     </div>
                     <HabitEdit/>

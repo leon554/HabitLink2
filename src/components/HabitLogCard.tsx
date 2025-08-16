@@ -16,6 +16,8 @@ import { useNavigate } from 'react-router-dom';
 import useCurrentGoalValue from './Hooks/useCurrentGoalValue';
 import type { GoalType } from '../utils/types';
 import { triggerHaptic } from "tactus";
+import { GoKebabHorizontal } from "react-icons/go";
+import { TbPlayerSkipForwardFilled } from "react-icons/tb";
 
 
 interface HabitProps{
@@ -24,6 +26,7 @@ interface HabitProps{
 export default function HabitLogCard({habit: h}: HabitProps) {
     const [loading, setLoading] = useState(false)
     const [open, setOpen] = useState(false)
+    const [openSkip, setOpenSkip] = useState(false)
     const [value, setValue] = useState<number>(0)
 
     const {alert} =  useContext(AlertContext)
@@ -51,6 +54,14 @@ export default function HabitLogCard({habit: h}: HabitProps) {
     }, [isGoalFinished])
     
     async function HandleClick(){
+        if(loading){
+            alert("Wait for loading to finish")
+            return
+        }
+        if(isSkippedToday()){
+            alert("Habit is skipped for today, unskip the habit to add entries to it.")
+            return
+        }
         if(h.type != HabitTypeE.Normal){
             setOpen(true)
         }else{
@@ -58,13 +69,21 @@ export default function HabitLogCard({habit: h}: HabitProps) {
             if(isCompletedToday()){
                 await UC.removeTodaysHabitCompletion(h.id)
             }else{
-                await UC.compleHabit(h.id, 1)
+                await UC.compleHabit(h.id, 1, false)
             }
             setLoading(false)
         }
     }
+    async function handleSkip(){
+        setLoading(true)
+        await UC.removeTodaysHabitCompletion(h.id)
+        if(!isSkippedToday()){
+            await UC.compleHabit(h.id, h.target, true)
+        }
+        setLoading(false)
+    }
     async function handleSubmit(value: number){
-        await UC.compleHabit(h.id, value)
+        await UC.compleHabit(h.id, value, false)
     }
     function isNormalHabit(){
         return h.type == HabitTypeE.Normal
@@ -82,18 +101,22 @@ export default function HabitLogCard({habit: h}: HabitProps) {
         if(h.type != HabitTypeE.Normal) return HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id)) >= Number(h.target)
         return isToday
     }
+    function isSkippedToday(){
+        const completions = UC.habitsCompletions.get(h.id) ?? []
+        return completions.some(c => c.skip)
+    }
     function getLoadingColor(){
-        return isCompletedToday() && isNormalHabit() ? "text-green-500" : "text-stone-500"
+        return isCompletedToday() && isNormalHabit() && !isSkippedToday() ? "text-green-500" : "text-stone-500"
     }
 
     return (
-        <div className='bg-panel1 dark:bg-panel1 hover:cursor-pointer dark:border-border border-border border-1 rounded-2xl w-[100%] max-w-[600px] overflow-auto'
-            onClick={() => {
-                UC.setCurrentHabit(h)
-                navigate("/stats")
-            }}>
+        <div className='bg-panel1 dark:bg-panel1  dark:border-border border-border border-1 rounded-2xl w-[100%] max-w-[600px] overflow-auto'>
             <div className='flex justify-between items-center'>
-                <p className={`text-subtext1  p-3 pt-3   ${settings.showDetails ? "pb-2" : ""} font-medium flex gap-2.5 items-center`}>
+                <p className={`text-subtext1  p-3 pt-3   ${settings.showDetails ? "pb-2" : ""} hover:cursor-pointer font-medium flex gap-2.5 items-center`}
+                    onClick={() => {
+                        UC.setCurrentHabit(h)
+                        navigate("/stats")
+                    }}>
                     {settings.showRanks ? 
                     "missing"
                     : h.icon} {Util.capitilizeFirst(h.name)} 
@@ -110,15 +133,25 @@ export default function HabitLogCard({habit: h}: HabitProps) {
                         </p>: ""}
                     </div>
                     <button className={`h-7 flex justify-center 
-                        items-center rounded-lg p-2 mr-3 w-7 text-subtext1
-                        text-2xl hover:cursor-pointer transition-all hover:scale-[1.04] active:scale-[0.9]
-                        ease-in-out duration-250 ${isCompletedToday() ? "dark:outline-highlight outline-highlight outline-1  " : "outline-subtext1 dark:outline-subtext2 outline-1 hover:outline-stone-400  active:bg-stone-800"}`}
+                        items-center rounded-lg p-2 mr-0 w-7 text-subtext1
+                        text-2xl hover:cursor-pointer transition-transform hover:scale-[1.04] active:scale-[0.9]
+                        ease-in-out duration-250 ${isCompletedToday() ?  isSkippedToday() ? "bg-panel2 outline-1 outline-yellow-500": "bg-panel2 outline-1 outline-highlight" : "bg-panel2 outline-1 outline-border2"}`}
                         onClick={async (e) => {
                             triggerHaptic()
                             e.stopPropagation()
                             await HandleClick()
                         }}>
-                        {loading ? <AiOutlineLoading className={`animate-spin ${getLoadingColor()}`}/> : <FaCheck className={`${isCompletedToday() ? "dark:text-highlight text-highlight" : "text-subtext2 dark:text-subtext2" }`}/>}
+                        {loading ? <AiOutlineLoading className={`animate-spin ${getLoadingColor()}`}/> : isSkippedToday() ? <TbPlayerSkipForwardFilled className='text-yellow-500' size={10}/> :  <FaCheck className={`${isCompletedToday() ? "dark:text-highlight text-highlight" : "text-subtext2 dark:text-subtext2" }`}/>}
+                    </button>
+                    <button className={`h-7 flex justify-center 
+                        items-center rounded-lg  mr-3 w-4 text-subtext3
+                        text-2xl hover:cursor-pointer transition-all hover:scale-[1.04] active:scale-[0.9]
+                        ease-in-out duration-250 outline-1 outline-border2 bg-panel2`}
+                        onClick={e => {
+                            e.stopPropagation()
+                            setOpenSkip(true)
+                        } }>
+                        { <GoKebabHorizontal className={"text-subtext3 dark:text-subtext3 rotate-90" }/>}
                     </button>
                     <Model open={open} onClose={() => setOpen(false)}>
                         <div onClick={e => e.stopPropagation()} className='w-[90%] max-w-[400px]'>
@@ -128,6 +161,26 @@ export default function HabitLogCard({habit: h}: HabitProps) {
                                     await handleSubmit(value)
                                     alert("Succes, Well Done! 🎉🎉🎉")
                                 }} />
+                        </div>
+                    </Model>
+                     <Model open={openSkip} onClose={() => setOpenSkip(false)}>
+                        <div onClick={e => e.stopPropagation()} className='w-[90%] max-w-[400px] bg-panel1 p-7 rounded-2xl outline-1 outline-border flex flex-col gap-3'>
+                            <p className='text-title font-semibold'>
+                                Skip Habit Today
+                            </p>
+                            <p className='text-subtext2 text-xs'>
+                                This will skip your habit today without loosing your streak or other related stats. However it won't count as a completed day.
+                            </p>
+                             <p className='text-subtext2 text-xs'>
+                                Note: if you skip this habit it will remove all other entries for this habit that happend today.
+                            </p>
+                            <button className="bg-btn text-btn-text rounded-md text-sm font-medium h-7 mt-2 hover:cursor-pointer flex justify-center items-center gap-1.5"
+                                onClick={async () => {
+                                    await handleSkip()
+                                    setOpenSkip(false)
+                                }}>
+                                {loading ?  <AiOutlineLoading className={`animate-spin ${getLoadingColor()} text-btn-text`}/> : `${isSkippedToday() ? "UnSkip" : "Skip"}` }{UC.loading ? "" : <TbPlayerSkipForwardFilled />}
+                            </button>
                         </div>
                     </Model>
                 </div>

@@ -22,6 +22,7 @@ export interface HabitCompletionType{
     data: number
     date: number
     user_id: string
+    skip: boolean
 }
 export interface GaolCompletionType{
     id: number

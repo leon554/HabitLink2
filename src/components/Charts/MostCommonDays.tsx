@@ -30,9 +30,9 @@ export default function MostCommonDays() {
 
     const HC = useContext(UserContext)
     const comps = HC.habitsCompletions.get(HC.currentHabit!.id) ?? []
-
+    console.log(comps)
     const rawData = HabitUtil.getDaysOfWeekCompletions(comps)
-
+    console.log(rawData)
     const rootStyles = getComputedStyle(document.documentElement)
 
     const title = rootStyles.getPropertyValue('--color-title').trim()
@@ -52,6 +52,7 @@ export default function MostCommonDays() {
             borderWidth: 1,
             opacity: 1,
             pointRadius: 0,
+            tension: 0.1
         },
         ],
     }
@@ -62,6 +63,8 @@ export default function MostCommonDays() {
         
         scales: {
         r: {
+            min: 0,
+            max: Math.max(...rawData.map(d => d.data)) + 1,
             angleLines: {
             color: "rgba(255,255,255,0.1)",
             },
@@ -77,6 +80,7 @@ export default function MostCommonDays() {
             color: "#aaa",
             },
             ticks: {
+                beginAtZero: true,    
                 display: false,
                 maxTicksLimit: 5, 
             },

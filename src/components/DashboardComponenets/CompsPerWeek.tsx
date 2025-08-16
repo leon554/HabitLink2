@@ -61,6 +61,7 @@ export default function CompsPerWeek(p: Props) {
                 label: "Completions",
                 data: Array.from(formatedChartData.values()) ?? [],
                 backgroundColor: "hsl(144, 100%, 39%)",
+                borderRadius: 6,
             }
         ]
     }
@@ -139,7 +140,7 @@ export default function CompsPerWeek(p: Props) {
                         <TbChartBarPopular />
                     </div>
                     <div className="flex flex-col gap-1">
-                        <p className="text-lg text-title font-semibold leading-none pb-1">
+                        <p className=" text-title font-semibold leading-none pb-1">
                             Completions Per {filter == 0 ? "Week" : "Month"}
                         </p>
                     </div>

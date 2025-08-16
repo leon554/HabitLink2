@@ -71,6 +71,7 @@ export default function CompletionsMonth() {
                                                 </div>
                                             }>
                                                 <p className={`w-full h-4 ${dateUtils.isDatesSameDay(v.day , new Date()) ? 
+                                                    v.skip ? "bg-yellow-500 rounded-xl" :
                                                     v.done ? "bg-highlight rounded-xl" : "border-1 border-highlight rounded-sm" :
                                                     v.habitCreation ? 
                                                     v.done ? 

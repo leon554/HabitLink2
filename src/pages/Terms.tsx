@@ -43,7 +43,7 @@ export default function Terms() {
                 <p className="mb-4 text-sm">We may update these terms at any time. Updated terms will be posted on the website, and continued use constitutes acceptance.</p>
 
                 <h2 className="text-lg font-semibold mt-6 mb-2 text-title">8. Governing Law</h2>
-                <p className="mb-4 text-sm">These terms are governed by the laws of [Your Country/State].</p>
+                <p className="mb-4 text-sm">These terms are governed by the laws of Australia.</p>
 
                 <button className="text-sm font-medium bg-btn text-btn-text py-2 px-6 rounded-xl hover:cursor-pointer"
                 onClick={() => window.history.back()}>
