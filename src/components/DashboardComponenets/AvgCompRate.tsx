@@ -125,9 +125,6 @@ export default function AvgCompRate() {
                     <p className="text-lg text-title font-semibold leading-none pb-1">
                         Avg Consistency & Strength
                     </p>
-                    <p className="text-xs text-subtext2">
-                        You're completion rate and strength of all your habits over time 
-                    </p>
                 </div>
             </div>
             {data.length < 10 ? 
@@ -138,7 +135,7 @@ export default function AvgCompRate() {
             </div>
             :
             <>
-                <div className="h-50 bg">
+                <div className="h-33 bg">
                     <Line options={options} data={formatedData as ChartData<"line", number[], string>}/>
                 </div>
                 <div className="flex justify-center items-center gap-2 w-full ">

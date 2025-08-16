@@ -1,4 +1,4 @@
-import { useContext} from "react"
+import { useContext, useEffect, useState, type SetStateAction} from "react"
 import { UserContext } from "../Providers/UserProvider"
 import { Util } from "@/utils/util"
 import { FaChartLine } from "react-icons/fa"
@@ -16,24 +16,50 @@ import {
 ChartJS.register(ArcElement, Title, Tooltip, Legend)
 
 interface Props {
-  habitId: number
+  habitId?: number
+  vertical? :boolean
 }
 
+interface TempStats {
+    validComps: number,
+    completions: number,
+    partialComps: number,
+    missedSessions: number
+}
+const defaultTempStats = {
+    validComps: 0,
+    completions: 0,
+    partialComps: 0,
+    missedSessions: 0
+}
 export default function SkipChart(p: Props) {
     const HC = useContext(UserContext)
-    const chartData = getChartData()
+    const [chartData, setChartData] = useState<[{name: string, data: 0}]>([{name: "", data: 0}])
 
     function getChartData(){
         const completions = p.habitId ? (HC.habitsCompletions.get(p.habitId) ?? []) : Util.fetchAllMapItems(HC.habitsCompletions).flat()
-        const stats = HC.habitStats.get(p.habitId)
-        return [{name: "Valid completions", data: stats?.validComps}, 
+        const stats: TempStats = p.habitId ?  HC.habitStats.get(p.habitId) ?? defaultTempStats : Util.fetchAllMapItems(HC.habitStats).reduce(
+            (s, c) => ({
+                validComps: s.validComps + c.validComps,
+                completions: s.completions + c.completions,
+                partialComps: s.partialComps + c.partialComps,
+                missedSessions: s.missedSessions + c.missedSessions,
+            }),
+            { validComps: 0, completions: 0, partialComps: 0, missedSessions: 0 }
+        )
+        return [
+            {name: "Valid completions", data: stats?.validComps}, 
             {name: "Unscheduled Completions", data: (stats?.completions ?? 0) - (stats?.validComps ?? 0)},
             {name: "Skips", data: completions.filter(c => c.skip).length},
             {name: "Partial Completions", data: stats?.partialComps},
             {name: "Missed Days", data: stats?.missedSessions},
-            ]
+        ]
         
     }
+
+    useEffect(() => {
+        setChartData([...getChartData()] as SetStateAction<[{name: string, data: 0}]>)
+    }, [HC.habitStats, HC.habitsCompletions])
 
     const rootStyles = getComputedStyle(document.documentElement)
     const titleColor = rootStyles.getPropertyValue("--color-title").trim()
@@ -54,7 +80,7 @@ export default function SkipChart(p: Props) {
                 "hsl(200, 100%, 39%)",  
                 "hsl(100, 100%, 39%)"   
             ],
-            borderWidth: 2,
+            borderWidth: 1,
             borderColor: border
         }
         ]
@@ -81,7 +107,7 @@ export default function SkipChart(p: Props) {
 
 
     return (
-        <div className="m-7 my-6 flex flex-col gap-7 overflow-clip">
+        <div className="p-7 py-5 h-85 flex flex-col gap-7 overflow-clip bg-panel1 rounded-2xl outline-1 outline-border">
             <div className="w-full flex justify-between items-center">
                 <div className="flex items-center gap-3 mb-2 mt-2">
                 <div className="bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
@@ -89,7 +115,7 @@ export default function SkipChart(p: Props) {
                 </div>
                 <div className="flex flex-col gap-1">
                     <p className="text-title font-semibold leading-none pb-1">
-                    Completion Distribution
+                        Completion Distribution
                     </p>
                 </div>
                 </div>
@@ -102,11 +128,11 @@ export default function SkipChart(p: Props) {
                 </p>
                 </div>
             ) : (
-                <div className=" mb-3 flex justify-around max-sm:flex-col max-sm:items-center max-sm:gap-7">
+                <div className={`mb-3 ${p.vertical ? "flex-col items-center gap-7" : ""} flex justify-around  `}>
                     <div className="w-[50%]">
                         <Doughnut data={formatedData as ChartData<"doughnut", number[], string>} options={options} />
                     </div>
-                    <div className="flex sm:flex-col gap-2 justify-center max-sm:flex-wrap">
+                    <div className={`${p.vertical ? "flex-wrap" : "flex-col"} flex  gap-2 justify-center `}>
                         <div className="flex items-center gap-1.5">
                             <div className="w-4 h-4 bg-[#00c742] rounded-md"></div>
                             <p className="text-xs font-medium text-subtext2">

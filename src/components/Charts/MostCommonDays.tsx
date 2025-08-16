@@ -2,7 +2,7 @@ import { useContext } from "react";
 
 import { UserContext } from "../Providers/UserProvider";
 import { HabitUtil } from "../../utils/HabitUtil";
-
+import { TbChartBarPopular } from "react-icons/tb"
 import { FaChartLine } from "react-icons/fa6";
 
 import {
@@ -15,6 +15,7 @@ import {
   Legend,
 } from "chart.js"
 import { Radar } from "react-chartjs-2"
+import { Util } from "@/utils/util";
 
 ChartJS.register(
   RadialLinearScale,
@@ -25,14 +26,14 @@ ChartJS.register(
   Legend
 )
 
-
-export default function MostCommonDays() {
+interface Props{
+    habitId?: number
+}
+export default function MostCommonDays(p: Props) {
 
     const HC = useContext(UserContext)
-    const comps = HC.habitsCompletions.get(HC.currentHabit!.id) ?? []
-    console.log(comps)
+    const comps = p.habitId ? HC.habitsCompletions.get(HC.currentHabit!.id) ?? [] : Util.fetchAllMapItems(HC.habitsCompletions).flat()
     const rawData = HabitUtil.getDaysOfWeekCompletions(comps)
-    console.log(rawData)
     const rootStyles = getComputedStyle(document.documentElement)
 
     const title = rootStyles.getPropertyValue('--color-title').trim()
@@ -113,18 +114,27 @@ export default function MostCommonDays() {
         },
     }
     return (
-        <div className=" flex flex-col gap-4 h-70  bg-panel1 p-7  rounded-2xl outline-1 outline-border flex-1">
-            <p className="text-title text-left font-medium">
-                Most Common Entry Days
-            </p>
+        <div className="flex flex-col gap-4 pb-8 bg-panel1 p-7 py-5 rounded-2xl outline-1 outline-border flex-1 h-75">
+            <div className="w-full flex justify-between items-center">
+                <div className="flex items-center gap-3 mb-2 mt-2">
+                    <div className="bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
+                        <TbChartBarPopular />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                        <p className="text-title font-semibold leading-none pb-1">
+                            Completion Distribution
+                        </p>
+                    </div>
+                </div>
+            </div>
             {comps.length < 5 ? 
-                <div className="w-full flex justify-center items-center  h-70 outline-1 rounded-2xl outline-border2">
+                <div className="w-full flex justify-center items-center  outline-1 rounded-2xl outline-border2">
                     <p className="flex items-center gap-1.5 text-subtext2 text-sm">
                         Log 5 or more entries to unlock <FaChartLine />
                     </p>
                 </div>
             :
-                <div className=" h-full min-w-0 ">
+                <div className=" h-full min-w-0">
                     <Radar data={data} options={options} />
                 </div>
              }

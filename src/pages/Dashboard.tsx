@@ -14,6 +14,8 @@ import { HabitUtil } from "@/utils/HabitUtil"
 import { TbChartHistogram } from "react-icons/tb";
 import ProgressPanel from "@/components/goalComponenets/ProgressPanel"
 import CompsPerWeek from "@/components/DashboardComponenets/CompsPerWeek"
+import SkipChart from "@/components/StatsComponents/SkipChart"
+import MostCommonDays from "@/components/Charts/MostCommonDays" 
 
 
 export default function Dashboard() {
@@ -98,7 +100,7 @@ export default function Dashboard() {
                     <UpcomingGoals/>
                 </div>
             </div>
-            <div className=" p-[1px] flex max-md:flex-col gap-5 justify-center max-md:items-center  md:w-[90%] max-md:w-full">
+            <div className={`p-[1px] flex max-md:flex-col gap-5 justify-center max-md:items-center  md:w-[90%] max-md:w-full`}>
                 <div className=" h-114  flex flex-col gap-5 rounded-2xl bg-panel1 w-[90%] max-w-[600px] md:max-w-[400px] outline-1 outline-border grow-1">
                     <BestHabits/>
                 </div>
@@ -111,19 +113,32 @@ export default function Dashboard() {
                     </div>
                 </div>
             </div>
-            <div className="p-[1px] flex max-md:flex-col gap-5 justify-center max-md:items-center md:w-[90%] max-md:w-full">
-                <div className="w-[90%] max-w-[600px] md:max-w-[400px] flex flex-col gap-5">
-                    <div className="h-96 flex-1 min-w-0 flex flex-col gap-5 rounded-2xl bg-panel1  outline-1 outline-border w-full">
-                        <AvgCompRate />
+            <div className="flex flex-col items-center gap-5 
+                    md:flex-row md:gap-5 md:justify-center md:items-start md:w-full md:max-w-[90%] w-full  md:mx-auto max-md:h-335">
+                {/* First column */}
+                <div className="flex flex-col gap-5 flex-1 basis-0 min-w-0 max-w-[400px] max-md:w-[90%] max-md:max-w-[600px] ">
+                    <div className="h-75 rounded-2xl relative">
+                    <MostCommonDays />
                     </div>
-                    <div className="h-50 flex-1 min-w-0 flex-col gap-5 rounded-2xl bg-panel1  outline-1 outline-border w-full">
-                        <CompsPerWeek />
+                    <div className="h-80 rounded-2xl relative">
+                    <SkipChart vertical={true} />
                     </div>
                 </div>
-                <div className=" flex-1 min-w-0 rounded-2xl bg-panel1 outline-1 outline-border relative w-[90%] max-w-[600px] ">
-                    <DashBoardStats />
+
+                {/* Second column */}
+                <div className="flex flex-col gap-5 flex-1 basis-0 min-w-0 max-w-[600px]  max-md:w-[90%] ">
+                    <div className="h-75 rounded-2xl bg-panel1 outline-1 outline-border relative">
+                    <AvgCompRate />
+                    </div>
+                    <div className="h-85 rounded-2xl bg-panel1 outline-1 outline-border relative">
+                    <CompsPerWeek />
+                    </div>
                 </div>
             </div>
+            <div className=" flex-1 min-w-0 rounded-2xl outline-1 outline-border relative w-[90%] max-w-[1020px] bg-panel1">
+                <DashBoardStats />
+            </div>
+            
         </div>
     )
 }

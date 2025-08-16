@@ -158,7 +158,7 @@ export default function CompsPerWeek(p: Props) {
             </div>
             :
             <>
-                <div className="h-47 bg">
+                <div className="h-55 bg">
                     <Bar options={options} data={formatedData as ChartData<"bar", number[], string>} key={filter}/>
                 </div>
                 

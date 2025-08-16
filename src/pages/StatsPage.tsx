@@ -91,7 +91,7 @@ export default function StatsPage() {
                     <CompletionThisWeek/>
                     <CompletionsMonth/>
                     <div className={`flex flex-col  gap-3 w-full  `}>
-                        <MostCommonDays/>
+                        <MostCommonDays habitId={HC.currentHabit!.id}/>
                         <ConsistencyOverTime/>
                         <div className="bg-panel1 outline-1 outline-border rounded-2xl">
                             <CompsPerWeek habitId={HC.currentHabit!.id}/>
