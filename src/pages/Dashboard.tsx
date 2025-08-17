@@ -130,13 +130,13 @@ export default function Dashboard() {
                 </div>
                 <div className="flex flex-col gap-5 flex-1 basis-0 min-w-0 max-w-[600px]  max-md:w-[90%] ">
                     <div className="h-75 rounded-2xl bg-panel1 outline-1 outline-border relative">
-                    <AvgCompRate />
+                        <AvgCompRate />
                     </div>
                     <div className="h-85 rounded-2xl bg-panel1 outline-1 outline-border relative">
-                    <CompsPerWeek />
+                        <CompsPerWeek />
                     </div>
                     <div className="h-85 rounded-2xl bg-panel1 outline-1 outline-border relative">
-                    <MissVsCompChart/>
+                        <MissVsCompChart/>
                     </div>
                 </div>
             </div>
