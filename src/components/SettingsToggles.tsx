@@ -12,11 +12,13 @@ export default function SettingsToggles() {
             <p className="text-lg text-title font-medium">
                 Settings
             </p>
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center gap-2">
                 <p className="text-xs text-subtext2">
                     Count unscheduled completions in completions per week/month graphs
                 </p>
-                <Switch ticked={settings.countUnscheduledCompletions} setStatus={(t) => setSettings({...settings, countUnscheduledCompletions: t})}/>
+                <div>
+                    <Switch ticked={settings.countUnscheduledCompletions} setStatus={(t) => setSettings({...settings, countUnscheduledCompletions: t})}/>
+                </div>
             </div>
         </div>
     )

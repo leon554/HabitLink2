@@ -24,20 +24,21 @@ export default function GoalsPage() {
 
     const HC = useContext(UserContext)
     const auth = useContext(AuthContext)
-    const startValue = HC.currentGaol?.startValue ?? 0
+    const startValue = HC.getCurrentGoal()?.startValue ?? 0
     const currenValue = useCurrentGoalValue()
-    const targetValue = HC.currentGaol?.targetValue ?? 0
+    const targetValue = HC.getCurrentGoal()?.targetValue ?? 0
     const progress = Util.calculateProgress(startValue, currenValue, targetValue)
     const isGoalFinished =   progress >= 1;
-    const goal = HC.currentGaol
+    const goal = HC.getCurrentGoal()
     const navigate = useNavigate()
 
     useEffect(() => {
         const updateGoal = async () => {
-            if(isGoalFinished && !HC.currentGaol?.completed){
-                await HC.compleGoal(HC.currentGaol?.id!)
-                HC.setCurrentGoal({...HC.currentGaol, completed: true} as GoalType)
-                const newGoalMap = Util.updateMap<number, GoalType>(HC.goals, HC.currentGaol!.id, {...HC.currentGaol, completed: true} as GoalType)
+            if(isGoalFinished && !HC.getCurrentGoal()?.completed){
+                await HC.compleGoal(HC.getCurrentGoal()?.id!)
+                const updatedGoals = Util.updateMap(HC.goals, HC.currentGaol!, {...HC.getCurrentGoal(), completed: true} as GoalType)
+                HC.setGaols(updatedGoals)
+                const newGoalMap = Util.updateMap<number, GoalType>(HC.goals, HC.getCurrentGoal()!.id, {...HC.getCurrentGoal(), completed: true} as GoalType)
                 HC.setGaols(newGoalMap)
             }
         }
@@ -46,7 +47,7 @@ export default function GoalsPage() {
 
     return (
         <div className="w-full flex justify-center mb-10 ">
-            {!HC.currentGaol && Util.fetchAllMapItems(HC.goals).length != 0 ?
+            {!HC.getCurrentGoal() && Util.fetchAllMapItems(HC.goals).length != 0 ?
                 <div className="w-full flex flex-col items-center gap-2.5">
                     <div className="w-[90%] max-w-[600px] mt-20 bg-panel1 text-title  rounded-2xl p-4 outline-1 outline-border flex justify-center flex-col items-center">
                         <p className="text-2xl font-medium">
@@ -59,7 +60,7 @@ export default function GoalsPage() {
                                 <div key={i} className="grow-1 bg-panel1 rounded-2xl outline-1 outline-border p-3.5 items-center flex justify-between"
                                     onClick={() => {
                                         triggerHaptic()
-                                        HC.setCurrentGoal(g)
+                                        HC.setCurrentGoal(g.id)
                                     }}>
                                     <p className="text-subtext2 font-medium truncate overflow-hidden whitespace-nowrap">
                                         🎯 {g.name}
@@ -116,7 +117,7 @@ export default function GoalsPage() {
                     <AvgStrengthPanel/>
                 </div>
                 <GoalSummary/>
-                {goal?.type != HabitTypeE.Normal ?
+                {goal?.type != HabitTypeE.Normal && goal?.linkedHabit == null ?
                     <LogChart/> : null
                 }
                 <AssociatedHabits/>

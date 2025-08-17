@@ -13,21 +13,21 @@ export default function GoalSummary() {
 
     const HC = useContext(UserContext)
 
-    const associatedHabitIds = HC.currentGaol?.habits.split(",").map(i => Number(i)) ?? []
+    const associatedHabitIds = HC.getCurrentGoal()?.habits.split(",").map(i => Number(i)) ?? []
     const habits = Util.fetchMapItems<HabitType>(associatedHabitIds, HC.habits)
-    const concistencies = (HC.goalStats.get(HC.currentGaol?.id!) ?? []).map(s => s.consistency).filter(n => !isNaN(n))
-    const strengths = (HC.goalStats.get(HC.currentGaol?.id!) ?? []).map(s => Math.round(s.strength)).filter(n => !isNaN(n))
+    const concistencies = (HC.goalStats.get(HC.getCurrentGoal()?.id!) ?? []).map(s => s.consistency).filter(n => !isNaN(n))
+    const strengths = (HC.goalStats.get(HC.getCurrentGoal()?.id!) ?? []).map(s => Math.round(s.strength)).filter(n => !isNaN(n))
     
-    const [timeLeft, setTimeLeft] = useState((HC.currentGaol?.completionDate ?? 0) - Date.now());
-    const completionTime = HC.currentGaol?.completionDate ?? 0
-    const startValue = HC.currentGaol?.startValue ?? 0
+    const [timeLeft, setTimeLeft] = useState((HC.getCurrentGoal()?.completionDate ?? 0) - Date.now());
+    const completionTime = HC.getCurrentGoal()?.completionDate ?? 0
+    const startValue = HC.getCurrentGoal()?.startValue ?? 0
     let currentValue = useCurrentGoalValue()
-    const targetValue = HC.currentGaol?.targetValue ?? 0
-    const startTime = new Date(HC.currentGaol!.created_at).getTime()
+    const targetValue = HC.getCurrentGoal()?.targetValue ?? 0
+    const startTime = new Date(HC.getCurrentGoal()!.created_at).getTime()
 
     const progress = Util.calculateProgress(startValue, currentValue, targetValue)*100
     const timeProgress = (1 - (timeLeft)/(completionTime - startTime)) * 100
-    const onTrack = (progress >= timeProgress) ? "Yes" : HC.currentGaol?.type == HabitTypeE.Normal && HC.currentGaol.linkedHabit == null ? "Yes" :  "No"
+    const onTrack = (progress >= timeProgress) ? "Yes" : HC.getCurrentGoal()?.type == HabitTypeE.Normal && HC.getCurrentGoal()?.linkedHabit == null ? "Yes" :  "No"
 
     useEffect(() => {
         function calcTime(){
@@ -38,7 +38,7 @@ export default function GoalSummary() {
         const intervalID = setInterval(calcTime, 1000);
 
         return () => clearInterval(intervalID);
-    }, [HC.currentGaol]);
+    }, [HC.getCurrentGoal()]);
 
     return (
         <div className="w-[90%] max-w-[600px] relative bg-panel1 rounded-2xl font outline-1 font-mono outline-border text-title justify-center p-7 py-5 pb-7 flex flex-col items-center gap-4">

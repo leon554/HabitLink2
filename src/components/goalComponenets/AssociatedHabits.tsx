@@ -10,7 +10,7 @@ export default function AssociatedHabits() {
 
     const HC = useContext(UserContext)
     const navigate = useNavigate()
-    const habits = Util.fetchMapItems<HabitType>(HC.currentGaol?.habits.split(",").map(i => Number(i)) ?? [], HC.habits)
+    const habits = Util.fetchMapItems<HabitType>(HC.getCurrentGoal()?.habits.split(",").map(i => Number(i)) ?? [], HC.habits)
     const habitsLength = habits.length
 
     return (
@@ -33,16 +33,16 @@ export default function AssociatedHabits() {
                                             {h.icon} {Util.capitilizeFirst(h.name)}
                                         </p>
                                         <p className="text-stone-500">
-                                            {h.id == HC.currentGaol?.linkedHabit ? <FaLink size={12}/> : ""}
+                                            {h.id == HC.getCurrentGoal()?.linkedHabit ? <FaLink size={12}/> : ""}
                                         </p>
                                     </div>
                                 </div>
                                 <div className="flex gap-4">
                                     <p className="text-xs text-subtext2">
-                                        📈 {Math.round((HC.goalStats.get(HC.currentGaol?.id!)?? []).filter(s => s.habitID == h.id)[0].consistency)}%
+                                        📈 {Math.round((HC.goalStats.get(HC.currentGaol ?? 0)?? []).filter(s => s.habitID == h.id)[0]?.consistency)}%
                                     </p>
                                     <p className="text-xs text-subtext2">
-                                        💪 {Math.round((HC.goalStats.get(HC.currentGaol?.id!)?? []).filter(s => s.habitID == h.id)[0].strength)}%
+                                        💪 {Math.round((HC.goalStats.get(HC.currentGaol ?? 0)?? []).filter(s => s.habitID == h.id)[0]?.strength)}%
                                     </p>
                                 </div>
                             </div>

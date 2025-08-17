@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useRef, useState } from "react"
 import { AuthContext } from "./AuthProvider";
 import { supabase } from "../../supabase-client";
 import { AlertContext } from "../Alert/AlertProvider";
-import {type ChartDataType, type GaolCompletionType, type GoalType, type HabitCompletionType, type HabitType, type IssueType, type SubmitIssueType } from "../../utils/types";
+import {type ChartDataType, type GaolCompletionType, type GoalType, type HabitCompletionType, type HabitType, type IssueType, type ReturnObj, type SubmitIssueType } from "../../utils/types";
 import { dateUtils } from "../../utils/dateUtils";
 import { HabitUtil } from "../../utils/HabitUtil";
 import { HabitTypeE } from "../../utils/types";
@@ -29,20 +29,22 @@ interface UserType{
     loading: boolean,
     isCalculating: RefObject<LockingLoading>
     currentHabit: HabitType | null
-    currentGaol: GoalType | null
+    currentGaol: number| null
     goals: Map<number, GoalType>
     setGaols: (goals:  Map<number, GoalType>) => void
     goalProgress: Map<number, number>
     issues: Map<number, IssueType>
     habitStats: Map<number, HabitStats>
     goalStats: Map<number, GaolStats[]>
-    setCurrentGoal: (currentGaol: GoalType | null) => void
+    setCurrentGoal: (currentGaol: number| null) => void
     setCurrentHabit: (currentHabit: HabitType | null) => void
     compleHabit: (habitId: number, value: number, skip: boolean, date?: Date) => Promise<void>,
     removeTodaysHabitCompletion: (habitId: number) => Promise<void>
     addGoalCompletion: (value: number) => Promise<void>
     askGpt: (promt: string) => Promise<string|null>
     goalCompletions: Map<number, GaolCompletionType[]>
+    updateGoalName: (name: string, id: number) => Promise<ReturnObj<void>>
+    getCurrentGoal: () => GoalType | undefined
 }
 const initialValues: UserType = {
     createHabit: () => Promise.resolve(undefined),
@@ -75,6 +77,8 @@ const initialValues: UserType = {
     addGoalCompletion: () => Promise.resolve(undefined),
     askGpt: () => Promise.resolve(""),
     goalCompletions: new Map<number, GaolCompletionType[]>(),
+    updateGoalName: () => Promise.resolve({success: true}),
+    getCurrentGoal: () => undefined
 }
 
 export const UserContext = createContext<UserType>(initialValues)
@@ -106,7 +110,7 @@ export default function UserProvider(props: Props) {
     const [loading, setLoading] = useState(false)
     const isCalculating = useRef(new LockingLoading())
     const [currentHabit, setCurrentHabit] = useState<HabitType|null>(null)
-    const [currentGaol, setCurrentGoal] = useState<GoalType|null>(null)
+    const [currentGaolId, setCurrentGoalId] = useState<number|null>(null)
     const [habits, setHabits] = useState<Map<number, HabitType>>(new Map<number, HabitType>())
     const [goals, setGaols] = useState<Map<number, GoalType>>(new Map<number, GoalType>())
     const [goalProgress, setGoalProgress] = useState<Map<number, number>>(new Map<number, number>())
@@ -369,13 +373,13 @@ export default function UserProvider(props: Props) {
     }
     async function addGoalCompletion(value: number){
         setLoading(true)
-        if(!currentGaol) {alert("Goal completion error: current goal is not defined"); return }
+        if(!currentGaolId) {alert("Goal completion error: current goal is not defined"); return }
         const userid = auth.getUserId()
 
         const { data, error } = await supabase
         .from('GoalCompletions')
         .insert([
-            { data: value, date: new Date().getTime(), goalId: currentGaol.id , user_id: userid},
+            { data: value, date: new Date().getTime(), goalId: currentGaolId , user_id: userid},
         ])
         .select()
         if(error){
@@ -383,7 +387,7 @@ export default function UserProvider(props: Props) {
             setLoading(false)
             return
         }
-        const updatedGoalComps = Util.updateMapArray(goalCompletions, Number(currentGaol.id), data[0] as GaolCompletionType)
+        const updatedGoalComps = Util.updateMapArray(goalCompletions, Number(currentGaolId), data[0] as GaolCompletionType)
         setGoalCompletions(updatedGoalComps)
         setLoading(false)
         
@@ -633,6 +637,13 @@ export default function UserProvider(props: Props) {
         const goal = goals.get(goalID)
         if(!goal) { alert("Goal trying to update doesnt exist"); setLoading(false); return}
 
+        const linkedID = goal.linkedHabit
+
+        if(linkedID == habitID){
+            alert("Can't delete linked habit")
+            setLoading(false); 
+            return
+        }
         const associatedHabits = goal.habits.split(",")
         if(associatedHabits.length <= 1) {
             alert("Cant remove associated habit from goal if its the only associated habit")
@@ -658,6 +669,29 @@ export default function UserProvider(props: Props) {
         setGaols(newGoalsMap)
         setLoading(false)
     }
+    async function updateGoalName(name: string, id: number): Promise<ReturnObj<void>>{
+        if(loading) return {success: false, message: "Wait for loading to finish"}
+        setLoading(true)
+
+        const { error } = await supabase
+            .from('goals')
+            .update({ name: name })
+            .eq("id", id)
+            .select()
+
+        if(error){
+            setLoading(false)
+            return {success: false, message: error.message}
+        }
+        const newMap = Util.updateMap(goals, id, {...goals.get(id), name} as GoalType)
+        setGaols(newMap)
+        setLoading(false)
+        return {success: true}
+    }
+    function getCurrentGoal(){
+        if(!currentGaolId) return undefined
+        return goals.get(currentGaolId)
+    }
     return (
         
         <UserContext.Provider value={{
@@ -673,9 +707,9 @@ export default function UserProvider(props: Props) {
             setGaols,
             habitsCompletions,
             loading,
-            currentGaol,
+            currentGaol: currentGaolId,
             issues,
-            setCurrentGoal,
+            setCurrentGoal: setCurrentGoalId,
             currentHabit,
             setCurrentHabit,
             compleHabit: compleHabit,
@@ -690,7 +724,9 @@ export default function UserProvider(props: Props) {
             goalCompletions,
             goalProgress,
             habitStats,
-            goalStats
+            goalStats,
+            updateGoalName,
+            getCurrentGoal
         }}>
             {props.children}
         </UserContext.Provider>

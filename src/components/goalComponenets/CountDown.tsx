@@ -16,9 +16,9 @@ export default function CountDown() {
     
     const HC = useContext(UserContext)
     const {alert} = useContext(AlertContext)
-    const [timeLeft, setTimeLeft] = useState((HC.currentGaol?.completionDate ?? 0) - Date.now());
-    const startTime = new Date(HC.currentGaol!.created_at).getTime()
-    const completionTime = HC.currentGaol?.completionDate ?? 0
+    const [timeLeft, setTimeLeft] = useState((HC.getCurrentGoal()?.completionDate ?? 0) - Date.now());
+    const startTime = new Date(HC.getCurrentGoal()!.created_at).getTime()
+    const completionTime = HC.getCurrentGoal()?.completionDate ?? 0
 
     useEffect(() => {
 
@@ -30,7 +30,7 @@ export default function CountDown() {
         const intervalID = setInterval(calcTime, 1000);
 
         return () => clearInterval(intervalID);
-    }, [HC.currentGaol]);
+    }, [HC.getCurrentGoal()]);
 
     async function updateCurrentValue(){
         if(value == "") {alert("Enter something"); return}
@@ -51,7 +51,7 @@ export default function CountDown() {
                     text={`Remaining Time: ${ dateUtils.formatTime(timeLeft)}`}
                     value={(1 - (timeLeft)/(completionTime - startTime)) * 100} roundTo={2}
                     large={true} />
-                {HC.currentGaol!.type == HabitTypeE.Normal && HC.currentGaol!.linkedHabit ===  null? 
+                {HC.getCurrentGoal()!.type == HabitTypeE.Normal && HC.getCurrentGoal()!.linkedHabit ===  null? 
                     "" : 
                     <GoalProgress/>
                 }
@@ -60,13 +60,13 @@ export default function CountDown() {
                         <DeleteArchiveGoal/>
                     </div>
                 : ""}
-                {HC.currentGaol?.type == HabitTypeE.Normal && HC.currentGaol.linkedHabit == null?
+                {HC.getCurrentGoal()?.type == HabitTypeE.Normal && HC.getCurrentGoal()?.linkedHabit == null?
                     <button className="text-sm w-full text-subtext2 outline-1 outline-border2 p-1.5  px-3 rounded-xl hover:cursor-pointer transition-all duration-150 ease-in-out hover:bg-panel2 mt-4"
                     onClick={() => completeGoal()}>
                         Complete Goal
                     </button>
                 :
-                !HC.currentGaol?.linkedHabit ? 
+                !HC.getCurrentGoal()?.linkedHabit ? 
                     <div className="flex gap-3 justify-end mt-4  ">
                             <button className="text-sm w-full text-subtext2 outline-1 outline-border2 p-1.5  px-3 rounded-xl hover:cursor-pointer transition-all duration-150 ease-in-out hover:bg-panel2"
                                 onClick={() => {

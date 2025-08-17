@@ -155,3 +155,8 @@ export interface LemonSqueezyVariant {
     price_formatted: string;
   };
 }
+export interface ReturnObj<T> {
+  success: boolean
+  message?: string
+  payload?: T
+}
