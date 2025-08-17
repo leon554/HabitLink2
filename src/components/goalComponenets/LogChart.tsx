@@ -19,7 +19,7 @@ ChartJS.register(
 export default function LogChart() {
 
     const HC = useContext(UserContext)
-    const data = (HC.goalCompletions.get(HC.currentGaol?.id ?? 0) ?? []).map(d => ({date: new Date(Number(d.date)), data: d.data})).reverse()
+    const data = (HC.goalCompletions.get(HC.currentGaol ?? 0) ?? []).map(d => ({date: new Date(Number(d.date)), data: d.data})).reverse()
 
     const rootStyles = getComputedStyle(document.documentElement)
 

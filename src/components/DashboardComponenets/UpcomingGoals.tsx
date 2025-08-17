@@ -66,7 +66,7 @@ export default function UpcomingGoals() {
                         return(
                             <div className={`bg-panel2 px-2 rounded-xl border-1 border-border2 hover:cursor-pointer hover:scale-101 transition-all duration-150 ease-in-out text-sm  py-2  flex justify-between items-center gap-2`} key={i}
                                 onClick={() => {
-                                    HC.setCurrentGoal(g)
+                                    HC.setCurrentGoal(g.id)
                                     navigate("/goals")
                                 }}>
                                 <p className="text-subtext2 truncate overflow-hidden whitespace-nowrap">

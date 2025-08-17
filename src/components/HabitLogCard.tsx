@@ -38,16 +38,17 @@ export default function HabitLogCard({habit: h}: HabitProps) {
         isCompletedToday()
     }, [])
 
-    const startValue = UC.currentGaol?.startValue ?? 0
+    const startValue = UC.getCurrentGoal()?.startValue ?? 0
     const currenValue = useCurrentGoalValue()
-    const targetValue = UC.currentGaol?.targetValue ?? 0
+    const targetValue = UC.getCurrentGoal()?.targetValue ?? 0
     const isGoalFinished =  Util.calculateProgress(startValue, currenValue, targetValue) >= 1;
 
     useEffect(() => {
         const updateGoal = async () => {
             if(isGoalFinished){
-                await UC.compleGoal(UC.currentGaol?.id!)
-                UC.setCurrentGoal({...UC.currentGaol, completed: true} as GoalType)
+                await UC.compleGoal(UC.currentGaol ?? -1)
+                const updated = Util.updateMap(UC.goals, UC.currentGaol!, {...UC.getCurrentGoal(), completed: true} as GoalType)
+                UC.setGaols(updated)
             }
         }
         updateGoal()
