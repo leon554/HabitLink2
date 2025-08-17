@@ -69,7 +69,7 @@ export default function UpcomingGoals() {
                                     HC.setCurrentGoal(g)
                                     navigate("/goals")
                                 }}>
-                                <p className="text-subtext1 truncate overflow-hidden whitespace-nowrap">
+                                <p className="text-subtext2 truncate overflow-hidden whitespace-nowrap">
                                     🎯 {Util.capitilizeFirst(g.name)}
                                 </p>
                                 <p className="text-subtext3 text-xs flex items-center gap-1 whitespace-nowrap">
@@ -116,7 +116,7 @@ export default function UpcomingGoals() {
                             <>
                                 <div className={`bg-panel2 px-2 rounded-xl border-1 hover:scale-101 transition-all duration-150 ease-in-out flex justify-between  items-center py-2 pb-3  border-border2 w-full outline-border2   hover:cursor-pointer`}
                                     onClick={() => navigate("/log")}>
-                                    <p className="text-subtext1 text-sm">
+                                    <p className="text-subtext2 text-sm">
                                         {t.icon} {Util.capitilizeFirst(t.name)}
                                     </p>
                                     <p className="text-xs text-subtext3">

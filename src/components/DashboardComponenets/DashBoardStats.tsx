@@ -36,8 +36,8 @@ export default function DashBoardStats() {
                         <div className="grid grid-cols-2 gap-x-12 gap-2 max-sm:grid-cols-1 max-sm:gap-2">
                             <InfoBox value={habits.length} text="Habit Count" toolTipText="Total amount of habit you have"/>
                             <InfoBox value={goals.length} text="Goal Count" toolTipText="Total amount of goals you have"/>
-                            <InfoBox value={Util.fetchAllMapItems(HC.habitsCompletions).length} text="Habit Entries" toolTipText="Total amount of habit entries you have"/>
-                            <InfoBox value={Util.fetchAllMapItems(HC.goalCompletions).length} text="Goal Entries" toolTipText="Total amount of goals entries you have"/>
+                            <InfoBox value={Util.fetchAllMapItems(HC.habitsCompletions).flat().length} text="Habit Entries" toolTipText="Total amount of habit entries you have"/>
+                            <InfoBox value={Util.fetchAllMapItems(HC.goalCompletions).flat().length} text="Goal Entries" toolTipText="Total amount of goals entries you have"/>
                         </div>
                     </div>
                     <div className="bg-panel2 p-3 rounded-xl px-4 flex-col flex gap-2">

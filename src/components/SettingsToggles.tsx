@@ -14,7 +14,7 @@ export default function SettingsToggles() {
             </p>
             <div className="flex justify-between items-center">
                 <p className="text-xs text-subtext2">
-                    Count unscheduled completions in graphs
+                    Count unscheduled completions in completions per week/month graphs
                 </p>
                 <Switch ticked={settings.countUnscheduledCompletions} setStatus={(t) => setSettings({...settings, countUnscheduledCompletions: t})}/>
             </div>

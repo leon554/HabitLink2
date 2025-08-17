@@ -1,3 +1,4 @@
+
 import { useContext, useEffect, useState, type SetStateAction} from "react"
 import { UserContext } from "../Providers/UserProvider"
 import { Util } from "@/utils/util"
@@ -20,41 +21,34 @@ interface Props {
   vertical? :boolean
 }
 
-interface TempStats {
-    validComps: number,
-    completions: number,
-    partialComps: number,
-    missedSessions: number
-}
-const defaultTempStats = {
-    validComps: 0,
-    completions: 0,
-    partialComps: 0,
-    missedSessions: 0
-}
-export default function SkipChart(p: Props) {
+
+export default function HabitDistribution(p: Props) {
     const HC = useContext(UserContext)
     const [chartData, setChartData] = useState<[{name: string, data: 0}]>([{name: "", data: 0}])
 
     function getChartData(){
-        const completions = p.habitId ? (HC.habitsCompletions.get(p.habitId) ?? []) : Util.fetchAllMapItems(HC.habitsCompletions).flat()
-        const stats: TempStats = p.habitId ?  HC.habitStats.get(p.habitId) ?? defaultTempStats : Util.fetchAllMapItems(HC.habitStats).reduce(
-            (s, c) => ({
-                validComps: s.validComps + c.validComps,
-                completions: s.completions + c.completions,
-                partialComps: s.partialComps + c.partialComps,
-                missedSessions: s.missedSessions + c.missedSessions,
-            }),
-            { validComps: 0, completions: 0, partialComps: 0, missedSessions: 0 }
-        )
-        return [
-            {name: "Scheduled completions", data: stats?.validComps}, 
-            {name: "Unscheduled Completions", data: (stats?.completions ?? 0) - (stats?.validComps ?? 0)},
-            {name: "Skips", data: completions.filter(c => c.skip).length},
-            {name: "Partial Completions", data: stats?.partialComps},
-            {name: "Missed Days", data: stats?.missedSessions},
+        const dataObjArr = [
+            {name: "Legendary", data: 0},
+            {name: "Strong", data: 0},
+            {name: "Average", data: 0},
+            {name: "Fragile", data: 0},
         ]
-        
+        Util.fetchAllMapItems(HC.habitStats).forEach(s => {
+            
+            if(s.strength >= 100 && s.compRate * 100 >= 100){
+                dataObjArr[0].data++
+            }
+            else if(s.strength >= 90 && s.compRate * 100 >= 90){
+                dataObjArr[1].data++
+            }
+            else if(s.strength >= 50 && s.compRate * 100 >= 50){
+                dataObjArr[2].data++
+            }
+            else{
+                dataObjArr[3].data++
+            }
+        })
+        return dataObjArr
     }
 
     useEffect(() => {
@@ -72,13 +66,12 @@ export default function SkipChart(p: Props) {
         datasets: [
         {
             label: "Amount",
-            data: chartData.map(d => d.data), //hsl(140, 70%, 45%)
+            data: chartData.map(d => d.data),
             backgroundColor: [
-                "hsl(140, 70%, 45%)",  
-                "hsl(220, 90%, 55%)",  
-                "hsl(45, 90%, 55%)",   
-                "hsl(15, 85%, 55%)",   
-                "hsl(0, 75%, 55%)",    
+                "hsl(270, 80%, 50%)",   // Legendary (gold)
+                "hsl(140, 70%, 45%)",  // Strong (green)
+                "hsl(30, 85%, 55%)",   // Average (orange)
+                "hsl(0, 75%, 55%)",    // Fragile (red)
             ],
             borderWidth: 1,
             borderColor: border
@@ -115,16 +108,16 @@ export default function SkipChart(p: Props) {
                 </div>
                 <div className="flex flex-col gap-1">
                     <p className="text-title font-semibold leading-none pb-1">
-                        Completion Distribution
+                        Habit Distribution
                     </p>
                 </div>
                 </div>
                 
             </div>
-            {chartData.length < 2 ? (
+            {HC.habits.size < 2 ? (
                 <div className="h-55 border-1 border-border2 flex justify-center items-center rounded-2xl">
                 <p className="text-sm p-6 max-sm:text-xs text-subtext3 flex flex-wrap text-center justify-center items-center gap-2">
-                    Log your habits for {2 - chartData.length} more to see this graph <FaChartLine />
+                    Create {2 - chartData.length} more habit/s to see this graph <FaChartLine />
                 </p>
                 </div>
             ) : (
@@ -134,33 +127,27 @@ export default function SkipChart(p: Props) {
                     </div>
                    <div className={`${p.vertical ? "flex-wrap" : "flex-col"} flex gap-2 justify-center max-w-[90%]`}>
                         <div className="flex items-center gap-1.5">
+                            <div className="w-3.5 h-3.5 bg-[hsl(270,80%,50%)] rounded-md "></div>
+                            <p className="text-xs text-subtext3">
+                                Legendary
+                            </p>
+                        </div>
+                        <div className="flex items-center gap-1.5">
                             <div className="w-3.5 h-3.5 bg-[hsl(140,70%,45%)] rounded-md"></div>
                             <p className="text-xs text-subtext3">
-                            Scheduled Comps
+                            Strong
                             </p>
                         </div>
                         <div className="flex items-center gap-1.5">
-                            <div className="w-3.5 h-3.5 bg-[hsl(220,90%,55%)] rounded-md"></div>
+                            <div className="w-3.5 h-3.5 bg-[hsl(30,85%,55%)] rounded-md"></div>
                             <p className="text-xs text-subtext3">
-                                Unscheduled Comps
-                            </p>
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                            <div className="w-3.5 h-3.5 bg-[hsl(45,90%,55%)] rounded-md"></div>
-                            <p className="text-xs text-subtext3">
-                                Skips
-                            </p>
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                            <div className="w-3.5 h-3.5 bg-[hsl(15,85%,55%)] rounded-md"></div>
-                            <p className="text-xs text-subtext3">
-                                Partial Comps
+                            Average
                             </p>
                         </div>
                         <div className="flex items-center gap-1.5">
                             <div className="w-3.5 h-3.5 bg-[hsl(0,75%,55%)] rounded-md"></div>
                             <p className="text-xs text-subtext3">
-                            Missed Sessions
+                            Fragile
                             </p>
                         </div>
                     </div>

@@ -60,14 +60,14 @@ export default function BestHabits() {
             <div className="flex flex-col gap-2">
                 {habits.slice(0, 3).map((h, _) => {
                     return(
-                        <div className= {`bg-panel2 px-2 rounded-xl border-1  flex justify-between items-center text-sm text-subtext1 py-2 border-b-1 border-border2  pb-3`}>
-                            <p className="font-medium text-md">
+                        <div className= {`bg-panel2 px-2 rounded-xl border-1  flex justify-between items-center text-sm text-subtext2 py-2 border-b-1 border-border2  pb-3`}>
+                            <p className=" text-md">
                                 {h.icon} {Util.capitilizeFirst(h.name)}
                             </p>
                             <p>
 
                             </p>
-                            <div className="flex gap-2 items-center">
+                            <div className="flex gap-2 items-center text-subtext3">
                                 <div className="flex gap-1 items-center">
                                     📈 
                                     <p className="text-xs w-8 ">
@@ -96,11 +96,11 @@ export default function BestHabits() {
             <div className="flex flex-col gap-2">
                 {habits.slice(-3).reverse().map((h, _) => {
                     return(
-                        <div className={`bg-panel2 px-2 rounded-xl border-1  flex justify-between items-center text-sm text-subtext1 py-2 border-b-1 border-border2  pb-3`}>
+                        <div className={`bg-panel2 px-2 rounded-xl border-1  flex justify-between items-center text-sm text-subtext2 py-2 border-b-1 border-border2  pb-3`}>
                             <p>
                                 {h.icon} {Util.capitilizeFirst(h.name)}
                             </p>
-                             <div className="flex gap-1.5 items-center">
+                             <div className="flex gap-1.5 items-center text-subtext3">
                                 <div className="flex gap-1 items-center">
                                     📈
                                     <p className="text-xs w-8 ">
