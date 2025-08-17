@@ -12,6 +12,7 @@ import AmountInput from "../InputComponents/NumberInput"
 import DistanceInput from "../InputComponents/DistanceInput"
 import TimeInput from "../InputComponents/TimeInput"
 import { triggerHaptic } from "tactus"
+import TextBoxLimited from "../primatives/TextBoxLimited"
 
 export default function HabitEdit() {
 
@@ -107,13 +108,14 @@ export default function HabitEdit() {
                     <p className="text-title text-xl mt-2 mb-2 font-medium">
                         Edit Habit
                     </p>
-                    <div className="w-full max-w-[450px]  flex flex-col items-start gap-2 mb-2">
-                        <p className="text-[16px] flex-grow-2 text-subtext1 whitespace-nowrap">Habit Name</p>
-                        <input type="text" 
-                        placeholder={`${prevName}`}
-                        value={habitName}
-                        onChange={e => setHabitName(e.target.value)}
-                        className="outline-1 px-2 text-xs rounded-xl h-7 w-full  outline-border2  p-1 text-subtext1 " />
+                    <div className="w-full max-w-[450px]  flex flex-col items-start gap-2 mb-2"> 
+                        <TextBoxLimited
+                            name="Habit Name"
+                            value={habitName}
+                            setValue={setHabitName}
+                            placeHolder={prevName}
+                            charLimit={30}
+                            outerDivStyles="w-full"/>
                     </div>
                     <div className="w-full max-w-[450px]  flex flex-col items-start gap-2 mb-3">
                         {Array.from(HC.habitsCompletions.get(HC.currentHabit!.id) ?? []).length == 0 ? "" :

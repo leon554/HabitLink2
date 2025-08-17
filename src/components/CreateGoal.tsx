@@ -13,6 +13,8 @@ import DateInput from "./InputComponents/DateInput";
 import { Util } from "@/utils/util";
 import { RiAiGenerate } from "react-icons/ri";
 import { triggerHaptic } from "tactus";
+import TextBoxLimited from "./primatives/TextBoxLimited";
+import ButtonComp from "./primatives/ButtonComp";
 
 
 export default function CreateGoal() {
@@ -138,49 +140,43 @@ export default function CreateGoal() {
                     <div className="w-full flex flex-col items-center ">
                         
                         <div className="w-[90%] max-w-[450px]    mb-5 ">
-                            <p className="text-sm font-medium  text-subtext-1 mb-2">Goal Name</p>
-                            <input type="text" 
-                            placeholder="Enter goal name"
-                            value={name}
-                            onChange={e => Util.setValueLim(setName, e.target.value, 30)}
-                            className="outline-1 text-[12px] rounded-md w-full border-0  outline-border2 text-sm p-1.5 text-subtext1 mb-1" />
-                            <div className="w-full flex justify-end mt-1 mb-[-14px]">
-                                <p className="text-xs text-subtext3">
-                                    {name.length}/30
-                                </p>
-                            </div>
+                            <TextBoxLimited
+                                name="Goal Name"
+                                value={name}
+                                setValue={setName}
+                                charLimit={30}
+                                placeHolder="Enter Goal Name"/>
                         </div>
                         <div className="w-[90%] max-w-[450px] relative mb-5">
-                            <p className="text-sm font-medium  text-subtext-1 mb-2">Goal Description</p>
-                            <textarea
-                            placeholder="Enter goal description"
-                            value={description}
-                            onChange={e => Util.setValueLim(setDescription, e.target.value, 200)}
-                            className="outline-1 text-[12px] h-20 rounded-md resize-none w-full border-0 no-scrollbar outline-border2 text-sm p-1.5 text-subtext1" />
-                            <p className="absolute right-2 bottom-6 hover:cursor-pointer text-subtext2 bg-panel1"
-                            onClick={async () => {
-                                triggerHaptic()
-                                loadingRef.current = 1
-                                await genDescription()
-                            }}>
-                                {HC.loading && loadingRef.current == 1 ? <AiOutlineLoading className="animate-spin" size={12}/> : <RiAiGenerate size={14}/>}
-                            </p>
-                            <div className="w-full flex justify-end mt-1 mb-[-16px]">
-                                <p className="text-xs text-subtext3">
-                                    {description.length}/200
-                                </p>
-                            </div>
+                            <TextBoxLimited
+                                name="Goal Description"
+                                value={description}
+                                setValue={setDescription}
+                                charLimit={200}
+                                placeHolder="Enter Goal Name"
+                                textArea={true}
+                                custom={
+                                    <p className="absolute right-2 bottom-2 hover:cursor-pointer text-subtext2 bg-panel1"
+                                    onClick={async () => {
+                                        triggerHaptic()
+                                        loadingRef.current = 1
+                                        await genDescription()
+                                    }}>
+                                        {HC.loading && loadingRef.current == 1 ? <AiOutlineLoading className="animate-spin" size={12}/> : <RiAiGenerate size={14}/>}
+                                    </p>
+                                }/>
                         </div>
 
                         <div className="w-[90%] max-w-[450px]    mb-6">
                             <p className="text-sm font-medium  text-subtext-1 mb-2">Associated Habits</p>
-                            <button className={`outline-1 rounded-md outline-border2 w-full p-1 grow-1 hover:cursor-pointer hover:bg-btn hover:outline-0 text-subtext1 text-sm hover:text-btn-text`}
-                                    onClick={() => {
-                                        triggerHaptic()
-                                        setShowModal(true)
-                                    }}>
-                                    {selectHabits.length == 0 && linkedID == -1? "Select Habits" : `${selectHabits.length + ((linkedID != -1) ? 1 : 0)} ${selectHabits.length + ((linkedID != -1) ? 1 : 0) == 1 ? "habit" : "habits"} associated${(linkedID != -1) ? ", 1 Linked" : ""}`}
-                            </button>
+                            <ButtonComp
+                                name={selectHabits.length == 0 && linkedID == -1? "Select Habits" : `${selectHabits.length + ((linkedID != -1) ? 1 : 0)} ${selectHabits.length + ((linkedID != -1) ? 1 : 0) == 1 ? "habit" : "habits"} associated${(linkedID != -1) ? ", 1 Linked" : ""}`}
+                                onSubmit={() => {
+                                    setShowModal(true)
+                                }}
+                                highlight={false}
+                                small={true}
+                                style="w-full"/>
                         </div>
                     
                     </div>
@@ -198,43 +194,47 @@ export default function CreateGoal() {
                             <div className="flex flex-wrap gap-2 justify-stretch mb-6 w-[90%] max-w-[450px]">
                                 {habitTypes.map((h, i) => {
                                 return(
-                                    <button className={`${selectedTypeIndex == i ? "outline-0 bg-btn text-btn-text" : "outline-1 text-subtext1"} rounded-md outline-border2 p-1 grow-1 hover:cursor-pointer hover:bg-btn hover:outline-0 text-sm px-2 hover:text-stone-900`}
-                                        onClick={() => {
-                                            triggerHaptic()
-                                            setSelectedTypeIndex(i)
-                                        }} key={i}>
-                                        {h}
-                                    </button>
+                                    <>
+                                        <ButtonComp
+                                            name={h}
+                                            highlight={false}
+                                            onSubmit={() => setSelectedTypeIndex(i)}
+                                            small={true}
+                                            style="flex-grow"/>
+                                    </>
                                 )
                             })}
                             </div>
-                            {habitTypes[selectedTypeIndex] != "Normal" &&  habitTypes[selectedTypeIndex] != undefined? <div className="w-[90%] max-w-[450px] mb-6">
-                                <p className="text-sm font-medium  text-subtext-1 mb-2">Start Value</p>
-                                
-                                <input type="text" 
-                                        placeholder={"Enter start " + getPlaceHolderText()}
-                                        value={startValue}
-                                        onChange={e => setStartValue(e.target.value)}
-                                        className="outline-1 text-[12px] rounded-md w-full border-0  outline-border2 text-sm p-1.5 text-subtext1 mb-1" />
+                            {habitTypes[selectedTypeIndex] != "Normal" &&  habitTypes[selectedTypeIndex] != undefined ? 
+                            <div className="w-[90%] max-w-[450px] mb-6">
+                                <TextBoxLimited
+                                    name="Start Value"
+                                    value={startValue}
+                                    setValue={setStartValue}
+                                    placeHolder={"Enter start " + getPlaceHolderText()}
+                                    charLimit={10}
+                                    numeric={true}/>
                             </div> : ""}
 
                             {habitTypes[selectedTypeIndex] != "Normal" &&  habitTypes[selectedTypeIndex] != undefined? <div className="w-[90%] max-w-[450px] mb-6">
-                                <p className="text-sm font-medium  text-subtext-1 mb-2">Goal Value</p>
-                                <input type="text" 
-                                        placeholder={"Enter goal " + getPlaceHolderText()}
-                                        value={goalValue}
-                                        onChange={e => setGoalValue(e.target.value)}
-                                        className="outline-1 text-[12px] rounded-md w-full border-0  outline-border2 text-sm p-1.5 text-subtext1 mb-1" />
+                                <TextBoxLimited
+                                    name="Goal Value"
+                                    value={goalValue}
+                                    setValue={setGoalValue}
+                                    placeHolder={"Enter start " + getPlaceHolderText()}
+                                    charLimit={10}
+                                    numeric={true}/>
                             </div> : ""}
                         </div>: 
                         <div className="w-full flex flex-col items-center">
                             <div className="w-[90%] max-w-[450px] mb-6">
-                                <p className="text-sm font-medium  text-subtext-1 mb-2">Goal Value</p>
-                                <input type="text" 
-                                        placeholder={"Enter goal " + getLinkedPlaceHolderText()}
-                                        value={goalValue}
-                                        onChange={e => setGoalValue(e.target.value)}
-                                        className="outline-1 text-[12px] rounded-md w-full border-0  outline-border2 text-sm p-1.5 text-subtext1 mb-1" />
+                                <TextBoxLimited
+                                    name="Goal Value"
+                                    value={goalValue}
+                                    setValue={setGoalValue}
+                                    placeHolder={"Enter start " + getLinkedPlaceHolderText()}
+                                    charLimit={10}
+                                    numeric={true}/>
                             </div>
                         </div>}
 
@@ -245,39 +245,44 @@ export default function CreateGoal() {
                                 <p className="text-sm text-subtext3">
                                     Add
                                 </p>
-                                <button className="outline-1 flex-grow-1 h-7 px-3 text-sm rounded-md flex items-center justify-center outline-border2 text-subtext1 hover:cursor-pointer hover:bg-btn hover:text-btn-text transition-colors duration-150 ease-in-out darkmode:hover:outline-0"
-                                    onClick={() => {
+                                <ButtonComp
+                                    name="Day"
+                                    highlight={false}
+                                    small={true}
+                                    onSubmit={() => {
                                         triggerHaptic()
                                         addX({days: 1})
-                                    }}>
-                                    Day
-                                </button>
-                                <button className="outline-1 flex-grow-1 h-7 px-3 text-sm rounded-md flex items-center justify-center outline-border2 text-subtext1 hover:cursor-pointer hover:bg-btn hover:text-btn-text transition-colors duration-150 ease-in-out darkmode:hover:outline-0"
-                                    onClick={() => {
+                                    }}
+                                    style="flex-grow"/>
+                                <ButtonComp
+                                    name="Week"
+                                    highlight={false}
+                                    small={true}
+                                    onSubmit={() => {
                                         triggerHaptic()
                                         addX({weeks: 1})
-                                    }}>
-                                    Week
-                                </button>
-                                <button className="outline-1 flex-grow-1 h-7 px-3 text-sm rounded-md flex items-center justify-center outline-border2 text-subtext1 hover:cursor-pointer hover:bg-btn hover:text-btn-text transition-colors duration-150 ease-in-out darkmode:hover:outline-0"
-                                    onClick={() => {
+                                    }}
+                                    style="flex-grow"/>
+                                <ButtonComp
+                                    name="Month"
+                                    highlight={false}
+                                    small={true}
+                                    onSubmit={() => {
                                         triggerHaptic()
                                         addX({months: 1})
-                                    }}>
-                                    Month
-                                </button>
+                                    }}
+                                    style="flex-grow"/>
                             </div>
                         </div>
 
-
-                        <button className="bg-btn text-btn-text text-sm font-medium outline-1 dark:outline-0 outline-border2 hover:cursor-pointer rounded-md w-[90%] max-w-[450px] py-1 mb-6 h-9 flex justify-center items-center" 
-                            onClick={async () => {
-                                triggerHaptic()
+                        <ButtonComp
+                            name={HC.loading && loadingRef.current == 2 ? <AiOutlineLoading className="animate-spin" /> : "Create Goal"}
+                            onSubmit={async () => {
                                 loadingRef.current = 2
                                 await submit()
-                            }}>
-                            {HC.loading && loadingRef.current == 2 ? <AiOutlineLoading className="animate-spin" /> : "Create Goal"}
-                        </button>
+                            }}
+                            highlight={true}
+                            style="w-[90%] mb-6"/>
                     </div>
                 </div>
             </div>

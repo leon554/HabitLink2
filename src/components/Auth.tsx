@@ -4,12 +4,10 @@ import { AiOutlineLoading } from "react-icons/ai";
 import { AuthContext } from "./Providers/AuthProvider";
 import { SignUpResponses } from "../utils/types";
 import { LuLogIn } from "react-icons/lu";
-import { Util } from "@/utils/util";
-import { IoMdEyeOff } from "react-icons/io";
-import { IoMdEye } from "react-icons/io";
 import { triggerHaptic } from "tactus";
 import CheckBox from "./InputComponents/CheckBox";
 import { useNavigate } from "react-router-dom";
+import TextBoxLimited from "./primatives/TextBoxLimited";
 
 interface FormProps{
     name: string
@@ -24,8 +22,6 @@ export default function Auth() {
 
     const auth = useContext(AuthContext)
     const {alert} = useContext(AlertContext)
-    const [showPass, setShowPass] = useState(false)
-    const [showConPass, setShowConPass] = useState(false)
     const [checked, setChecked] = useState(false)
 
     const submit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -71,70 +67,38 @@ export default function Auth() {
                 </div>
                 <form className=" w-[90%] flex flex-col gap-3 text-subtext1 " onSubmit={e => submit(e)}>
                     {!login ? <div>
-                        <p className="mb-1.5 text-sm font-medium">Name</p>
-                        <input type="text" 
-                        onChange={(e) => Util.setValueLim((v: string) => setFormData(prev => ({...prev, name: v})), e.target.value, 25) }
-                        value={formData.name}
-                        placeholder="Enter name"
-                        autoComplete="username"
-                        className="outline-1 text-[12px] rounded-sm w-full border-0 pl-2  outline-border2 text-sm p-1.5 text-subtext1 mb-1"/>
-                        <div className="w-full flex justify-end mb-[-12px]">
-                            <p className="text-xs text-subtext3">
-                                {formData.name.length}/25
-                            </p>
-                        </div>
+                        <TextBoxLimited
+                            name="Name"
+                            value={formData.name}
+                            setValue={data => setFormData(prev => ({...prev, name: data}))}
+                            placeHolder="Enter name"
+                            charLimit={20}/>
                     </div> : ""}
                     <div>
-                        <p className="mb-1.5 text-sm font-medium">Email</p>
-                        <input type="text"  
-                        onChange={(e) => Util.setValueLim((v: string) => setFormData(prev => ({...prev, email: v})), e.target.value, 70)}
-                        value={formData.email}
-                        placeholder="Enter email"
-                        autoComplete="email"
-                        className="outline-1 text-[12px] rounded-sm w-full border-0 pl-2 outline-border2 text-sm p-1.5 text-subtext1 mb-1"/>
-                        <div className="w-full flex justify-end mb-[-12px]">
-                            <p className="text-xs text-subtext3">
-                                {formData.email.length}/70
-                            </p>
-                        </div>
+                        <TextBoxLimited
+                            name="Email"
+                            value={formData.email}
+                            setValue={data => setFormData(prev => ({...prev, email: data}))}
+                            placeHolder="Enter email"
+                            charLimit={70}/>
                     </div>
                     <div>
-                        <div className="relative">
-                            {!showPass ? 
-                            <IoMdEyeOff className="absolute right-2 top-[33px] text-subtext3 hover:cursor-pointer" size={15} onClick={() => {setShowPass(true); triggerHaptic()}}/> :
-                            <IoMdEye className="absolute right-2 top-[33px] text-subtext3 hover:cursor-pointer" size={15} onClick={() => {setShowPass(false); triggerHaptic()}}/>}
-                            <p className="mb-1.5 text-sm font-medium">Password</p>
-                            <input type={showPass ? "text" : "password"}  
-                            onChange={(e) => Util.setValueLim((v: string) => setFormData(prev => ({...prev, password: v})), e.target.value, 40)}
+                        <TextBoxLimited
+                            name="Password"
                             value={formData.password}
-                            placeholder={login ? "Enter Password" : "Create password"}
-                            autoComplete="new-password"
-                            className="outline-1 text-[12px] rounded-sm w-full border-0 pl-2 outline-border2 text-sm p-1.5 text-subtext1 mb-1"/>
-                            <div className={`w-full flex justify-end ${login ? "mb-[-5px]" : "mb-[-12px]"}`}>
-                                <p className="text-xs text-subtext3">
-                                    {formData.password.length}/40
-                                </p>
-                            </div>
-                        </div>
+                            setValue={data => setFormData(prev => ({...prev, password: data}))}
+                            charLimit={40}
+                            password={true}
+                            placeHolder={login ? "Enter Password" : "Create password"}/>
                     </div>
                     {!login ? <div>
-                        <div className="relative">
-                            {!showConPass ? 
-                            <IoMdEyeOff className="absolute right-2 top-[33px] text-subtext3 hover:cursor-pointer" size={15} onClick={() => {setShowConPass(true); triggerHaptic()}}/> :
-                            <IoMdEye className="absolute right-2 top-[33px] text-subtext3 hover:cursor-pointer" size={15} onClick={() => {setShowConPass(false); triggerHaptic()}}/>}
-                            <p className="mb-1.5 text-sm font-medium">Confirm Password</p>
-                            <input type={showConPass ? "text" : "password"}  
-                            onChange={(e) => Util.setValueLim((v: string) => setFormData(prev => ({...prev, confirmPassword: v})), e.target.value, 40)}
+                        <TextBoxLimited
+                            name="Confirm Password"
                             value={formData.confirmPassword}
-                            placeholder="Confirm password"
-                            autoComplete="new-password"
-                            className="outline-1 text-[12px] rounded-sm w-full border-0 pl-2 outline-border2 text-sm p-1.5 text-subtext1 mb-1"/>
-                            <div className={`w-full flex justify-end mb-[-5px]`}>
-                                <p className="text-xs text-subtext3">
-                                    {formData.confirmPassword.length}/40
-                                </p>
-                            </div>
-                        </div>
+                            setValue={data => setFormData(prev => ({...prev, confirmPassword: data}))}
+                            charLimit={40}
+                            password={true}
+                            placeHolder={"Confirm password"}/>
                     </div>: ""}
 
                     {!login ? 
@@ -143,7 +107,7 @@ export default function Auth() {
                             <div className=" pt-1">
                                 <CheckBox checked={checked} setChecked={setChecked}/>
                             </div>
-                            <span className="text-justify">
+                            <span className="">
                                 I have read and agree to the{" "}
                                 <a className="text-subtext3 underline leading-none hover:cursor-pointer" onClick={() => navigate("/terms")}>
                                 Terms & Conditions

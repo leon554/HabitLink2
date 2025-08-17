@@ -9,6 +9,7 @@ import { HabitTypeE } from "@/utils/types"
 import { HabitUtil } from "@/utils/HabitUtil"
 import Model from "./InputComponents/Model"
 import { triggerHaptic } from "tactus"
+import TextBoxLimited from "./primatives/TextBoxLimited"
 
 
 export interface habitAI{
@@ -112,17 +113,12 @@ export default function HabitStudio() {
                     alert("Habit Studio lets you set a goal, choose the days you can work on it, and generates habits to help you achieve it.")
                 }}/>
                 <div className="w-full mb-1">
-                    <p className="text-sm font-medium  text-subtext1 mb-2">Goal Name</p>
-                    <input type="text" 
-                    placeholder="Enter Goal name"
-                    value={name}
-                    onChange={e => Util.setValueLim(setName, e.target.value, 30)}
-                    className="outline-1 text-[12px] rounded-md w-full border-0  outline-border2 text-sm p-1.5 text-subtext1 mb-1" />
-                    <div className="w-full flex justify-end mt-1 mb-[-13px]">
-                        <p className="text-xs text-subtext3">
-                            {name.length}/30
-                        </p>
-                    </div>
+                    <TextBoxLimited
+                        name="Goal Name"
+                        value={name}
+                        setValue={setName}
+                        charLimit={30}
+                        placeHolder="Enter goal name..."/>
                 </div>
                 <div className="w-full flex justify-center flex-col items-stretch ">
                     <div>
@@ -227,19 +223,12 @@ export default function HabitStudio() {
                     </p>
 
                     <div className="w-[90%] max-w-[450px]">
-                        <p className="text-sm font-medium  text-subtext1 mb-2">Habit Name</p>
-                        <input type="text" 
-                        placeholder="Enter habit name"
-                        value={tempHabit?.habit}
-                        onChange={e => Util.setValueLim((value) => {
-                            setTempHabit({...tempHabit, habit: value} as habitAI)
-                        }, e.target.value, 30)}
-                        className="outline-1 text-[12px] rounded-md w-full border-0  outline-border2 text-sm p-1.5 text-subtext1 mb-1" />
-                        <div className="w-full flex justify-end mt-1 mb-[-17px]">
-                            <p className="text-xs text-subtext3">
-                                {tempHabit?.habit.length ?? 0}/30
-                            </p>
-                        </div>
+                        <TextBoxLimited
+                            name="Habit Name"
+                            value={tempHabit?.habit}
+                            setValue={(value) => setTempHabit({...tempHabit, habit: value} as habitAI)}
+                            placeHolder="Enter habit name"
+                            charLimit={30}/>
                     </div>
 
 
@@ -345,7 +334,7 @@ export default function HabitStudio() {
                             onChange={e => {
                                 setTempHabit({...tempHabit, target: Number(e.target.value)} as habitAI)
                             }}
-                            className='outline-1 rounded-md outline-border2 w-full text-sm px-1.5 text-subtext2 appearance-none'/>
+                            className='outline-1 rounded-md outline-border2 h-6 w-full text-sm px-1.5 text-subtext2 appearance-none'/>
                         }
                     </div>
                     }

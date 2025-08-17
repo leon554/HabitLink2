@@ -9,6 +9,7 @@ import { AiOutlineLoading } from "react-icons/ai"
 import { AlertContext } from "../Alert/AlertProvider"
 import type { HabitType } from "@/utils/types"
 import { TiDelete } from "react-icons/ti"
+import TextBoxLimited from "../primatives/TextBoxLimited"
 
 
 export default function GoalEdit() {
@@ -57,21 +58,13 @@ export default function GoalEdit() {
                     <p className="text-center text-title text-xl font-medium">
                         Edit Goal
                     </p>
-                    <div className="flex flex-col  gap-2 mt-5">
-                        <div className="flex justify-between items-end">
-                            <p className="text-sm text-subtext1">
-                                Goal Name
-                            </p>
-                            <p className="text-[10px] text-subtext3  ">
-                                {name.length}/30
-                            </p>
-                        </div>
-                        <input type="text" 
-                            className="outline-1 outline-border rounded-md px-1.5 text-subtext2 text-xs h-6"
-                            placeholder="Enter goal name..."
-                            value={name}
-                            onChange={e => Util.setValueLim( setName, e.target.value, 30)}/>
-                    </div>
+                    <TextBoxLimited 
+                        name={"Goal Name"} 
+                        value={name} 
+                        setValue={setName} 
+                        charLimit={30} 
+                        placeHolder={"Enter Habit Name..."}
+                        outerDivStyles="mt-6"/>
 
                     <div className="flex flex-col  gap-2 mt-5">
                         <p className="text-sm text-subtext1">

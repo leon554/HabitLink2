@@ -8,8 +8,9 @@ import TimeInput from "./InputComponents/TimeInput";
 import DistanceInput from "./InputComponents/DistanceInput";
 import NumberInput from "./InputComponents/NumberInput";
 import { RiAiGenerate } from "react-icons/ri";
-import { Util } from "@/utils/util";
 import { triggerHaptic } from "tactus";
+import TextBoxLimited from "./primatives/TextBoxLimited";
+import ButtonComp from "./primatives/ButtonComp";
 
 
 
@@ -108,38 +109,30 @@ export default function Create({compact, onCreate, initialName} : Props){
             <div className={`flex w-full md:gap-10 md:pl-10 md:pr-10 max-md:flex-col max-md:items-center items-start `}>
                 <div className="w-full flex justify-center flex-col items-center ">
                     <div className="w-[90%] max-w-[450px] mb-5">
-                        <p className="text-sm font-medium  text-subtext1 mb-2">Habit Name</p>
-                        <input type="text" 
-                        placeholder="Enter habit name"
-                        value={name}
-                        onChange={e => Util.setValueLim(setName, e.target.value, 30)}
-                        className="outline-1 text-[12px] rounded-md w-full border-0  outline-border2 text-sm p-1.5 text-subtext1 mb-1" />
-                        <div className="w-full flex justify-end mt-1 mb-[-13px]">
-                            <p className="text-xs text-subtext3">
-                                {name.length}/30
-                            </p>
-                        </div>
+                        <TextBoxLimited 
+                            name="Habit Name"
+                            value={name}
+                            setValue={setName}
+                            charLimit={30}
+                            placeHolder="Enter habit name"/>
                     </div>
                     <div className="w-[90%] max-w-[450px] relative mb-5">
-                        <p className="text-sm font-medium text-subtext1 mb-2">Habit Description</p>
-                        <textarea
-                        placeholder="Enter habit description"
-                        value={description}
-                        onChange={e => Util.setValueLim(setDescription, e.target.value, 200)}
-                        className={`outline-1 text-[12px] ${compact ? "h-7.5" : "h-20"} rounded-md resize-none w-full border-0  outline-border2 text-sm p-1.5 text-subtext1`} />
-                        <p className="absolute right-2 bottom-5 hover:cursor-pointer text-subtext2 bg-panel1"
-                        onClick={async () => {
-                            triggerHaptic()
-                            loadingRef.current = 1
-                            await genDescription()
-                        }}>
-                            {HC.loading && loadingRef.current == 1 ? <AiOutlineLoading className="animate-spin" size={12}/> : <RiAiGenerate size={14}/>}
-                        </p>
-                        <div className="w-full flex justify-end mt-1 mb-[-16px]">
-                            <p className="text-xs text-subtext3">
-                                {description.length}/200
-                            </p>
-                        </div>
+                        <TextBoxLimited
+                            name="Habit Description"
+                            value={description}
+                            setValue={setDescription}
+                            charLimit={200}
+                            placeHolder="Enter habit description"
+                            textArea={true}
+                            custom={
+                            <p className="absolute right-2 bottom-2 hover:cursor-pointer text-subtext2 bg-panel1"
+                                onClick={async () => {
+                                    triggerHaptic()
+                                    loadingRef.current = 1
+                                    await genDescription()
+                                }}>
+                                    {HC.loading && loadingRef.current == 1 ? <AiOutlineLoading className="animate-spin" size={12}/> : <RiAiGenerate size={14}/>}
+                            </p>}/>
                     </div>
                     <div className="w-[90%] max-w-[450px]    flex justify-center flex-col items-stretch ">
                         <div>
@@ -153,7 +146,7 @@ export default function Create({compact, onCreate, initialName} : Props){
                             <div className=" flex justify-stretch gap-2">
                                 {Object.entries(compDays).map((e, i) => {
                                     return(
-                                        <button className={`${e[1] ? "bg-highlight outline-1 outline-border dark:outline-0" : "" }  ${e[1] ? "text-stone-900" : "text-subtext1" } ${e[1] ? "outline-0" : "outline-1" } grow-1 pl-2 pr-2 rounded-md outline-border2  hover:cursor-pointer   ease-in-out duration-75`}
+                                        <button className={`${e[1] ? "bg-highlight outline-1 outline-border dark:outline-0" : "" }  ${e[1] ? "text-stone-900" : "text-subtext1" } ${e[1] ? "outline-0" : "outline-1" } grow-1 pl-2 pr-2 rounded-md outline-border2  hover:cursor-pointer  `}
                                             onClick={() => {triggerHaptic(); setCompDays(prev => ({...prev, [e[0]]: !e[1]})); setCompsPerWeek(0)}}
                                             key={i}>
                                             {e[0][0].toUpperCase()}
@@ -247,17 +240,16 @@ export default function Create({compact, onCreate, initialName} : Props){
                                 {">"}
                             </button> : ""}
                         </div>
-                    
-                    <button className=" w-full rounded-md p-1 outline-1 outline-border2 dark:outline-0 bg-btn  text-sm font-medium  hover:cursor-pointer mt-7 flex justify-center h-8 items-center"
-                        onClick={async () => {
-                            triggerHaptic()
+                    <ButtonComp
+                        name={HC.loading && loadingRef.current == 2 ? <AiOutlineLoading className="animate-spin" /> : "Create Habit"}
+                        highlight={true}
+                        onSubmit={async () => {
                             loadingRef.current = 2
                             await createHabit(); 
                             if(!onCreate) return
                             onCreate()
-                        }}>
-                        {HC.loading && loadingRef.current == 2 ? <AiOutlineLoading className="animate-spin" /> : "Create Habit"}
-                    </button>
+                        }}
+                        style="w-full"/>
                 </div>
             </div>
         </div>
