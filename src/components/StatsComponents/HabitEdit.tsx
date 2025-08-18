@@ -104,7 +104,7 @@ export default function HabitEdit() {
                     Edit 
             </button>
             <Model open={open} onClose={() => setOpen(false)}>
-                <div className="bg-panel1 p-5 px-9 rounded-xl max-w-[500px] gap-4  w-[90%] flex flex-col items-center  text-subtext3 outline-1 outline-border"
+                <div className="bg-panel1 p-5 px-9 rounded-2xl max-w-[500px] gap-4  w-[90%] flex flex-col items-center  text-subtext3 outline-1 outline-border"
                     onClick={e => e.stopPropagation()}>
                     <p className="text-title text-xl mt-2 mb-2 font-medium">
                         Edit Habit
@@ -122,10 +122,10 @@ export default function HabitEdit() {
                         {Array.from(HC.habitsCompletions.get(HC.currentHabit!.id) ?? []).length == 0 ? "" :
                             <>
                             <p className=" flex-grow-2 text-sm font-medium text-subtext1 whitespace-nowrap">Habit Completions</p>
-                            <div className="flex flex-col max-h-[200px] overflow-y-scroll w-full no-scrollbar gap-1.5 rounded-xl">
+                            <div className="flex flex-col max-h-[200px] overflow-y-scroll w-full no-scrollbar gap-1.5 rounded-md">
                                 {Array.from(HC.habitsCompletions.get(HC.currentHabit!.id) ?? []).map((c,i) => {
                                     return(
-                                        <div className=" rounded-xl border-border2 border-1 p-1 px-2 flex justify-between items-center h-7" key={i}>
+                                        <div className=" rounded-md border-border2 border-1 p-1 px-2 flex justify-between items-center h-7" key={i}>
                                             <p className="text-xs" >
                                                 {dateUtils.formatDate(new Date(Number(c.date)))} | Data: {Util.pretifyData(c.data, HC.currentHabit!.type as HabitTypeE)}
                                             </p>
@@ -185,7 +185,7 @@ export default function HabitEdit() {
                 </div>
             </Model>
             <Model open={openNewComp} onClose={() => setOpenNewComp(false)}>
-                <div className="bg-panel1 p-5 px-9 rounded-xl max-w-[500px] gap-4  w-[90%] flex flex-col items-center  text-subtext3 outline-1 outline-border"
+                <div className="bg-panel1 p-5 px-9 rounded-2xl max-w-[500px] gap-4  w-[90%] flex flex-col items-center  text-subtext3 outline-1 outline-border"
                     onClick={e => e.stopPropagation()}>
                     <p className="text-title text-xl mt-2 mb-2 font-medium">
                         New Entry

@@ -18,6 +18,7 @@ import { AuthContext } from "@/components/Providers/AuthProvider"
 import { AiOutlineLoading } from "react-icons/ai"
 import { triggerHaptic } from "tactus"
 import LogChart from "@/components/goalComponenets/LogChart"
+import { TbGauge } from "react-icons/tb"
 
 
 export default function GoalsPage() {
@@ -44,6 +45,10 @@ export default function GoalsPage() {
         }
         updateGoal()
     }, [isGoalFinished])
+
+     useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [])
 
     return (
         <div className="w-full flex justify-center mb-10 ">
@@ -109,10 +114,17 @@ export default function GoalsPage() {
                     <CountDown/> :
                     <GoalCompletionPanel/>
                 }
-                <div className="w-[90%] max-w-[600px] p-7 py-5 pb-6 bg-panel1 rounded-2xl outline-1 outline-border flex flex-col gap-4">
-                    <p className="text-lg text-title font-medium">
-                        Performance
-                    </p>
+                <div className="w-[90%] max-w-[600px] p-7 py-5 pb-7 bg-panel1 rounded-2xl outline-1 outline-border flex flex-col gap-4">
+                    <div className="flex items-center gap-3 mb-2 mt-1">
+                        <div className="bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
+                            <TbGauge />
+                        </div>
+                        <div className="flex flex-col gap-1">
+                            <p className="text-title font-semibold leading-none pb-1">
+                                Progression
+                            </p>
+                        </div>
+                    </div>
                     <AvgConsistency/>
                     <AvgStrengthPanel/>
                 </div>

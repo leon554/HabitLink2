@@ -2,8 +2,8 @@ import { useContext, useEffect, useState, type SetStateAction} from "react"
 import { UserContext } from "../Providers/UserProvider"
 import { Util } from "@/utils/util"
 import { FaChartLine } from "react-icons/fa"
-import { TbChartBarPopular } from "react-icons/tb"
 import { Doughnut } from "react-chartjs-2"
+import { TbChartDonut2 } from "react-icons/tb";
 import {
     Chart as ChartJS,
     ArcElement,
@@ -111,7 +111,7 @@ export default function SkipChart(p: Props) {
             <div className="w-full flex justify-between items-center">
                 <div className="flex items-center gap-3  mt-2">
                 <div className="bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
-                    <TbChartBarPopular />
+                    <TbChartDonut2 />
                 </div>
                 <div className="flex flex-col gap-1">
                     <p className="text-title font-semibold leading-none pb-1">
@@ -121,10 +121,10 @@ export default function SkipChart(p: Props) {
                 </div>
                 
             </div>
-            {chartData.length < 2 ? (
+            {!chartData.some(d => d.data > 0) ? (
                 <div className="h-55 border-1 border-border2 flex justify-center items-center rounded-2xl">
                 <p className="text-sm p-6 max-sm:text-xs text-subtext3 flex flex-wrap text-center justify-center items-center gap-2">
-                    Log your habits for {2 - chartData.length} more to see this graph <FaChartLine />
+                    Log your habit atleast once to see this chart <FaChartLine />
                 </p>
                 </div>
             ) : (

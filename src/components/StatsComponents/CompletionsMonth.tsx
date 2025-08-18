@@ -6,6 +6,7 @@ import { IoInformationCircleOutline } from "react-icons/io5";
 import Model from "../InputComponents/Model";
 import ToolTip from "../ToolTip";
 import ButtonComp from "../primatives/ButtonComp";
+import { TbCalendarClock } from "react-icons/tb";
 
 export default function CompletionsMonth() {
     const HC = useContext(UserContext)
@@ -39,14 +40,19 @@ export default function CompletionsMonth() {
 
     return (
         <div className="w-full bg-panel1  rounded-2xl outline-1 outline-border relative text-title justify-center p-7 pt-5 pb-7 flex flex-col items-center gap-4 ">
-            <div className="w-full ">
-                <p className="text-left mt-1 mb-2 font-medium">
-                    Completions Past 16 Weeks
-                </p>
+            <div className="w-full flex items-center mb-2 justify-between">
+                 <div className="flex items-center gap-4">
+                    <div className="bg-panel2 text-subtext2 outline-1 outline-border2 p-1.5 rounded-lg">
+                        <TbCalendarClock />
+                    </div>
+                    <p className="text-title font-semibold leading-none pb-1">
+                        Completion Calander
+                    </p>
+                </div>
+                <IoInformationCircleOutline size={14} color="#57534E" className="hover:cursor-pointer " onClick={() => {
+                    setOpen(true)
+                }}/>
             </div>
-            <IoInformationCircleOutline size={14} color="#57534E" className="hover:cursor-pointer absolute top-3 right-3" onClick={() => {
-                setOpen(true)
-            }}/>
             <div className="w-full " ref={calanderRef}>
                 <div className="flex gap-1.5  ">
                     <div className="flex flex-col  gap-1.5 mr-0.5 ">

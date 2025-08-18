@@ -88,7 +88,7 @@ export default function HabitLogPopUp(p: Props) {
                         if(inputValue > 2000) return p.setValue(2000)
                         p.setValue(inputValue)
                     }}
-                    className='outline-1 rounded-xl outline-border2 w-full text-sm px-1.5 text-subtext2 appearance-none'/>
+                    className='outline-1 rounded-md outline-border2 w-full text-sm px-1.5 text-subtext2 appearance-none'/>
                     }
                 </div>
                 <div className="flex justify-stretch  w-full gap-3">

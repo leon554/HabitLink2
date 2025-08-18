@@ -4,6 +4,7 @@ import { Util } from "../../utils/util"
 import type { HabitType } from "../../utils/types"
 import { useNavigate } from "react-router-dom"
 import { FaLink } from "react-icons/fa";
+import { TbLink } from "react-icons/tb";
 
 
 export default function AssociatedHabits() {
@@ -11,18 +12,24 @@ export default function AssociatedHabits() {
     const HC = useContext(UserContext)
     const navigate = useNavigate()
     const habits = Util.fetchMapItems<HabitType>(HC.getCurrentGoal()?.habits.split(",").map(i => Number(i)) ?? [], HC.habits)
-    const habitsLength = habits.length
 
     return (
-        <div className="bg-panel1 text-title drop-shadow-md outline-border outline-1 w-[90%] max-w-[600px] p-5 rounded-2xl gap-3 flex flex-col ">
-            <p className="text-lg font-medium">
-                Associated Habits
-            </p>
-            <div className="w-full flex flex-col gap-0.5 mb-1">
+        <div className="bg-panel1 text-title drop-shadow-md outline-border outline-1 w-[90%] max-w-[600px] p-7 py-5 rounded-2xl gap-3 flex flex-col ">
+           <div className="flex items-center gap-3 mb-1 mt-1">
+                <div className="bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
+                    <TbLink />
+                </div>
+                <div className="flex flex-col gap-1">
+                    <p className="text-title font-semibold leading-none pb-1">
+                        Progression
+                    </p>
+                </div>
+            </div>
+            <div className="w-full flex flex-col gap-1.5 mb-1">
                 {[...habits].map((h, i) => {
                     if(h){
                         return(
-                            <div key={h.id} className={`flex items-center gap-3   ${i == habitsLength -1 ? "" : "border-border2 border-b-1 pb-5"} w-full py-4  justify-between hover:cursor-pointer h-10`} 
+                            <div key={i} className={`flex items-center bg-panel2 p-2 rounded-xl border-1 border-border2 justify-between hover:cursor-pointer hover:scale-99 transition-all duration-100 ease-in-out`} 
                                 onClick={() => {
                                     HC.setCurrentHabit(h)
                                     navigate("/stats")

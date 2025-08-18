@@ -9,6 +9,8 @@ import ProgressPanel from "./ProgressPanel"
 import GoalProgress from "./GoalProgress"
 import { dateUtils } from "@/utils/dateUtils"
 import ButtonComp from "../primatives/ButtonComp"
+import { TbClock } from "react-icons/tb";
+import { TbClockExclamation } from "react-icons/tb";
 
 export default function CountDown() {
     const [open, setOpen] = useState(false)
@@ -46,9 +48,10 @@ export default function CountDown() {
 
     return (
         <>
-            <div className='bg-panel1  drop-shadow-sm outline-border outline-1 w-[90%] max-w-[600px] p-7 py-6 flex gap-1 flex-col  rounded-2xl '>
+            <div className='bg-panel1  drop-shadow-sm outline-border outline-1 w-[90%] max-w-[600px] p-7 py-6 flex gap-3.5 flex-col  rounded-2xl '>
                 <ProgressPanel 
                     title={timeLeft <= 0 ? "Time Has Ran Out!" : "Time Progress"}
+                    icon={timeLeft <= 0 ? <TbClockExclamation /> : <TbClock /> }
                     text={`Remaining Time: ${ dateUtils.formatTime(timeLeft)}`}
                     value={(1 - (timeLeft)/(completionTime - startTime)) * 100} roundTo={2}
                     large={true} />

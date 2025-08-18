@@ -3,7 +3,7 @@ import { useContext, useEffect, useState, type SetStateAction} from "react"
 import { UserContext } from "../Providers/UserProvider"
 import { Util } from "@/utils/util"
 import { FaChartLine } from "react-icons/fa"
-import { TbChartBarPopular } from "react-icons/tb"
+import { TbChartDonut2 } from "react-icons/tb";
 import { IoInformationCircleOutline } from "react-icons/io5"
 import { Doughnut } from "react-chartjs-2"
 import Model from "../InputComponents/Model"
@@ -109,7 +109,7 @@ export default function HabitDistribution(p: Props) {
                 <div className="flex items-center gap-3  mt-2 justify-between w-full">
                     <div className="flex items-center gap-3">
                         <div className="bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
-                            <TbChartBarPopular />
+                            <TbChartDonut2 />
                         </div>
                         <div className="flex flex-col gap-1">
                             <p className="text-title font-semibold leading-none pb-1">

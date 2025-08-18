@@ -4,6 +4,7 @@ import { UserContext } from "../Providers/UserProvider";
 import { useContext, useState } from "react";
 import { IoInformationCircleOutline } from "react-icons/io5";
 import Model from "../InputComponents/Model";
+import { TbChartCandle } from "react-icons/tb";
 
 export default function Summary() {
 
@@ -12,14 +13,19 @@ export default function Summary() {
     const p = habitStats.get(currentHabit!.id)!
 
     return (
-        <div className="w-full relative bg-panel1 rounded-2xl font outline-1 font-mono outline-border text-title justify-center p-7 pt-5 pb-7 flex flex-col items-center gap-4">
-            <IoInformationCircleOutline size={14} color="#57534E" className="hover:cursor-pointer absolute top-3 right-3" onClick={() => {
-                setOpen(true)
-            }}/>
-            <div className="w-full">
-                <p className="text-lg text-leftr mt-1 font-sans font-medium">
-                    Overview
-                </p>
+        <div className="w-full relative bg-panel1 rounded-2xl font outline-1 outline-border text-title justify-center p-7 pt-5 pb-7 flex flex-col items-center gap-4">
+            <div className="w-full flex justify-between items-center">
+                <div className="flex items-center gap-4 mb-2">
+                    <div className="bg-panel2 text-subtext2 outline-1 outline-border2 p-1.5 rounded-lg">
+                        <TbChartCandle/>
+                    </div>
+                    <p className="text-title font-semibold leading-none pb-1">
+                        Overview
+                    </p>
+                </div>
+                <IoInformationCircleOutline size={14} color="#57534E" className="hover:cursor-pointer " onClick={() => {
+                    setOpen(true)
+                }}/>
             </div>
             <div className="gap-3 gap-x-14 grid-cols-2 max-sm:grid-cols-1 grid  items-stretch w-full">
                 <InfoBox value={`${p.streak??0}`} text="Current Streak" toolTipText="This is the current streak of your habit"/>

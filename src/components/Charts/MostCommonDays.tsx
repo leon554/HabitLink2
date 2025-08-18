@@ -2,7 +2,7 @@ import { useContext } from "react";
 
 import { UserContext } from "../Providers/UserProvider";
 import { HabitUtil } from "../../utils/HabitUtil";
-import { TbChartBarPopular } from "react-icons/tb"
+import { TbChartBubble } from "react-icons/tb";
 import { FaChartLine } from "react-icons/fa6";
 
 import {
@@ -118,7 +118,7 @@ export default function MostCommonDays(p: Props) {
             <div className="w-full flex justify-between items-center">
                 <div className="flex items-center gap-3 mb-2 mt-2">
                     <div className="bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
-                        <TbChartBarPopular />
+                        <TbChartBubble />
                     </div>
                     <div className="flex flex-col gap-1">
                         <p className="text-title font-semibold leading-none pb-1">

@@ -3,7 +3,7 @@ import { UserContext } from "../Providers/UserProvider"
 import { HabitUtil } from "@/utils/HabitUtil"
 import { Util } from "@/utils/util"
 import { FaChartLine } from "react-icons/fa"
-import { TbChartBarPopular } from "react-icons/tb";
+import { TbChartLine } from "react-icons/tb";
 import {Line} from "react-chartjs-2"
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, type ChartData} from "chart.js"
 
@@ -118,8 +118,8 @@ export default function AvgCompRate() {
     return (
         <div className="m-7 my-4 flex flex-col gap-7 overflow-clip">
              <div className="flex items-center gap-4 mb-2 mt-2">
-                <div className="bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
-                    <TbChartBarPopular />
+                <div className="bg-panel2 border-1 border-border2 text-subtext2 p-1.5 rounded-lg">
+                    <TbChartLine />
                 </div>
                 <div className="flex flex-col gap-1">
                     <p className="text-lg text-title font-semibold leading-none pb-1">

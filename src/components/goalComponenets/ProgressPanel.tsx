@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, type ReactNode } from "react";
 import ProgressBar from "../InputComponents/ProgressBar";
 import { UserContext } from "../Providers/UserProvider";
 import { AiOutlineLoading } from "react-icons/ai";
@@ -6,6 +6,7 @@ import { AiOutlineLoading } from "react-icons/ai";
 interface Props{
     value: number
     title: string
+    icon?: ReactNode
     roundTo?: number
     text?: string
     large? : boolean
@@ -20,9 +21,17 @@ export default function ProgressPanel(p: Props) {
 
     return (
         <div className="w-full max-w-[700px] text-title  flex flex-col ">
-            <p className={` ${p.small ? "font-normal text-subtext2 text-sm" : "font-medium"} mt-[-4px] ${p.large ? "text-lg" : ""}`}>
-                {p.title}
-            </p>
+            <div className="flex items-center gap-3 ">
+                {p.icon ? 
+                <p className="rounded-lg bg-panel2 border-1 border-border2 p-1.5 text-subtext2">
+                    {p.icon}
+                </p>
+                
+                : ""}
+                <p className={` ${p.small ? "font-normal text-subtext2 text-sm" : "font-medium"} mt-[-4px] ${p.large ? "text-md" : ""}`}>
+                    {p.title}
+                </p>
+            </div>
             {p.text ? 
                 <p className="mt-1 text-xs text-subtext2 mb-1.5 max-w-[90%]">
                     {p.text}

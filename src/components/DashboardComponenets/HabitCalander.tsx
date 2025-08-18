@@ -41,17 +41,19 @@ export default function HabitCalander() {
 
     return (
         <div className="m-7 mt-4 flex flex-col  gap-5">
-            <div className="flex items-center gap-4 mb-2 mt-2">
-                <div className="bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
-                    <TbCalendarMonthFilled />
+            <div className="w-full flex justify-between items-center">
+                <div className="flex items-center gap-4 mb-2 mt-2">
+                    <div className="bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
+                        <TbCalendarMonthFilled />
+                    </div>
+                    <p className="text-lg text-title font-semibold leading-none pb-1">
+                        Habit Completions
+                    </p>
                 </div>
-                <p className="text-lg text-title font-semibold leading-none pb-1">
-                    Habit Completions
-                </p>
+                <IoInformationCircleOutline size={14} color="#57534E" className="hover:cursor-pointer " onClick={() => {
+                    setOpen(true)
+                }}/>
             </div>
-            <IoInformationCircleOutline size={14} color="#57534E" className="hover:cursor-pointer absolute top-3 right-3" onClick={() => {
-                setOpen(true)
-            }}/>
             <div className="w-full  min-w-0 " ref={calanderRef}>
                 <div className="flex gap-1.5 ">
                     <div className="flex flex-col  gap-1.5 mr-0.5 ">

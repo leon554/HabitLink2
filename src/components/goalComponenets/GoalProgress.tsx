@@ -4,7 +4,7 @@ import { Util } from "../../utils/util";
 import ProgressPanel from "./ProgressPanel";
 import useCurrentGoalValue from "../Hooks/useCurrentGoalValue";
 import type { HabitTypeE } from "@/utils/types";
-
+import { TbProgressCheck } from "react-icons/tb";
 
 
 export default function GoalProgress() {
@@ -18,6 +18,7 @@ export default function GoalProgress() {
         <div className="mt-4">
             <ProgressPanel 
                 title="Actaul Progress"
+                icon={<TbProgressCheck />}
                 text={`You have ${Util.pretifyGoalData(currentValue, HC.getCurrentGoal()?.type as HabitTypeE)}
                     logged with a goal of ${Util.pretifyGoalData(targetValue, HC.getCurrentGoal()?.type as HabitTypeE)} 
                   ${(startValue != 0) ? " starting with " + startValue : ""}`}

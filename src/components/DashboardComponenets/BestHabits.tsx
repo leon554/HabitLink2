@@ -4,9 +4,11 @@ import { Util } from "@/utils/util"
 import { TbTrophy } from "react-icons/tb";
 import { TbArrowBigDownLines } from "react-icons/tb";
 import Select from "../InputComponents/Select";
+import { useNavigate } from "react-router-dom";
 
 
 interface Data{
+    id: number
     name: string
     icon: string
     consistency: number
@@ -15,11 +17,13 @@ interface Data{
 export default function BestHabits() {
 
     const HC = useContext(UserContext)
+    const navigate = useNavigate()
     const [filter, setFilter] = useState(0)
     const items = [{name: "Both", id: 0}, {name: "Consistency", id: 1}, {name: "Strength", id: 2}]
 
     const habits = Util.fetchAllMapItems(HC.habits).map(h => {
         return {
+            id: h.id,
             name: h.name,
             icon: h.icon,
             consistency: HC.habitStats.get(h.id)?.compRate ?? 0, 
@@ -60,7 +64,11 @@ export default function BestHabits() {
             <div className="flex flex-col gap-2">
                 {habits.slice(0, 3).map((h, _) => {
                     return(
-                        <div className= {`bg-panel2 px-2 rounded-xl border-1  flex justify-between items-center text-sm text-subtext2 py-2 border-b-1 border-border2  pb-3`}>
+                        <div className= {`bg-panel2 px-2 rounded-xl border-1 hover:scale-99 transition-all duration-150 ease-in-out hover:cursor-pointer  flex justify-between items-center text-sm text-subtext2 py-2 border-b-1 border-border2  pb-3`}
+                            onClick={() => {
+                                HC.setCurrentHabit(HC.habits.get(h.id) ?? null)
+                                navigate("/stats")
+                            }}>
                             <p className=" text-md">
                                 {h.icon} {Util.capitilizeFirst(h.name)}
                             </p>
@@ -96,7 +104,11 @@ export default function BestHabits() {
             <div className="flex flex-col gap-2">
                 {habits.slice(-3).reverse().map((h, _) => {
                     return(
-                        <div className={`bg-panel2 px-2 rounded-xl border-1  flex justify-between items-center text-sm text-subtext2 py-2 border-b-1 border-border2  pb-3`}>
+                        <div className={`bg-panel2 px-2 rounded-xl border-1 hover:scale-99 transition-all duration-150 ease-in-out hover:cursor-pointer  flex justify-between items-center text-sm text-subtext2 py-2 border-b-1 border-border2  pb-3`}
+                            onClick={() => {
+                                HC.setCurrentHabit(HC.habits.get(h.id) ?? null)
+                                navigate("/stats")
+                            }}>
                             <p>
                                 {h.icon} {Util.capitilizeFirst(h.name)}
                             </p>

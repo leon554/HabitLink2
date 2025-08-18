@@ -3,7 +3,6 @@ import { HabitTypeE, type HabitType } from '../utils/types'
 import { UserContext } from './Providers/UserProvider'
 import { AiOutlineLoading } from "react-icons/ai";
 import { dateUtils } from '../utils/dateUtils'
-import ProgressBar from './InputComponents/ProgressBar';
 import { HabitUtil } from '../utils/HabitUtil';
 import { FaCheck } from "react-icons/fa6";
 import { FaHourglassHalf } from "react-icons/fa";
@@ -188,35 +187,43 @@ export default function HabitLogCard({habit: h}: HabitProps) {
             </div>
             {settings.showDetails ? 
             !isNormalHabit()?
-                <div className='ml-4 mr-3 mb-3 flex  gap-2 flex-col'>
-                    <div className='w-full'>
-                        <div className=''>
-                            <ProgressBar 
-                                min={0} 
-                                max={Number(h.target)} 
-                                current={HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))}/>
-                        </div>
-                    </div>
+                <div className='ml-4 mr-3 mb-3 flex mt-[-5px]  gap-2 flex-col'>
                     <div className='flex items-center gap-2 mt-1 flex-wrap justify-stretch'>   
                         <p className='text-subtext2 dark:text-subtext2   text-[11px]'>
-                            {Math.round(HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))/Number(h.target)*100*100)/100}% |
+                            {Math.round(HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))/Number(h.target)*100*100)/100}%
+                        </p>
+                        <p className='text-xs text-subtext3/40 mb-0.5'>
+                            |
                         </p>
                         <p className='text-subtext2 dark:text-subtext2  text-[11px]'>
-                             [{Util.pretifyData(`${HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))}`, h.type as HabitTypeE)}]/[{Util.pretifyData(h.target, h.type as HabitTypeE)}]
+                            [{Util.pretifyData(`${HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))}`, h.type as HabitTypeE)}]/[{Util.pretifyData(h.target, h.type as HabitTypeE)}]
+                        </p>
+                         <p className='text-xs text-subtext3/40 mb-0.5'>
+                            |
                         </p>
                         <p className='text-subtext2 dark:text-subtext2  text-[11px]'>
-                            | {HabitUtil.getCompletionDaysString(h.completionDays)}
+                            {HabitUtil.getCompletionDaysString(h.completionDays)}
                         </p>
+                        {HabitUtil.isCompleteableToday(h, UC.habitsCompletions.get(h.id)) ?
+                            <p className='text-xs text-subtext3/40 mb-0.5'>
+                                |
+                            </p>
+                        : ""}
                         <p className='text-subtext2 dark:text-subtext2  text-[9px]'>
                             {HabitUtil.isCompleteableToday(h, UC.habitsCompletions.get(h.id)) ? <FaHourglassHalf /> : ""}
                         </p>
                     </div>
                 </div>
             : 
-            <div className='ml-4 mr-3 mb-3 flex  gap-2 '>
+            <div className='ml-4 mr-3 mb-3 flex items-center gap-2 '>
                 <p className='text-subtext2 dark:text-subtext2  text-[11px]'>
-                    Completions Days: {HabitUtil.getCompletionDaysString(h.completionDays)}
+                    {HabitUtil.getCompletionDaysString(h.completionDays)}
                 </p>
+                {HabitUtil.isCompleteableToday(h, UC.habitsCompletions.get(h.id)) ?
+                    <p className='text-xs text-subtext3/40 mb-0.5'>
+                        |
+                    </p>
+                : ""}
                 <p className='text-subtext2 dark:text-subtext2  text-[9px] flex items-center'>
                    {HabitUtil.isCompleteableToday(h, UC.habitsCompletions.get(h.id)) ? <FaHourglassHalf /> : ""}
                 </p>

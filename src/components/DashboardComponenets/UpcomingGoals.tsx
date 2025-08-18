@@ -64,7 +64,7 @@ export default function UpcomingGoals() {
                     </p>:
                     upcommingGoals.map((g, i) => {
                         return(
-                            <div className={`bg-panel2 px-2 rounded-xl border-1 border-border2 hover:cursor-pointer hover:scale-101 transition-all duration-150 ease-in-out text-sm  py-2  flex justify-between items-center gap-2`} key={i}
+                            <div className={`bg-panel2 px-2 rounded-xl border-1 border-border2 hover:cursor-pointer hover:scale-99 transition-all duration-150 ease-in-out text-sm  py-2  flex justify-between items-center gap-2`} key={i}
                                 onClick={() => {
                                     HC.setCurrentGoal(g.id)
                                     navigate("/goals")
@@ -114,7 +114,7 @@ export default function UpcomingGoals() {
                     {tasksToday.map((t, _) => {
                         return(
                             <>
-                                <div className={`bg-panel2 px-2 rounded-xl border-1 hover:scale-101 transition-all duration-150 ease-in-out flex justify-between  items-center py-2 pb-3  border-border2 w-full outline-border2   hover:cursor-pointer`}
+                                <div className={`bg-panel2 px-2 rounded-xl border-1 hover:scale-99 transition-all duration-150 ease-in-out flex justify-between  items-center py-2 pb-3  border-border2 w-full outline-border2   hover:cursor-pointer`}
                                     onClick={() => navigate("/log")}>
                                     <p className="text-subtext2 text-sm">
                                         {t.icon} {Util.capitilizeFirst(t.name)}

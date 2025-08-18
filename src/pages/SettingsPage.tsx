@@ -38,12 +38,15 @@ export default function SettingsPage() {
                        {id:4, name: "Goals Page"},
                        {id:5, name: "Create Habit Page"},
                        {id:6, name: "Create Goal Page"},
-                       {id:7, name: "Settings Page"}] as dataFormat[]
+                       {id:8, name: "HabitStudio Page"},
+                       {id:7, name: "Settings Page"},
+                       {id:9, name: "Other"}] as dataFormat[]
 
     const typeItems = [{id:1, name: "data not loading"}, 
                        {id:2, name: "layout issue"},
                        {id:3, name: "statistic is wrong"},
                        {id:4, name: "security issue"},
+                       {id:5, name: "Feature request"},
                        {id:5, name: "other"},]
 
     async function submitBug(){
@@ -84,19 +87,19 @@ export default function SettingsPage() {
             <SettingsToggles/>
             <Premium/>
             <InfoPanel>
-                <InfoPanel.Title title="Report Bug"/>
+                <InfoPanel.Title title="Report Bug/Request Feature"/>
                 <button className="outline-1 rounded-xl py-1.5 text-sm outline-border2 text-subtext2 mt-4 hover:cursor-pointer hover:bg-panel2/70 transition-all duration-150 ease-in-out"
                     onClick={() => {
                         triggerHaptic()
                         setOpenBug(true)
                     }}>
-                    Report
+                    Report/Request
                 </button>
             </InfoPanel>
             {bugs.length == 0 ? "" :
                 <div className="outline-1 rounded-2xl outline-border bg-panel1 w-[90%] max-w-[600px] p-7 py-6 flex flex-col gap-5">
                     <p className="text-lg text-title font-medium mb-1">
-                        Reported Bugs
+                        Reports/Requests
                     </p>
                     <div className="flex flex-col gap-3">
                         {bugs.map((b, i) => {
@@ -105,7 +108,7 @@ export default function SettingsPage() {
                                     <div className="">
                                         <div className="flex items-center gap-1">
                                             <p className="text-sm text-subtext1 font-medium">
-                                                Bug id: {b.id}
+                                                Id: {b.id}
                                             </p>
                                             <p  className="text-subtext3 hover:cursor-pointer text-sm" onClick={async () => {
                                                 triggerHaptic()
@@ -160,11 +163,11 @@ export default function SettingsPage() {
                         e.stopPropagation()
                     }}>
                     <p className="text-xl text-title font-medium mb-1">
-                        Bug Description
+                        Description
                     </p>
                     <div className="flex gap-3 items-center">
                         <p className="text-subtext1 text-sm">
-                            Page bug happend on:
+                            Page:
                         </p>
                         <div className="w-fit">
                             <Select items={pageItems} defaultText="Select" selectedItem={selectedPage} setSelectedItem={(id) => setSelectedPage(pageItems.find(p => p.id == id) ?? null)} origin={Origin.top} center={true} 
@@ -173,7 +176,7 @@ export default function SettingsPage() {
                     </div>
                      <div className="flex gap-3 items-center">
                         <p className="text-subtext1 text-sm">
-                            Bug Type:
+                            Type:
                         </p>
                         <div className="w-fit">
                             <Select items={typeItems} defaultText="Select" selectedItem={selectedType} setSelectedItem={(id) => setSelectedType(typeItems.find(p => p.id == id) ?? null)} origin={Origin.top} center={true} 
@@ -182,7 +185,7 @@ export default function SettingsPage() {
                     </div>
                     <div className="flex flex-col gap-2">
                         <p className="text-subtext1 text-sm mb-0.5">
-                            Bug Description
+                            Description
                         </p>
                         <textarea
                         placeholder="Enter bug description"

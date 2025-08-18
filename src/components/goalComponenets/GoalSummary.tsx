@@ -5,6 +5,7 @@ import { UserContext} from "../Providers/UserProvider"
 import { Util } from "@/utils/util"
 import useCurrentGoalValue from "../Hooks/useCurrentGoalValue"
 import { HabitTypeE } from "@/utils/types"
+import { TbChartCandle } from "react-icons/tb";
 
 
 
@@ -41,11 +42,18 @@ export default function GoalSummary() {
     }, [HC.getCurrentGoal()]);
 
     return (
-        <div className="w-[90%] max-w-[600px] relative bg-panel1 rounded-2xl font outline-1 font-mono outline-border text-title justify-center p-7 py-5 pb-7 flex flex-col items-center gap-4">
+        <div className="w-[90%] max-w-[600px] relative bg-panel1 rounded-2xl font outline-1 outline-border text-title justify-center p-7 py-5 pb-7 flex flex-col items-center gap-4">
             <div className="w-full">
-                <p className="text-lg text-leftr mt-1 font-sans font-medium">
-                    Overview
-                </p>
+                <div className="flex items-center gap-3 mb-1 mt-1">
+                    <div className="bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
+                        <TbChartCandle />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                        <p className="text-title font-semibold leading-none pb-1">
+                            Progression
+                        </p>
+                    </div>
+                </div>
             </div>
             <div className="gap-3 gap-x-14 grid-cols-2 max-sm:grid-cols-1 grid  items-stretch w-full">
                 <InfoBox value={String(habits.length)} text="Associated Habits" toolTipText="The number of habits associated to this goal. All associated habits are used for the data displayed for this goal"/>

@@ -3,7 +3,7 @@ import { UserContext } from "../Providers/UserProvider"
 import { HabitUtil } from "../../utils/HabitUtil"
 import { useScreenWidth } from "../Hooks/UseScreenWidth"
 import { Util } from "@/utils/util"
-
+import { TbCalendarCheck } from "react-icons/tb";
 
 export default function CompletionThisWeek() {
 
@@ -15,11 +15,16 @@ export default function CompletionThisWeek() {
 
     return (
         <div className="w-full bg-panel1 rounded-2xl outline-1 outline-border  text-title justify-center p-7 pt-5 pb-7 flex flex-col items-center gap-4 ">
-            <div className="w-full">
-                <p className=" text-left mt-1 font-medium">
-                    Completions This Week
-                </p>
-                <p className="text-subtext3 text-xs mb-1.5 mt-1">
+            <div className="w-full flex items-center justify-between">
+                <div className="flex items-center gap-4 mb-2">
+                    <div className="bg-panel2 text-subtext2 outline-1 outline-border2 p-1.5 rounded-lg">
+                        <TbCalendarCheck />
+                    </div>
+                    <p className="text-title font-semibold leading-none pb-1">
+                        Weekly Completions
+                    </p>
+                </div>
+                <p className="text-subtext3 text-xs mb-2 leading-0">
                     Due: {HabitUtil.getCompletionDaysString(HC.currentHabit?.completionDays ?? "")}
                 </p>
             </div>

@@ -1,4 +1,4 @@
-import { useContext} from "react";
+import { useContext, useEffect} from "react";
 import { UserContext } from "../components/Providers/UserProvider";
 import ConsistencyPanel from "../components/StatsComponents/ConsistencyPanel";
 import Summary from "../components/StatsComponents/Summary";
@@ -22,6 +22,11 @@ export default function StatsPage() {
     const HC = useContext(UserContext)
     const auth = useContext(AuthContext)
     const navigate =  useNavigate()
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [])
+
     return (
         <div className="flex justify-center">
             {!HC.currentHabit && Util.fetchAllMapItems(HC.habits).length != 0 ?

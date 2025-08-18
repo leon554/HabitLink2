@@ -1,10 +1,10 @@
 
-import { TbChartBarPopular } from "react-icons/tb";
 import { useContext} from "react"
 import { UserContext } from "../Providers/UserProvider"
 import { HabitUtil } from "@/utils/HabitUtil"
 import { FaChartLine } from "react-icons/fa6";
 export const description = "A simple area chart"
+import { TbChartArea } from "react-icons/tb";
 
 
 import {Line} from "react-chartjs-2"
@@ -124,7 +124,7 @@ export function ConsistencyOverTime() {
             <div className="w-full flex justify-between items-center">
                 <div className="flex items-center gap-3  mt-2">
                     <div className="bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
-                        <TbChartBarPopular />
+                        <TbChartArea />
                     </div>
                     <div className="flex flex-col gap-1">
                         <p className="text-title font-semibold leading-none pb-1">

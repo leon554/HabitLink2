@@ -109,12 +109,12 @@ export default function LogChart() {
 
     return (
         <div className="bg-panel1 rounded-2xl outline-1 outline-border p-7 py-4 pb-6 w-[90%] max-w-[600px] flex flex-col gap-6 ">
-            <div className="flex items-center gap-4 mb-2 mt-2">
+            <div className="flex items-center gap-3 mb-2 mt-2">
                 <div className="bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
                     <TbChartBarPopular />
                 </div>
                 <div className="flex flex-col gap-1">
-                    <p className="text-lg text-title font-semibold leading-none pb-1">
+                    <p className=" text-title font-semibold leading-none pb-1">
                         Data Logged Over Time
                     </p>
                 </div>
