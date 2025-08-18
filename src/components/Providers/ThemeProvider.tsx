@@ -34,7 +34,7 @@ export default function ThemeProvider(props: Props) {
     useEffect(() => {
         if(dark === null) return
         if (dark) {
-        document.documentElement.style.backgroundColor = "hsl(0, 0%, 4%)"; // Dark background
+        document.documentElement.style.backgroundColor = "hsl(0, 0%, 4%)"; // Dark background hsl(0, 0%, 4%)
         document.documentElement.classList.add("dark")
         localStorage.setItem("theme", "dark");
         } else {

@@ -6,6 +6,7 @@ import { FaChartLine } from "react-icons/fa"
 import { TbChartLine } from "react-icons/tb";
 import {Line} from "react-chartjs-2"
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, type ChartData} from "chart.js"
+import { themeContext } from "../Providers/ThemeProvider"
 
 
 ChartJS.register(
@@ -23,12 +24,15 @@ export default function AvgCompRate() {
     const rawData = Util.fetchAllMapItems(HC.habitStats).map(i => i.chartData)
     const data = HabitUtil.avgSameLengthChartDataArrs(HabitUtil.normalizeChartDataArrays(rawData)) ?? []
 
+    const theme = useContext(themeContext)
     const rootStyles = getComputedStyle(document.documentElement)
 
     const title = rootStyles.getPropertyValue('--color-title').trim()
     const subtext2 = rootStyles.getPropertyValue('--color-subtext2').trim()
     const panel = rootStyles.getPropertyValue('--color-panel1').trim() 
     const border = rootStyles.getPropertyValue('--color-border').trim()
+    const axis = rootStyles.getPropertyValue('--color-chartAxis').trim()
+    const axis2 = rootStyles.getPropertyValue('--color-chartAxis2').trim()
 
     const formatedData = {
         labels: data?.map(d => d.date),
@@ -92,7 +96,7 @@ export default function AvgCompRate() {
                     display: false, 
                     stepSzie: 20,
                     borderDash: [50, 50],
-                    color: "hsl(0, 0%, 10%)",
+                    color: theme.dark ? axis : axis2,
                     drawBorder: false
                 },
             },
@@ -109,7 +113,7 @@ export default function AvgCompRate() {
                     display: true, 
                     stepSzie: 20,
                     borderDash: [50, 50],
-                    color: "hsl(0, 0%, 10%)",
+                    color: theme.dark ? axis : axis2,
                     drawBorder: false
                 },
             },

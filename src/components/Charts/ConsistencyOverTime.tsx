@@ -35,6 +35,7 @@ export function ConsistencyOverTime() {
     const subtext2 = rootStyles.getPropertyValue('--color-subtext2').trim()
     const panel = rootStyles.getPropertyValue('--color-panel1').trim() 
     const border = rootStyles.getPropertyValue('--color-border').trim()
+    const axis = rootStyles.getPropertyValue('--color-chartAxis2').trim()
 
     const formatedData = {
         labels: data?.map(d => d.date),
@@ -112,7 +113,7 @@ export function ConsistencyOverTime() {
                     display: true, 
                     stepSzie: 20,
                     borderDash: [50, 50],
-                    color: "hsl(0, 0%, 13%)",
+                    color: axis,
                     drawBorder: false
                 },
             },

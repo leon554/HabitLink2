@@ -16,6 +16,7 @@ import {
 } from "chart.js"
 import { Radar } from "react-chartjs-2"
 import { Util } from "@/utils/util";
+import { themeContext } from "../Providers/ThemeProvider";
 
 ChartJS.register(
   RadialLinearScale,
@@ -32,15 +33,19 @@ interface Props{
 export default function MostCommonDays(p: Props) {
 
     const HC = useContext(UserContext)
+    const theme =useContext(themeContext)
     const comps = p.habitId ? HC.habitsCompletions.get(HC.currentHabit!.id) ?? [] : Util.fetchAllMapItems(HC.habitsCompletions).flat()
     const rawData = HabitUtil.getDaysOfWeekCompletions(comps)
     const rootStyles = getComputedStyle(document.documentElement)
 
     const title = rootStyles.getPropertyValue('--color-title').trim()
-    const subtext2 = rootStyles.getPropertyValue('--color-subtext2').trim()
+    const subtext3 = rootStyles.getPropertyValue('--color-subtext3').trim()
     const panel = rootStyles.getPropertyValue('--color-panel1').trim() 
     const border = rootStyles.getPropertyValue('--color-border').trim()
     const highlight = rootStyles.getPropertyValue('--color-highlight').trim()
+    const axis = rootStyles.getPropertyValue('--color-chartAxis').trim()
+    const axis2 = rootStyles.getPropertyValue('--color-chartAxis2').trim()
+
     
     const data = {
         labels: rawData.map(d => d.day),
@@ -48,10 +53,9 @@ export default function MostCommonDays(p: Props) {
         {
             label: "Count",
             data: rawData.map(d => d.data),
-            backgroundColor: "rgba(0, 255, 136, 0.2)",
-            borderColor: highlight,
+            backgroundColor: `color-mix(in oklch, ${highlight} ${theme.dark ? "30%": "70%"}, transparent)`,
+            borderColor: theme.dark ? highlight : border ,
             borderWidth: 1,
-            opacity: 1,
             pointRadius: 0,
             tension: 0.1
         },
@@ -67,10 +71,10 @@ export default function MostCommonDays(p: Props) {
             min: 0,
             max: Math.max(...rawData.map(d => d.data)) + 1,
             angleLines: {
-            color: "rgba(255,255,255,0.1)",
+            color: theme.dark ? axis2 : axis,
             },
             grid: {
-            color: "rgba(255,255,255,0.1)",
+                color: theme.dark ? axis2 : axis,
             },
             pointLabels: {
             font: {
@@ -78,12 +82,13 @@ export default function MostCommonDays(p: Props) {
                 weight: "normal" as const,
                 family: "'Inter', sans-serif",
             },
-            color: "#aaa",
+            color: subtext3,
             },
             ticks: {
                 beginAtZero: true,    
                 display: false,
                 maxTicksLimit: 5, 
+                stepSize: 1,
             },
         },
         },
@@ -96,7 +101,7 @@ export default function MostCommonDays(p: Props) {
                 intersect: false,   
                 backgroundColor: panel,
                 titleColor: title,      
-                bodyColor: subtext2,      
+                bodyColor: subtext3,      
                 borderColor: border,     
                 borderWidth: 1,
                 padding: 10,
