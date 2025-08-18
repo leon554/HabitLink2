@@ -77,9 +77,10 @@ export default function CompletionsMonth() {
                                                     </p>
                                                 </div>
                                             }>
-                                                <p className={`w-full h-4 ${dateUtils.isDatesSameDay(v.day , new Date()) ? 
+                                                <p className={`w-full h-4  outline-1 dark:outline-0 ${dateUtils.isDatesSameDay(v.day , new Date()) ? 
                                                     v.skip ? "bg-yellow-500 rounded-xl" :
                                                     v.done ? "bg-highlight rounded-xl" : "border-1 border-highlight rounded-sm" :
+                                                    v.skip ? "bg-yellow-500 rounded-sm":
                                                     v.habitCreation ? 
                                                     v.done ? 
                                                     "rounded-none bg-highlight" :
@@ -185,5 +186,5 @@ export default function CompletionsMonth() {
 }
 
 function getDayStatus(day: HabitUtil.compDaysType){
-    return day.done ? "Completed" : day.complete ? "Missed" : "No Entries"
+    return day.skip ? "Skiped" : day.done ? "Completed" : day.complete ? "Missed" : "No Entries"
 }

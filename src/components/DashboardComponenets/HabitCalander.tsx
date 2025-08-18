@@ -8,20 +8,33 @@ import { IoInformationCircleOutline } from "react-icons/io5"
 import Model from "../InputComponents/Model"
 import { TbCalendarMonthFilled } from "react-icons/tb";
 import ButtonComp from "../primatives/ButtonComp"
+import { colord } from "colord";
+import { themeContext } from "../Providers/ThemeProvider"
 
 
 
 export default function HabitCalander() {
 
     const HC = useContext(UserContext)
+    const {dark} = useContext(themeContext)
     const [open, setOpen] = useState(false)
     const {firstResult: compDays, maxMiss, maxComp} = HabitUtil.GetCompletionDaysThisPeriodAllHabits(Util.fetchAllMapItems(HC.habits), HC.habitsCompletions) ?? []
     const days = ["S", "M", "T", "W", "T", "F", "S", " "]
     const calanderRef = useRef<HTMLDivElement>(null)
     const [columns, setColumns] = useState(16)
 
-    const rootStyles = getComputedStyle(document.documentElement)
-    const panel = Util.hslStringToHex(rootStyles.getPropertyValue('--color-panel2').trim())
+
+    const [panel, setPanel] = useState(colord(getComputedStyle(document.documentElement).getPropertyValue('--color-panel2').trim()).toHex())
+    const [highlight, setHighlight] = useState(colord(getComputedStyle(document.documentElement).getPropertyValue('--color-highlight').trim()).toHex())
+    
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setPanel(colord(getComputedStyle(document.documentElement).getPropertyValue("--color-panel2").trim()).toHex())   
+            setHighlight(colord(getComputedStyle(document.documentElement).getPropertyValue('--color-highlight').trim()).toHex())
+        }, 0);
+
+        return () => clearTimeout(timeout);
+    }, [dark])
 
     useEffect(() => {
         if (!calanderRef.current) return;
@@ -83,12 +96,12 @@ export default function HabitCalander() {
                                                 </div>
                                             }>
                                                 <p className={`w-full h-4  border-border2/70 
-                                                    ${v.completeAmount != 0 || v.missAmount != 0? "border-0" : ""}  
+                                                    ${v.completeAmount != 0 || v.missAmount != 0? "dark:border-0 border-1" : "dark:border-0 border-1"}  
                                                     ${v.creation ? "" : "rounded-sm "}
                                                     hover:scale-[1.2] transition-all hover:cursor-default ${HC.isCalculating.current.isLoading() ? "animate-pulse duration-1000 " : "duration-200"}`}
                                                     style={{backgroundColor:  HC.isCalculating.current.isLoading() ? panel: v.completeAmount - v.missAmount < 0 ? 
                                                         Util.getInterpolatedColor(0, maxMiss, Math.max((v.missAmount), 0), panel, "#ef4444"):
-                                                        Util.getInterpolatedColor(0, maxComp, Math.max((v.completeAmount), 0), panel, "#22c55e")}}>
+                                                        Util.getInterpolatedColor(0, maxComp, Math.max((v.completeAmount), 0), panel, highlight)}}>
 
                                                 </p>
                                             </ToolTip>
@@ -101,7 +114,7 @@ export default function HabitCalander() {
                 </div>
                 <div className="flex gap-4 justify-center mt-4">
                     <div className="flex gap-2 items-center">
-                        <div className="w-2 h-2 rounded-sm bg-highlight"></div>
+                        <div className="w-2 h-2 rounded-sm dark:bg-highlight bg-green-500"></div>
                         <p className="text-xs text-subtext3">
                             Completed
                         </p>
@@ -113,7 +126,7 @@ export default function HabitCalander() {
                         </p>
                     </div>
                     <div className="flex gap-2 items-center">
-                        <div className="w-2 h-2 rounded-sm bg-[#1a1a1a]"></div>
+                        <div className="w-2 h-2 rounded-sm dark:bg-[#1a1a1a] border-1 dark:border-0"></div>
                         <p className="text-xs text-subtext3">
                             No Data
                         </p>

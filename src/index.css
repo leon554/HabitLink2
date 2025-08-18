@@ -4,27 +4,27 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-    --color-panel1: hsl(0, 0%, 97%); 
-  --color-panel2:hsl(0, 0%, 90%);   
-  --color-progress-panel: hsl(0, 0%, 68%); 
-  --color-btn-text: oklch(37.2% 0.044 257.287);   
-  --color-btn:  hsl(144, 100%, 34%);  
+  --color-panel1: hsl(0, 0%, 100%); 
+  --color-panel2: hsl(210, 100%, 100%); 
+  --color-progress-panel: hsl(0, 0%, 80%); 
+  --color-btn-text: hsl(0, 0%, 100%);   
+  --color-btn:  hsl(217, 91%, 60%);  
   --color-title: oklch(21% 0.034 264.665);      
   --color-subtext1: hsl(0, 0%, 13%);   
   --color-subtext2:hsl(0, 0%, 13%);    
   --color-subtext3:hsl(0, 0%, 13%);   
   --color-border: hsl(0, 0%, 0%);   
   --color-border2: hsl(0, 0%, 0%);   
-  --color-highlight: hsl(144, 100%, 34%);   
+  --color-highlight: hsl(217, 91%, 60%);   
   --color-highlight2: hsl(144, 100%, 39%); 
   --color-chartAxis: hsl(0, 0%, 0%);  
   --color-chartAxis2: hsl(0, 0%, 80%);  
   --texture: var(--color-blue-400);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
+  --color-chart-2: hsl(240, 74%, 52%);  /* vivid medium blue */
+  --color-chart-1: hsl(217, 91%, 60%);
+  --color-chart-3: oklch(0.398 0.07 227.392);
+  --color-chart-4: oklch(0.828 0.189 84.429);
+  --color-chart-5: oklch(0.769 0.188 70.08);
   --tooltip-background: var(--color-panel2)
 }
 
@@ -52,11 +52,11 @@
   --color-chartAxis:  hsl(0, 0%, 10%);  
   --color-chartAxis2: hsl(0, 0%, 15%);  
 
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
+  --color-chart-1: hsl(144, 100%, 39%);
+  --color-chart-2: hsl(84, 100%, 41%);
+  --color-chart-3: oklch(0.769 0.188 70.08);
+  --color-chart-4: oklch(0.627 0.265 303.9);
+  --color-chart-5: oklch(0.645 0.246 16.439);
   --tooltip-background: var(--color-panel2)
 }
 

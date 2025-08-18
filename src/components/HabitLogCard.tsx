@@ -16,7 +16,9 @@ import useCurrentGoalValue from './Hooks/useCurrentGoalValue';
 import type { GoalType } from '../utils/types';
 import { triggerHaptic } from "tactus";
 import { GoKebabHorizontal } from "react-icons/go";
+import { FiClipboard } from "react-icons/fi";
 import { TbPlayerSkipForwardFilled } from "react-icons/tb";
+import ButtonComp from './primatives/ButtonComp';
 
 
 interface HabitProps{
@@ -110,8 +112,8 @@ export default function HabitLogCard({habit: h}: HabitProps) {
     }
 
     return (
-        <div className='bg-panel1 dark:bg-panel1  dark:border-border border-border border-1 rounded-2xl w-[100%] max-w-[600px] overflow-auto'>
-            <div className='flex justify-between items-center'>
+        <div className='bg-panel1 dark:bg-panel1 relative dark:border-border border-border border-1 rounded-2xl w-[100%] max-w-[600px] overflow-auto'>
+            <div className={`flex justify-between items-center`}>
                 <p className={`text-subtext1  p-3 pt-3   ${settings.showDetails ? "pb-2" : ""} hover:cursor-pointer font-medium flex gap-2.5 items-center`}
                     onClick={() => {
                         UC.setCurrentHabit(h)
@@ -132,27 +134,32 @@ export default function HabitLogCard({habit: h}: HabitProps) {
                                 {HabitUtil.isCompleteableToday(h, UC.habitsCompletions.get(h.id)) ? <FaHourglassHalf /> : ""}
                         </p>: ""}
                     </div>
-                    <button className={`h-7 flex justify-center 
-                        items-center rounded-lg p-2 mr-0 w-7 text-subtext1
-                        text-2xl hover:cursor-pointer transition-transform hover:scale-[1.04] active:scale-[0.9]
-                        ease-in-out duration-250 ${isCompletedToday() ?  isSkippedToday() ? "bg-panel2 outline-1 outline-yellow-500": "bg-panel2 outline-1 outline-highlight" : "bg-panel2 outline-1 outline-border2"}`}
-                        onClick={async (e) => {
-                            triggerHaptic()
-                            e.stopPropagation()
-                            await HandleClick()
-                        }}>
-                        {loading ? <AiOutlineLoading className={`animate-spin ${getLoadingColor()}`}/> : isSkippedToday() ? <TbPlayerSkipForwardFilled className='text-yellow-500' size={10}/> :  <FaCheck className={`${isCompletedToday() ? "dark:text-highlight text-highlight" : "text-subtext2 dark:text-subtext2" }`}/>}
-                    </button>
-                    <button className={`h-7 flex justify-center 
-                        items-center rounded-lg  mr-3 w-4 text-subtext3
-                        text-2xl hover:cursor-pointer transition-all hover:scale-[1.04] active:scale-[0.9]
-                        ease-in-out duration-250 outline-1 outline-border2 bg-panel2`}
-                        onClick={e => {
-                            e.stopPropagation()
-                            setOpenSkip(true)
-                        } }>
-                        { <GoKebabHorizontal className={"text-subtext3 dark:text-subtext3 rotate-90" }/>}
-                    </button>
+                    <div className={`flex gap-3.5  ${settings.showDetails ? "absolute right-0 top-5.5" : ""}`}>
+                        <button className={`h-7 flex justify-center 
+                            items-center rounded-lg p-2 mr-0 w-7 text-subtext1
+                            text-2xl hover:cursor-pointer transition-transform hover:scale-[1.04] active:scale-[0.9]
+                            ease-in-out duration-250 ${isCompletedToday() ?  isSkippedToday() ? "outline-1 outline-yellow-500 dark:bg-panel2 bg-yellow-200": "dark:bg-panel2 bg-highlight/40 outline-1 outline-highlight" : HabitUtil.isCompleteableToday(h, UC.habitsCompletions.get(h.id)) && !settings.dontShowRed ? "outline-red-500 outline-1 dark:bg-panel2 bg-red-100" : "dark:bg-panel2 outline-1 outline-border2"}`}
+                            onClick={async (e) => {
+                                triggerHaptic()
+                                e.stopPropagation()
+                                await HandleClick()
+                            }}>
+                            {loading ? <AiOutlineLoading className={`animate-spin ${getLoadingColor()}`}/> : 
+                                        isSkippedToday() ? <TbPlayerSkipForwardFilled className='text-yellow-500' size={10}/> : 
+                                        isCompletedToday() ?  <FaCheck className={`dark:text-highlight text-highlight`}/> 
+                                        : <FiClipboard className={`${HabitUtil.isCompleteableToday(h, UC.habitsCompletions.get(h.id)) && !settings.dontShowRed ? "text-red-500" :  "text-subtext2 dark:text-subtext2" }`}/>}
+                        </button>
+                        <button className={`h-7 flex justify-center 
+                            items-center rounded-lg  mr-3 w-4 text-subtext3
+                            text-2xl hover:cursor-pointer transition-all hover:scale-[1.04] active:scale-[0.9]
+                            ease-in-out duration-250 outline-1 outline-border2 bg-panel2`}
+                            onClick={e => {
+                                e.stopPropagation()
+                                setOpenSkip(true)
+                            } }>
+                            { <GoKebabHorizontal className={"text-subtext3 dark:text-subtext3 rotate-90" }/>}
+                        </button>
+                    </div>
                     <Model open={open} onClose={() => setOpen(false)}>
                         <div onClick={e => e.stopPropagation()} className='w-[90%] max-w-[400px]'>
                             <HabitLogPopUp habit={h} onExit={() => setOpen(false)} value={value} setValue={setValue}
@@ -174,13 +181,32 @@ export default function HabitLogCard({habit: h}: HabitProps) {
                              <p className='text-subtext2 text-xs'>
                                 Note: if you skip this habit it will remove all other entries for this habit that happend today.
                             </p>
-                            <button className="bg-btn text-btn-text rounded-md text-sm font-medium h-7 mt-2 hover:cursor-pointer flex justify-center items-center gap-1.5"
-                                onClick={async () => {
-                                    await handleSkip()
-                                    setOpenSkip(false)
-                                }}>
-                                {loading ?  <AiOutlineLoading className={`animate-spin ${getLoadingColor()} text-btn-text`}/> : `${isSkippedToday() ? "UnSkip" : "Skip"}` }{UC.loading ? "" : <TbPlayerSkipForwardFilled />}
-                            </button>
+                            <div className='flex items-center w-fullmt-2 gap-4'>
+                                <ButtonComp
+                                    name={<>
+                                        {loading ? (
+                                        <AiOutlineLoading className={`animate-spin ${getLoadingColor()} text-btn-text`} />
+                                        ) : (
+                                        isSkippedToday() ? "UnSkip" : "Skip"
+                                        )}
+                                        {!UC.loading && <TbPlayerSkipForwardFilled />}
+                                    </>}
+                                    highlight={true}
+                                    noAnimation={true}
+                                    style='w-full'
+                                    short={true}
+                                    onSubmit={async () => {
+                                        await handleSkip()
+                                        setOpenSkip(false)
+                                    }}/>
+                                <ButtonComp
+                                    name={"Exit"}
+                                    noAnimation={true}
+                                    short={true}
+                                    highlight={false}
+                                    onSubmit={() => setOpenSkip(false)}/>
+
+                            </div>
                         </div>
                     </Model>
                 </div>

@@ -30,6 +30,7 @@ export default function MissVsCompChart() {
     const subtext2 = rootStyles.getPropertyValue('--color-subtext2').trim()
     const panel = rootStyles.getPropertyValue('--color-panel1').trim() 
     const border = rootStyles.getPropertyValue('--color-border').trim()
+    const chart = rootStyles.getPropertyValue('--color-chart-1').trim()
 
     const formatedData = {
         labels: data.map(d => dateUtils.formatDate(d.day).slice(0, 5)),
@@ -37,7 +38,7 @@ export default function MissVsCompChart() {
             {
                 label: "Completions",
                 data: data.map(d => d.completeAmount) ?? [],
-                backgroundColor: "hsl(144, 100%, 39%)",
+                backgroundColor: chart,
                 borderRadius: 4,
             },
             {

@@ -58,6 +58,7 @@ export default function CompsPerWeek(p: Props) {
     const subtext2 = rootStyles.getPropertyValue('--color-subtext2').trim()
     const panel = rootStyles.getPropertyValue('--color-panel1').trim() 
     const border = rootStyles.getPropertyValue('--color-border').trim()
+    const chart = rootStyles.getPropertyValue('--color-chart-1').trim()
 
     const formatedData = {
         labels: labels,
@@ -65,7 +66,7 @@ export default function CompsPerWeek(p: Props) {
             {
                 label: "Completions",
                 data: Array.from(formatedChartData.values()) ?? [],
-                backgroundColor: "hsl(144, 100%, 39%)",
+                backgroundColor: chart,
                 borderRadius: 6,
             }
         ]

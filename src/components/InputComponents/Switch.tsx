@@ -12,7 +12,7 @@ export default function Switch(props: TickeProps) {
 
   return (
     <div
-      className={` w-9.5  rounded-full  flex items-center p-0.5  cursor-pointer ${props.ticked ? "bg-blue-400 dark:bg-green-500" : "bg-panel2 dark:bg-neutral-700 h-5"} duration-200 ease-in-out`}
+      className={` w-9.5  rounded-full  flex items-center p-0.5  cursor-pointer ${props.ticked ? "bg-blue-400 dark:bg-green-500" : "dark:bg-progress-panel bg-progress-panel h-5"} duration-200 ease-in-out`}
       onClick={() => {
         triggerHaptic()
         tick()

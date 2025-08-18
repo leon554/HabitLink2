@@ -63,7 +63,6 @@ function App() {
       className="fixed z-50 bottom-3 right-3 bg-panel1 dark:bg-panel1 p-1 px-2 rounded-lg hover:cursor-pointer outline-1 dark:outline-border"
         onClick={() => {
           setDark(!dark)
-          location.reload();
         }}
       >
         {dark ? "☀️" : "🌙"}

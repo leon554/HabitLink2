@@ -15,8 +15,8 @@ export default function CompletionThisWeek() {
 
     return (
         <div className="w-full bg-panel1 rounded-2xl outline-1 outline-border  text-title justify-center p-7 pt-5 pb-7 flex flex-col items-center gap-4 ">
-            <div className="w-full flex items-center justify-between">
-                <div className="flex items-center gap-4 mb-2">
+            <div className={`w-full flex ${width < 450 ? "flex-col" : "justify-between items-center"}`}>
+                <div className={`flex items-center gap-4 mb-2`}>
                     <div className="bg-panel2 text-subtext2 outline-1 outline-border2 p-1.5 rounded-lg">
                         <TbCalendarCheck />
                     </div>
@@ -24,15 +24,15 @@ export default function CompletionThisWeek() {
                         Weekly Completions
                     </p>
                 </div>
-                <p className="text-subtext3 text-xs mb-2 leading-0">
+                <p className={`text-subtext3 text-xs mb-2 leading-0 ${width < 450 ? "mt-2" : ""}`}>
                     Due: {HabitUtil.getCompletionDaysString(HC.currentHabit?.completionDays ?? "")}
                 </p>
             </div>
-            <div className={`flex gap-3 justify-between w-full ${width < 600 ? "max-w-[400px]" : "max-w-[550px]"}`} >
+            <div className={`flex gap-3 justify-between  w-full`} >
                 {compDays.map((d, i) => {
                     return(
-                        <div key={i} className="hover:scale-[1.05] transition-transform duration-200 hover:cursor-default">
-                            <p className={` ${d.done ? "bg-btn text-btn-text outline-1 outline-border2 dark:outline-0" : d.complete ? "bg-panel2 outline-1 outline-border2 text-subtext2" : "text-subtext2 outline-1 outline-border2"} p-1 rounded-xl px-3 ${width < 600 ? "" : "px-4"}`}>
+                        <div key={i} className="hover:scale-[1.05] transition-transform duration-200 hover:cursor-default flex-grow flex justify-center">
+                            <p className={`w-full text-center ${d.done ? "bg-btn text-btn-text outline-1 outline-border2 dark:outline-0" : d.complete ? "bg-panel2 outline-1 outline-border2 text-subtext2" : "text-subtext2 outline-1 outline-border2"} p-1 rounded-xl`}>
                                 {width < 600 ? d.day.toUpperCase().slice(0, 1) :  Util.capitilizeFirst(d.day)}
                             </p>
                         </div>

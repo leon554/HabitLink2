@@ -33,6 +33,8 @@ export default function AvgCompRate() {
     const border = rootStyles.getPropertyValue('--color-border').trim()
     const axis = rootStyles.getPropertyValue('--color-chartAxis').trim()
     const axis2 = rootStyles.getPropertyValue('--color-chartAxis2').trim()
+    const line1 = rootStyles.getPropertyValue('--color-chart-1').trim()
+    const line2 = rootStyles.getPropertyValue('--color-chart-2').trim()
 
     const formatedData = {
         labels: data?.map(d => d.date),
@@ -40,14 +42,14 @@ export default function AvgCompRate() {
             {
                 label: "Strength",
                 data: data?.map(d => d.strength ?? 0) ?? [],
-                borderColor: "hsl(144, 100%, 39%)",
+                borderColor: line1,
                 borderWidth: 2, 
                 tension: 0.1,
             },
             {
                 label: "Concistency",
                 data: data?.map(d => d.consistency ?? 0) ?? [],
-                borderColor: "hsl(84, 100%, 41%",
+                borderColor: line2,
                 borderWidth: 2,
                 tension: 0.4,
             }
@@ -143,11 +145,11 @@ export default function AvgCompRate() {
                     <Line options={options} data={formatedData as ChartData<"line", number[], string>}/>
                 </div>
                 <div className="flex justify-center items-center gap-2 w-full ">
-                    <div className="w-3.5 h-3.5 bg-highlight2 rounded-md"></div>
+                    <div className="w-3.5 h-3.5 bg-chart-2 rounded-md"></div>
                     <p className="text-xs text-subtext3">
                         Consistency
                     </p>
-                    <div className="w-3.5 h-3.5 bg-highlight rounded-md"></div>
+                    <div className="w-3.5 h-3.5 bg-chart-1 rounded-md"></div>
                     <p className="text-xs text-subtext3">
                         Strength
                     </p>

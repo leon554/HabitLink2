@@ -17,7 +17,7 @@ export default function ProgressBar({ min, max, current, height }: ProgressBarPr
 
   return (
     <div
-      className={`bg-progress-panel rounded-full box-border flex items-center`}
+      className={`dark:bg-progress-panel dark:outline-0 outline-1  rounded-full box-border flex items-center`}
       style={{ height: height ? `${height}px` : "12px" }}
     >
       <div
