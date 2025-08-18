@@ -10,6 +10,7 @@ import { AlertContext } from "../Alert/AlertProvider"
 import type { HabitType } from "@/utils/types"
 import { TiDelete } from "react-icons/ti"
 import TextBoxLimited from "../primatives/TextBoxLimited"
+import ButtonComp from "../primatives/ButtonComp"
 
 
 export default function GoalEdit() {
@@ -67,7 +68,7 @@ export default function GoalEdit() {
                         outerDivStyles="mt-6"/>
 
                     <div className="flex flex-col  gap-2 mt-5">
-                        <p className="text-sm text-subtext1">
+                        <p className="text-sm text-subtext1 font-medium">
                             Associated Habits
                         </p>
                         <div className="flex flex-col gap-2 max-h-50 overflow-y-scroll no-scrollbar">
@@ -92,26 +93,28 @@ export default function GoalEdit() {
                             })}
                         </div>
                     </div>
-                    <div className="mt-4">
-                        <DeleteArchiveGoal/>
+                    <div className="mt-6">
+                        <DeleteArchiveGoal noAnimate={true}/>
                     </div>
-                    <div className="flex gap-3">
-                        <button className="bg-btn w-full mt-4 h-7 flex justify-center items-center rounded-md p-1 text-btn-text hover:cursor-pointer text-sm font-medium"
-                        onClick={async () => {
-                            triggerHaptic()
-                            loadingIndex.current = 0
-                            await updateName(name, HC.currentGaol!)
-                            setOpen(false)
-                        }}>
-                            {HC.loading && loadingIndex.current == 0 ? <AiOutlineLoading className="animate-spin"/> : "Save"}
-                        </button>
-                         <button className="bg-btn w-full mt-4 rounded-md p-1 text-btn-text hover:cursor-pointer text-sm font-medium"
-                        onClick={() => {
-                            triggerHaptic()
-                            setOpen(false)
-                        }}>
-                            Exit
-                        </button>
+                    <div className="flex gap-3 mt-3">
+                        <ButtonComp
+                            name={HC.loading && loadingIndex.current == 0 ? <AiOutlineLoading className="animate-spin"/> : "Save"}
+                            onSubmit={async () => {
+                                loadingIndex.current = 0
+                                await updateName(name, HC.currentGaol!)
+                                setOpen(false)
+                            }}
+                            highlight={true}
+                            short={true}
+                            style="w-full"
+                            noAnimation={true}/>
+                        <ButtonComp
+                            name={"Exit"}
+                            onSubmit={() => setOpen(false)}
+                            highlight={true}
+                            short={true}
+                            style="w-full"
+                            noAnimation={true}/>
                     </div>
                 </div>
             </Model>

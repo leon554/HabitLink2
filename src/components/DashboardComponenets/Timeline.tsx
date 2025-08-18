@@ -9,6 +9,7 @@ import { isMobile } from 'react-device-detect';
 import { triggerHaptic } from "tactus";
 import { TbClock24 } from "react-icons/tb";
 import Select from "../InputComponents/Select";
+import ButtonComp from "../primatives/ButtonComp";
 
 export default function Timeline() {
     const HC = useContext(UserContext);
@@ -170,10 +171,12 @@ export default function Timeline() {
                      <p className="text-sm text-subtext2">
                         There are two options "Information" and "Zoom" when the information mode is selected you can hover over entries and see information about them. When the zoom mode is selected you can over over entries and a new timeline will apear where you can zoom in and out on entries around the original entry you were hovering on.
                     </p>
-                    <button className="bg-btn rounded-xl text-btn-text font-mono py-1 mt-5 hover:cursor-pointer"
-                        onClick={() => setOpen(false)}>
-                        Done
-                    </button>
+                    <ButtonComp
+                        name={"Done"}
+                        highlight={true}
+                        onSubmit={() => setOpen(false)}
+                        noAnimation={true}
+                        style="mt-4"/>
                 </div>
             </Model>
         </div>

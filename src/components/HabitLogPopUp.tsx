@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { HabitTypeE, type HabitType } from '../utils/types';
 import { AiOutlineLoading } from "react-icons/ai";
 import { useEffect, useRef, useState } from 'react';
-import { triggerHaptic } from 'tactus';
+import ButtonComp from './primatives/ButtonComp';
 
 interface Props{
     habit: HabitType
@@ -63,7 +63,7 @@ export default function HabitLogPopUp(p: Props) {
                             setHour(inputValue)
                             p.setValue(inputValue*60*60 + min * 60)
                         }}
-                        className='outline-1 rounded-xl outline-border2 w-full text-sm px-1.5 text-subtext2 appearance-none py-0.5'/>
+                        className='outline-1 rounded-md outline-border2 w-full text-sm px-1.5 text-subtext2 appearance-none py-0.5'/>
                         <p className='mr-2 text-subtext2 font-medium text-sm'>
                             h
                         </p>
@@ -76,7 +76,7 @@ export default function HabitLogPopUp(p: Props) {
                             setMin(inputValue)
                             p.setValue(inputValue*60 + hour * 3600)
                         }}
-                        className='outline-1 rounded-xl outline-border2 w-full text-sm px-1.5 text-subtext2 appearance-none py-0.5'/>
+                        className='outline-1 rounded-md outline-border2 w-full text-sm px-1.5 text-subtext2 appearance-none py-0.5'/>
                         <p className='text-subtext2 text-sm font-medium'>
                             m
                         </p>
@@ -92,24 +92,25 @@ export default function HabitLogPopUp(p: Props) {
                     }
                 </div>
                 <div className="flex justify-stretch  w-full gap-3">
-                    <button
-                        className="mt-2 grow-4 bg-btn text-sm font-medium text-btn-text outline-1 outline-border dark:outline-0  p-1 rounded-xl pl-2 pr-2 hover:cursor-pointer  flex justify-center items-center"
-                        onClick={async () => {
+                    <ButtonComp
+                        name={loading ? <AiOutlineLoading className="animate-spin" /> : "Submit"}
+                        onSubmit={async () => {
                             setLoading(true)
                             await p.onSubmit()
                             p.onExit()
                             setLoading(false)
-                        }}>
-                        {loading ? <AiOutlineLoading className="animate-spin" /> : "Submit"}
-                    </button>
-                    <button
-                        className="mt-2 grow-1 bg-btn text-sm font-medium text-btn-text  outline-1 outline-border dark:outline-0 p-1 rounded-xl pl-2 pr-2 hover:cursor-pointer "
-                        onClick={() => {
-                            triggerHaptic()
-                            p.onExit()
-                        }}>
-                        Exit
-                    </button>
+                        }}
+                        highlight={true}
+                        short={true}
+                        style='w-full'
+                        noAnimation={true}/>
+                    <ButtonComp
+                        name={"Exit"}
+                        onSubmit={() => p.onExit()}
+                        highlight={true}
+                        short={true}
+                        style='w-full'
+                        noAnimation={true}/>
                 </div>
             </motion.div>
         </AnimatePresence>

@@ -15,6 +15,7 @@ import {
     Legend,
     type ChartData
 } from "chart.js"
+import ButtonComp from "../primatives/ButtonComp"
 
 ChartJS.register(ArcElement, Title, Tooltip, Legend)
 
@@ -180,13 +181,12 @@ export default function HabitDistribution(p: Props) {
                         <li>Average: Strength &gt;= 50 and Consistency &gt;= 50</li>
                         <li>Fragile: Strength &lt; 50 and Consistency &lt; 50</li>
                     </ul>
-
-                    <button
-                        className="h-8 bg-btn text-sm font-medium text-btn-text rounded-xl mt-2 mb-2 hover:cursor-pointer"
-                        onClick={() => setOpen(false)}
-                    >
-                        Done
-                    </button>
+                    <ButtonComp
+                        name={"Done"}
+                        highlight={true}
+                        onSubmit={() => setOpen(false)}
+                        noAnimation={true}
+                        style="mt-2 mb-2"/>
                 </div>
 
             </Model>

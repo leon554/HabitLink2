@@ -2,6 +2,7 @@ import { useContext } from "react"
 import { UserContext } from "../Providers/UserProvider"
 import { HabitUtil } from "../../utils/HabitUtil"
 import { useScreenWidth } from "../Hooks/UseScreenWidth"
+import { Util } from "@/utils/util"
 
 
 export default function CompletionThisWeek() {
@@ -27,7 +28,7 @@ export default function CompletionThisWeek() {
                     return(
                         <div key={i} className="hover:scale-[1.05] transition-transform duration-200 hover:cursor-default">
                             <p className={` ${d.done ? "bg-btn text-btn-text outline-1 outline-border2 dark:outline-0" : d.complete ? "bg-panel2 outline-1 outline-border2 text-subtext2" : "text-subtext2 outline-1 outline-border2"} p-1 rounded-xl px-3 ${width < 600 ? "" : "px-4"}`}>
-                                {width < 600 ? d.day.toUpperCase().slice(0, 1) :  d.day.toUpperCase()}
+                                {width < 600 ? d.day.toUpperCase().slice(0, 1) :  Util.capitilizeFirst(d.day)}
                             </p>
                         </div>
                     )

@@ -8,6 +8,7 @@ import DeleteArchiveGoal from "./DeleteArchiveGoal"
 import ProgressPanel from "./ProgressPanel"
 import GoalProgress from "./GoalProgress"
 import { dateUtils } from "@/utils/dateUtils"
+import ButtonComp from "../primatives/ButtonComp"
 
 export default function CountDown() {
     const [open, setOpen] = useState(false)
@@ -45,7 +46,7 @@ export default function CountDown() {
 
     return (
         <>
-            <div className='bg-panel1  drop-shadow-sm outline-border outline-1 w-[90%] max-w-[600px] p-7 py-7 flex gap-1 flex-col  rounded-2xl '>
+            <div className='bg-panel1  drop-shadow-sm outline-border outline-1 w-[90%] max-w-[600px] p-7 py-6 flex gap-1 flex-col  rounded-2xl '>
                 <ProgressPanel 
                     title={timeLeft <= 0 ? "Time Has Ran Out!" : "Time Progress"}
                     text={`Remaining Time: ${ dateUtils.formatTime(timeLeft)}`}
@@ -61,19 +62,19 @@ export default function CountDown() {
                     </div>
                 : ""}
                 {HC.getCurrentGoal()?.type == HabitTypeE.Normal && HC.getCurrentGoal()?.linkedHabit == null?
-                    <button className="text-sm w-full text-subtext2 outline-1 outline-border2 p-1.5  px-3 rounded-xl hover:cursor-pointer transition-all duration-150 ease-in-out hover:bg-panel2 mt-4"
-                    onClick={() => completeGoal()}>
-                        Complete Goal
-                    </button>
+                    <ButtonComp
+                        name={"Complete Goal"}
+                        onSubmit={() => completeGoal()}
+                        highlight={false}
+                        style="w-full mt-4"/>
                 :
                 !HC.getCurrentGoal()?.linkedHabit ? 
                     <div className="flex gap-3 justify-end mt-4  ">
-                            <button className="text-sm w-full text-subtext2 outline-1 outline-border2 p-1.5  px-3 rounded-xl hover:cursor-pointer transition-all duration-150 ease-in-out hover:bg-panel2"
-                                onClick={() => {
-                                    setOpen(true)
-                                }}>
-                                Log Progress
-                            </button>
+                            <ButtonComp
+                                name={"Log Progress"}
+                                onSubmit={() => setOpen(true)}
+                                highlight={false}
+                                style="w-full"/>
                     </div>
                 : 
                 ""}
@@ -88,14 +89,20 @@ export default function CountDown() {
                             value={value}
                             onChange={(e) => setValue(e.target.value)}/>
                     <div className="flex w-full gap-2">
-                        <button className="bg-btn text-sm flex-grow-10 text-btn-text outline-1 p-1   px-3 h-7 flex justify-center rounded-xl hover:cursor-pointer "
-                            onClick={() => updateCurrentValue()}>
-                            {!HC.loading ?  "Log" : <AiOutlineLoading className="animate-spin" />}
-                        </button>
-                        <button className="bg-btn text-sm flex-grow-3 text-btn-text outline-1  p-1 px-3 h-7 rounded-xl hover:cursor-pointer " 
-                            onClick={() => setOpen(false)}>
-                            Exit
-                        </button>
+                        <ButtonComp
+                            name={!HC.loading ?  "Log" : <AiOutlineLoading className="animate-spin" />}
+                            onSubmit={() => updateCurrentValue()}
+                            highlight={true}
+                            small={true}
+                            style="w-full"
+                            noAnimation={true}/>
+                        <ButtonComp
+                            name={"Exit"}
+                            onSubmit={() => setOpen(false)}
+                            highlight={true}
+                            small={true}
+                            style="w-full"
+                            noAnimation={true}/>
                     </div>
                 </div>
             </Model>

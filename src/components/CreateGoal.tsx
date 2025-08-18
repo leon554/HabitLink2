@@ -197,7 +197,7 @@ export default function CreateGoal() {
                                     <>
                                         <ButtonComp
                                             name={h}
-                                            highlight={false}
+                                            highlight={selectedTypeIndex == i}
                                             onSubmit={() => setSelectedTypeIndex(i)}
                                             small={true}
                                             style="flex-grow"/>

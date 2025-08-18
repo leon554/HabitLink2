@@ -10,6 +10,7 @@ import { HabitUtil } from "@/utils/HabitUtil"
 import Model from "./InputComponents/Model"
 import { triggerHaptic } from "tactus"
 import TextBoxLimited from "./primatives/TextBoxLimited"
+import ButtonComp from "./primatives/ButtonComp"
 
 
 export interface habitAI{
@@ -130,16 +131,19 @@ export default function HabitStudio() {
                             }}/>
                         </div>
                         <div className=" flex justify-stretch gap-2">
-                            {Object.entries(weeklyGoalCompsDay).map((e, i) => {
+                            {Object.entries(weeklyGoalCompsDay).map((e, _) => {
                                 return(
-                                    <button className={`${e[1] ? "bg-highlight outline-1 outline-border dark:outline-0" : "" }  ${e[1] ? "text-stone-900" : "text-subtext1" } ${e[1] ? "outline-0" : "outline-1" } grow-1 pl-2 pr-2 rounded-md outline-border2  hover:cursor-pointer   ease-in-out duration-75 `}
-                                        onClick={() => {
-                                            triggerHaptic()
-                                            setWeeklyGoalCompsDay(prev => ({...prev, [e[0]]: !e[1]})); setWeeklyGoalComps(0)
-                                        }}
-                                        key={i}>
-                                        {e[0][0].toUpperCase()}
-                                    </button>
+                                    <>
+                                        <ButtonComp
+                                            name={e[0][0].toUpperCase()}
+                                            onSubmit={() => {
+                                                setWeeklyGoalCompsDay(prev => ({...prev, [e[0]]: !e[1]}))
+                                                setWeeklyGoalComps(0)
+                                            }}
+                                            xs={true}
+                                            highlight={e[1]}
+                                            style="flex-grow"/>
+                                    </>
                                 )
                             })}
                         </div>
@@ -154,14 +158,13 @@ export default function HabitStudio() {
                         </div>
                         <p className="text-subtext1 text-sm self-center mt-2 mb-3">days per week</p>
                     </div>
-                    <button className="text-sm font-medium text-subtext2 outline-1 outline-border2 rounded-md h-8 flex  items-center justify-center hover:cursor-pointer mt-1"
-                        onClick={async () =>  {
-                            triggerHaptic()
+                    <ButtonComp
+                        name={HC.loading && loadingRef.current == 1 ? <AiOutlineLoading className="animate-spin" /> : "Generate Habits"}
+                        onSubmit={async () =>  {
                             loadingRef.current = 1
                             await genHabit()
-                        }}>
-                        {HC.loading && loadingRef.current == 1 ? <AiOutlineLoading className="animate-spin" /> : "Generate Habits"}
-                    </button>
+                        }}
+                        highlight={false}/>
                 </div>
                 {habits.length == 0 ? "" :
                     <div className="w-full flex flex-col items-center gap-3">

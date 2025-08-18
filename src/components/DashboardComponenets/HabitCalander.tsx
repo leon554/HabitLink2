@@ -7,6 +7,7 @@ import { Util } from "@/utils/util"
 import { IoInformationCircleOutline } from "react-icons/io5"
 import Model from "../InputComponents/Model"
 import { TbCalendarMonthFilled } from "react-icons/tb";
+import ButtonComp from "../primatives/ButtonComp"
 
 
 export default function HabitCalander() {
@@ -133,10 +134,12 @@ export default function HabitCalander() {
                     <p className="text-sm text-subtext2 mt-2">
                         📊 Represents the total number of habits you have on a given day. Note: ✅ + ❌ may not equal 📊 because some habits are defined by a weekly target (e.g., 3 times per week) rather than fixed days (e.g., Mon/Wed/Fri). If such a habit isn't completed, the system cannot determine which specific days were missed, only that the weekly goal was unmet.
                     </p>
-                    <button className="bg-btn rounded-xl text-btn-text font-mono py-1 mt-5 hover:cursor-pointer"
-                        onClick={() => setOpen(false)}>
-                        Done
-                    </button>
+                    <ButtonComp
+                        name={"Done"}
+                        highlight={true}
+                        onSubmit={() => setOpen(false)}
+                        noAnimation={true}
+                        style="mt-5"/>
                 </div>
             </Model>
         </div>

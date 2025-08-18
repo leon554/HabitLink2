@@ -144,13 +144,16 @@ export default function Create({compact, onCreate, initialName} : Props){
                                 }}/>
                             </div>
                             <div className=" flex justify-stretch gap-2">
-                                {Object.entries(compDays).map((e, i) => {
+                                {Object.entries(compDays).map((e, _) => {
                                     return(
-                                        <button className={`${e[1] ? "bg-highlight outline-1 outline-border dark:outline-0" : "" }  ${e[1] ? "text-stone-900" : "text-subtext1" } ${e[1] ? "outline-0" : "outline-1" } grow-1 pl-2 pr-2 rounded-md outline-border2  hover:cursor-pointer  `}
-                                            onClick={() => {triggerHaptic(); setCompDays(prev => ({...prev, [e[0]]: !e[1]})); setCompsPerWeek(0)}}
-                                            key={i}>
-                                            {e[0][0].toUpperCase()}
-                                        </button>
+                                        <>
+                                            <ButtonComp
+                                                name={e[0][0].toUpperCase()}
+                                                onSubmit={() => {setCompDays(prev => ({...prev, [e[0]]: !e[1]})); setCompsPerWeek(0)}}
+                                                xs={true}
+                                                highlight={e[1]}
+                                                style="flex-grow"/>
+                                        </>
                                     )
                                 })}
                             </div>
@@ -177,13 +180,12 @@ export default function Create({compact, onCreate, initialName} : Props){
                     <div className="flex flex-wrap gap-2 justify-stretch mb-6 w-[90%] max-w-[450px]">
                         {habitTypes.map((h, i) => {
                         return(
-                            <button className={`${selectedTypeIndex == i ? "outline-0 bg-btn text-btn-text" : "text-subtext2 outline-1"} rounded-md px-2 text-sm outline-border2 p-1 grow-1 hover:cursor-pointer hover:bg-btn hover:outline-0   hover:text-btn-text`}
-                                onClick={() => {
-                                    triggerHaptic()
-                                    setSelectedTypeIndex(i)
-                                }} key={i}>
-                                {compact ?  h.split(" ")[0]: h}
-                            </button>
+                            <ButtonComp
+                                name={compact ?  h.split(" ")[0]: h}
+                                highlight={selectedTypeIndex == i }
+                                onSubmit={() => setSelectedTypeIndex(i)}
+                                small={true}
+                                style="grow-1"/>
                         )
                     })}
                     </div>
@@ -218,13 +220,14 @@ export default function Create({compact, onCreate, initialName} : Props){
                             <div className={`${compact ? "flex overflow-x-scroll gap-2 p-1 no-scrollbar rounded-md" : "flex flex-wrap"}  md:flex-wrap gap-2 justify-stretch`} ref={emojiDiv}>
                                 {habitEmojis.map((h, i) => {
                                     return(
-                                        <button className={`${selectedEmojiIndex == i ? "outline-0 bg-btn" : "outline-1"} rounded-md outline-border2 p-1 grow-1 hover:cursor-pointer hover:bg-btn hover:outline-0`}
-                                            onClick={() => {
-                                                triggerHaptic()
-                                                setSelectedEmojiIndex(i)
-                                            }} key={i}>
-                                            {h}
-                                        </button>
+                                        <>
+                                            <ButtonComp
+                                                name={h}
+                                                onSubmit={() => setSelectedEmojiIndex(i)}
+                                                highlight={selectedEmojiIndex == i}
+                                                small={true}
+                                                style="grow-1"/>
+                                        </>
                                     )
                                 })}
                             </div>

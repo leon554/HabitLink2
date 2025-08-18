@@ -29,7 +29,7 @@ export default function DashBoardStats() {
             </div>
             <div className="flex max-lg:flex-col gap-3    no-scrollbar  relative z-0">
                 <div className="flex flex-col gap-3 w-full">
-                    <div className="bg-panel2 p-3 rounded-xl px-4 flex-col flex gap-2">
+                    <div className="bg-panel2 p-3 rounded-xl px-4 flex-col flex gap-2 outline-1 outline-border2">
                         <p className="text-title text-sm font-medium">
                             Usage Metrics
                         </p>
@@ -40,7 +40,7 @@ export default function DashBoardStats() {
                             <InfoBox value={Util.fetchAllMapItems(HC.goalCompletions).flat().length} text="Goal Entries" toolTipText="Total amount of goals entries you have"/>
                         </div>
                     </div>
-                    <div className="bg-panel2 p-3 rounded-xl px-4 flex-col flex gap-2">
+                    <div className="bg-panel2 p-3 rounded-xl px-4 flex-col flex gap-2 outline-1 outline-border2">
                         <p className="text-title text-sm font-medium">
                             Perfomance
                         </p>
@@ -51,7 +51,7 @@ export default function DashBoardStats() {
                             <InfoBox value={Math.round(Math.min(...consistencies)*100)+ "%"} text="Min Consistency" toolTipText="The lowest consistency of all of your habits "/>
                         </div>
                     </div>
-                    <div className="bg-panel2 p-3 rounded-xl px-4 flex-col flex gap-2">
+                    <div className="bg-panel2 p-3 rounded-xl px-4 flex-col flex gap-2 outline-1 outline-border2">
                         <p className="text-title text-sm font-medium">
                             Averages
                         </p>
@@ -64,7 +64,7 @@ export default function DashBoardStats() {
                     </div>
                 </div>
                 <div className="flex flex-col gap-3 w-full">
-                    <div className="bg-panel2 p-3 rounded-xl px-4 flex-col flex gap-2">
+                    <div className="bg-panel2 p-3 rounded-xl px-4 flex-col flex gap-2 outline-1 outline-border2">
                         <p className="text-title text-sm font-medium">
                             Streaks
                         </p>
@@ -75,7 +75,7 @@ export default function DashBoardStats() {
                             <InfoBox value={Math.round(Util.standardDeviation(habitStats.map(s => s.streak)))} text="Streak SD" toolTipText="The standard deviation of all your habits streaks"/>
                         </div>
                     </div>
-                    <div className="bg-panel2 p-3 rounded-xl px-4 flex-col flex gap-2">
+                    <div className="bg-panel2 p-3 rounded-xl px-4 flex-col flex gap-2 outline-1 outline-border2">
                         <p className="text-title text-sm font-medium">
                             Completions
                         </p>
@@ -88,7 +88,7 @@ export default function DashBoardStats() {
                             <InfoBox value={Util.fetchAllMapItems(HC.habitsCompletions).flat().filter(c => c.skip).length} text="Skipped Days" toolTipText="The total amount of times you skipped your habits"/>
                         </div>
                     </div>
-                    <div className="bg-panel2 p-3 rounded-xl px-4 flex-col flex gap-2">
+                    <div className="bg-panel2 p-3 rounded-xl px-4 flex-col flex gap-2 outline-1 outline-border2">
                         <p className="text-title text-sm font-medium">
                             Additional
                         </p>

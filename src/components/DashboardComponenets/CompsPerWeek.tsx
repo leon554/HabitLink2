@@ -10,6 +10,7 @@ import Select from "../InputComponents/Select";
 import { SettingsContext } from "../Providers/SettingsProvider";
 import { IoInformationCircleOutline } from "react-icons/io5";
 import Model from "../InputComponents/Model";
+import ButtonComp from "../primatives/ButtonComp";
 
 ChartJS.register(
     CategoryScale, 
@@ -184,10 +185,12 @@ export default function CompsPerWeek(p: Props) {
                     <p className="text-sm text-subtext2">
                         NOTE: Monthly completions are calculated based on the weeks that start within a specific month.
                     </p>
-                    <button className="h-8 bg-btn text-sm font-medium text-btn-text rounded-xl mt-2 mb-2 hover:cursor-pointer"
-                        onClick={() => setOpen(false)}>
-                        Done
-                    </button>
+                   <ButtonComp
+                        name={"Done"}
+                        highlight={true}
+                        onSubmit={() => setOpen(false)}
+                        noAnimation={true}
+                        style="mt-2 mb-2"/>
                 </div>
             </Model>
         </div>

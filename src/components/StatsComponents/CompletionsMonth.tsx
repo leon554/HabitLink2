@@ -5,6 +5,7 @@ import { dateUtils } from "../../utils/dateUtils"
 import { IoInformationCircleOutline } from "react-icons/io5";
 import Model from "../InputComponents/Model";
 import ToolTip from "../ToolTip";
+import ButtonComp from "../primatives/ButtonComp";
 
 export default function CompletionsMonth() {
     const HC = useContext(UserContext)
@@ -165,10 +166,12 @@ export default function CompletionsMonth() {
                             </p>
                         </div> 
                     </div>
-                    <button className="bg-btn rounded-xl text-btn-text font-mono py-1 mt-5 hover:cursor-pointer"
-                        onClick={() => setOpen(false)}>
-                        Done
-                    </button>
+                   <ButtonComp
+                        name={"Done"}
+                        highlight={true}
+                        onSubmit={() => setOpen(false)}
+                        noAnimation={true}
+                        style="mt-5"/>
                 </div>
             </Model>
         </div>

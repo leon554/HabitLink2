@@ -13,6 +13,7 @@ import DistanceInput from "../InputComponents/DistanceInput"
 import TimeInput from "../InputComponents/TimeInput"
 import { triggerHaptic } from "tactus"
 import TextBoxLimited from "../primatives/TextBoxLimited"
+import ButtonComp from "../primatives/ButtonComp"
 
 export default function HabitEdit() {
 
@@ -120,7 +121,7 @@ export default function HabitEdit() {
                     <div className="w-full max-w-[450px]  flex flex-col items-start gap-2 mb-3">
                         {Array.from(HC.habitsCompletions.get(HC.currentHabit!.id) ?? []).length == 0 ? "" :
                             <>
-                            <p className="text-[16px] flex-grow-2 text-subtext1 whitespace-nowrap">Habit Completions</p>
+                            <p className=" flex-grow-2 text-sm font-medium text-subtext1 whitespace-nowrap">Habit Completions</p>
                             <div className="flex flex-col max-h-[200px] overflow-y-scroll w-full no-scrollbar gap-1.5 rounded-xl">
                                 {Array.from(HC.habitsCompletions.get(HC.currentHabit!.id) ?? []).map((c,i) => {
                                     return(
@@ -141,33 +142,34 @@ export default function HabitEdit() {
                             </div>
                             </>
                         }
-                        <button className="rounded-xl outline-1 outline-border2 w-full text-sm p-1 hover:cursor-pointer"
-                            onClick={() => {
-                                triggerHaptic()
+                        <ButtonComp
+                            name="New Entry"
+                            small={true}
+                            highlight={false}
+                            style="w-full mt-2 mb-[-10px]"
+                            noAnimation={true}
+                            onSubmit={() => {
                                 setEntryData(0)
                                 setOpenNewComp(true)
-                            }}>
-                            New Entry
-                        </button>
+                            }}/>
                     </div>        
                     <div className="flex justify-stretch w-full gap-4 mb-5">
-
-                        <button className="rounded-xl text-sm flex-grow-1 bg-btn text-btn-text h-8 p-1 px-5 hover:cursor-pointer"
-                            onClick={async () => {
-                                triggerHaptic()
+                        <ButtonComp
+                            name={HC.loading && btnClicked.current == 1 ? <AiOutlineLoading className="animate-spin"/>  : "Save"}
+                            onSubmit={async () => {
                                 btnClicked.current = 1
                                 await save()
-                            }}>
-                            {HC.loading && btnClicked.current == 1 ? <AiOutlineLoading className="animate-spin"/>  : "Save"}
-                        </button>
-                        <button className="rounded-xl text-sm font-normal flex-grow-2 bg-btn text-btn-text h-8 p-1 px-5 hover:cursor-pointer"
-                            onClick={() => {
-                                triggerHaptic()
-                                setOpen(false)
-                            }}>
-                            Exit
-                        </button>
-                        <button className="rounded-xl text-sm truncate overflow-hidden whitespace-nowrap flex justify-center items-center  px-5 outline-1 h-8 hover:cursor-pointer hover:bg-panel2 transition-colors duration-150 ease-in-out w-full outline-red-500 text-red-500"
+                            }}
+                            highlight={true}
+                            style="w-full"
+                            noAnimation={true}/>
+                        <ButtonComp
+                            name={HC.loading && btnClicked.current == 1 ? <AiOutlineLoading className="animate-spin"/>  : "Exit"}
+                            onSubmit={() => setOpen(false)}
+                            highlight={true}
+                            style="w-full"
+                            noAnimation={true}/>
+                        <button className="rounded-md text-sm truncate overflow-hidden whitespace-nowrap flex justify-center items-center  px-5 border-1 h-8 hover:cursor-pointer hover:bg-panel2 transition-colors duration-150 ease-in-out w-full border-red-500 text-red-500"
                             onClick={async () => {
                                 triggerHaptic()
                                 if(btnClicked.current == 2){
@@ -189,13 +191,13 @@ export default function HabitEdit() {
                         New Entry
                     </p>
                     <div className="w-full flex flex-col gap-2">
-                        <p className="text-[16px]  text-subtext1 whitespace-nowrap">Entry Date </p>
+                        <p className="text-sm font-medium text-subtext1 whitespace-nowrap">Entry Date </p>
                         <DateInput date={date} setDate={setDate} maxDate={new Date()} minDate={new Date(Number(HC.currentHabit!.creationDate))} fullWidth={true}/>
                     </div> 
                     {HC.currentHabit?.type === HabitTypeE.Normal ? "" : 
                     <div className="w-full">
                         <div className="w-full flex flex-col gap-2">
-                            <p className="text-[16px]  text-subtext1 whitespace-nowrap">Data</p>
+                            <p className="text-sm font-medium text-subtext1 whitespace-nowrap">Data</p>
                             {HC.currentHabit!.type == HabitTypeE.Time_Based ? 
                                 <TimeInput setDuration={setEntryData}/> 
                                 : 
@@ -207,21 +209,21 @@ export default function HabitEdit() {
                         </div> 
                     </div>}
                     <div className="w-full flex  gap-4 mt-2 mb-3">
-                        <button className="rounded-xl text-sm flex-grow-1 bg-btn text-btn-text h-8 p-1 px-5 hover:cursor-pointer flex justify-center items-center"
-                            onClick={async () => {
-                                triggerHaptic()
+                        <ButtonComp
+                            name={HC.loading && btnClicked.current == 3 ? <AiOutlineLoading className="animate-spin"/>  : "Save"}
+                            onSubmit={async () => {
                                 btnClicked.current = 3
                                 await newEntry()
-                            }}>
-                            {HC.loading && btnClicked.current == 3 ? <AiOutlineLoading className="animate-spin"/>  : "Save"}
-                        </button>
-                        <button className="rounded-xl text-sm font-normal flex-grow-2 bg-btn text-btn-text h-8 p-1 px-5 hover:cursor-pointer"
-                            onClick={() => {
-                                triggerHaptic()
-                                setOpenNewComp(false)
-                            }}>
-                            Exit
-                        </button>
+                            }}
+                            highlight={true}
+                            style="w-full"
+                            noAnimation={true}/>
+                         <ButtonComp
+                            name={"Exit"}
+                            onSubmit={() => setOpenNewComp(false)}
+                            highlight={true}
+                            style="w-full"
+                            noAnimation={true}/>
                     </div>
                 </div>
             </Model>

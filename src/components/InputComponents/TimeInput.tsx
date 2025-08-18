@@ -33,7 +33,7 @@ export default function TimeInput(p: TimeProps) {
         })
     }, [p.duration])
     return (
-        <div className="flex font-mono p-1 gap-2 rounded-xl text-sm outline-1 outline-border2 justify-stretch">
+        <div className="flex font-mono p-1 gap-2 rounded-md text-sm outline-1 outline-border2 justify-stretch">
             <div className="flex items-center  grow-1">
                 <p className="text-subtext1 pl-1 pr-2 w-10  overflow-hidden">
                     {time.h}h
