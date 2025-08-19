@@ -95,7 +95,7 @@ export default function HabitCalander() {
                                                     </div>
                                                 </div>
                                             }>
-                                                <p className={`w-full h-4  border-border2/70 
+                                                <p className={`w-full h-4 border-border2/70 
                                                     ${v.completeAmount != 0 || v.missAmount != 0? "dark:border-0 border-1" : "dark:border-0 border-1"}  
                                                     ${v.creation ? "" : "rounded-sm "}
                                                     hover:scale-[1.2] transition-all hover:cursor-default ${HC.isCalculating.current.isLoading() ? "animate-pulse duration-1000 " : "duration-200"}`}

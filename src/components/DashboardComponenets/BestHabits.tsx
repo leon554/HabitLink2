@@ -105,6 +105,12 @@ export default function BestHabits() {
                     Worst Habits
                 </p>
             </div>
+            {HC.habits.size < 6 ? 
+            <div className="outline-1 h-20 outline-border2 rounded-xl flex justify-center items-center">
+                <p className="text-subtext3 text-xs">
+                    Create {6- HC.habits.size} more habits to see your worst habits
+                </p>
+            </div>: 
             <div className="flex flex-col gap-2">
                 {habits.slice(-3).reverse().map((h, _) => {
                     return(
@@ -142,6 +148,7 @@ export default function BestHabits() {
                     )
                 })}
             </div>
+            }
         </div>
     )
 }
