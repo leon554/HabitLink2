@@ -24,19 +24,20 @@ export default function ThemeProvider(props: Props) {
     useLayoutEffect(() => {
         const savedTheme = localStorage.getItem("theme");
         if (savedTheme === "dark") {
-        setDark(true);
-        document.documentElement.classList.add("dark");
+            setDark(true);
+            document.documentElement.style.backgroundColor = "hsl(0, 0%, 4%)";
+            document.documentElement.classList.add("dark");
         } else if(savedTheme === "light"){
-        setDark(false);
-        document.documentElement.classList.remove("dark");
+            setDark(false);
+            document.documentElement.classList.remove("dark");
         }else{
-        setDark(true)
+            setDark(true)
         }
     }, []);
 
     useEffect(() => {
         setLoading(true)
-        const timeout1 = setTimeout(() => {setLoading(false)}, 1000)
+        const timeout1 = setTimeout(() => {setLoading(false)}, 250)
         const timeout2 = setTimeout(() => {
             if(dark === null) return
             if (dark) {
@@ -48,7 +49,7 @@ export default function ThemeProvider(props: Props) {
                 document.documentElement.classList.remove("dark")
                 localStorage.setItem("theme", "light");
             }
-        }, 500)
+        }, 125)
         return () => {
             clearTimeout(timeout1)
             clearTimeout(timeout2)

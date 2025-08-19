@@ -6,7 +6,6 @@ import { TbArrowBigDownLines } from "react-icons/tb";
 import Select from "../InputComponents/Select";
 import { useNavigate } from "react-router-dom";
 
-
 interface Data{
     id: number
     name: string
@@ -64,36 +63,41 @@ export default function BestHabits() {
             <div className="flex flex-col gap-2">
                 {habits.slice(0, 3).map((h, _) => {
                     return(
-                        <div className= {`bg-panel2 px-2 rounded-xl border-1 hover:scale-99 transition-all duration-150 ease-in-out hover:cursor-pointer  flex justify-between items-center text-sm text-subtext2 py-2 border-b-1 border-border2  pb-3`}
+                        <div className= {`h-[42px] bg-panel2 ${HC.isCalculating.current.isLoading() ? "animate-pulse" : ""} px-2 rounded-xl border-1 hover:scale-99 transition-all duration-150 ease-in-out hover:cursor-pointer  flex justify-between items-center text-sm text-subtext2 py-2 border-b-1 border-border2  pb-3`}
                             onClick={() => {
                                 HC.setCurrentHabit(HC.habits.get(h.id) ?? null)
                                 navigate("/stats")
                             }}>
-                            <p className=" text-md">
-                                {h.icon} {Util.capitilizeFirst(h.name)}
-                            </p>
-                            <p>
+                            {HC.isCalculating.current.isLoading() ?
+                                null :
+                                <>
+                                    <p className=" text-md">
+                                        {h.icon} {Util.capitilizeFirst(h.name)}
+                                    </p>
+                                    <p>
 
-                            </p>
-                            <div className="flex gap-2 items-center text-subtext3">
-                                <div className="flex gap-1 items-center">
-                                    📈 
-                                    <p className="text-xs w-8 ">
-                                        {Math.round(h.consistency*100)}% 
                                     </p>
-                                </div>
-                                <div className="flex gap-0.5 items-center">
-                                    💪 
-                                    <p className="text-xs w-8 text-center">
-                                        {`${Math.round(h.strength)}`}%
-                                    </p>
-                                </div>
-                            </div>
+                                    <div className="flex gap-2 items-center text-subtext3">
+                                        <div className="flex gap-1 items-center">
+                                            📈 
+                                            <p className="text-xs w-8 ">
+                                                {Math.round(h.consistency*100)}% 
+                                            </p>
+                                        </div>
+                                        <div className="flex gap-0.5 items-center">
+                                            💪 
+                                            <p className="text-xs w-8 text-center">
+                                                {`${Math.round(h.strength)}`}%
+                                            </p>
+                                        </div>
+                                    </div>
+                                </>
+                            }
                         </div>
                     )
                 })}
             </div>
-            <div className="flex items-center gap-4 mb-1.5 mt-2.5">
+            <div className="flex items-center gap-4 mb-1.5 mt-3.5">
                 <div className="bg-panel2 outline-1 outline-border2 text-subtext2  p-1.5 rounded-lg">
                     <TbArrowBigDownLines />
                 </div>
@@ -104,28 +108,36 @@ export default function BestHabits() {
             <div className="flex flex-col gap-2">
                 {habits.slice(-3).reverse().map((h, _) => {
                     return(
-                        <div className={`bg-panel2 px-2 rounded-xl border-1 hover:scale-99 transition-all duration-150 ease-in-out hover:cursor-pointer  flex justify-between items-center text-sm text-subtext2 py-2 border-b-1 border-border2  pb-3`}
+                        <div className={`h-[42px] bg-panel2 ${HC.isCalculating.current.isLoading() ? "animate-pulse" : ""} px-2 rounded-xl border-1 hover:scale-99 transition-all duration-150 ease-in-out hover:cursor-pointer  flex justify-between items-center text-sm text-subtext2 py-2 border-b-1 border-border2  pb-3`}
                             onClick={() => {
                                 HC.setCurrentHabit(HC.habits.get(h.id) ?? null)
                                 navigate("/stats")
                             }}>
-                            <p>
-                                {h.icon} {Util.capitilizeFirst(h.name)}
-                            </p>
-                             <div className="flex gap-1.5 items-center text-subtext3">
-                                <div className="flex gap-1 items-center">
-                                    📈
-                                    <p className="text-xs w-8 ">
-                                        {Math.round(h.consistency*100)}% 
+                            {HC.isCalculating.current.isLoading() ?
+                                null :
+                                <>
+                                    <p className=" text-md">
+                                        {h.icon} {Util.capitilizeFirst(h.name)}
                                     </p>
-                                </div>
-                                <div className="flex gap-0.5 items-center">
-                                    💪 
-                                    <p className="text-xs w-8 text-center">
-                                        {`${Math.round(h.strength)}`}%
+                                    <p>
+
                                     </p>
-                                </div>
-                            </div>
+                                    <div className="flex gap-2 items-center text-subtext3">
+                                        <div className="flex gap-1 items-center">
+                                            📈 
+                                            <p className="text-xs w-8 ">
+                                                {Math.round(h.consistency*100)}% 
+                                            </p>
+                                        </div>
+                                        <div className="flex gap-0.5 items-center">
+                                            💪 
+                                            <p className="text-xs w-8 text-center">
+                                                {`${Math.round(h.strength)}`}%
+                                            </p>
+                                        </div>
+                                    </div>
+                                </>
+                            }
                         </div>
                     )
                 })}

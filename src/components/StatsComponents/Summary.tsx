@@ -37,7 +37,7 @@ export default function Summary() {
 
                 {currentHabit?.type != HabitTypeE.Normal ? 
                     <>
-                        <InfoBox value={`${p.dataSum}`} text={currentHabit?.type == HabitTypeE.Distance_Based ? 
+                        <InfoBox value={`${Math.round(p.dataSum)}`} text={currentHabit?.type == HabitTypeE.Distance_Based ? 
                             "Total Km" :
                             currentHabit?.type == HabitTypeE.Iteration_Based ?
                             "Total Itterations" :
