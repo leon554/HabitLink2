@@ -80,7 +80,7 @@ export default function HabitStudio() {
         if(!habit.habit_type) {alert("Select a habit type before creating a habit"); return}
         if(target == 0 && habitTypes[selectedTypeIndex] != "Normal") {alert("Habit daily goal can't be 0"); return}
 
-        await HC.createHabit(name, "", completionDaysString, habit.emoji, habit.habit_type, target)
+        await HC.createHabit(habit.habit, "", completionDaysString, habit.emoji, habit.habit_type, target)
         alert("Habit Succefully Created!")
         habits.splice(habitIndex, 1)
     }

@@ -63,7 +63,7 @@ export default function BestHabits() {
             <div className="flex flex-col gap-2">
                 {habits.slice(0, 3).map((h, _) => {
                     return(
-                        <div className= {`h-[42px] bg-panel2 ${HC.isCalculating.current.isLoading() ? "animate-pulse" : ""} px-2 rounded-xl border-1 hover:scale-99 transition-all duration-150 ease-in-out hover:cursor-pointer  flex justify-between items-center text-sm text-subtext2 py-2 border-b-1 border-border2  pb-3`}
+                        <div className= {`h-[42px] bg-panel2 ${HC.isCalculating.current.isLoading() ? "animate-pulse" : ""} gap-2 px-2 rounded-xl border-1 hover:scale-99 transition-all duration-150 ease-in-out hover:cursor-pointer  flex justify-between items-center text-sm text-subtext2 py-2 border-b-1 border-border2  pb-3`}
                             onClick={() => {
                                 HC.setCurrentHabit(HC.habits.get(h.id) ?? null)
                                 navigate("/stats")
@@ -71,7 +71,7 @@ export default function BestHabits() {
                             {HC.isCalculating.current.isLoading() ?
                                 null :
                                 <>
-                                    <p className=" text-md">
+                                    <p className=" text-md truncate">
                                         {h.icon} {Util.capitilizeFirst(h.name)}
                                     </p>
                                     <p>
@@ -114,7 +114,7 @@ export default function BestHabits() {
             <div className="flex flex-col gap-2">
                 {habits.slice(-3).reverse().map((h, _) => {
                     return(
-                        <div className={`h-[42px] bg-panel2 ${HC.isCalculating.current.isLoading() ? "animate-pulse" : ""} px-2 rounded-xl border-1 hover:scale-99 transition-all duration-150 ease-in-out hover:cursor-pointer  flex justify-between items-center text-sm text-subtext2 py-2 border-b-1 border-border2  pb-3`}
+                        <div className={`h-[42px] bg-panel2 ${HC.isCalculating.current.isLoading() ? "animate-pulse" : ""} px-2 rounded-xl border-1 hover:scale-99 transition-all duration-150 ease-in-out hover:cursor-pointer  flex justify-between items-center text-sm text-subtext2 py-2 border-b-1 border-border2 gap-2 pb-3`}
                             onClick={() => {
                                 HC.setCurrentHabit(HC.habits.get(h.id) ?? null)
                                 navigate("/stats")
@@ -122,7 +122,7 @@ export default function BestHabits() {
                             {HC.isCalculating.current.isLoading() ?
                                 null :
                                 <>
-                                    <p className=" text-md">
+                                    <p className=" text-md truncate">
                                         {h.icon} {Util.capitilizeFirst(h.name)}
                                     </p>
                                     <p>
