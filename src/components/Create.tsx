@@ -148,6 +148,7 @@ export default function Create({compact, onCreate, initialName} : Props){
                                     return(
                                         <>
                                             <ButtonComp
+                                                noAnimation={compact ? true: false}
                                                 name={e[0][0].toUpperCase()}
                                                 onSubmit={() => {setCompDays(prev => ({...prev, [e[0]]: !e[1]})); setCompsPerWeek(0)}}
                                                 xs={true}
@@ -181,6 +182,7 @@ export default function Create({compact, onCreate, initialName} : Props){
                         {habitTypes.map((h, i) => {
                         return(
                             <ButtonComp
+                                noAnimation={compact ? true: false}
                                 name={compact ?  h.split(" ")[0]: h}
                                 highlight={selectedTypeIndex == i }
                                 onSubmit={() => setSelectedTypeIndex(i)}
@@ -222,6 +224,7 @@ export default function Create({compact, onCreate, initialName} : Props){
                                     return(
                                         <>
                                             <ButtonComp
+                                                noAnimation={compact ? true: false}
                                                 name={h}
                                                 onSubmit={() => setSelectedEmojiIndex(i)}
                                                 highlight={selectedEmojiIndex == i}
@@ -244,6 +247,7 @@ export default function Create({compact, onCreate, initialName} : Props){
                             </button> : ""}
                         </div>
                     <ButtonComp
+                        noAnimation={compact ? true: false}
                         name={HC.loading && loadingRef.current == 2 ? <AiOutlineLoading className="animate-spin" /> : "Create Habit"}
                         highlight={true}
                         onSubmit={async () => {

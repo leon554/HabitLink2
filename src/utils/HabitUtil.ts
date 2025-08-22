@@ -41,17 +41,22 @@ export namespace HabitUtil{
         return completions.filter(c => dateUtils.isDateInCurrentWeek(new Date(Number(c.date))))
     }
 
-    export function isCompleteableToday(habit: HabitType, completions: HabitCompletionType[]|undefined){
+    export function isDueToday(habit: HabitType, completions: HabitCompletionType[]|undefined){
         if(habit.completionDays.length == 1){
             if(!completions) return true
-            const completionsThisWeek = getCompletionsThisWeek(completions).length
-            
-            const completionsToday = completions.filter(c => dateUtils.isDatesSameDay(new Date(Number(c.date)), new Date()))
-        
-            if(habit.type != HabitTypeE.Normal && getCompletionDataSum(completionsToday) >= Number(habit.target)) return false
-            if(habit.type == HabitTypeE.Normal && completionsToday.length >= 1) return false
+            const weeklyTarget = Number(habit.completionDays)  
+            const entriesThisWeek = getCompletionsThisWeek(completions)
+            const entriesToday = completions.filter(c => dateUtils.isDatesSameDay(new Date(Number(c.date)), new Date()))
+            const completionsThisWeek = habit.type == HabitTypeE.Normal ? entriesThisWeek.length : 
+                getValidCompsInWeekDailyTarget(entriesThisWeek, habit.target, dateUtils.getStartOfWeekDate())
 
-            return completionsThisWeek < Number(habit.completionDays)  
+            const completedToday = (habit.type == HabitTypeE.Normal) ? entriesToday.length > 0 : getCompletionDataSum(entriesToday) >= Number(habit.target)
+            const daysLeftInWeek = !completedToday ? dateUtils.daysLeftInWeekIncToday() : dateUtils.daysLeftInWeekExToday()
+            
+            if(completedToday) return false
+            if(completionsThisWeek >= weeklyTarget) return false
+            if(daysLeftInWeek > weeklyTarget - completionsThisWeek) return false
+            return true
         }
         
         const currentDay = (new Date()).getDay()
@@ -594,6 +599,7 @@ export namespace HabitUtil{
     }
 
     export function GetCompletionDaysThisPeriodAllHabits(habits: HabitType[], completions: Map<number, HabitCompletionType[]>){
+        console.time("Calander")
         const results = habits.map((h, _) => {
             return getCompletionDaysThisPeriod(h, completions.get(h.id))
         })
@@ -625,7 +631,7 @@ export namespace HabitUtil{
                 }
             }
         }
-
+        console.timeEnd("Calander")
         return {firstResult, maxMiss, maxComp}
     }
 
@@ -676,12 +682,15 @@ export namespace HabitUtil{
         return data.reverse()
     }
     export function getGoalCompAndStrength(habit: HabitType | null | undefined, completions: HabitCompletionType[] | null | undefined, goalCreationDate: Date){
-        if(!habit || !completions) return []
+        if(!habit || !completions) return {consistency: 0, strength: 0} 
         
         const data = {consistency: 0, strength: 0} 
 
         data.consistency = Math.round(getCompletionRate(habit, completions, goalCreationDate, true).compRate * 100*10)/10
         data.strength = Math.round(getStrength(habit, completions, goalCreationDate, true)*10)/10
+
+        data.consistency = isNaN(data.consistency) ? 0 : data.consistency
+        data.strength = isNaN(data.strength) ? 0 : data.strength
 
         return data
     }
@@ -727,6 +736,20 @@ export namespace HabitUtil{
         })
 
         return output
+    }
+    export function groupHabitEntriesByDay(entries: HabitCompletionType[]){
+        const groupMap = new Map<string, HabitCompletionType[]>()
+
+        entries.forEach(e => {
+            const date = dateUtils.formatDate(new Date(Number(e.date)))
+            if(groupMap.has(date)){
+                groupMap.set(date, [...groupMap.get(date)! , e])
+            }
+            else{
+                groupMap.set(date, [e])
+            }
+        })
+        return Array.from(groupMap.values())
     }
 
 }

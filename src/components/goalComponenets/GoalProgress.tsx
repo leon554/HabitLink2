@@ -10,6 +10,7 @@ import { TbProgressCheck } from "react-icons/tb";
 export default function GoalProgress() {
 
     const HC = useContext(UserContext)
+    const countData = HC.getCurrentGoal()?.countdata ?? true
     const startValue = HC.getCurrentGoal()?.startValue ?? 0
     let currentValue = useCurrentGoalValue()
     const targetValue = HC.getCurrentGoal()?.targetValue ?? 0
@@ -19,8 +20,8 @@ export default function GoalProgress() {
             <ProgressPanel 
                 title="Actaul Progress"
                 icon={<TbProgressCheck />}
-                text={`You have ${Util.pretifyGoalData(currentValue, HC.getCurrentGoal()?.type as HabitTypeE)}
-                    logged with a goal of ${Util.pretifyGoalData(targetValue, HC.getCurrentGoal()?.type as HabitTypeE)} 
+                text={`You have ${!countData ? `${currentValue} completions` :Util.pretifyGoalData(currentValue, HC.getCurrentGoal()?.type as HabitTypeE)}
+                    logged with a goal of ${!countData ? `${targetValue}` :Util.pretifyGoalData(targetValue, HC.getCurrentGoal()?.type as HabitTypeE)} 
                   ${(startValue != 0) ? " starting with " + startValue : ""}`}
                 value={Util.calculateProgress(startValue, currentValue, targetValue)*100} large={true}/>
         </div>

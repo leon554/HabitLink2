@@ -14,7 +14,7 @@ import { type RefObject } from "react";
 
 interface UserType{
     createHabit: (name: string, description: string, completionDays:string, emoji: string, type: string, target: number) => Promise<void>
-    createGoal: (name: string, description: string, type: string, startValue: number, goalValue: number, habitIds: number[], completionDate: Date, linkedHabitId: number | null) => Promise<void>
+    createGoal: (name: string, description: string, type: string, startValue: number, goalValue: number, habitIds: number[], completionDate: Date, linkedHabitId: number | null, countdata: boolean) => Promise<void>
     archiveGoal: (goalId: number) => Promise<void>
     deleteGoal: (goalId: number) => Promise<void>
     updateHabitName: (newName: string, habitID: number) => Promise<void>
@@ -145,6 +145,8 @@ export default function UserProvider(props: Props) {
     }, [auth.session])
 
     useEffect(() => {
+
+        if(habits.size == 0 || habitsCompletions.size == 0) return
         console.time("HabitGoalStats")
         lock()
         const HabitStatsMap = new Map<number, HabitStats>()
@@ -185,8 +187,8 @@ export default function UserProvider(props: Props) {
                 stats.push({...result, habitID: id} as GaolStats)
             })
             goalStats.set(g.id, stats)
-            setGoalStats(new Map(goalStats))
         })
+        setGoalStats(new Map(goalStats))
         unLock()
         console.timeEnd("HabitGoalStats")
     }, [habitsCompletions, habits, goals])
@@ -254,7 +256,7 @@ export default function UserProvider(props: Props) {
         alert("Succefully Added Habit")
         setLoading(false)
     }
-    async function createGoal(name: string, description: string, type: string, startValue: number, goalValue: number, habitIds: number[], completionDate: Date, linkedHabitId: number| null){
+    async function createGoal(name: string, description: string, type: string, startValue: number, goalValue: number, habitIds: number[], completionDate: Date, linkedHabitId: number| null, countdata: boolean){
         setLoading(true)
 
         if(Array.from(goals.values()).length >= GOAL_LIM_FREE && auth.localUser?.role == "free"){
@@ -269,7 +271,7 @@ export default function UserProvider(props: Props) {
         const { error } = await supabase
             .from('goals')
             .insert([
-                { name, description, type,  startValue, targetValue: goalValue, user_id:userid, habits: habitString, completionDate: completionDate.getTime(), linkedHabit: linkedHabitId},
+                { name, description, type,  startValue, targetValue: goalValue, user_id:userid, habits: habitString, completionDate: completionDate.getTime(), linkedHabit: linkedHabitId, countdata},
             ])
         
         if(error){

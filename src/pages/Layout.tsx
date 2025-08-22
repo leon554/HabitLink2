@@ -10,6 +10,7 @@ import { themeContext } from "@/components/Providers/ThemeProvider";
 export default function Layout() {
     const auth = useContext(AuthContext)
     const theme = useContext(themeContext)
+    
     return (
         <>
             <div className="absolute inset-0  opacity-20 dark:opacity-10 pointer-events-none -z-30 h-screen" />

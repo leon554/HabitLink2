@@ -107,12 +107,12 @@ export default function LandingPage() {
                 <FeatureCard
                   icon={<FaLink className="text-blue-500 dark:text-highlight" size={18} />}
                   title="Detailed Charts"
-                  text="See detailed charts of your consisency and strength over time to see real improvement"
+                  text="See detailed charts of your performance over time to see real improvement."
                 />
                 <FeatureCard
                   icon={<FaRegClock className="text-blue-500 dark:text-highlight" size={18} />}
                   title="Consistency & streaks"
-                  text="See concistency, streaks, and strength at a glance to stay on track."
+                  text="See concistency, strength, and streaks at a glance to stay on track."
                 />
                 <FeatureCard
                   icon={<FaMagic className="text-blue-500 dark:text-highlight" size={18} />}
@@ -143,13 +143,13 @@ export default function LandingPage() {
                   <HowItWorksStep
                     step="2"
                     title="Log with ease"
-                    text="Capture your activity daily—fast, simple, and on any device."
+                    text="Capture your activity daily, fast, simple, and on any device."
                   />
                   <HowItWorksStep
                     skip={true}
                     step="3"
                     title="Discover insights"
-                    text="See correlations, trends, and bottlenecks so you can iterate intelligently."
+                    text="See trends and bottlenecks so you can iterate intelligently."
                   />
                 </div>
                 <div className=" max-md:mt-5 flex justify-center md:justify-start">

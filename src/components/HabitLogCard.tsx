@@ -131,14 +131,14 @@ export default function HabitLogCard({habit: h}: HabitProps) {
                         </p> : ""}
                         {!settings.showDetails ? 
                         <p className='text-subtext1 dark:text-subtext2  text-[9px] pb-0.5'>
-                                {HabitUtil.isCompleteableToday(h, UC.habitsCompletions.get(h.id)) ? <FaHourglassHalf /> : ""}
+                                {HabitUtil.isDueToday(h, UC.habitsCompletions.get(h.id)) ? <FaHourglassHalf /> : ""}
                         </p>: ""}
                     </div>
                     <div className={`flex gap-3.5  ${settings.showDetails ? "absolute right-0 top-5.5" : ""}`}>
                         <button className={`h-7 flex justify-center 
                             items-center rounded-lg p-2 mr-0 w-7 text-subtext1
                             text-2xl hover:cursor-pointer transition-transform hover:scale-[1.04] active:scale-[0.9]
-                            ease-in-out duration-250 ${isCompletedToday() ?  isSkippedToday() ? "outline-1 outline-yellow-500 dark:bg-panel2 bg-yellow-200": "dark:bg-panel2 bg-highlight/40 outline-1 outline-highlight" : HabitUtil.isCompleteableToday(h, UC.habitsCompletions.get(h.id)) && !settings.dontShowRed ? "outline-red-500 outline-1 dark:bg-panel2 bg-red-100" : "dark:bg-panel2 outline-1 outline-border2"}`}
+                            ease-in-out duration-250 ${isCompletedToday() ?  isSkippedToday() ? "outline-1 outline-yellow-500 dark:bg-panel2 bg-yellow-200": "dark:bg-panel2 bg-highlight/40 outline-1 outline-highlight" : HabitUtil.isDueToday(h, UC.habitsCompletions.get(h.id)) && !settings.dontShowRed ? "outline-red-500 outline-1 dark:bg-panel2 bg-red-100" : "dark:bg-panel2 outline-1 outline-border2"}`}
                             onClick={async (e) => {
                                 triggerHaptic()
                                 e.stopPropagation()
@@ -147,7 +147,7 @@ export default function HabitLogCard({habit: h}: HabitProps) {
                             {loading ? <AiOutlineLoading className={`animate-spin ${getLoadingColor()}`}/> : 
                                         isSkippedToday() ? <TbPlayerSkipForwardFilled className='text-yellow-500' size={10}/> : 
                                         isCompletedToday() ?  <FaCheck className={`dark:text-highlight text-highlight`}/> 
-                                        : <FiClipboard className={`${HabitUtil.isCompleteableToday(h, UC.habitsCompletions.get(h.id)) && !settings.dontShowRed ? "text-red-500" :  "text-subtext2 dark:text-subtext2" }`}/>}
+                                        : <FiClipboard className={`${HabitUtil.isDueToday(h, UC.habitsCompletions.get(h.id)) && !settings.dontShowRed ? "text-red-500" :  "text-subtext2 dark:text-subtext2" }`}/>}
                         </button>
                         <button className={`h-7 flex justify-center 
                             items-center rounded-lg  mr-3 w-4 text-subtext3
@@ -230,13 +230,13 @@ export default function HabitLogCard({habit: h}: HabitProps) {
                         <p className='text-subtext2 dark:text-subtext2  text-[11px] whitespace-nowrap'>
                             {HabitUtil.getCompletionDaysString(h.completionDays)}
                         </p>
-                        {HabitUtil.isCompleteableToday(h, UC.habitsCompletions.get(h.id)) ?
+                        {HabitUtil.isDueToday(h, UC.habitsCompletions.get(h.id)) ?
                             <p className='text-xs text-subtext3/40 mb-0.5'>
                                 |
                             </p>
                         : ""}
                         <p className='text-subtext2 dark:text-subtext2  text-[9px]'>
-                            {HabitUtil.isCompleteableToday(h, UC.habitsCompletions.get(h.id)) ? <FaHourglassHalf /> : ""}
+                            {HabitUtil.isDueToday(h, UC.habitsCompletions.get(h.id)) ? <FaHourglassHalf /> : ""}
                         </p>
                     </div>
                 </div>
@@ -245,13 +245,13 @@ export default function HabitLogCard({habit: h}: HabitProps) {
                 <p className='text-subtext2 dark:text-subtext2  text-[11px]'>
                     {HabitUtil.getCompletionDaysString(h.completionDays)}
                 </p>
-                {HabitUtil.isCompleteableToday(h, UC.habitsCompletions.get(h.id)) ?
+                {HabitUtil.isDueToday(h, UC.habitsCompletions.get(h.id)) ?
                     <p className='text-xs text-subtext3/40 mb-0.5'>
                         |
                     </p>
                 : ""}
                 <p className='text-subtext2 dark:text-subtext2  text-[9px] flex items-center'>
-                   {HabitUtil.isCompleteableToday(h, UC.habitsCompletions.get(h.id)) ? <FaHourglassHalf /> : ""}
+                   {HabitUtil.isDueToday(h, UC.habitsCompletions.get(h.id)) ? <FaHourglassHalf /> : ""}
                 </p>
             </div>: ""}
             {}

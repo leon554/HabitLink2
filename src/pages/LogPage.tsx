@@ -18,7 +18,7 @@ export default function LogPage() {
     const {settings, setSettings} = useContext(SettingsContext)
 
     return (
-        <div className="flex items-center flex-col h-screen pt-3 pb-7 ">   
+        <div className="flex items-center flex-col h-[97dvh] ">   
             <div className="mt-18 w-[90%] max-w-[600px] ">
                 <div className=" mb-2 bg-panel1 dark:bg-panel1 dark:outline-border dark:text-title  drop-shadow-sm  outline-1 outline-border rounded-2xl text-title flex justify-between items-center ">
                     <p className="  p-4  text-2xl font-semibold">
@@ -85,16 +85,16 @@ export default function LogPage() {
                 </button>
             </div>
             :
-            <div className="w-[90%] max-w-[600px] flex flex-col gap-2 overflow-auto no-scrollbar rounded-md ">
+            <div className="w-[90%] max-w-[600px] flex flex-col gap-2 overflow-auto no-scrollbar rounded-2xl ">
                 {Array.from(user.habits.values()).map((h, i) =>
-                    h.type === HabitTypeE.Normal && (!settings.showDue || HabitUtil.isCompleteableToday(h, user.habitsCompletions.get(h.id))) ? (
+                    h.type === HabitTypeE.Normal && (!settings.showDue || HabitUtil.isDueToday(h, user.habitsCompletions.get(h.id))) ? (
                         <div className="w-full" key={`normal-${i}`}>
                             <HabitLogCard habit={h} />
                         </div>
                     ) : null
                 )}
                 {Array.from(user.habits.values()).map((h, i) =>
-                    h.type !== HabitTypeE.Normal && !settings.showNormal && (!settings.showDue || HabitUtil.isCompleteableToday(h, user.habitsCompletions.get(h.id))) ? (
+                    h.type !== HabitTypeE.Normal && !settings.showNormal && (!settings.showDue || HabitUtil.isDueToday(h, user.habitsCompletions.get(h.id))) ? (
                         <div className="w-full" key={`alt-${i}`}>
                             <HabitLogCard habit={h} />
                         </div>

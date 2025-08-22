@@ -26,12 +26,14 @@ export default function TextBoxLimited({name, password, value, setValue, charLim
     return (
         <div className={`flex flex-col gap-2 relative ${outerDivStyles}`}>
             <div className="flex justify-between items-end ">
-                <p className="text-sm font-medium text-subtext1 relative">
-                    {name}
-                    {infoText ? <IoInformationCircleOutline className="text-subtext3 absolute top-[4px] -right-6 hover:cursor-pointer"
+                <div className="flex  items-center gap-1.5">
+                    <p className="text-sm font-medium text-subtext1 relative">
+                        {name}
+                    </p>
+                    {infoText ? <IoInformationCircleOutline className="text-subtext3 hover:cursor-pointer text-sm mt-0.5"
                         onClick={() => alert(infoText)}/> : ""}
-                </p>
-                <p className="text-[10px] text-subtext3  ">
+                </div>
+                <p className="text-[10px] text-subtext3">
                     {(value ?? "").length}/{charLimit}
                 </p>
             </div>

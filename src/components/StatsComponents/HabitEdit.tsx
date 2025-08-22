@@ -161,15 +161,15 @@ export default function HabitEdit() {
                                 await save()
                             }}
                             highlight={true}
-                            style="w-full"
+                            style="w-[30%]"
                             noAnimation={true}/>
                         <ButtonComp
                             name={HC.loading && btnClicked.current == 1 ? <AiOutlineLoading className="animate-spin"/>  : "Exit"}
                             onSubmit={() => setOpen(false)}
                             highlight={true}
-                            style="w-full"
+                            style="w-[30%]"
                             noAnimation={true}/>
-                        <button className="rounded-md text-sm truncate overflow-hidden whitespace-nowrap flex justify-center items-center  px-5 border-1 h-8 hover:cursor-pointer hover:bg-panel2 transition-colors duration-150 ease-in-out w-full border-red-500 text-red-500"
+                        <button className="rounded-md w-full text-sm truncate overflow-hidden whitespace-nowrap flex justify-center items-center  px-5 border-1 h-8 hover:cursor-pointer hover:bg-panel2 transition-colors duration-150 ease-in-out border-red-500 text-red-500"
                             onClick={async () => {
                                 triggerHaptic()
                                 if(btnClicked.current == 2){

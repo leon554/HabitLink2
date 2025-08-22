@@ -1,4 +1,4 @@
-import { useContext, useRef, useState, useEffect} from "react"
+import { useContext, useRef, useState, useEffect, useMemo} from "react"
 import ToolTip from "../ToolTip"
 import { dateUtils } from "@/utils/dateUtils"
 import { UserContext } from "../Providers/UserProvider"
@@ -18,7 +18,7 @@ export default function HabitCalander() {
     const HC = useContext(UserContext)
     const {dark} = useContext(themeContext)
     const [open, setOpen] = useState(false)
-    const {firstResult: compDays, maxMiss, maxComp} = HabitUtil.GetCompletionDaysThisPeriodAllHabits(Util.fetchAllMapItems(HC.habits), HC.habitsCompletions) ?? []
+    const {firstResult: compDays, maxMiss, maxComp} = useMemo(() => HabitUtil.GetCompletionDaysThisPeriodAllHabits(Util.fetchAllMapItems(HC.habits), HC.habitsCompletions) ?? [], [HC.habitsCompletions]) 
     const days = ["S", "M", "T", "W", "T", "F", "S", " "]
     const calanderRef = useRef<HTMLDivElement>(null)
     const [columns, setColumns] = useState(16)
@@ -114,7 +114,7 @@ export default function HabitCalander() {
                 </div>
                 <div className="flex gap-4 justify-center mt-4">
                     <div className="flex gap-2 items-center">
-                        <div className="w-2 h-2 rounded-sm dark:bg-highlight bg-green-500"></div>
+                        <div className="w-2 h-2 rounded-sm bg-highlight "></div>
                         <p className="text-xs text-subtext3">
                             Completed
                         </p>

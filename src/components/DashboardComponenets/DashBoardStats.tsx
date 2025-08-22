@@ -27,7 +27,7 @@ export default function DashBoardStats() {
                     Statistics
                 </p>
             </div>
-            <div className="flex max-lg:flex-col gap-3  mb-2  no-scrollbar  relative z-0">
+            <div className="flex max-lg:flex-col gap-3  mb-2  no-scrollbar  relative z-0 ">
                 <div className="flex flex-col gap-3 w-full">
                     <div className="bg-panel2 p-3 rounded-xl px-4 flex-col flex gap-2 outline-1 outline-border2">
                         <p className="text-title text-sm font-medium">

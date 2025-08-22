@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { IoInformationCircleOutline } from "react-icons/io5";
 import { AlertContext } from "./Alert/AlertProvider";
 import { UserContext } from "./Providers/UserProvider";
@@ -15,6 +15,7 @@ import { RiAiGenerate } from "react-icons/ri";
 import { triggerHaptic } from "tactus";
 import TextBoxLimited from "./primatives/TextBoxLimited";
 import ButtonComp from "./primatives/ButtonComp";
+import { useNavigate } from "react-router-dom";
 
 
 export default function CreateGoal() {
@@ -25,17 +26,24 @@ export default function CreateGoal() {
     const [goalValue, setGoalValue] = useState("")
     const [date, setDate] = useState("")
     const [showModal, setShowModal] = useState(false)
+    const [showInfo, setShowInfo] = useState(false)
     const [showNewHabitModal, setShowNewHabitModal] = useState(false)
     const [selectHabits, setSelectedHabits] = useState<number[]>([])
     const habitTypes = ["Normal", "Time Based", "Distance Based", "Iteration Based"]
     const [linkedID, setLinkedId] = useState(-1)
     const [habits, setHabits] = useState<string[]>([])
     const [habitName, setHabitName] = useState("")
+    const [countData, setCountData] = useState(true)
     const loadingRef = useRef(-1)
 
     const HC = useContext(UserContext)
     const {alert} = useContext(AlertContext)
+    const naviagte = useNavigate()
 
+
+    useEffect(() => {
+        setCountData(true)
+    }, [linkedID])
     async function submit(){
         const type = (linkedID == -1) ? habitTypes[selectedTypeIndex] : HC.habits.get(linkedID)?.type
         if(linkedID != -1) selectHabits.push(linkedID) //no proper fix
@@ -59,13 +67,13 @@ export default function CreateGoal() {
            if(goalValue == "" || startValue == "") {alert("Start and goal values must be filled in with a number"); return}
            if(goalVal == startVal) {alert("Goal and start values can't be the same "); return}
         }
-
+        if(linkedID == -1) setCountData(true)
         if(goalVal < 0 || startVal < 0) {alert("Start or goal value cant be negative values"); return}
         
         if(isNaN(goalVal) || isNaN(startVal)) {alert("Start and goal values must be a number"); return}
         if(!dateUtils.isStringValidDate(date, new Date())) {alert("Date is not valid it needs to be in the correct format and in the future"); return}
 
-        await HC.createGoal(name, description, type, startVal, goalVal, selectHabits, dateUtils.stringToDate(date), linkedID == -1 ? null : linkedID)
+        await HC.createGoal(name, description, type, startVal, goalVal, selectHabits, dateUtils.stringToDate(date), linkedID == -1 ? null : linkedID, countData)
         setName(""); setDescription(""); setSelectedTypeIndex(-1); setStartValue(""); setGoalValue(""); setSelectedHabits([]); setDate("")
     }
     function getPlaceHolderText(){
@@ -226,16 +234,36 @@ export default function CreateGoal() {
                                     numeric={true}/>
                             </div> : ""}
                         </div>: 
-                        <div className="w-full flex flex-col items-center">
-                            <div className="w-[90%] max-w-[450px] mb-6">
+                        <div className="w-full flex flex-col items-center mb-6">
+                            <div className="w-[90%] max-w-[450px] mb-2">
                                 <TextBoxLimited
                                     name="Goal Value"
                                     value={goalValue}
                                     setValue={setGoalValue}
-                                    placeHolder={"Enter start " + getLinkedPlaceHolderText()}
+                                    placeHolder={"Enter goal " + (countData ? getLinkedPlaceHolderText() : "completions")}
                                     charLimit={10}
-                                    numeric={true}/>
+                                    numeric={true}
+                                    infoText={HC.habits.get(linkedID)!.type != HabitTypeE.Normal ?
+                                        "Enter the goal value for your goal. This will track progress either by counting habit completions or by using the actual data you log, depending on your selection. For example, if Count Data is selected for a linked habit like 'Go for 5 km run', your goal progress will be measured in kilometers, so logging a 5 km run adds 5 km. If Count Completions is selected, progress will be measured in completions, so completing the habit counts as one completion regardless of distance."
+                                        : "This is the goal value for your goal so the value you want to reach"
+                                    }/>
                             </div>
+                            {HC.habits.get(linkedID)!.type != HabitTypeE.Normal ? 
+                            <div className="flex w-[90%] gap-3">
+                                <ButtonComp
+                                    name={"Count Data"}
+                                    small={true}
+                                    highlight={countData}
+                                    onSubmit={() => {setCountData(true)}}
+                                    style="w-full"/>
+                                <ButtonComp
+                                    name={"Count Completions"}
+                                    small={true}
+                                    highlight={!countData}
+                                    onSubmit={() => {setCountData(false)}}
+                                    style="w-full truncate px-5"/>
+                            </div>
+                            : null}
                         </div>}
 
                         <div className="w-[90%] max-w-[450px]    mb-8">
@@ -290,9 +318,15 @@ export default function CreateGoal() {
                 <div className="p-3 flex flex-col  items-center max-w-[600px] w-[90%] bg-panel1 rounded-2xl  "
                  onClick={e => e.stopPropagation()}>
                     <div className="w-full flex flex-col items-center">
-                        <p className="mb-2 mt-3 font-medium select-none text-title w-[90%]">
-                            Select Habits
-                        </p>
+                        <div className="flex justify-between items-center mb-2 mt-3 w-[90%]">
+                            <p className=" font-medium select-none text-title w-[90%]">
+                                Select Habits
+                            </p>
+                            <IoInformationCircleOutline className="mt-1 text-subtext3 text-sm hover:cursor-pointer" onClick={() =>{
+                                triggerHaptic()
+                                setShowInfo(true)
+                            }}/>
+                        </div>
                         <div className="flex flex-col p-[1px] gap-2 mb-3 items-stretch w-[90%] max-h-[305px] overflow-y-scroll no-scrollbar rounded-lg">
                             {Array.from(HC.habits.values()).map((h, i) => {
                                 return(
@@ -376,9 +410,49 @@ export default function CreateGoal() {
                 </div>
             </Model>
             <Model open={showNewHabitModal} onClose={() => setShowNewHabitModal(false)}>
-                <div className="w-[90%]  max-w-[900px]  max-md:max-w-[500px]" 
+                <div className="w-[90%]  max-w-[900px]  max-md:max-w-[500px] max-h-[80dvh] rounded-2xl overflow-scroll no-scrollbar" 
                  onClick={e => e.stopPropagation()}>
                     <Create compact={true} onCreate={() => setShowNewHabitModal(false)} initialName={habitName}/>
+                </div>
+            </Model>
+            <Model open={showInfo} onClose={() => setShowInfo(false)}>
+                <div className="w-[90%] max-w-[500px] bg-panel1 outline-1 outline-border  rounded-2xl p-7 py-4" 
+                 onClick={e => e.stopPropagation()}>
+                    <p className="text-title text-lg font-medium">
+                        Info
+                    </p>
+                    <div className="mt-4 flex flex-col gap-5">
+                        <p className="text-sm text-subtext2">
+                            You have two ways to add habits to goals
+                        </p>
+
+                        <p className="text-sm text-subtext2 border-l-8 border-green-500 pl-3 rounded-md">
+                            <strong>Associate a habit</strong> This associates the habit to a goal so that the goal’s stats such as consistency and strength are automatically calculated from this habit.  
+                            You will see a green square next to the habit on the previous page to indicate it is associated. Note: you can associate multiple habits.
+                        </p>
+
+                        <p className="text-sm text-subtext2 border-l-8 border-blue-500 pl-3 rounded-md">
+                            <strong>Link a habit</strong> This uses the habit to track progress toward a specific goal.  
+                            For example, if your habit is <em>"Go to the gym"</em> and your goal is <em>"Gym 30 times this month"</em> linking the habit will automatically update your goal progress every time you log the habit.  
+                            A blue square next to the habit on the previous page indicates it is linked. You can link a habit by double clicking it. Note: a linked habit will automatically also be associated
+                        </p>
+                        <div className="flex w-full gap-3">
+                            <ButtonComp
+                                name="Done"
+                                highlight={true}
+                                onSubmit={() => setShowInfo(false)}
+                                noAnimation={true}
+                                style="w-full"
+                            />
+                            <ButtonComp
+                                name="Learn More"
+                                highlight={false}
+                                onSubmit={() => naviagte("/help")}
+                                noAnimation={true}
+                                style="w-full"
+                            />
+                        </div>
+                    </div>
                 </div>
             </Model>
         </>

@@ -15,7 +15,7 @@ export default function UpcomingGoals() {
     const goals = useMemo(() => Util.fetchAllMapItems(HC.goals), [HC.goals]) 
     const upcommingGoals = getUpcomingGoals(2)
     const [timeLeft, setTimeLeft] = useState<number[]>([10,10]);
-    const tasksToday = Util.fetchAllMapItems(HC.habits).filter(h => HabitUtil.isCompleteableToday(h, HC.habitsCompletions.get(h.id)))
+    const tasksToday = Util.fetchAllMapItems(HC.habits).filter(h => HabitUtil.isDueToday(h, HC.habitsCompletions.get(h.id)))
     const navigate = useNavigate()
 
     useEffect(() => {

@@ -1,5 +1,5 @@
 
-import { useContext} from "react"
+import { useContext, useMemo} from "react"
 import { UserContext } from "../Providers/UserProvider"
 import { Util } from "@/utils/util"
 import { FaChartLine } from "react-icons/fa"
@@ -21,8 +21,8 @@ ChartJS.register(
 
 export default function MissVsCompChart() {
     const HC = useContext(UserContext)
-    const data = (HabitUtil.GetCompletionDaysThisPeriodAllHabits(Util.fetchAllMapItems(HC.habits), HC.habitsCompletions) ?? []).firstResult.flat()
-                    .sort((a ,b) => a.day.getTime() - b.day.getTime()).filter(d => d.completeAmount != 0 || d.missAmount != 0).slice(-30)
+    const data = useMemo(() => (HabitUtil.GetCompletionDaysThisPeriodAllHabits(Util.fetchAllMapItems(HC.habits), HC.habitsCompletions) ?? []).firstResult.flat()
+                    .sort((a ,b) => a.day.getTime() - b.day.getTime()).filter(d => d.completeAmount != 0 || d.missAmount != 0).slice(-30), [HC.habitsCompletions]) 
 
     const rootStyles = getComputedStyle(document.documentElement)
 

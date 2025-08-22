@@ -18,13 +18,14 @@ import SkipChart from "@/components/StatsComponents/SkipChart"
 import MostCommonDays from "@/components/Charts/MostCommonDays" 
 import HabitDistribution from "@/components/DashboardComponenets/HabitDistribution"
 import MissVsCompChart from "@/components/DashboardComponenets/MissVsCompChart"
+import { IoFlame } from "react-icons/io5"
 
 
 export default function Dashboard() {
     const session = useContext(AuthContext);
     const HC = useContext(UserContext);
     const habitStats = Util.fetchAllMapItems(HC.habitStats);
-    const tasksToday = Util.fetchAllMapItems(HC.habits).filter(h => HabitUtil.isCompleteableToday(h, HC.habitsCompletions.get(h.id)))
+    const tasksToday = Util.fetchAllMapItems(HC.habits).filter(h => HabitUtil.isDueToday(h, HC.habitsCompletions.get(h.id)))
     const [avgHabitComp, setAvgHabitComp] = useState(0);
     const [avgHabitStrength, setAvgHabitStrength] = useState(0);
     const [avgGoalProgress, setAvgGoalProgress] = useState(0);
@@ -38,7 +39,7 @@ export default function Dashboard() {
         setAvgHabitComp(newAvgHabitComp);
         setAvgHabitStrength(newAvgHabitStrength);
         setAvgGoalProgress(newAvgGoalProgress);
-    }, [HC.habitStats, HC.goalProgress, HC.goals]); 
+    }, [HC.habitStats, HC.goalProgress, HC.goals]);  
 
 
     return (
@@ -51,7 +52,7 @@ export default function Dashboard() {
                 </div>
                <div className="w-[90%] max-w-[600px] bg-panel1 rounded-2xl outline-1 mb-10 outline-border mt-2 p-7 flex flex-col gap-5">
                     <div className="flex items-center gap-3">
-                        <div className="bg-panel2 text-subtext2 outline-1 outline-border2 p-1.5 rounded-lg">
+                        <div className="bg-panel2 text-subtext2 outline-1 outline-border2 p-1.5 rounded-2xl">
                             <TbInfoCircle />
                         </div>
                         <p className="text-lg text-title font-semibold leading-none">Overview</p>
@@ -67,11 +68,11 @@ export default function Dashboard() {
                                 <p className="text-sm text-title font-semibold mb-1">Goals</p>
                                 <p className="text-sm text-subtext3 mb-3">Each goal should have at least one habit linked or associated. Progress comes from <strong>linked</strong> habits or manaul input.</p>
                                 <div className="grid grid-cols-2 gap-3">
-                                    <div className="rounded-lg bg-panel2 outline-1 outline-border2 p-3">
+                                    <div className="rounded-2xl bg-panel2 outline-1 outline-border2 p-3">
                                         <p className="text-xs text-title font-semibold mb-1">Link a habit</p>
                                         <p className="text-[11px] text-subtext3">Completions automatically advance the goal.</p>
                                     </div>
-                                    <div className="rounded-lg bg-panel2 outline-1 outline-border2 p-3">
+                                    <div className="rounded-2xl bg-panel2 outline-1 outline-border2 p-3">
                                         <p className="text-xs text-title font-semibold mb-1">Associate a habit</p>
                                         <p className="text-[11px] text-subtext3">Counts toward stats only (consistency, strength).</p>
                                     </div>
@@ -102,15 +103,15 @@ export default function Dashboard() {
                             </p>
                         </div>
                         <div className="flex gap-3 pt-1 items-center">
-                            <button onClick={() => navigate("/create")} className="px-3 py-1.5 hover:cursor-pointer rounded-lg bg-highlight text-black text-sm font-medium">Create a Habit</button>
-                            <button onClick={() => navigate("/creategoal")} className="px-3 py-1.5 hover:cursor-pointer rounded-lg bg-panel2 outline-1 outline-border2 text-subtext2 text-sm">Create a Goal</button>
-                             <button onClick={() => navigate("/help")} className="px-3 py-1.5 hover:cursor-pointer rounded-lg bg-panel2 outline-1 outline-border2 text-subtext2 text-sm">Learn More</button>
+                            <button onClick={() => navigate("/create")} className="px-3 py-1.5 hover:cursor-pointer rounded-2xl bg-highlight text-black text-sm font-medium">Create a Habit</button>
+                            <button onClick={() => navigate("/creategoal")} className="px-3 py-1.5 hover:cursor-pointer rounded-2xl bg-panel2 outline-1 outline-border2 text-subtext2 text-sm">Create a Goal</button>
+                             <button onClick={() => navigate("/help")} className="px-3 py-1.5 hover:cursor-pointer rounded-2xl bg-panel2 outline-1 outline-border2 text-subtext2 text-sm">Learn More</button>
                         </div>
                     </div>
                 </div>
             </div>
         : 
-        <div className="flex flex-col items-center w-full mt-18 gap-5 mb-10">
+        <div className="flex flex-col items-center w-full mt-18 gap-5 mb-10 ">
                     <div className="w-full rounded-2xl flex justify-center items-center p-5 max-sm:p-2">
                         <p className="text-4xl max-sm:text-2xl font-bold text-title text-center">
                             {!session.loading ? `Welcome Back, ${Util.capitilizeFirst(session.localUser?.name)?.split(" ")[0]} 👋` : <AiOutlineLoading className="animate-spin"/>}
@@ -120,13 +121,24 @@ export default function Dashboard() {
                 <div className="rounded-2xl w-[90%] max-w-[600px] flex flex-col gap-5 md:max-w-[400px] h-102">
                     <div className="w-full flex flex-col gap-5 h-full">
                         <div className="rounded-2xl bg-panel1 outline-1 outline-border h-16 flex items-center justify-center">
-                            <div className="flex  gap-3 items-center">
-                                <div className="h-2 w-2 bg-highlight rounded-full ">
-                                <div className="h-2 w-2 bg-highlight rounded-full"></div>
+                            <div className="flex  gap-3 items-center justify-around w-full mx-7">
+                                <div className="flex items-center gap-3">
+                                    <div className="h-2 w-2 mt-[3px] bg-highlight rounded-full"></div>
+                                    <p className="text-title text-lg font-medium">
+                                        {tasksToday.length}
+                                    </p>
+                                    <p className="text-subtext2 text-xs ml-[-4px] ">
+                                        Habit/s Due Today
+                                    </p>
                                 </div>
-                                <p className="text-title font-medium">
-                                    {tasksToday.length} Habit To Do Today
-                                </p>
+                                <div className="flex  items-center gap-3">
+                                    <p className="text-title text-lg font-medium flex items-center gap-1.5">
+                                        {<IoFlame className="text-highlight" size={16}/>} {Math.round(Util.avgNumArr(habitStats.map(s => s.streak)))} 
+                                    </p>
+                                    <p className="text-subtext2 text-xs ml-[-4px]">
+                                        Avg Streak
+                                    </p>
+                                </div>
                             </div>
                         </div>
                         <div className="bg-panel1 p-7 py-6 rounded-2xl  outline-1 outline-border flex flex-col gap-5">
