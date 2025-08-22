@@ -4,12 +4,11 @@ import { supabase } from "../../supabase-client";
 import { AlertContext } from "../Alert/AlertProvider";
 import {type ChartDataType, type GaolCompletionType, type GoalType, type HabitCompletionType, type HabitType, type IssueType, type ReturnObj, type SubmitIssueType } from "../../utils/types";
 import { dateUtils } from "../../utils/dateUtils";
-import { HabitUtil } from "../../utils/HabitUtil";
-import { HabitTypeE } from "../../utils/types";
 import { Util } from "../../utils/util";
 import { GOAL_LIM_FREE, HABIT_LIM_FREE } from "../../utils/Constants";
 import { LockingLoading } from "@/utils/LockingLoad";
 import { type RefObject } from "react";
+import type { habitWorkerPayload, habitWorkerReturnType } from "@/workers/habitWorker";
 
 
 interface UserType{
@@ -148,49 +147,34 @@ export default function UserProvider(props: Props) {
 
         if(habits.size == 0 || habitsCompletions.size == 0) return
         console.time("HabitGoalStats")
+        
         lock()
-        const HabitStatsMap = new Map<number, HabitStats>()
-        habits.forEach(h => {
-            const currentHabitComps = habitsCompletions.get(h.id)
+        const habitWorker = new Worker(new URL('../../workers/habitWorker.ts', import.meta.url), { type: 'module' })
+        
+        habitWorker.onmessage = (event) => {
+            const data = event.data as habitWorkerReturnType
+            setHabitStats(data.habitStats)
+            setGoalStats(data.goalStats)
+            unLock()
+        }
+        
+        habitWorker.onerror = (err) => {
+            console.error("Worker error:", err)
+            unLock() 
+        }
 
-            const {compRate, missedSessions, validCompletions: validComps, completableDays, compsPerWeek} = HabitUtil.getCompletionRate(h, currentHabitComps)
-            const strength = HabitUtil.getStrength(h, currentHabitComps)
-            const streak = HabitUtil.getStreak(h, currentHabitComps)
-            const {validComps: completions, partialComps} = HabitUtil.getCompletions(h, currentHabitComps)
-            const entries = h ? habitsCompletions.get(Number(h.id))?.length : 0
-            const dataSum = HabitUtil.getHabitDataSum(currentHabitComps, h?.type as HabitTypeE)
-            const chartData = HabitUtil.getCompRateStrengthOverTimeChartData(h, currentHabitComps) as ChartDataType[]
+        habitWorker.postMessage({
+            habits,
+            habitsCompletions,
+            goals
+        } as habitWorkerPayload)
 
-
-            const data = {
-                compRate, 
-                missedSessions, 
-                validComps, 
-                completableDays,
-                strength,
-                streak,
-                completions,
-                partialComps,
-                entries,
-                dataSum,
-                chartData,
-                compsPerWeek
-            } as HabitStats
-            HabitStatsMap.set(h.id, data)
-        })
-        setHabitStats(HabitStatsMap)
-        goals.forEach(g => {
-            const ids = g.habits.split(",").map(id => Number(id))
-            const stats: GaolStats[] = []
-            ids.forEach(id => {
-                const result = HabitUtil.getGoalCompAndStrength(habits.get(id), habitsCompletions.get(id), new Date(g.created_at))
-                stats.push({...result, habitID: id} as GaolStats)
-            })
-            goalStats.set(g.id, stats)
-        })
-        setGoalStats(new Map(goalStats))
-        unLock()
         console.timeEnd("HabitGoalStats")
+
+        return () => {
+            habitWorker.terminate()
+            unLock()
+        }
     }, [habitsCompletions, habits, goals])
 
     useEffect(() => {

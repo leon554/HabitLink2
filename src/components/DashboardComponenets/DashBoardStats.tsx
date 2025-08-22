@@ -18,6 +18,8 @@ export default function DashBoardStats() {
     const entries = Util.fetchAllMapItems(HC.habitsCompletions).reduce((s, a) => [...s, ...a], [])
 
     return (
+        HC.isCalculating.current.isLoading() ? 
+        null :
         <div className="m-7 my-5 flex flex-col gap-5 relative h-full">
             <div className="flex items-center gap-4 mb-2 mt-2">
                 <div className="bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">

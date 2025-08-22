@@ -82,7 +82,7 @@ export default function HabitCalander() {
                             )
                         })}  
                     </div>
-                    {compDays.map((d, i) => {
+                    {compDays.reverse().map((d, i) => {
                         if(compDays.length - i <= columns){
                             return(
                                 <div key={i} className="flex flex-col items-center gap-1.5 w-full min-w-4 ">

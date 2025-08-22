@@ -26,7 +26,8 @@ export default function LogChart() {
     const title = rootStyles.getPropertyValue('--color-title').trim()
     const subtext2 = rootStyles.getPropertyValue('--color-subtext2').trim()
     const panel = rootStyles.getPropertyValue('--color-panel1').trim() 
-    const border = rootStyles.getPropertyValue('--color-border').trim()
+    const border = rootStyles.getPropertyValue('--color-chartAxis2').trim()
+    const highlight = rootStyles.getPropertyValue('--color-highlight').trim()
 
     const formatedData = {
         labels: data?.map(d => dateUtils.formatDate(d.date)),
@@ -34,7 +35,7 @@ export default function LogChart() {
             {
                 label: "Data",
                 data: data?.map(d => d.data ?? 0) ?? [],
-                borderColor: "hsl(144, 100%, 39%)",
+                borderColor: highlight,
                 borderWidth: 2, 
                 tension: 0.1,
             },
@@ -83,7 +84,7 @@ export default function LogChart() {
                     display: false, 
                     stepSzie: 20,
                     borderDash: [50, 50],
-                    color: "hsl(0, 0%, 10%)",
+                    color: border,
                     drawBorder: false
                 },
             },
@@ -100,7 +101,7 @@ export default function LogChart() {
                     display: true, 
                     stepSzie: 20,
                     borderDash: [50, 50],
-                    color: "hsl(0, 0%, 10%)",
+                    color: border,
                     drawBorder: false
                 },
             },

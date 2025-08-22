@@ -59,7 +59,7 @@ export default function GoalsPage() {
                             Select Goal
                         </p>
                     </div>
-                    <div className="flex flex-col items-stretch gap-2.5 mb-2 w-[90%] max-w-[600px]">
+                    <div className="flex flex-col hover:cursor-pointer items-stretch gap-2.5 mb-2 w-[90%] max-w-[600px]">
                         {Array.from(HC.goals.values()).map((g, i) => {
                             return(
                                 <div key={i} className="grow-1 bg-panel1 rounded-2xl outline-1 outline-border p-3.5 items-center flex justify-between"

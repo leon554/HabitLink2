@@ -31,8 +31,8 @@
 }
 
 .dark {
-  --color-panel1: hsl(0, 0%, 6%);
-  --color-panel2: hsl(0, 0%, 8%);
+  --color-panel1: hsl(0, 0%, 8%);
+  --color-panel2: hsl(0, 0%, 10%);
   --color-progress-panel: hsl(0, 0%, 13%);
 
   --color-btn-text: oklch(26.9% 0 0);
@@ -43,8 +43,8 @@
   --color-subtext2: hsl(0, 0%, 55%);
   --color-subtext3: hsl(0, 0%, 45%);
 
-  --color-border: color-mix(in oklab, var(--color-neutral-700) 35%, transparent);
-  --color-border2: hsl(0, 0%, 15%);
+  --color-border: color-mix(in oklab, var(--color-neutral-700) 55%, transparent);
+  --color-border2: hsl(0, 0%, 17%);
 
   --color-highlight: hsl(144, 100%, 39%);
   --color-highlight2: hsl(84, 100%, 41%);

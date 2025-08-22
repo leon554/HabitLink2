@@ -15,6 +15,7 @@ export class LockingLoading{
     }
     unLock(){
         this.locks--
+        if(this.locks < 0) this.locks = 0
     }
     isLoading(){
         return this.loading

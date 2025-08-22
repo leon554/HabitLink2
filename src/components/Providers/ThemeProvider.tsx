@@ -41,7 +41,7 @@ export default function ThemeProvider(props: Props) {
         const timeout2 = setTimeout(() => {
             if(dark === null) return
             if (dark) {
-                document.documentElement.style.backgroundColor = "hsl(0, 0%, 4%)"; // Dark background hsl(0, 0%, 4%)
+                document.documentElement.style.backgroundColor = "hsl(0, 0%, 6%)"; // Dark background hsl(0, 0%, 4%)
                 document.documentElement.classList.add("dark")
                 localStorage.setItem("theme", "dark");
             } else {
