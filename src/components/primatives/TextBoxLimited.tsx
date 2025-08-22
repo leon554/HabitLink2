@@ -46,13 +46,13 @@ export default function TextBoxLimited({name, password, value, setValue, charLim
             : ""} 
             {textArea ? 
             <textarea 
-                className="outline-1 outline-border2 rounded-md px-2 py-1.5 text-subtext3 text-xs h-20 resize-none"
+                className="shadow-sm shadow-gray-200 dark:shadow-none outline-1 outline-border2 rounded-md px-2 py-1.5 text-subtext3 text-xs h-20 resize-none"
                 placeholder={placeHolder}
                 value={value}
                 onChange={e => Util.setValueLim(setValue, e.target.value, charLimit)}/>
             :
             <input type={!password || showPass ? "text" : "password"}
-                className="outline-1 outline-border2 rounded-md px-2 text-subtext3 text-xs h-7 "
+                className="shadow-sm shadow-gray-200 dark:shadow-none outline-1 outline-border2 rounded-md px-2 text-subtext3 text-xs h-7 "
                 placeholder={placeHolder}
                 value={value}
                 onChange={e => numeric ? isNaN(Number(e.target.value)) ?

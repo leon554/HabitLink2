@@ -120,7 +120,7 @@ export default function Dashboard() {
             <div className="  flex max-md:flex-col gap-5 justify-center max-md:items-center  md:w-[90%] max-md:w-full">
                 <div className="rounded-2xl w-[90%] max-w-[600px] flex flex-col gap-5 md:max-w-[400px] h-102">
                     <div className="w-full flex flex-col gap-5 h-full">
-                        <div className="rounded-2xl bg-panel1 outline-1 outline-border h-16 flex items-center justify-center">
+                        <div className="shadow-md shadow-gray-200 dark:shadow-none rounded-2xl bg-panel1 outline-1 outline-border h-16 flex items-center justify-center">
                             <div className="flex  gap-3 items-center justify-around w-full mx-7">
                                 <div className="flex items-center gap-3">
                                     <div className="h-2 w-2 mt-[3px] bg-highlight rounded-full"></div>
@@ -141,9 +141,9 @@ export default function Dashboard() {
                                 </div>
                             </div>
                         </div>
-                        <div className="bg-panel1 p-7 py-6 rounded-2xl  outline-1 outline-border flex flex-col gap-5">
+                        <div className="shadow-lg shadow-gray-200 dark:shadow-none bg-panel1 p-7 py-6 rounded-2xl  outline-1 outline-border flex flex-col gap-5">
                             <div className="flex items-center gap-4 mb-2">
-                                <div className="bg-panel2 text-subtext2 outline-1 outline-border2 p-1.5 rounded-lg">
+                                <div className="shadow-sm shadow-gray-200 dark:shadow-none bg-panel2 text-subtext2 outline-1 outline-border2 p-1.5 rounded-lg">
                                     <TbChartHistogram />
                                 </div>
                                 <p className="text-lg text-title font-semibold leading-none pb-1">
@@ -157,19 +157,19 @@ export default function Dashboard() {
                         </div>
                     </div>
                 </div>
-                <div className="h-102 rounded-2xl bg-panel1 w-[90%] max-w-[600px] outline-1 outline-border flex flex-col gap-5 ">
+                <div className=" shadow-md shadow-gray-200 dark:shadow-none h-102 rounded-2xl bg-panel1 w-[90%] max-w-[600px] outline-1 outline-border flex flex-col gap-5 ">
                     <UpcomingGoals/>
                 </div>
             </div>
             <div className={`p-[1px] flex max-md:flex-col gap-5 justify-center max-md:items-center  md:w-[90%] max-md:w-full`}>
-                <div className=" h-114  flex flex-col gap-5 rounded-2xl bg-panel1 w-[90%] max-w-[600px] md:max-w-[400px] outline-1 outline-border grow-1">
+                <div className="shadow-md shadow-gray-200 dark:shadow-none h-114  flex flex-col gap-5 rounded-2xl bg-panel1 w-[90%] max-w-[600px] md:max-w-[400px] outline-1 outline-border grow-1">
                     <BestHabits/>
                 </div>
-                <div className="rounded-2xl  w-[90%] max-w-[600px] flex flex-col gap-5">
-                    <div className=" h-73 rounded-2xl bg-panel1  outline-1 outline-border relative">
+                <div className=" rounded-2xl  w-[90%] max-w-[600px] flex flex-col gap-5">
+                    <div className=" h-73 rounded-2xl shadow-md shadow-gray-200 dark:shadow-none bg-panel1  outline-1 outline-border relative">
                         <HabitCalander/>
                     </div>
-                    <div className=" h-36 rounded-2xl bg-panel1  outline-1 outline-border relative">
+                    <div className="shadow-md shadow-gray-200 dark:shadow-none h-36 rounded-2xl bg-panel1  outline-1 outline-border relative">
                         <Timeline/>
                     </div>
                 </div>
@@ -188,18 +188,18 @@ export default function Dashboard() {
                     </div>
                 </div>
                 <div className="flex flex-col gap-5 flex-1 basis-0 min-w-0 max-w-[600px]  max-md:w-[90%] ">
-                    <div className="h-75 rounded-2xl bg-panel1 outline-1 outline-border relative">
+                    <div className="shadow-md shadow-gray-200 dark:shadow-none h-75 rounded-2xl bg-panel1 outline-1 outline-border relative">
                         <AvgCompRate />
                     </div>
-                    <div className="h-85 rounded-2xl bg-panel1 outline-1 outline-border relative">
+                    <div className="shadow-md shadow-gray-200 dark:shadow-none h-85 rounded-2xl bg-panel1 outline-1 outline-border relative">
                         <CompsPerWeek />
                     </div>
-                    <div className="h-85 rounded-2xl bg-panel1 outline-1 outline-border relative">
+                    <div className="shadow-md shadow-gray-200 dark:shadow-none h-85 rounded-2xl bg-panel1 outline-1 outline-border relative">
                         <MissVsCompChart/>
                     </div>
                 </div>
             </div>
-            <div className=" flex-1 min-w-0 rounded-2xl outline-1 outline-border relative w-[90%] max-w-[1020px] bg-panel1">
+            <div className="shadow-md shadow-gray-200 dark:shadow-none flex-1 min-w-0 rounded-2xl outline-1 outline-border relative w-[90%] max-w-[1020px] bg-panel1">
                 <DashBoardStats />
             </div>
             

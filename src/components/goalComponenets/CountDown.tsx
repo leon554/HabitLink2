@@ -48,7 +48,7 @@ export default function CountDown() {
 
     return (
         <>
-            <div className='bg-panel1  drop-shadow-sm outline-border outline-1 w-[90%] max-w-[600px] p-7 py-6 flex gap-3.5 flex-col  rounded-2xl '>
+            <div className='bg-panel1  shadow-md shadow-gray-200 dark:shadow-none outline-border outline-1 w-[90%] max-w-[600px] p-7 py-6 flex gap-3.5 flex-col  rounded-2xl '>
                 <ProgressPanel 
                     title={timeLeft <= 0 ? "Time Has Ran Out!" : "Time Progress"}
                     icon={timeLeft <= 0 ? <TbClockExclamation /> : <TbClock /> }

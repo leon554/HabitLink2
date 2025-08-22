@@ -56,7 +56,7 @@ export default function Auth() {
 
     return (
         <div className="flex justify-center mt-17">
-            <div className="outline-1 outline-border bg-panel1 w-[90%] max-w-100 flex justify-center rounded-xl p-5 flex-col items-center ">
+            <div className="shadow-md shadow-gray-200 dark:shadow-none outline-1 outline-border bg-panel1 w-[90%] max-w-100 flex justify-center rounded-xl p-5 flex-col items-center ">
                 <p className="text-title  text-2xl m-1 mt-4 font-semibold">
                     {login ? "Log In" : "Sign Up"}
                 </p>

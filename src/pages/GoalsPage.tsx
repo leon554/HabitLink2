@@ -54,7 +54,7 @@ export default function GoalsPage() {
         <div className="w-full flex justify-center mb-10 ">
             {!HC.getCurrentGoal() && Util.fetchAllMapItems(HC.goals).length != 0 ?
                 <div className="w-full flex flex-col items-center gap-2.5">
-                    <div className="w-[90%] max-w-[600px] mt-20 bg-panel1 text-title  rounded-2xl p-4 outline-1 outline-border flex justify-center flex-col items-center">
+                    <div className="shadow-md shadow-gray-200 dark:shadow-none w-[90%] max-w-[600px] mt-20 bg-panel1 text-title  rounded-2xl p-4 outline-1 outline-border flex justify-center flex-col items-center">
                         <p className="text-2xl font-medium">
                             Select Goal
                         </p>
@@ -62,7 +62,7 @@ export default function GoalsPage() {
                     <div className="flex flex-col hover:cursor-pointer items-stretch gap-2.5 mb-2 w-[90%] max-w-[600px]">
                         {Array.from(HC.goals.values()).map((g, i) => {
                             return(
-                                <div key={i} className="grow-1 bg-panel1 rounded-2xl outline-1 outline-border p-3.5 items-center flex justify-between"
+                                <div key={i} className="shadow-md shadow-gray-200 dark:shadow-none grow-1 bg-panel1 rounded-2xl outline-1 outline-border p-3.5 items-center flex justify-between"
                                     onClick={() => {
                                         triggerHaptic()
                                         HC.setCurrentGoal(g.id)
@@ -114,9 +114,9 @@ export default function GoalsPage() {
                     <CountDown/> :
                     <GoalCompletionPanel/>
                 }
-                <div className="w-[90%] max-w-[600px] p-7 py-5 pb-7 bg-panel1 rounded-2xl outline-1 outline-border flex flex-col gap-4">
+                <div className="shadow-md shadow-gray-200 dark:shadow-none w-[90%] max-w-[600px] p-7 py-5 pb-7 bg-panel1 rounded-2xl outline-1 outline-border flex flex-col gap-4">
                     <div className="flex items-center gap-3 mb-2 mt-1">
-                        <div className="bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
+                        <div className="shadow-sm shadow-gray-200 dark:shadow-none bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
                             <TbGauge />
                         </div>
                         <div className="flex flex-col gap-1">

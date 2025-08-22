@@ -140,7 +140,7 @@ export default function CreateGoal() {
 
     return (
         <>
-            <div className="rounded-2xl bg-panel1 outline-1 outline-border flex p-4 text-title    max-md:max-w-[500px] max-w-[900px] w-[90%] flex-col items-center relative">
+            <div className="shadow-md shadow-gray-200 dark:shadow-none rounded-2xl bg-panel1 outline-1 outline-border flex p-4 text-title    max-md:max-w-[500px] max-w-[900px] w-[90%] flex-col items-center relative">
                 <p className="text-2xl mt-4 mb-7 font-semibold md:mb-10">
                     Create Goal 🎯
                 </p>
@@ -327,10 +327,10 @@ export default function CreateGoal() {
                                 setShowInfo(true)
                             }}/>
                         </div>
-                        <div className="flex flex-col p-[1px] gap-2 mb-3 items-stretch w-[90%] max-h-[305px] overflow-y-scroll no-scrollbar rounded-lg">
+                        <div className="flex flex-col p-[2px] gap-2 mb-3 items-stretch w-[91%] max-h-[262px] overflow-y-scroll no-scrollbar rounded-lg">
                             {Array.from(HC.habits.values()).map((h, i) => {
                                 return(
-                                    <div className={`bg-panel1 rounded-md w-full hover:cursor-pointer select-none flex justify-between outline-1 outline-border2 h-10`} key={i} 
+                                    <div className={`shadow-sm shadow-gray-200 dark:shadow-none bg-panel1 rounded-md w-full hover:cursor-pointer select-none flex justify-between outline-1 outline-border2 h-10`} key={i} 
                                         onClick={() => {
                                             triggerHaptic()
                                             if(selectHabits.includes(Number(h.id))){
@@ -365,10 +365,10 @@ export default function CreateGoal() {
                         <p className="text-title font-medium">
                             Possible Habits
                         </p>
-                        <div className="flex flex-wrap gap-2 mt-3 w-full justify-stretch mb-7">
+                        <div className="flex flex-wrap gap-2 mt-3 w-full justify-stretch mb-7 max-h-27.5 overflow-y-scroll no-scrollbar p-1">
                             {habits.map(h => {
                                 return(
-                                    <div className="outline-1 rounded-md outline-border flex-grow-1 p-1.5 flex justify-center px-2 hover:cursor-pointer hover:bg-panel2 transition-colors duration-150 ease-in-out"
+                                    <div className="shadow-sm shadow-gray-200 dark:shadow-none outline-1 rounded-md outline-border flex-grow-1 p-1.5 flex justify-center px-2 hover:cursor-pointer hover:bg-panel2 transition-colors duration-150 ease-in-out"
                                         onClick={() => {
                                             triggerHaptic()
                                             setHabitName(Util.capitilizeFirst(h) ?? "jfhfd")
@@ -384,7 +384,7 @@ export default function CreateGoal() {
                     </div>
                     :""}
                     <div className="flex items-center w-[90%] gap-2">
-                        <button className=" rounded-md outline-1 font-medium outline-border2 flex justify-center items-center text-subtext1 text-sm h-8 hover:cursor-pointer w-full hover:bg-panel2 transition-colors duration-150 ease-in-out" 
+                        <button className="shadow-sm shadow-gray-200 dark:shadow-none rounded-md outline-1 font-medium outline-border2 flex justify-center items-center text-subtext1 text-sm h-8 hover:cursor-pointer w-full hover:bg-panel2 transition-colors duration-150 ease-in-out" 
                             onClick={async () => {
                                 triggerHaptic()
                                 loadingRef.current = 3
@@ -392,7 +392,7 @@ export default function CreateGoal() {
                             }}>
                             {HC.loading && loadingRef.current == 3 ? <AiOutlineLoading className="animate-spin" /> : "Generate Habits"}
                         </button>
-                        <button className="  rounded-md outline-1 outline-border2 text-sm font-medium text-subtext1  h-8 hover:cursor-pointer w-full hover:bg-panel2 transition-colors duration-150 ease-in-out" 
+                        <button className="shadow-sm shadow-gray-200 dark:shadow-none rounded-md outline-1 outline-border2 text-sm font-medium text-subtext1  h-8 hover:cursor-pointer w-full hover:bg-panel2 transition-colors duration-150 ease-in-out" 
                             onClick={() => {
                                 triggerHaptic()
                                 setShowNewHabitModal(true)
@@ -400,7 +400,7 @@ export default function CreateGoal() {
                             New Habit
                         </button>
                     </div>
-                    <button className="bg-btn w-[90%] rounded-md outline-1 text-sm font-medium outline-border1 text-btn-text mb-5 mt-2 h-8 hover:cursor-pointer" 
+                    <button className="shadow-md shadow-gray-200 dark:shadow-none bg-btn w-[90%] rounded-md outline-1 text-sm font-medium outline-border1 text-btn-text mb-5 mt-2 h-8 hover:cursor-pointer" 
                         onClick={() => {
                             triggerHaptic()
                             setShowModal(false)
@@ -416,9 +416,9 @@ export default function CreateGoal() {
                 </div>
             </Model>
             <Model open={showInfo} onClose={() => setShowInfo(false)}>
-                <div className="w-[90%] max-w-[500px] bg-panel1 outline-1 outline-border  rounded-2xl p-7 py-4" 
+                <div className="w-[90%] max-w-[500px] bg-panel1 outline-1 outline-border  rounded-2xl p-7 " 
                  onClick={e => e.stopPropagation()}>
-                    <p className="text-title text-lg font-medium">
+                    <p className="text-title text-xl mb-6 font-medium">
                         Info
                     </p>
                     <div className="mt-4 flex flex-col gap-5">
@@ -436,7 +436,7 @@ export default function CreateGoal() {
                             For example, if your habit is <em>"Go to the gym"</em> and your goal is <em>"Gym 30 times this month"</em> linking the habit will automatically update your goal progress every time you log the habit.  
                             A blue square next to the habit on the previous page indicates it is linked. You can link a habit by double clicking it. Note: a linked habit will automatically also be associated
                         </p>
-                        <div className="flex w-full gap-3">
+                        <div className="flex w-full gap-3 mt-4 mb-2">
                             <ButtonComp
                                 name="Done"
                                 highlight={true}

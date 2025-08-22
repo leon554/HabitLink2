@@ -6,7 +6,7 @@ import type { ReactNode } from "react";
 
 export default function InfoPanel({ children, full }: { children: ReactNode, full?: boolean}) {
   return (
-    <div className={`bg-panel1 flex flex-col  rounded-2xl ${full ? "w-full" : "w-[90%]"} max-w-[600px]  p-5 outline-1 outline-border`}>
+    <div className={`shadow-md shadow-gray-200 dark:shadow-none bg-panel1 flex flex-col  rounded-2xl ${full ? "w-full" : "w-[90%]"} max-w-[600px]  p-5 outline-1 outline-border`}>
       {children}
     </div>
   )

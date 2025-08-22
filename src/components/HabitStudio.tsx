@@ -171,7 +171,7 @@ export default function HabitStudio() {
                         <p className="text-sm font-medium  text-subtext1 mt-2 w-full">Genrated Habits</p>  
                         {habits.map((h, i) => {
                             return(
-                                <div key={i} className="outline-1 bg-panel1 w-full items-center p-3 rounded-md outline-border flex  justify-between gap-1">
+                                <div key={i} className="shadow-sm shadow-gray-200 dark:shadow-none outline-1 bg-panel1 w-full items-center p-3 rounded-md outline-border flex  justify-between gap-1">
                                     <div className="flex flex-col gap-0.5">
                                         <p className="text-title text-sm  font-medium">
                                             {h.emoji} {h.habit}
@@ -191,7 +191,7 @@ export default function HabitStudio() {
                                         </div>
                                     </div>
                                     <div className="flex gap-2 items-center max-sm:flex-col">
-                                        <button className="outline-1 outline-border2 w-12 text-xs font-medium px-2 text-subtext2 rounded-md h-8 max-sm:h-7 flex  items-center justify-center hover:cursor-pointer hover:bg-panel2 transition-colors duration-150 ease-in-out"
+                                        <button className="shadow-sm shadow-gray-200 dark:shadow-none outline-1 outline-border2 w-12 text-xs font-medium px-2 text-subtext2 rounded-md h-8 max-sm:h-7 flex  items-center justify-center hover:cursor-pointer hover:bg-panel2 transition-colors duration-150 ease-in-out"
                                             onClick={async () => {
                                                 triggerHaptic()
                                                 loadingRef.current = i + 2
@@ -199,7 +199,7 @@ export default function HabitStudio() {
                                             }}>
                                             {HC.loading && loadingRef.current == i + 2? <AiOutlineLoading className="animate-spin"/> : "Create"}
                                         </button>
-                                        <button className="outline-1 outline-border2 text-xs font-medium px-2 text-subtext2 rounded-md h-8 max-sm:h-7 w-full flex  items-center justify-center hover:cursor-pointer hover:bg-panel2 transition-colors duration-150 ease-in-out"
+                                        <button className="shadow-sm shadow-gray-200 dark:shadow-none outline-1 outline-border2 text-xs font-medium px-2 text-subtext2 rounded-md h-8 max-sm:h-7 w-full flex  items-center justify-center hover:cursor-pointer hover:bg-panel2 transition-colors duration-150 ease-in-out"
                                             onClick={() => {
                                                 triggerHaptic()
                                                 setTempHabit({...h})
@@ -247,7 +247,7 @@ export default function HabitStudio() {
                             <div className=" flex justify-stretch gap-2">
                                 {Object.entries(weeklyHabitCompsDay).map((e, i) => {
                                     return(
-                                        <button className={`${e[1] ? "bg-highlight outline-1 outline-border dark:outline-0" : "" }  ${e[1] ? "text-stone-900" : "text-subtext1" } ${e[1] ? "outline-0" : "outline-1" } grow-1 pl-2 pr-2 rounded-md outline-border2  hover:cursor-pointer  text-sm`}
+                                        <button className={`shadow-sm shadow-gray-200 dark:shadow-none ${e[1] ? "bg-highlight outline-1 outline-border dark:outline-0" : "" }  ${e[1] ? "text-stone-900" : "text-subtext1" } ${e[1] ? "outline-0" : "outline-1" } grow-1 pl-2 pr-2 rounded-md outline-border2  hover:cursor-pointer  text-sm`}
                                             onClick={() => {
                                                 triggerHaptic()
                                                 setWeeklyHabitCompsDay(prev => ({...prev, [e[0]]: !e[1]})); setWeeklyHabitComps(0)
@@ -284,7 +284,7 @@ export default function HabitStudio() {
                         <div className="flex flex-wrap gap-2 justify-stretch w-full">
                             {habitTypes.map((h, i) => {
                             return(
-                                <button className={`${selectedTypeIndex == i ? "outline-0 bg-btn text-btn-text" : "text-subtext2 outline-1"} rounded-md px-2 text-sm outline-border2 p-1 grow-1 hover:cursor-pointer hover:bg-btn hover:outline-0   hover:text-btn-text`}
+                                <button className={`shadow-sm shadow-gray-200 dark:shadow-none ${selectedTypeIndex == i ? "outline-0 bg-btn text-btn-text" : "text-subtext2 outline-1"} rounded-md px-2 text-sm outline-border2 p-1 grow-1 hover:cursor-pointer hover:bg-btn hover:outline-0   hover:text-btn-text`}
                                     onClick={() => {
                                         triggerHaptic()
                                         setSelectedTypeIndex(i)
@@ -316,7 +316,7 @@ export default function HabitStudio() {
                                     if(value > 24) value = 24
                                     setTempHabit({...tempHabit, target: value*3600 + (tempHabit?.target ?? 0)%3600} as habitAI)
                                 }}
-                                className='outline-1 rounded-md outline-border2 w-full text-sm px-1.5 text-subtext2 appearance-none py-0.5'/>
+                                className='shadow-sm shadow-gray-200 dark:shadow-none outline-1 rounded-md outline-border2 w-full text-sm px-1.5 text-subtext2 appearance-none py-0.5'/>
                                 <p className='mr-2 text-subtext2 font-medium text-sm'>
                                     h
                                 </p>
@@ -327,7 +327,7 @@ export default function HabitStudio() {
                                     if(value > 59) value = 59
                                     setTempHabit({...tempHabit, target: (tempHabit?.target ?? 0) - (tempHabit?.target ?? 0)%3600 + value*60} as habitAI)
                                 }}
-                                className='outline-1 rounded-md outline-border2 w-full text-sm px-1.5 text-subtext2 appearance-none py-0.5'/>
+                                className='shadow-sm shadow-gray-200 dark:shadow-none outline-1 rounded-md outline-border2 w-full text-sm px-1.5 text-subtext2 appearance-none py-0.5'/>
                                 <p className='text-subtext2 text-sm font-medium'>
                                     m
                                 </p>
@@ -341,7 +341,7 @@ export default function HabitStudio() {
                         }
                     </div>
                     }
-                    <button className="bg-btn max-w-[450px] text-sm font-medium text-btn-text rounded-md h-8 mb-3 flex w-[90%] items-center justify-center hover:cursor-pointer"
+                    <button className="shadow-md shadow-gray-200 dark:shadow-none bg-btn max-w-[450px] text-sm font-medium text-btn-text rounded-md h-8 mb-3 flex w-[90%] items-center justify-center hover:cursor-pointer"
                         onClick={() => {
                             triggerHaptic()
                             const completionDaysString = (weeklyHabitComps == 0) ? Util.monBinrayStringToSun(getCompDaysString(weeklyHabitCompsDay)) : `${weeklyHabitComps}`

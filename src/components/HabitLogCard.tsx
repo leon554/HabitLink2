@@ -112,7 +112,7 @@ export default function HabitLogCard({habit: h}: HabitProps) {
     }
 
     return (
-        <div className='bg-panel1 dark:bg-panel1 relative dark:border-border border-border border-1 rounded-2xl w-[100%] max-w-[600px] overflow-auto'>
+        <div className='shadow-sm shadow-gray-200 dark:shadow-none bg-panel1 dark:bg-panel1 relative dark:border-border border-border border-1 rounded-2xl w-[100%] max-w-[600px] overflow-auto'>
             <div className={`flex justify-between items-center`}>
                 <p className={`text-subtext1  p-3 pt-3   ${settings.showDetails ? "pb-2" : ""} hover:cursor-pointer font-medium flex gap-2.5 items-center`}
                     onClick={() => {
@@ -135,21 +135,21 @@ export default function HabitLogCard({habit: h}: HabitProps) {
                         </p>: ""}
                     </div>
                     <div className={`flex gap-3.5  ${settings.showDetails ? "absolute right-0 top-5.5" : ""}`}>
-                        <button className={`h-7 flex justify-center 
+                        <button className={`h-7 flex justify-center shadow-sm shadow-gray-200 dark:shadow-none 
                             items-center rounded-lg p-2 mr-0 w-7 text-subtext1
                             text-2xl hover:cursor-pointer transition-transform hover:scale-[1.04] active:scale-[0.9]
-                            ease-in-out duration-250 ${isCompletedToday() ?  isSkippedToday() ? "outline-1 outline-yellow-500 dark:bg-panel2 bg-yellow-200": "dark:bg-panel2 bg-highlight/40 outline-1 outline-highlight" : HabitUtil.isDueToday(h, UC.habitsCompletions.get(h.id)) && !settings.dontShowRed ? "outline-red-500 outline-1 dark:bg-panel2 bg-red-100" : "dark:bg-panel2 outline-1 outline-border2"}`}
+                            ease-in-out duration-250 ${isCompletedToday() ?  isSkippedToday() ? "outline-1 outline-amber-500 dark:bg-panel2 ": "dark:bg-panel2  outline-1 outline-highlight" : HabitUtil.isDueToday(h, UC.habitsCompletions.get(h.id)) && !settings.dontShowRed ? "outline-red-500 outline-1 dark:bg-panel2 " : "dark:bg-panel2 outline-1 outline-border2"}`}
                             onClick={async (e) => {
                                 triggerHaptic()
                                 e.stopPropagation()
                                 await HandleClick()
                             }}>
                             {loading ? <AiOutlineLoading className={`animate-spin ${getLoadingColor()}`}/> : 
-                                        isSkippedToday() ? <TbPlayerSkipForwardFilled className='text-yellow-500' size={10}/> : 
+                                        isSkippedToday() ? <TbPlayerSkipForwardFilled className='text-amber-500' size={10}/> : 
                                         isCompletedToday() ?  <FaCheck className={`dark:text-highlight text-highlight`}/> 
                                         : <FiClipboard className={`${HabitUtil.isDueToday(h, UC.habitsCompletions.get(h.id)) && !settings.dontShowRed ? "text-red-500" :  "text-subtext2 dark:text-subtext2" }`}/>}
                         </button>
-                        <button className={`h-7 flex justify-center 
+                        <button className={`shadow-sm shadow-gray-200 dark:shadow-none h-7 flex justify-center 
                             items-center rounded-lg  mr-3 w-4 text-subtext3
                             text-2xl hover:cursor-pointer transition-all hover:scale-[1.04] active:scale-[0.9]
                             ease-in-out duration-250 outline-1 outline-border2 bg-panel2`}

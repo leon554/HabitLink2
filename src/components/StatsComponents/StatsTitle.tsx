@@ -11,7 +11,7 @@ export default function StatsTitle() {
     const HC = useContext(UserContext)
 
     return (
-        <div className="rounded-2xl outline-1 outline-border bg-panel1 w-full p-4 flex justify-between items-center  ">
+        <div className="shadow-md shadow-gray-200 dark:shadow-none  rounded-2xl outline-1 outline-border bg-panel1 w-full p-4 flex justify-between items-center  ">
             <p className="text-subtext1  text-lg font-semibold flex items-center gap-1 ">
                 {HC.habitStats.get(HC.currentHabit?.id ?? 0)?.streak ?? 0}{<IoFlame className="text-amber-500 "/>}
             </p>

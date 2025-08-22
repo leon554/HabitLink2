@@ -60,7 +60,7 @@ export default function HabitCalander() {
         <div className="m-7 mt-4 flex flex-col  gap-5">
             <div className="w-full flex justify-between items-center">
                 <div className="flex items-center gap-4 mb-2 mt-2">
-                    <div className="bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
+                    <div className="shadow-sm shadow-gray-200 dark:shadow-none bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
                         <TbCalendarMonthFilled />
                     </div>
                     <p className="text-lg text-title font-semibold leading-none pb-1">
@@ -82,11 +82,11 @@ export default function HabitCalander() {
                             )
                         })}  
                     </div>
-                    {compDays.reverse().map((d, i) => {
+                    {compDays.map((d, i) => {
                         if(compDays.length - i <= columns){
                             return(
-                                <div key={i} className="flex flex-col items-center gap-1.5 w-full min-w-4 ">
-                                    {d.reverse().map(v => {
+                                <div key={i} className="flex flex-col-reverse items-center gap-1.5 w-full min-w-4 ">
+                                    {d.map(v => {
                                         return(
                                             <ToolTip tooltip={
                                                 <div className="rounded-2xl bg-panel2 outline-1 outline-border2 p-3 max-w-[600px] w-30">
@@ -95,7 +95,7 @@ export default function HabitCalander() {
                                                     </div>
                                                 </div>
                                             }>
-                                                <p className={`w-full h-4 border-border2/70 
+                                                <p className={`w-full h-4 border-border2/70  shadow-sm shadow-gray-200 dark:shadow-none
                                                     ${v.completeAmount != 0 || v.missAmount != 0? "dark:border-0 border-1" : "dark:border-0 border-1"}  
                                                     ${v.creation ? "" : "rounded-sm "}
                                                     hover:scale-[1.2] transition-all hover:cursor-default ${HC.isCalculating.current.isLoading() ? "animate-pulse duration-1000 " : "duration-200"}`}

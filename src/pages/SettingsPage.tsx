@@ -62,7 +62,7 @@ export default function SettingsPage() {
     }
     return (
         <div className="flex flex-col justify-center mt-20 gap-3 items-center">
-            <div className="bg-panel1 flex flex-col items-center rounded-2xl w-[90%] max-w-[600px]  p-5 outline-1 outline-border texture">
+            <div className="shadow-md shadow-gray-200 dark:shadow-none bg-panel1 flex flex-col items-center rounded-2xl w-[90%] max-w-[600px]  p-5 outline-1 outline-border ">
                 <p className="text-title text-xl font-semibold">
                     Settings 
                 </p>
@@ -88,7 +88,7 @@ export default function SettingsPage() {
             <Premium/>
             <InfoPanel>
                 <InfoPanel.Title title="Report Bug/Request Feature"/>
-                <button className="outline-1 rounded-xl py-1.5 text-sm outline-border2 text-subtext2 mt-4 hover:cursor-pointer hover:bg-panel2/70 transition-all duration-150 ease-in-out"
+                <button className="shadow-sm hover:bg-neutral-100 shadow-gray-200 dark:shadow-none outline-1 rounded-xl py-1.5 text-sm outline-border2 text-subtext2 mt-4 hover:cursor-pointer dark:hover:bg-panel2/70 transition-all duration-250 ease-in-out"
                     onClick={() => {
                         triggerHaptic()
                         setOpenBug(true)
@@ -97,7 +97,7 @@ export default function SettingsPage() {
                 </button>
             </InfoPanel>
             {bugs.length == 0 ? "" :
-                <div className="outline-1 rounded-2xl outline-border bg-panel1 w-[90%] max-w-[600px] p-7 py-6 flex flex-col gap-5">
+                <div className="shadow-md shadow-gray-200 dark:shadow-none outline-1 rounded-2xl outline-border bg-panel1 w-[90%] max-w-[600px] p-7 py-6 flex flex-col gap-5">
                     <p className="text-lg text-title font-medium mb-1">
                         Reports/Requests
                     </p>
@@ -171,7 +171,7 @@ export default function SettingsPage() {
                         </p>
                         <div className="w-fit">
                             <Select items={pageItems} defaultText="Select" selectedItem={selectedPage} setSelectedItem={(id) => setSelectedPage(pageItems.find(p => p.id == id) ?? null)} origin={Origin.top} center={true} 
-                            style="outline-1 outline-border2 px-4 rounded-xl text-xs py-0.5 pb-1 text-subtext2 flex items-center" blur={blur1} setBlur={setBlur1} onBtnClick={() => setBlur2(true)}/>
+                            style="shadow-sm shadow-gray-200 dark:shadow-none outline-1 outline-border2 px-4 rounded-xl text-xs py-0.5 pb-1 text-subtext2 flex items-center" blur={blur1} setBlur={setBlur1} onBtnClick={() => setBlur2(true)}/>
                         </div>
                     </div>
                      <div className="flex gap-3 items-center">
@@ -180,7 +180,7 @@ export default function SettingsPage() {
                         </p>
                         <div className="w-fit">
                             <Select items={typeItems} defaultText="Select" selectedItem={selectedType} setSelectedItem={(id) => setSelectedType(typeItems.find(p => p.id == id) ?? null)} origin={Origin.top} center={true} 
-                            style="outline-1 outline-border2 px-4 rounded-xl text-xs py-0.5 pb-1 text-subtext2 flex items-center" blur={blur2} setBlur={setBlur2} onBtnClick={() => setBlur1(true)}/>
+                            style="shadow-sm shadow-gray-200 dark:shadow-none outline-1 outline-border2 px-4 rounded-xl text-xs py-0.5 pb-1 text-subtext2 flex items-center" blur={blur2} setBlur={setBlur2} onBtnClick={() => setBlur1(true)}/>
                         </div>
                     </div>
                     <div className="flex flex-col gap-2">
@@ -191,7 +191,7 @@ export default function SettingsPage() {
                         placeholder="Enter bug description"
                         value={description}
                         onChange={e => setDescription(e.target.value)}
-                        className={`outline-1 text-[12px] h-20 rounded-xl resize-none w-full border-0  outline-border2 text-sm p-1.5 text-subtext1 px-2`} />
+                        className={`shadow-sm shadow-gray-200 dark:shadow-none outline-1 text-[12px] h-20 rounded-xl resize-none w-full border-0  outline-border2 text-sm p-1.5 text-subtext1 px-2`} />
                     </div>
                     <div className="flex w-full gap-3">
                         <button className="bg-btn text-btn-text rounded-xl h-7 flex  justify-center items-center text-sm  py-1 w-full hover:cursor-pointer"

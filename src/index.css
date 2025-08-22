@@ -8,15 +8,15 @@
 @theme {
   --color-panel1: hsl(0, 0%, 100%); 
   --color-panel2: hsl(210, 100%, 100%); 
-  --color-progress-panel: hsl(0, 0%, 80%); 
+  --color-progress-panel: hsl(0, 0%, 95%); 
   --color-btn-text: hsl(0, 0%, 100%);   
   --color-btn:  hsl(217, 91%, 60%);  
   --color-title: oklch(21% 0.034 264.665);      
   --color-subtext1: hsl(0, 0%, 13%);   
   --color-subtext2:hsl(0, 0%, 13%);    
   --color-subtext3:hsl(0, 0%, 13%);   
-  --color-border: hsl(0, 0%, 0%);   
-  --color-border2: hsl(0, 0%, 0%);   
+  --color-border: hsl(0, 0%, 85%);   
+  --color-border2: hsl(0, 0%, 85%);   
   --color-highlight: hsl(217, 91%, 60%);   
   --color-highlight2: hsl(144, 100%, 39%); 
   --color-chartAxis: hsl(0, 0%, 0%);  

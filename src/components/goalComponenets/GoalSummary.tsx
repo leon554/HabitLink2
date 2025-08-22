@@ -42,10 +42,10 @@ export default function GoalSummary() {
     }, [HC.getCurrentGoal()]);
 
     return (
-        <div className="w-[90%] max-w-[600px] relative bg-panel1 rounded-2xl font outline-1 outline-border text-title justify-center p-7 py-5 pb-7 flex flex-col items-center gap-4">
+        <div className="shadow-md shadow-gray-200 dark:shadow-none w-[90%] max-w-[600px] relative bg-panel1 rounded-2xl font outline-1 outline-border text-title justify-center p-7 py-5 pb-7 flex flex-col items-center gap-4">
             <div className="w-full">
                 <div className="flex items-center gap-3 mb-1 mt-1">
-                    <div className="bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
+                    <div className="shadow-sm shadow-gray-200 dark:shadow-none bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
                         <TbChartCandle />
                     </div>
                     <div className="flex flex-col gap-1">

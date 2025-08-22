@@ -45,7 +45,7 @@ export default function GoalEdit() {
     return (
         <>
             <div>
-                <button className={` bg-panel1 p-2 px-9 rounded-xl text-subtext3 outline-1  outline-border hover:cursor-pointer hover:bg-panel2  hover:scale-[1.02] transition-all duration-150 ease-in-out ${width <= 500 ? "w-full" : ""}`}
+                <button className={`shadow-md shadow-gray-200 dark:shadow-none bg-panel1 p-2 px-9 rounded-xl text-subtext3 outline-1  outline-border hover:cursor-pointer hover:bg-panel2  hover:scale-[1.02] transition-all duration-150 ease-in-out ${width <= 500 ? "w-full" : ""}`}
                     onClick={() => {
                         triggerHaptic()
                         setOpen(true)
@@ -74,7 +74,7 @@ export default function GoalEdit() {
                         <div className="flex flex-col gap-2 max-h-50 overflow-y-scroll no-scrollbar">
                             {habits.map((h, i) => {
                                 return(
-                                    <div className="border-1 rounded-md border-border2 p-1 flex items-center justify-between">
+                                    <div className="shadow-sm shadow-gray-200 dark:shadow-none border-1 rounded-md border-border2 p-1 flex items-center justify-between">
                                         <p className="text-sm text-subtext3">
                                             {h.icon} {h.name}
                                         </p>

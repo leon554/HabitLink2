@@ -31,7 +31,7 @@ export default function StatsPage() {
         <div className="flex justify-center">
             {!HC.currentHabit && Util.fetchAllMapItems(HC.habits).length != 0 ?
                 <div className="flex flex-col w-full items-center gap-2.5 mb-15">
-                    <div className="flex mt-20 items-center  flex-col gap-5 rounded-2xl bg-panel1 outline-1 outline-border w-[90%] max-w-[600px] p-4">
+                    <div className="shadow-sm shadow-gray-200 dark:shadow-none  flex mt-20 items-center  flex-col gap-5 rounded-2xl bg-panel1 outline-1 outline-border w-[90%] max-w-[600px] p-4">
                         <p className="text-2xl text-center font-semibold text-title w-[90%]">
                             Select a habit!
                         </p>
@@ -39,7 +39,7 @@ export default function StatsPage() {
                     <div className="flex flex-col gap-2.5 items-stretch w-[90%] max-w-[600px] ">
                         {Array.from(HC.habits.values()).map((h, i) => {
                             return(
-                                <div key={i} className="flex items-center justify-between gap-3 text-subtext1 p-3 hover:text-stone-300 bg-panel1 border-1 border-border rounded-2xl grow-1 hover:cursor-pointer"
+                                <div key={i} className="shadow-sm shadow-gray-200 dark:shadow-none  flex items-center justify-between gap-3 text-subtext1 p-3 hover:text-stone-300 bg-panel1 border-1 border-border rounded-2xl grow-1 hover:cursor-pointer"
                                     onClick={() => {
                                         triggerHaptic()
                                         HC.setCurrentHabit(h)

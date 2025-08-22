@@ -26,7 +26,7 @@ export default function NumericInput(p: NumericProps) {
         }
     }
     return (
-        <div className="outline-1 rounded-md outline-border2 flex justify-between p-0 w-fit">
+        <div className="shadow-sm shadow-gray-200 dark:shadow-none outline-1 rounded-md outline-border2 flex justify-between p-0 w-fit">
             <button 
                 onClick={decrement}
                 className="pl-3 pr-3 text-subtext1 hover:bg-highlight font-mono rounded-md hover:text-stone-900  hover:cursor-pointer">

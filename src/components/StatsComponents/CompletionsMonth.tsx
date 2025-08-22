@@ -39,10 +39,10 @@ export default function CompletionsMonth() {
     }, []);
 
     return (
-        <div className="w-full bg-panel1  rounded-2xl outline-1 outline-border relative text-title justify-center p-7 pt-5 pb-7 flex flex-col items-center gap-4 ">
+        <div className="shadow-md shadow-gray-200 dark:shadow-none w-full bg-panel1  rounded-2xl outline-1 outline-border relative text-title justify-center p-7 pt-5 pb-7 flex flex-col items-center gap-4 ">
             <div className="w-full flex items-center mb-2 justify-between">
                  <div className="flex items-center gap-4">
-                    <div className="bg-panel2 text-subtext2 outline-1 outline-border2 p-1.5 rounded-lg">
+                    <div className="shadow-sm shadow-gray-200 dark:shadow-none bg-panel2 text-subtext2 outline-1 outline-border2 p-1.5 rounded-lg">
                         <TbCalendarClock />
                     </div>
                     <p className="text-title font-semibold leading-none pb-1">
@@ -77,7 +77,7 @@ export default function CompletionsMonth() {
                                                     </p>
                                                 </div>
                                             }>
-                                                <p className={`w-full h-4  outline-1 dark:outline-0 ${dateUtils.isDatesSameDay(v.day , new Date()) ? 
+                                                <p className={`shadow-sm shadow-gray-200 dark:shadow-none w-full h-4  outline-1 outline-border2 dark:outline-0 ${dateUtils.isDatesSameDay(v.day , new Date()) ? 
                                                     v.skip ? "bg-yellow-500 rounded-xl" :
                                                     v.done ? "bg-highlight rounded-xl" : "border-1 border-highlight rounded-sm" :
                                                     v.skip ? "bg-yellow-500 rounded-sm":

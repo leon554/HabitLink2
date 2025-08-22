@@ -142,7 +142,7 @@ export default function CompsPerWeek(p: Props) {
         <div className="m-7 my-4 flex flex-col gap-7 overflow-clip">
             <div className="w-full flex justify-between  items-center">
                 <div className="flex items-center gap-3 mb-2 mt-2">
-                    <div className="bg-panel2 border-1 border-border2 text-subtext2 p-1.5 rounded-lg">
+                    <div className="shadow-sm shadow-gray-200 dark:shadow-none bg-panel2 border-1 border-border2 text-subtext2 p-1.5 rounded-lg">
                         <TbChartBarPopular />
                     </div>
                     <div className="flex flex-col gap-1">
@@ -155,7 +155,7 @@ export default function CompsPerWeek(p: Props) {
                     <Select items={items}
                         selectedItem={items[filter]} 
                         setSelectedItem={(id) => setFilter(id)}
-                        style="text-xs bg-panel2 text-subtext3 px-2 py-0.5 rounded-lg border-1 border-border2 z-10"/>
+                        style="shadow-sm shadow-gray-200 dark:shadow-none text-xs bg-panel2 text-subtext3 px-2 py-0.5 rounded-lg border-1 border-border2 z-10"/>
                     <IoInformationCircleOutline size={14} color="#57534E" className="hover:cursor-pointer" onClick={() => {
                         setOpen(true)
                     }}/>

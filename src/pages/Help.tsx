@@ -3,7 +3,7 @@
 export default function Help() {
     return (
         <div className="mt-18 text-title flex flex-col items-center gap-5 mb-10">
-            <div className="bg-panel1 w-[90%] max-w-[500px] rounded-xl p-7 py-5 outline-1 outline-border flex flex-col gap-4">
+            <div className="shadow-md shadow-gray-200 dark:shadow-none bg-panel1 w-[90%] max-w-[500px] rounded-xl p-7 py-5 outline-1 outline-border flex flex-col gap-4">
                 <p className="text-lg font-medium text-title">
                     Creating Your First Goal 🎯
                 </p>
@@ -27,7 +27,7 @@ export default function Help() {
                     </ol>
                 </div>
             </div>
-            <div className="bg-panel1 w-[90%] max-w-[500px] rounded-xl p-7 py-5 outline-1 outline-border flex flex-col gap-4">
+            <div className="shadow-md shadow-gray-200 dark:shadow-none bg-panel1 w-[90%] max-w-[500px] rounded-xl p-7 py-5 outline-1 outline-border flex flex-col gap-4">
                 <p className="text-lg font-medium text-title">
                     How To Generate Recommended Habits For A Goal 🤖
                 </p>
@@ -38,7 +38,7 @@ export default function Help() {
             
              
             </div>
-            <div className="bg-panel1 w-[90%] max-w-[500px] rounded-xl p-7 py-5 outline-1 outline-border flex flex-col gap-4">
+            <div className="shadow-md shadow-gray-200 dark:shadow-none bg-panel1 w-[90%] max-w-[500px] rounded-xl p-7 py-5 outline-1 outline-border flex flex-col gap-4">
                 <p className="text-lg font-medium text-title">
                     What Exactly Is Consistency 📈
                 </p>
@@ -52,7 +52,7 @@ export default function Help() {
                 </p>
              
             </div>
-            <div className="bg-panel1 w-[90%] max-w-[500px] rounded-xl p-7 py-5 outline-1 outline-border flex flex-col gap-4">
+            <div className="shadow-md shadow-gray-200 dark:shadow-none bg-panel1 w-[90%] max-w-[500px] rounded-xl p-7 py-5 outline-1 outline-border flex flex-col gap-4">
                 <p className="text-lg font-medium text-title">
                     What Exactly Is Strength 💪
                 </p>

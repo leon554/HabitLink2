@@ -63,7 +63,7 @@ export default function HabitLogPopUp(p: Props) {
                             setHour(inputValue)
                             p.setValue(inputValue*60*60 + min * 60)
                         }}
-                        className='outline-1 rounded-md outline-border2 w-full text-sm px-1.5 text-subtext2 appearance-none py-0.5'/>
+                        className='shadow-sm shadow-gray-200 dark:shadow-none outline-1 rounded-md outline-border2 w-full text-sm px-1.5 text-subtext2 appearance-none py-0.5'/>
                         <p className='mr-2 text-subtext2 font-medium text-sm'>
                             h
                         </p>
@@ -76,7 +76,7 @@ export default function HabitLogPopUp(p: Props) {
                             setMin(inputValue)
                             p.setValue(inputValue*60 + hour * 3600)
                         }}
-                        className='outline-1 rounded-md outline-border2 w-full text-sm px-1.5 text-subtext2 appearance-none py-0.5'/>
+                        className='shadow-sm shadow-gray-200 dark:shadow-none outline-1 rounded-md outline-border2 w-full text-sm px-1.5 text-subtext2 appearance-none py-0.5'/>
                         <p className='text-subtext2 text-sm font-medium'>
                             m
                         </p>
@@ -88,7 +88,7 @@ export default function HabitLogPopUp(p: Props) {
                         if(inputValue > 2000) return p.setValue(2000)
                         p.setValue(inputValue)
                     }}
-                    className='outline-1 rounded-md outline-border2 w-full text-sm px-1.5 text-subtext2 appearance-none'/>
+                    className='shadow-sm shadow-gray-200 dark:shadow-none outline-1 rounded-md outline-border2 w-full text-sm px-1.5 text-subtext2 appearance-none'/>
                     }
                 </div>
                 <div className="flex justify-stretch  w-full gap-3">

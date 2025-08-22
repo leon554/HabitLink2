@@ -23,7 +23,7 @@ export default function ProgressPanel(p: Props) {
         <div className="w-full max-w-[700px] text-title  flex flex-col ">
             <div className="flex items-center gap-3 ">
                 {p.icon ? 
-                <p className="rounded-lg bg-panel2 border-1 border-border2 p-1.5 text-subtext2">
+                <p className="shadow-sm shadow-gray-200 dark:shadow-none rounded-lg bg-panel2 border-1 border-border2 p-1.5 text-subtext2">
                     {p.icon}
                 </p>
                 

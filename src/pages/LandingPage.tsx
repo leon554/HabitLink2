@@ -61,21 +61,21 @@ export default function LandingPage() {
                       
                         <div className="mt-3">
                           <p className="text-subtext1 text-sm mb-1.5">Consistency</p>
-                          <ProgressBar min={0} max={30} current={18} height={8} />
+                          <ProgressBar min={0} max={30} current={18} height={9} />
                         </div>
                         <div className="mt-2">
                           <p className="text-subtext1 text-sm mb-1.5">Strength</p>
-                          <ProgressBar min={0} max={4} current={3} height={8} />
+                          <ProgressBar min={0} max={4} current={3} height={9} />
                         </div>
                         <div className="mt-2">
                           <p className="text-subtext1 text-sm mb-1.5">Goal Progress</p>
-                          <ProgressBar min={0} max={100} current={33} height={8} />
+                          <ProgressBar min={0} max={100} current={33} height={9} />
                         </div>
                       </div>
                     </InfoPanel>
                   </div>
 
-                  <div className="w-full max-w-[600px] mx-auto md:mx-0 bg-panel1 rounded-2xl p-4 outline-1 outline-border">
+                  <div className="shadow-md shadow-gray-200 dark:shadow-none w-full max-w-[600px] mx-auto md:mx-0 bg-panel1 rounded-2xl p-4 outline-1 outline-border">
                     <div className="grid grid-cols-3 gap-6">
                       <InfoBox value={"74%"} text="Miss Rate" toolTipText="Your rolling consistency" />
                       <InfoBox value={"68%"} text="Strength" toolTipText="Your rolling strength" />
@@ -133,7 +133,7 @@ export default function LandingPage() {
           >
           <section className="relative">
             <div className="mx-auto w-[90%] md:w-auto md:max-w-7xl md:px-6 lg:px-8 py-10 md:py-16">
-              <div className="rounded-2xl border bg-panel1 border-border p-6 md:p-10">
+              <div className="shadow-md shadow-gray-200 dark:shadow-none rounded-2xl border bg-panel1 border-border p-6 md:p-10">
                 <div className="grid md:grid-cols-3 ">
                   <HowItWorksStep
                     step="1"
@@ -154,7 +154,7 @@ export default function LandingPage() {
                 </div>
                 <div className=" max-md:mt-5 flex justify-center md:justify-start">
                   <Link to="/auth">
-                    <button className=" m-3 inline-flex items-center justify-center rounded-lg bg-blue-500 dark:bg-highlight text-white dark:text-btn-text px-5 py-3 font-medium shadow-sm hover:opacity-90 transition">
+                    <button className=" shadow-gray-200 dark:shadow-none m-3 inline-flex items-center justify-center rounded-lg bg-blue-500 dark:bg-highlight text-white dark:text-btn-text px-5 py-3 font-medium shadow-sm hover:opacity-90 transition">
                       Start tracking now
                     </button>
                   </Link>
@@ -173,7 +173,7 @@ export default function LandingPage() {
           {/* CTA banner */}
           <section className="relative">
             <div className="mx-auto w-[90%] md:w-auto md:max-w-7xl md:px-6 lg:px-8 pb-14 md:pb-20 mt-8 md:mt-16">
-              <div className="rounded-2xl border border-border bg-panel1 p-6 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6">
+              <div className="shadow-md shadow-gray-200 dark:shadow-none rounded-2xl border border-border bg-panel1 p-6 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6">
                 <div className="text-center md:text-left">
                   <h2 className="text-xl md:text-2xl font-semibold text-title">
                     Ready to build habits that actually stick?
@@ -230,7 +230,7 @@ function FeatureCard({
   text: string
 }) {
   return (
-    <div className="rounded-xl border border-border bg-panel1 p-5 hover:-translate-y-0.5 transition-transform">
+    <div className="shadow-md shadow-gray-200 dark:shadow-none rounded-xl border border-border bg-panel1 p-5 hover:-translate-y-0.5 transition-transform">
       <div className="flex items-start gap-3">
         <div className="mt-1">{icon}</div>
         <div>

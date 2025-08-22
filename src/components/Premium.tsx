@@ -36,7 +36,7 @@ export default function Premium() {
 
 
     return (
-        <div className="bg-panel1 rounded-2xl outline-1 outline-border w-[90%] max-w-[600px] px-7 py-4">
+        <div className="shadow-md shadow-gray-200 dark:shadow-none bg-panel1 rounded-2xl outline-1 outline-border w-[90%] max-w-[600px] px-7 py-4">
             <p className="text-lg font-medium text-title">
                 Premium
             </p>
@@ -48,7 +48,7 @@ export default function Premium() {
                <div className="flex w-full justify-between gap-5 mt-5 mb-5">
                     {products.map((p, i) => (
                         <div
-                        className="outline-1 outline-border2 rounded-2xl flex-1 p-5 pt-4 flex flex-col gap-4"
+                        className="shadow-sm shadow-gray-200 dark:shadow-none outline-1 outline-border2 rounded-2xl flex-1 p-5 pt-4 flex flex-col gap-4"
                         key={i}
                         >
                         <p className="text-title font-medium">{p.product.attributes.name}</p>

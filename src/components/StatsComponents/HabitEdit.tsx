@@ -96,7 +96,7 @@ export default function HabitEdit() {
 
     return (
         <>
-            <button className="bg-panel1 p-2 px-9 rounded-xl text-subtext3 outline-1  outline-border hover:cursor-pointer hover:bg-panel2  hover:scale-[1.02] transition-all duration-150 ease-in-out"
+            <button className="shadow-md shadow-gray-200 dark:shadow-none bg-panel1 p-2 px-9 rounded-xl text-subtext3 outline-1  outline-border hover:cursor-pointer hover:bg-panel2  hover:scale-[1.02] transition-all duration-150 ease-in-out"
                 onClick={() => {
                     triggerHaptic()
                     setOpen(true)
@@ -125,7 +125,7 @@ export default function HabitEdit() {
                             <div className="flex flex-col max-h-[200px] overflow-y-scroll w-full no-scrollbar gap-1.5 rounded-md">
                                 {Array.from(HC.habitsCompletions.get(HC.currentHabit!.id) ?? []).map((c,i) => {
                                     return(
-                                        <div className=" rounded-md border-border2 border-1 p-1 px-2 flex justify-between items-center h-7" key={i}>
+                                        <div className="shadow-sm shadow-gray-200 dark:shadow-none rounded-md border-border2 border-1 p-1 px-2 flex justify-between items-center h-7" key={i}>
                                             <p className="text-xs" >
                                                 {dateUtils.formatDate(new Date(Number(c.date)))} | Data: {Util.pretifyData(c.data, HC.currentHabit!.type as HabitTypeE)}
                                             </p>
@@ -146,7 +146,7 @@ export default function HabitEdit() {
                             name="New Entry"
                             small={true}
                             highlight={false}
-                            style="w-full mt-2 mb-[-10px]"
+                            style="w-full mt-2 mb-[-10px] "
                             noAnimation={true}
                             onSubmit={() => {
                                 setEntryData(0)

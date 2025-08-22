@@ -124,7 +124,7 @@ export default function AvgCompRate() {
     return (
         <div className="m-7 my-4 flex flex-col gap-7 overflow-clip">
              <div className="flex items-center gap-4 mb-2 mt-2">
-                <div className="bg-panel2 border-1 border-border2 text-subtext2 p-1.5 rounded-lg">
+                <div className="shadow-sm shadow-gray-200 dark:shadow-none bg-panel2 border-1 border-border2 text-subtext2 p-1.5 rounded-lg">
                     <TbChartLine />
                 </div>
                 <div className="flex flex-col gap-1">

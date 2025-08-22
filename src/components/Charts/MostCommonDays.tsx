@@ -119,10 +119,10 @@ export default function MostCommonDays(p: Props) {
         },
     }
     return (
-        <div className="flex flex-col gap-4 pb-8 bg-panel1 p-7 py-4 rounded-2xl outline-1 outline-border flex-1 h-75">
+        <div className="shadow-md shadow-gray-200 dark:shadow-none flex flex-col gap-4 pb-8 bg-panel1 p-7 py-4 rounded-2xl outline-1 outline-border flex-1 h-75">
             <div className="w-full flex justify-between items-center">
                 <div className="flex items-center gap-3 mb-2 mt-2">
-                    <div className="bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
+                    <div className="shadow-sm shadow-gray-200 dark:shadow-none bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
                         <TbChartBubble />
                     </div>
                     <div className="flex flex-col gap-1">

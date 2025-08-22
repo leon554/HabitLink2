@@ -13,10 +13,10 @@ export default function Summary() {
     const p = habitStats.get(currentHabit!.id)!
 
     return (
-        <div className="w-full relative bg-panel1 rounded-2xl font outline-1 outline-border text-title justify-center p-7 pt-5 pb-7 flex flex-col items-center gap-4">
+        <div className="shadow-md shadow-gray-200 dark:shadow-none w-full relative bg-panel1 rounded-2xl font outline-1 outline-border text-title justify-center p-7 pt-5 pb-7 flex flex-col items-center gap-4">
             <div className="w-full flex justify-between items-center">
                 <div className="flex items-center gap-4 mb-2">
-                    <div className="bg-panel2 text-subtext2 outline-1 outline-border2 p-1.5 rounded-lg">
+                    <div className="shadow-sm shadow-gray-200 dark:shadow-none bg-panel2 text-subtext2 outline-1 outline-border2 p-1.5 rounded-lg">
                         <TbChartCandle/>
                     </div>
                     <p className="text-title font-semibold leading-none pb-1">

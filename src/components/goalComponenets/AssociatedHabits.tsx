@@ -14,9 +14,9 @@ export default function AssociatedHabits() {
     const habits = Util.fetchMapItems<HabitType>(HC.getCurrentGoal()?.habits.split(",").map(i => Number(i)) ?? [], HC.habits)
 
     return (
-        <div className="bg-panel1 text-title drop-shadow-md outline-border outline-1 w-[90%] max-w-[600px] p-7 py-5 rounded-2xl gap-3 flex flex-col ">
+        <div className="shadow-md shadow-gray-200 dark:shadow-none bg-panel1 text-title drop-shadow-md outline-border outline-1 w-[90%] max-w-[600px] p-7 py-5 rounded-2xl gap-3 flex flex-col ">
            <div className="flex items-center gap-3 mb-1 mt-1">
-                <div className="bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
+                <div className="shadow-sm shadow-gray-200 dark:shadow-none bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
                     <TbLink />
                 </div>
                 <div className="flex flex-col gap-1">
@@ -29,7 +29,7 @@ export default function AssociatedHabits() {
                 {[...habits].map((h, i) => {
                     if(h){
                         return(
-                            <div key={i} className={`flex items-center bg-panel2 p-2 rounded-xl border-1 border-border2 justify-between hover:cursor-pointer hover:scale-99 transition-all duration-100 ease-in-out`} 
+                            <div key={i} className={`shadow-sm shadow-gray-200 dark:shadow-none flex items-center bg-panel2 p-2 rounded-xl border-1 border-border2 justify-between hover:cursor-pointer hover:scale-99 transition-all duration-100 ease-in-out`} 
                                 onClick={() => {
                                     HC.setCurrentHabit(h)
                                     navigate("/stats")

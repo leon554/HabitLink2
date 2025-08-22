@@ -14,10 +14,10 @@ export default function CompletionThisWeek() {
     const compDays = HabitUtil.getCompletionDaysThisWeek(HC.currentHabit, currentHabitCompletions)
 
     return (
-        <div className="w-full bg-panel1 rounded-2xl outline-1 outline-border  text-title justify-center p-7 pt-5 pb-7 flex flex-col items-center gap-4 ">
+        <div className="shadow-md shadow-gray-200 dark:shadow-none w-full bg-panel1 rounded-2xl outline-1 outline-border  text-title justify-center p-7 pt-5 pb-7 flex flex-col items-center gap-4 ">
             <div className={`w-full flex ${width < 450 ? "flex-col" : "justify-between items-center"}`}>
                 <div className={`flex items-center gap-4 mb-2`}>
-                    <div className="bg-panel2 text-subtext2 outline-1 outline-border2 p-1.5 rounded-lg">
+                    <div className="shadow-sm shadow-gray-200 dark:shadow-none bg-panel2 text-subtext2 outline-1 outline-border2 p-1.5 rounded-lg">
                         <TbCalendarCheck />
                     </div>
                     <p className="text-title font-semibold leading-none pb-1">
@@ -32,7 +32,7 @@ export default function CompletionThisWeek() {
                 {compDays.map((d, i) => {
                     return(
                         <div key={i} className="hover:scale-[1.05] transition-transform duration-200 hover:cursor-default flex-grow flex justify-center">
-                            <p className={`w-full text-center ${d.done ? "bg-btn text-btn-text outline-1 outline-border2 dark:outline-0" : d.complete ? "bg-panel2 outline-1 outline-border2 text-subtext2" : "text-subtext2 outline-1 outline-border2"} p-1 rounded-xl`}>
+                            <p className={`shadow-md shadow-gray-200 dark:shadow-none w-full text-center ${d.done ? "bg-btn text-btn-text outline-1 outline-border2 dark:outline-0" : d.complete ? "bg-panel2 outline-1 outline-border2 text-subtext2" : "text-subtext2 outline-1 outline-border2"} p-1 rounded-xl`}>
                                 {width < 600 ? d.day.toUpperCase().slice(0, 1) :  Util.capitilizeFirst(d.day)}
                             </p>
                         </div>

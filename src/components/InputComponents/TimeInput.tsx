@@ -33,7 +33,7 @@ export default function TimeInput(p: TimeProps) {
         })
     }, [p.duration])
     return (
-        <div className="flex font-mono p-1 gap-2 rounded-md text-sm outline-1 outline-border2 justify-stretch">
+        <div className="shadow-sm shadow-gray-200 dark:shadow-none flex font-mono p-1 gap-2 rounded-md text-sm outline-1 outline-border2 justify-stretch">
             <div className="flex items-center  grow-1">
                 <p className="text-subtext1 pl-1 pr-2 w-10  overflow-hidden">
                     {time.h}h
@@ -44,7 +44,7 @@ export default function TimeInput(p: TimeProps) {
                     max="24"
                     value={time.h}
                     onChange={e => setValue(e.target.value , "h")}
-                    className="w-full h-2 bg-panel2 rounded-lg appearance-none cursor-pointer slider-thumb "
+                    className="w-full h-2 bg-progress-panel rounded-lg appearance-none cursor-pointer slider-thumb "
                 />
             </div>
             <div className="flex items-center  grow-1">
@@ -57,7 +57,7 @@ export default function TimeInput(p: TimeProps) {
                     max="60"
                     value={time.m}
                     onChange={e => setValue(e.target.value , "m")}
-                    className="w-full h-2 bg-panel2 rounded-lg appearance-none cursor-pointer slider-thumb mr-1"
+                    className="w-full h-2 bg-progress-panel rounded-lg appearance-none cursor-pointer slider-thumb mr-1"
                 />
             </div>
             

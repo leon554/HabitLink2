@@ -44,7 +44,7 @@ export default function UpcomingGoals() {
         <div className="flex flex-col gap-3 m-7 mt-6 mb-0 ">
             <div className="flex flex-col gap-3">
                 <div className="flex items-center gap-4 mb-2">
-                    <div className="bg-panel2 text-subtext2 outline-1 outline-border2 p-1.5 rounded-lg">
+                    <div className="shadow-sm shadow-gray-200 dark:shadow-none bg-panel2 text-subtext2 outline-1 outline-border2 p-1.5 rounded-lg">
                         <TbTargetArrow />
                     </div>
                     <p className="text-lg text-title font-semibold leading-none pb-1">
@@ -64,7 +64,7 @@ export default function UpcomingGoals() {
                     </p>:
                     upcommingGoals.map((g, i) => {
                         return(
-                            <div className={`bg-panel2 px-2 rounded-xl border-1 border-border2 hover:cursor-pointer hover:scale-99 transition-all duration-150 ease-in-out text-sm  py-2  flex justify-between items-center gap-2`} key={i}
+                            <div className={`bg-panel2 px-2 rounded-xl border-1 border-border2 hover:cursor-pointer hover:scale-99 transition-all duration-150 ease-in-out text-sm  py-2  flex justify-between items-center gap-2 shadow-sm shadow-gray-200 dark:shadow-none`} key={i}
                                 onClick={() => {
                                     HC.setCurrentGoal(g.id)
                                     navigate("/goals")
@@ -84,7 +84,7 @@ export default function UpcomingGoals() {
             </div>
             <div className="mt-3 flex flex-col gap-3">
                 <div className="flex items-center gap-4 mb-2 mt-2">
-                    <div className="bg-panel2 text-subtext2 outline-1 outline-border2 p-1.5 rounded-lg">
+                    <div className="shadow-sm shadow-gray-200 dark:shadow-none bg-panel2 text-subtext2 outline-1 outline-border2 p-1.5 rounded-lg">
                         <TbCalendarCheck className=""/>
                     </div>
                     <p className="text-lg text-title font-semibold leading-none pb-1">
@@ -114,7 +114,7 @@ export default function UpcomingGoals() {
                     {tasksToday.map((t, _) => {
                         return(
                             <>
-                                <div className={`bg-panel2 px-2 rounded-xl border-1 hover:scale-99 transition-all duration-150 ease-in-out flex justify-between  items-center py-2 pb-3  border-border2 w-full outline-border2   hover:cursor-pointer`}
+                                <div className={`shadow-sm shadow-gray-200 dark:shadow-none bg-panel2 px-2 rounded-xl border-1 hover:scale-99 transition-all duration-150 ease-in-out flex justify-between  items-center py-2 pb-3  border-border2 w-full outline-border2   hover:cursor-pointer`}
                                     onClick={() => navigate("/log")}>
                                     <p className="text-subtext2 text-sm">
                                         {t.icon} {Util.capitilizeFirst(t.name)}

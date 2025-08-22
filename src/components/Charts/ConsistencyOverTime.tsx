@@ -126,7 +126,7 @@ export function ConsistencyOverTime() {
         <div className=" flex flex-col h-70 gap-7  bg-panel1 p-7  py-4 rounded-2xl outline-1 outline-border flex-1">
             <div className="w-full flex justify-between items-center">
                 <div className="flex items-center gap-3  mt-2">
-                    <div className="bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
+                    <div className="shadow-sm shadow-gray-200 dark:shadow-none bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
                         <TbChartArea />
                     </div>
                     <div className="flex flex-col gap-1">
