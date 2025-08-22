@@ -43,7 +43,7 @@ export default function Dashboard() {
 
 
     return (
-        HC.habits.size == 0 || HC.goals.size == 0? 
+        HC.habits.size == 0? 
             <div className="w-full flex flex-col items-center justify-center mt-17 gap-2">
                 <div className="w-[90%] max-w-[600px] bg-panel1 rounded-2xl outline-1 outline-border flex justify-center items-center p-5">
                     <p className="text-2xl font-medium text-title">
@@ -103,9 +103,9 @@ export default function Dashboard() {
                             </p>
                         </div>
                         <div className="flex gap-3 pt-1 items-center">
-                            <button onClick={() => navigate("/create")} className="px-3 py-1.5 hover:cursor-pointer rounded-2xl bg-highlight text-black text-sm font-medium">Create a Habit</button>
-                            <button onClick={() => navigate("/creategoal")} className="px-3 py-1.5 hover:cursor-pointer rounded-2xl bg-panel2 outline-1 outline-border2 text-subtext2 text-sm">Create a Goal</button>
-                             <button onClick={() => navigate("/help")} className="px-3 py-1.5 hover:cursor-pointer rounded-2xl bg-panel2 outline-1 outline-border2 text-subtext2 text-sm">Learn More</button>
+                            <button onClick={() => navigate("/create")} className="px-3 py-1.5 hover:cursor-pointer rounded-md bg-highlight text-black text-sm font-medium">Create a Habit</button>
+                            <button onClick={() => navigate("/creategoal")} className="px-3 py-1.5 hover:cursor-pointer rounded-md bg-panel2 outline-1 outline-border2 text-subtext2 text-sm">Create a Goal</button>
+                             <button onClick={() => navigate("/help")} className="px-3 py-1.5 hover:cursor-pointer rounded-md bg-panel2 outline-1 outline-border2 text-subtext2 text-sm">Learn More</button>
                         </div>
                     </div>
                 </div>

@@ -504,7 +504,7 @@ export namespace HabitUtil{
         return streak
     }
     
-    export function getCompletions(habit: HabitType | null, completions: HabitCompletionType[] | undefined){
+    export function  getCompletions(habit: HabitType | null, completions: HabitCompletionType[] | undefined){
         if(!habit || !completions) return {validComps: 0, partialComps: 0}
         if(habit.type == HabitTypeE.Normal){
             return {validComps: completions.length, partialComps: 0}

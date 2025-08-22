@@ -123,7 +123,7 @@ export default function HabitEdit() {
                             <>
                             <p className=" flex-grow-2 text-sm font-medium text-subtext1 whitespace-nowrap">Habit Completions</p>
                             <div className="flex flex-col max-h-[200px] overflow-y-scroll w-full no-scrollbar gap-1.5 rounded-md">
-                                {Array.from(HC.habitsCompletions.get(HC.currentHabit!.id) ?? []).map((c,i) => {
+                                {Array.from(HC.habitsCompletions.get(HC.currentHabit!.id) ?? []).sort((a, b) => a.date - b.data).map((c,i) => {
                                     return(
                                         <div className="shadow-sm shadow-gray-200 dark:shadow-none rounded-md border-border2 border-1 p-1 px-2 flex justify-between items-center h-7" key={i}>
                                             <p className="text-xs" >
@@ -164,7 +164,7 @@ export default function HabitEdit() {
                             style="w-[30%]"
                             noAnimation={true}/>
                         <ButtonComp
-                            name={HC.loading && btnClicked.current == 1 ? <AiOutlineLoading className="animate-spin"/>  : "Exit"}
+                            name={ "Exit"}
                             onSubmit={() => setOpen(false)}
                             highlight={true}
                             style="w-[30%]"
