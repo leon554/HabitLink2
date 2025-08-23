@@ -1,7 +1,6 @@
 
 import { useContext} from "react"
 import { UserContext } from "../Providers/UserProvider"
-import { HabitUtil } from "@/utils/HabitUtil"
 import { FaChartLine } from "react-icons/fa6";
 export const description = "A simple area chart"
 import { TbChartArea } from "react-icons/tb";
@@ -27,7 +26,7 @@ export function ConsistencyOverTime() {
 
     const HC = useContext(UserContext)
     const comps = HC.habitsCompletions.get(HC.currentHabit?.id ?? 0) ?? []
-    const data = HabitUtil.getCompRateStrengthOverTimeChartData(HC.currentHabit, comps)
+    const data = HC.habitStats.get(HC.currentHabit?.id ?? 0)?.chartData
     
     const rootStyles = getComputedStyle(document.documentElement)
 

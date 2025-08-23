@@ -18,7 +18,7 @@ ChartJS.register(
     Tooltip,  
 )
 
-export default function AvgCompRate() {
+export default function AvgCompRate() { 
 
     const HC = useContext(UserContext)
     const rawData = Util.fetchAllMapItems(HC.habitStats).map(i => i.chartData)

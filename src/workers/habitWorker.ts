@@ -22,7 +22,7 @@ self.onmessage = function(event){
 function calculateStat({habits, habitsCompletions, goals}: habitWorkerPayload){
     const HabitStatsMap = new Map<number, HabitStats>()
     habits.forEach(h => {
-        const currentHabitComps = habitsCompletions.get(h.id)
+        const currentHabitComps = habitsCompletions.get(h.id) ?? []
 
         const {compRate, missedSessions, validCompletions: validComps, completableDays, compsPerWeek} = HabitUtil.getCompletionRate(h, currentHabitComps)
         const strength = HabitUtil.getStrength(h, currentHabitComps)
@@ -35,7 +35,7 @@ function calculateStat({habits, habitsCompletions, goals}: habitWorkerPayload){
 
 
         const data = {
-            compRate, 
+            compRate: isNaN(compRate) ? 0 : Math.min(Math.max(0, compRate), 1), 
             missedSessions, 
             validComps, 
             completableDays,

@@ -722,7 +722,7 @@ export namespace HabitUtil{
 
         arrays.forEach(ca => {
             ca.forEach((a, i1) => {
-                if(a.strength && a.consistency){
+                if(a.strength != null && a.consistency != null){
                     data[i1].entries++
                     data[i1].consistencySum += a.consistency
                     data[i1].strengthSum += a.strength
