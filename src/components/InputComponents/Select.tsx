@@ -55,7 +55,7 @@ export default function Select(props: SelectProps) {
 
     return (
         <div className="relative" ref={focusElement}>
-            <button className={`group relative transition-transform z-10  hover:cursor-pointer ${props.style ? props.style : " outline-1 bg-stone-800 text-sm text-stone-300 font-mono p-3 rounded-md flex justify-center  "}`}
+            <button className={`group relative transition-transform   hover:cursor-pointer ${props.style ? props.style : " outline-1 bg-stone-800 text-sm text-stone-300 font-mono p-3 rounded-md flex justify-center  "}`}
                  onClick={(e) => {
                     triggerHaptic()
                     setClicked(!clicked)

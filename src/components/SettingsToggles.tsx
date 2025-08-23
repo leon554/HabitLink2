@@ -14,7 +14,7 @@ export default function SettingsToggles() {
             </p>
             <div className="flex justify-between items-center gap-4">
                 <p className="text-xs text-subtext2">
-                    Count unscheduled completions in completions per week/month graphs
+                    Count unscheduled completions in completions per week graphs
                 </p>
                 <div>
                     <Switch ticked={settings.countUnscheduledCompletions} setStatus={(t) => setSettings({...settings, countUnscheduledCompletions: t})}/>
@@ -23,7 +23,7 @@ export default function SettingsToggles() {
             <hr className="text-border2"/>
              <div className="flex justify-between items-center gap-4">
                 <p className="text-xs text-subtext2">
-                    Don't show red for habits that can be logged today on the log page
+                    Don't show red for habits that must be logged today on the log page
                 </p>
                 <div>
                     <Switch ticked={settings.dontShowRed} setStatus={(t) => setSettings({...settings, dontShowRed: t})}/>

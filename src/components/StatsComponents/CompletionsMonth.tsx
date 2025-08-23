@@ -108,77 +108,82 @@ export default function CompletionsMonth() {
             </div>
             <Model open={open} onClose={() => setOpen(false)}>
                 <div className="m-5 mx-7 flex flex-col gap-2 w-[80%] max-w-[600px] bg-panel1 rounded-2xl p-8 " onClick={e => e.stopPropagation()}>
-                    <p className="text-lg">
+                    <p className="text-lg font-medium mb-2">
                         Calander Info
                     </p>
-                    <p className="text-subtext2 text-sm text-justify">
-                        The calander shows completions from the past 16 weeks with the current week being on the right
-                        and the 16th week being on the left.
-                    </p>
-                    <p className="text-subtext2 text-sm">
-                        Each column represents a week starting with Sunday at the top of the column
-                    </p>
-                    <p className="text-subtext2 text-sm text-justify">
-                        Below is a legend for what each symbol represents:
-                    </p>
-                    <div className="flex justify-between mt-5 items-start">
-                        <div className="flex flex-col justify-center items-center gap-1.5 w-12">
-                            <div className="w-4 h-4 outline-1 outline-highlight rounded-sm"></div>
-                            <p className="text-subtext2 text-xs text-center">
-                                Today without completion
-                            </p>
+                    <div className="max-h-[50dvh] overflow-y-scroll no-scrollbar">
+                        <p className="text-subtext2 text-sm text-justify">
+                            The calander shows completions from the past 16 weeks with the current week being on the right
+                            and the 16th week being on the left.
+                        </p>
+                        <p className="text-subtext2 text-sm">
+                            Each column represents a week starting with Sunday at the top of the column
+                        </p>
+                        <p className="text-subtext2 text-sm text-justify">
+                            Below is a legend for what each symbol represents:
+                        </p>
+
+                        <p className="text-subtext1 text-sm text-justify mt-4 font-medium">
+                            Color
+                        </p>
+                        <div className="flex justify-between mt-3 items-start">
+                            <div className="flex flex-col justify-center items-center gap-1.5 w-12">
+                                <div className="w-4 h-4 bg-highlight  rounded-sm"></div>
+                                <p className="text-subtext2 text-xs text-center">
+                                    Completion
+                                </p>
+                            </div>
+                            <div className="flex flex-col justify-center items-center gap-1.5 w-12">
+                                <div className="w-4 h-4 bg-red-400 rounded-sm"></div>
+                                <p className="text-subtext2 text-xs text-center">
+                                    Missed Day
+                                </p>
+                            </div>
+                            <div className="flex flex-col justify-center items-center gap-1.5 w-12">
+                                <div className="w-4 h-4 bg-yellow-500 rounded-sm"></div>
+                                <p className="text-subtext2 text-xs text-center">
+                                    Skipped Day
+                                </p>
+                            </div> 
+                            <div className="flex flex-col justify-center items-center gap-1.5 w-12">
+                                <div className="w-4 h-4 outline-1 outline-neutral-700 rounded-sm"></div>
+                                <p className="text-subtext2 text-xs text-center">
+                                    Empty Day
+                                </p>
+                            </div>
                         </div>
-                         <div className="flex flex-col justify-center items-center gap-1.5 w-12">
-                            <div className="w-4 h-4 bg-highlight rounded-full"></div>
-                            <p className="text-subtext2 text-xs text-center">
-                                Today with completion
-                            </p>
+                        <p className="text-subtext1 text-sm text-justify mt-4 font-medium">
+                            Shape
+                        </p>
+                        <div className="flex justify-between mt-3 items-start">
+                            <div className="flex flex-col justify-center items-center gap-1.5 w-12">
+                                <div className="w-4 h-4 border-1 border-neutral-700 rounded-none"></div>
+                                <p className="text-subtext2 text-xs text-center">
+                                    Habit creation day
+                                </p>
+                            </div>
+                            <div className="flex flex-col justify-center items-center gap-1.5 w-12">
+                                <div className="w-4 h-4 border-1 border-neutral-700 rounded-sm"></div>
+                                <p className="text-subtext2 text-xs text-center">
+                                    Normal Day
+                                </p>
+                            </div>
+                            <div className="flex flex-col justify-center items-center gap-1.5 w-12">
+                                <div className="w-4 h-4  border-1 border-neutral-700  rounded-2xl"></div>
+                                <p className="text-subtext2 text-xs text-center">
+                                    Today
+                                </p>
+                            </div>
+                            <div className="flex flex-col justify-center items-center gap-1.5 w-12">
+                            </div>
                         </div>
-                        <div className="flex flex-col justify-center items-center gap-1.5 w-12">
-                            <div className="w-4 h-4 bg-highlight rounded-sm"></div>
-                            <p className="text-subtext2 text-xs text-center">
-                                Completed Day
-                            </p>
-                        </div>
-                        <div className="flex flex-col justify-center items-center gap-1.5 w-12">
-                            <div className="w-4 h-4 bg-red-400 rounded-sm"></div>
-                            <p className="text-subtext2 text-xs text-center">
-                                Missed Day
-                            </p>
-                        </div> 
-                    </div>
-                    <div className="flex justify-between mt-5 items-start">
-                        <div className="flex flex-col justify-center items-center gap-1.5 w-12">
-                            <div className="w-4 h-4 border-1 border-highlight rounded-none"></div>
-                            <p className="text-subtext2 text-xs text-center">
-                                Habit creation day
-                            </p>
-                        </div>
-                         <div className="flex flex-col justify-center items-center gap-1.5 w-12">
-                            <div className="w-4 h-4 bg-highlight "></div>
-                            <p className="text-subtext2 text-xs text-center">
-                                Habit creation day with completion
-                            </p>
-                        </div>
-                        <div className="flex flex-col justify-center items-center gap-1.5 w-12">
-                            <div className="w-4 h-4 bg-red-400"></div>
-                            <p className="text-subtext2 text-xs text-center">
-                                Habit creation day with missed completion
-                            </p>
-                        </div>
-                        <div className="flex flex-col justify-center items-center gap-1.5 w-12">
-                            <div className="w-4 h-4 outline-1 outline-stone-700 rounded-sm"></div>
-                            <p className="text-subtext2 text-xs text-center">
-                                Empty day
-                            </p>
-                        </div> 
                     </div>
                    <ButtonComp
                         name={"Done"}
                         highlight={true}
                         onSubmit={() => setOpen(false)}
                         noAnimation={true}
-                        style="mt-5"/>
+                        style="mt-6"/>
                 </div>
             </Model>
         </div>

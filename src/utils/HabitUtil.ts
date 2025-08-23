@@ -751,5 +751,24 @@ export namespace HabitUtil{
         })
         return Array.from(groupMap.values())
     }
+    export function getCompletionsPerMonth(habit: HabitType| undefined, entries: HabitCompletionType[] | undefined){
+        if(!habit || !entries) return []
+
+        const groupedEntries = groupHabitEntriesByDay(entries)
+        const compsPerMonth = new Map<number, number>()
+
+        groupedEntries.forEach(e => {
+            const month = new Date(Number(e[0].date)).getMonth()
+
+            if(habit.type == HabitTypeE.Normal){
+                compsPerMonth.set(month, (compsPerMonth.get(month) ?? 0) + 1)
+            }else{
+                const dataSum = e.reduce((a, c) => a + c.data, 0)
+                dataSum >= habit.target ? compsPerMonth.set(month, (compsPerMonth.get(month) ?? 0) + 1) : null
+            }
+        })
+
+        return Array.from(compsPerMonth).map(c => ({month: c[0], data: c[1]}))
+    }
 
 }

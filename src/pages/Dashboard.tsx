@@ -166,7 +166,7 @@ export default function Dashboard() {
                     <BestHabits/>
                 </div>
                 <div className=" rounded-2xl  w-[90%] max-w-[600px] flex flex-col gap-5">
-                    <div className=" h-73 rounded-2xl shadow-md shadow-gray-200 dark:shadow-none bg-panel1  outline-1 outline-border relative">
+                    <div className="h-73 rounded-2xl shadow-md shadow-gray-200 dark:shadow-none bg-panel1  outline-1 outline-border relative">
                         <HabitCalander/>
                     </div>
                     <div className="shadow-md shadow-gray-200 dark:shadow-none h-36 rounded-2xl bg-panel1  outline-1 outline-border relative">

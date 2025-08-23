@@ -196,7 +196,7 @@ export default function CreateGoal() {
                                 <p className="text-sm font-medium  text-subtext-1">Goal Type </p> 
                                 <IoInformationCircleOutline size={14} color="#f5f5f4" className="hover:cursor-pointer" onClick={() => {
                                     triggerHaptic()
-                                    alert("Normal: e.g. Get promotion at work \n Time Based: e.g Meditate for 20 hour \n Distance Based: e.g Walk 200km \n Itteration Based: E.g Weigh 40kg or drink 20 cups of water")
+                                    alert("Normal: e.g. Get promotion at work, Time based: e.g Run a 3 hour marathon, Distance based: Run 5km in 20 minutes, Itteration based can be anything: e.g Weight 80kg  where you set the start value to your current weight and the goal value to your goal weight. Note with selecting one of these numeric type everytime you log your goal that value you logged will become your current value, if you want cumulative progress link a habit which will in turn track your progress such as: Goal: 'gym 30 times' and habit: 'gym' ")
                                 }}/>
                             </div>
                             <div className="flex flex-wrap gap-2 justify-stretch mb-6 w-[90%] max-w-[450px]">
@@ -422,20 +422,21 @@ export default function CreateGoal() {
                         Info
                     </p>
                     <div className="mt-4 flex flex-col gap-5">
-                        <p className="text-sm text-subtext2">
-                            You have two ways to add habits to goals
-                        </p>
+                        <div className="flex flex-col gap-5 max-h-[50dvh] overflow-y-scroll no-scrollbar">
+                            <p className="text-sm text-subtext2">
+                                You have two ways to add habits to goals
+                            </p>
+                            <p className="text-sm text-subtext2 border-l-8 border-green-500 pl-3 rounded-md">
+                                <strong>Associate a habit</strong> This associates the habit to a goal so that the goal’s stats such as consistency and strength are automatically calculated from this habit.  
+                                You will see a green square next to the habit on the previous page to indicate it is associated. Note: you can associate multiple habits.
+                            </p>
 
-                        <p className="text-sm text-subtext2 border-l-8 border-green-500 pl-3 rounded-md">
-                            <strong>Associate a habit</strong> This associates the habit to a goal so that the goal’s stats such as consistency and strength are automatically calculated from this habit.  
-                            You will see a green square next to the habit on the previous page to indicate it is associated. Note: you can associate multiple habits.
-                        </p>
-
-                        <p className="text-sm text-subtext2 border-l-8 border-blue-500 pl-3 rounded-md">
-                            <strong>Link a habit</strong> This uses the habit to track progress toward a specific goal.  
-                            For example, if your habit is <em>"Go to the gym"</em> and your goal is <em>"Gym 30 times this month"</em> linking the habit will automatically update your goal progress every time you log the habit.  
-                            A blue square next to the habit on the previous page indicates it is linked. You can link a habit by double clicking it. Note: a linked habit will automatically also be associated
-                        </p>
+                            <p className="text-sm text-subtext2 border-l-8 border-blue-500 pl-3 rounded-md">
+                                <strong>Link a habit</strong> This uses the habit to track progress toward a specific goal.  
+                                For example, if your habit is <em>"Go to the gym"</em> and your goal is <em>"Gym 30 times this month"</em> linking the habit will automatically update your goal progress every time you log the habit.  
+                                A blue square next to the habit on the previous page indicates it is linked. You can link a habit by double clicking it. Note: a linked habit will automatically also be associated
+                            </p>
+                        </div>
                         <div className="flex w-full gap-3 mt-4 mb-2">
                             <ButtonComp
                                 name="Done"

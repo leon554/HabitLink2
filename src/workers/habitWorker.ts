@@ -31,6 +31,7 @@ function calculateStat({habits, habitsCompletions, goals}: habitWorkerPayload){
         const entries = h ? habitsCompletions.get(Number(h.id))?.length : 0
         const dataSum = HabitUtil.getHabitDataSum(currentHabitComps, h?.type as HabitTypeE)
         const chartData = HabitUtil.getCompRateStrengthOverTimeChartData(h, currentHabitComps) as ChartDataType[]
+        const compsPerMonth = HabitUtil.getCompletionsPerMonth(h, habitsCompletions.get(h.id))
 
 
         const data = {
@@ -45,7 +46,8 @@ function calculateStat({habits, habitsCompletions, goals}: habitWorkerPayload){
             entries,
             dataSum,
             chartData,
-            compsPerWeek
+            compsPerWeek,
+            compsPerMonth
         } as HabitStats
         HabitStatsMap.set(h.id, data)
     })

@@ -93,7 +93,8 @@ export default function HabitDistribution(p: Props) {
                 backgroundColor: panel,
                 titleColor: titleColor,
                 bodyColor: subtext2,
-                borderWidth: 0,
+                borderColor: border,    
+                borderWidth: 1,
                 padding: 10,
                 cornerRadius: 5,
                 displayColors: true

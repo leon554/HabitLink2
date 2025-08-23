@@ -45,7 +45,7 @@ export default function Timeline() {
                     <Select items={items}
                         selectedItem={items[filter]} 
                         setSelectedItem={(id) => setFilter(id)}
-                        style="shadow-sm shadow-gray-200 dark:shadow-none text-xs bg-panel2 text-subtext3 px-2 py-0.5 rounded-lg border-1 border-border2 z-10"/>
+                        style="shadow-sm shadow-gray-200 dark:shadow-none text-xs bg-panel2 text-subtext3 px-2 py-0.5 rounded-lg border-1 border-border2"/>
                      
                     <IoInformationCircleOutline size={14} color="#57534E" className="hover:cursor-pointer mt-[1px] ml-[1px]" onClick={() => {
                         setOpen(true);

@@ -25,32 +25,53 @@ ChartJS.register(
 interface Props{
     habitId?: number
 }
+enum Filter {
+    month = "Month",
+    week ="Week"
+}
 export default function CompsPerWeek(p: Props) {
     const HC = useContext(UserContext)
     const {settings} = useContext(SettingsContext)
-    const rawData = useMemo(() => {return p.habitId ? HC.habitStats.get(p.habitId)!.compsPerWeek : Util.fetchAllMapItems(HC.habitStats).map(i => i.compsPerWeek).flat()}, [HC.habitStats, HC.currentHabit, settings]) 
+
+    const rawWeekData = useMemo(() => {
+        return p.habitId ? 
+            HC.habitStats.get(p.habitId)!.compsPerWeek : 
+            Util.fetchAllMapItems(HC.habitStats).map(i => i.compsPerWeek).flat()
+    }, [HC.habitStats, HC.currentHabit, settings]) 
+
+    const rawMonthData = useMemo(() => {
+        return p.habitId ? 
+            HC.habitStats.get(p.habitId)!.compsPerMonth : 
+            Util.fetchAllMapItems(HC.habitStats).map(i => i.compsPerMonth).flat()
+    }, [HC.habitStats, HC.currentHabit, settings]) 
+
     const [formatedChartData, setFormatedChartData] = useState(new Map<string|number, number>()) 
     const [open, setOpen] = useState(false)
 
-    const [filter, setFilter] = useState(0)
+    const [filter, setFilter] = useState<Filter>(Filter.week)
     const items = [{name: "Week", id: 0}, {name: "Month", id: 1}]
     const monthMap = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
-    const [labels, setLabels] = useState<string[]>([])
 
     useEffect(() => {
-        const temp = new Map<string|number, number>()
-        rawData.forEach(d => {
-            if(temp.has(filter == 0 ? dateUtils.formatDate(d.week) : d.week.getMonth())){
-                const prevComps = temp.get(filter == 0 ? dateUtils.formatDate(d.week) : d.week.getMonth())!
-                temp.set(filter == 0 ? dateUtils.formatDate(d.week) : d.week.getMonth(), prevComps + (settings.countUnscheduledCompletions ? d.allCompletions : d.completions))
-            }else{
-                temp.set(filter == 0 ? dateUtils.formatDate(d.week) : d.week.getMonth(), (settings.countUnscheduledCompletions ? d.allCompletions : d.completions))
-            }
-        })
-        setLabels([...filter == 0 ? Array.from(temp.keys()).map(v => String(v).slice(0, 5)) : Array.from(temp.keys()).map(v => monthMap[Number(v)])])
-        setFormatedChartData(temp)
-    }, [rawData, filter, HC.currentHabit])
+        const temp = new Map<string | number, number>()
+        if(filter == Filter.week){
+            rawWeekData.forEach(d => {
+                const week = dateUtils.formatDate(d.week).slice(0, 5)
+                temp.set(week,  (temp.get(week) ?? 0) + (settings.countUnscheduledCompletions ?
+                    d.allCompletions :
+                    d.completions
+                ))
+            })
+        }else{
+            rawMonthData.sort((a, b) => a.month - b.month)
+            rawMonthData.forEach(d => {
+                const month = monthMap[d.month]
+                temp.set(month,  (temp.get(month) ?? 0) + d.data)
+            })
+        }
+        setFormatedChartData(new Map(temp))
+    }, [rawWeekData, rawMonthData, filter, settings])
 
     const rootStyles = getComputedStyle(document.documentElement)
 
@@ -61,7 +82,7 @@ export default function CompsPerWeek(p: Props) {
     const chart = rootStyles.getPropertyValue('--color-chart-1').trim()
 
     const formatedData = {
-        labels: labels,
+        labels: Array.from(formatedChartData.keys()) ?? [],
         datasets: [
             {
                 label: "Completions",
@@ -147,14 +168,14 @@ export default function CompsPerWeek(p: Props) {
                     </div>
                     <div className="flex flex-col gap-1">
                         <p className=" text-title font-semibold leading-none">
-                            Completions Per {filter == 0 ? "Week" : "Month"}
+                            Completions Per {filter == Filter.week ? "Week" : "Month"}
                         </p>
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
                     <Select items={items}
-                        selectedItem={items[filter]} 
-                        setSelectedItem={(id) => setFilter(id)}
+                        selectedItem={items[filter == Filter.month ? 1 : 0]} 
+                        setSelectedItem={(id) => setFilter(id == 0 ? Filter.week : Filter.month)}
                         style="shadow-sm shadow-gray-200 dark:shadow-none text-xs bg-panel2 text-subtext3 px-2 py-0.5 rounded-lg border-1 border-border2 z-10"/>
                     <IoInformationCircleOutline size={14} color="#57534E" className="hover:cursor-pointer" onClick={() => {
                         setOpen(true)
@@ -164,7 +185,7 @@ export default function CompsPerWeek(p: Props) {
             {formatedChartData.size < 2 ? 
             <div className="h-55 border-1 border-border2 flex justify-center items-center rounded-2xl mt-[-9px]">
                 <p className="text-sm p-6 max-sm:text-xs text-subtext3 flex flex-wrap text-center justify-center items-center gap-2">
-                    Log your habits for {2-formatedChartData.size} more {filter == 0 ? "week/s" : "month/s"} to see this graph <FaChartLine />
+                    Log your habits for {2-formatedChartData.size} more {filter == Filter.week ? "week/s" : "month/s"} to see this graph <FaChartLine />
                 </p>
             </div>
             :
@@ -181,10 +202,10 @@ export default function CompsPerWeek(p: Props) {
                         Info
                     </p>
                     <p className="text-sm text-subtext2">
-                        This graph shows completions per week or per month. In the settings page, you can choose whether to count only scheduled completions or both scheduled and unscheduled completions.
+                        This graph shows completions per week or per month. In the settings page, you can choose whether to count only scheduled completions or both scheduled and unscheduled completions for completions per week.
                     </p>
                     <p className="text-sm text-subtext2">
-                        NOTE: Monthly completions are calculated based on the weeks that start within a specific month.
+                        NOTE: Monthly completions show Scheduled and Unscheduled completions combined
                     </p>
                    <ButtonComp
                         name={"Done"}
