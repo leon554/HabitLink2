@@ -3,6 +3,7 @@ import TextBoxLimited from "./primatives/TextBoxLimited";
 import ButtonComp from "./primatives/ButtonComp";
 import { AlertContext } from "./Alert/AlertProvider";
 import { AuthContext } from "./Providers/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 
 export default function ResetPassword() {
@@ -10,14 +11,15 @@ export default function ResetPassword() {
     const [password, setPassword] = useState("")
     const {alert} = useContext(AlertContext)
     const auth = useContext(AuthContext)
+    const navigate = useNavigate()
 
     async function reset(){
         if(password.length < 5){
             alert("Enter longer password")
             return 
         }
-
         await auth.updatePassword(password)
+        navigate("/dashboard")
     }
     return (
         <div className="w-full flex justify-center">

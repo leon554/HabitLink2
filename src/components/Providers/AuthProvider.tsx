@@ -215,7 +215,7 @@ export default function AuthProvider(props: Props) {
         setLoading(true)
 
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
-            redirectTo: "https://habitlink2.netlify.app/reset", 
+            redirectTo: "https://habit-link.com/reset", 
             captchaToken: captchaToken
         })
 

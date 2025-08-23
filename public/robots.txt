@@ -1,0 +1,29 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://habit-link.com/sitemap.xml
+
+# Crawl delay (optional - helps prevent overwhelming the server)
+Crawl-delay: 1
+
+# Disallow any admin or private areas (if they exist)
+Disallow: /api/
+Disallow: /admin/
+Disallow: /private/
+
+# Allow all other content
+Allow: /dashboard
+Allow: /log
+Allow: /create
+Allow: /creategoal
+Allow: /stats
+Allow: /goals
+Allow: /settings
+Allow: /help
+Allow: /studio
+Allow: /terms
+Allow: /priv
+Allow: /refund
+Allow: /thanks
+Allow: /reset
