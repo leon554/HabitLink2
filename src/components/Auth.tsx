@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext, useState, useRef } from "react"
 import { AlertContext } from "./Alert/AlertProvider"
 import { AiOutlineLoading } from "react-icons/ai";
 import { AuthContext } from "./Providers/AuthProvider";
@@ -8,6 +8,9 @@ import { triggerHaptic } from "tactus";
 import CheckBox from "./InputComponents/CheckBox";
 import { useNavigate } from "react-router-dom";
 import TextBoxLimited from "./primatives/TextBoxLimited";
+import { Turnstile } from '@marsidev/react-turnstile'
+import { themeContext } from "./Providers/ThemeProvider";
+
 
 interface FormProps{
     name: string
@@ -23,6 +26,7 @@ export default function Auth() {
     const auth = useContext(AuthContext)
     const {alert} = useContext(AlertContext)
     const [checked, setChecked] = useState(false)
+    const theme = useContext(themeContext)
 
     const submit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -42,6 +46,7 @@ export default function Auth() {
     }
 
     const signUp = async () => {
+
         if(formData.password != formData.confirmPassword){
             alert("Passwords do not match")
             return
@@ -100,7 +105,6 @@ export default function Auth() {
                             password={true}
                             placeHolder={"Confirm password"}/>
                     </div>: ""}
-
                     {!login ? 
                     <div>
                         <label className="flex items-start space-x-2 text-xs mt-1 mb-2 text-subtext3">
@@ -120,6 +124,18 @@ export default function Auth() {
                         </label>
                     </div>
                     : "" }
+                    {login ? 
+                    null :
+                    <div className="w-full flex justify-center">
+                        <Turnstile
+                            siteKey="0x4AAAAAABuQp8at38COv4fq"
+                            onSuccess={(token) => {
+                                auth.setCaptchaToken(token)
+                            }}
+                            
+                        />
+                    </div>
+                        }
                     <button className="flex justify-center gap-2 bg-btn rounded-sm p-1 text-btn-text font-medium text-sm  outline-border2 darkmode:outline-0 mt-1.5 hover:cursor-pointer  duration-400 ease-in-out  h-8 items-center"
                         type="submit">
                         {auth.loading ? <AiOutlineLoading className="animate-spin" /> : (login? "Log In"  : "Sign Up")}  {auth.loading ? "" : <LuLogIn />}

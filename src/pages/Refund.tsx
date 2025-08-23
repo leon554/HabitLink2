@@ -12,7 +12,7 @@ export default function Refund() {
 
             <h2 className="text-lg font-semibold mt-6 mb-2 text-title">1. General Policy</h2>
             <p className="mb-4 text-sm">
-            All payments for subscriptions and products are processed via Paddle. We aim to provide high-quality service; however, refunds are handled under the conditions below.
+            All payments for subscriptions and products are processed via LemonSqueezy. We aim to provide high-quality service; however, refunds are handled under the conditions below.
             </p>
 
             <h2 className="text-lg font-semibold mt-6 mb-2 text-title">2. Refund Eligibility</h2>
@@ -23,7 +23,7 @@ export default function Refund() {
 
             <h2 className="text-lg font-semibold mt-6 mb-2 text-title">3. How to Request a Refund</h2>
             <p className="mb-4 text-sm">
-            Contact us at <a className="text-green-600 ">habitlinkapp@gmail.com</a> with your account information and reason for refund. Paddle will process eligible refunds according to their policies.
+            Contact us at <a className="text-green-600 ">habitlinkapp@gmail.com</a> with your account information and reason for refund. LemonSqueezy will process eligible refunds according to their policies.
             </p>
 
             <h2 className="text-lg font-semibold mt-6 mb-2 text-title">4. Exceptions</h2>

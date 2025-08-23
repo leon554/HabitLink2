@@ -30,7 +30,7 @@ export default function Terms() {
 
                 <h2 className="text-lg font-semibold mt-6 mb-2 text-title">4. Subscriptions and Payment</h2>
                 <p className="mb-4 text-sm">
-                Payments are processed via Paddle. Subscription plans, pricing, and billing intervals are clearly displayed on our website. You authorize Paddle to charge your chosen payment method.
+                Payments are processed via LemonSqueezy. Subscription plans, pricing, and billing intervals are clearly displayed on our website. You authorize LemonSqueezy to charge your chosen payment method.
                 </p>
 
                 <h2 className="text-lg font-semibold mt-6 mb-2 text-title">5. Termination</h2>

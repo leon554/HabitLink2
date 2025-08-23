@@ -19,6 +19,8 @@ interface AuthType{
     logout: () => Promise<void>
     getUserId: () => null|string
     setLocalUser: (localUser: UserType) => void
+    captchaToken: string
+    setCaptchaToken: (token: string) => void
 }
 const initialValues: AuthType = {
     session: undefined,
@@ -33,6 +35,8 @@ const initialValues: AuthType = {
     logout: async() => {},
     getUserId: () => null,
     setLocalUser: () => null,
+    captchaToken: "",
+    setCaptchaToken: () => null
 }
 
 export const AuthContext = createContext<AuthType>(initialValues)
@@ -49,6 +53,7 @@ export default function AuthProvider(props: Props) {
     const hasNavigatedRef = useRef(false)
     const [logOutLoading, setLogOutLoading] = useState(false)
     const [products, setProducts] = useState<LemonSqueezyProduct[]>([])
+    const [captchaToken, setCaptchaToken] = useState("")
     const protectedPaths = ["/dashboard", "/log", "/create", "/stats", "/goals", "/creategoal", "/settings", "/help", "/studio", "/thanks", "/priv", "/refund", "/terms"]
     const unprotectedPaths = ["/", "/auth", "/priv", "/refund", "/terms"]
     
@@ -159,7 +164,7 @@ export default function AuthProvider(props: Props) {
 
     async function signup(name: string, email: string, password: string) {
         setLoading(true)
-        const {error, data} = await supabase.auth.signUp({email, password, options: {data: {name}}})
+        const {error, data} = await supabase.auth.signUp({email, password, options: {data: {name}, captchaToken}})
         setLoading(false)
 
         if(error){
@@ -216,7 +221,9 @@ export default function AuthProvider(props: Props) {
             logout,
             getUserId,
             signInWithGoogle,
-            setLocalUser
+            setLocalUser,
+            setCaptchaToken,
+            captchaToken
         }}>
             {props.children}
         </AuthContext.Provider>

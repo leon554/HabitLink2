@@ -13,7 +13,7 @@ export default function Privacy() {
             <h2 className="text-lg font-semibold mt-6 mb-2 text-title">1. Information We Collect</h2>
             <ul className="list-disc list-inside mb-4 text-sm">
             <li>Account information (name, email, login credentials)</li>
-            <li>Payment information via Paddle (handled securely by Paddle)</li>
+            <li>Payment information via LemonSqueezy (handled securely by LemonSqueezy)</li>
             <li>Usage data to improve and provide the service</li>
             </ul>
 
@@ -27,7 +27,7 @@ export default function Privacy() {
 
             <h2 className="text-lg font-semibold mt-6 mb-2 text-title">3. Data Sharing</h2>
             <p className="mb-4 text-sm">
-            Your payment details are handled by Paddle. All other data is stored and processed securely with Supabase. We do not store sensitive payment information ourselves. We may share anonymized data for analytics and business purposes.
+            Your payment details are handled by LemonSqueezy. All other data is stored and processed securely with Supabase. We do not store sensitive payment information ourselves. We may share anonymized data for analytics and business purposes.
             </p>
 
             <h2 className="text-lg font-semibold mt-6 mb-2 text-title">4. Data Security</h2>
