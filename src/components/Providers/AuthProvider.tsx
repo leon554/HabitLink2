@@ -1,5 +1,5 @@
 import type { Session, User } from "@supabase/supabase-js";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { supabase } from "../../supabase-client";
 import { AlertContext } from "../Alert/AlertProvider";
 import { SignUpResponses, type LemonSqueezyProduct, type UserType } from "../../utils/types";
@@ -46,6 +46,7 @@ export default function AuthProvider(props: Props) {
     const [user, setUser] = useState<null|User>(null)
     const [localUser, setLocalUser] = useState<UserType|null>(null)
     const [loading, setLoading] = useState(false)
+    const hasNavigatedRef = useRef(false)
     const [logOutLoading, setLogOutLoading] = useState(false)
     const [products, setProducts] = useState<LemonSqueezyProduct[]>([])
     const protectedPaths = ["/dashboard", "/log", "/create", "/stats", "/goals", "/creategoal", "/settings", "/help", "/studio", "/thanks", "/priv", "/refund", "/terms"]
@@ -69,8 +70,13 @@ export default function AuthProvider(props: Props) {
     }, [])
     
     useEffect(() => {
-        if(session === undefined) return
-        navigateUser(session)
+        if(session === undefined || hasNavigatedRef.current) return
+        const nav = async () => {
+            await navigateUser(session)
+            !unprotectedPaths.includes(location.pathname)?
+                hasNavigatedRef.current = true : null
+        }
+        nav()
     }, [session])
 
     useEffect(() => {
@@ -190,6 +196,7 @@ export default function AuthProvider(props: Props) {
         await supabase.auth.signOut()
         navigate("/")
         setLogOutLoading(false)
+        window.location.reload();
     }
     function getUserId(){
         if(!session) return null

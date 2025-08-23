@@ -39,7 +39,7 @@ export default function ProgressPanel(p: Props) {
             :"" }
             <div className="w-full flex justify-stretch items-center gap-2 mt-2">
                 <div className="w-full">
-                    <ProgressBar min={0} max={100} current={p.load && loading ? 0 : p.value} />
+                    <ProgressBar min={0} max={100} current={p.load && loading ?  0 : p.value} />
                 </div>
                 <p className="text-subtext2 text-xs leading-none mb-1">
                     {p.load && loading ? <AiOutlineLoading className="animate-spin  text-subtext2" size={10}/> : `${Math.min(Math.round(p.value*roundVal)/roundVal, 100)}%`}

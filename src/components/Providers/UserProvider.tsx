@@ -124,8 +124,11 @@ export default function UserProvider(props: Props) {
 
     const auth = useContext(AuthContext)
     const {alert} = useContext(AlertContext)
+    const hasRanRef = useRef(false)
 
     useEffect(() => {
+        if(hasRanRef.current) return
+
         const userid = auth.getUserId()
         if(!userid) return
         
@@ -138,6 +141,7 @@ export default function UserProvider(props: Props) {
             await getGoalsCompletions()
             unLock()
             await getIssues()
+            hasRanRef.current = true
             console.timeEnd("DataFetch")
         }
         fetchData()
