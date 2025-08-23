@@ -21,6 +21,8 @@ interface AuthType{
     setLocalUser: (localUser: UserType) => void
     captchaToken: string
     setCaptchaToken: (token: string) => void
+    sendResetPassword: (email: string) => Promise<void>
+    updatePassword: (password: string) => Promise<void>
 }
 const initialValues: AuthType = {
     session: undefined,
@@ -36,7 +38,9 @@ const initialValues: AuthType = {
     getUserId: () => null,
     setLocalUser: () => null,
     captchaToken: "",
-    setCaptchaToken: () => null
+    setCaptchaToken: () => null,
+    sendResetPassword: () => Promise.resolve(undefined),
+    updatePassword: () => Promise.resolve(undefined),
 }
 
 export const AuthContext = createContext<AuthType>(initialValues)
@@ -54,8 +58,8 @@ export default function AuthProvider(props: Props) {
     const [logOutLoading, setLogOutLoading] = useState(false)
     const [products, setProducts] = useState<LemonSqueezyProduct[]>([])
     const [captchaToken, setCaptchaToken] = useState("")
-    const protectedPaths = ["/dashboard", "/log", "/create", "/stats", "/goals", "/creategoal", "/settings", "/help", "/studio", "/thanks", "/priv", "/refund", "/terms"]
-    const unprotectedPaths = ["/", "/auth", "/priv", "/refund", "/terms"]
+    const protectedPaths = ["/reset", "/dashboard", "/log", "/create", "/stats", "/goals", "/creategoal", "/settings", "/help", "/studio", "/thanks", "/priv", "/refund", "/terms"]
+    const unprotectedPaths = ["/", "/auth", "/priv", "/refund", "/terms", "/reset"]
     
 
     const {alert} = useContext(AlertContext)
@@ -154,7 +158,7 @@ export default function AuthProvider(props: Props) {
 
     async function login(email: string, password: string){
         setLoading(true)
-        const {error} = await supabase.auth.signInWithPassword({email, password})
+        const {error} = await supabase.auth.signInWithPassword({email, password, options: {captchaToken: captchaToken}})
 
         if(error){
             alert("Log In Error: " + error.message)
@@ -207,6 +211,37 @@ export default function AuthProvider(props: Props) {
         if(!session) return null
         return session.user.id
     }
+    async function sendResetPassword(email: string){
+        setLoading(true)
+
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: "https://habitlink2.netlify.app/reset", 
+            captchaToken: captchaToken
+        })
+
+        if(error){
+            alert("Error: " + error)
+            setLoading(false)
+            return
+        }
+        alert("Password reset link sent to email")
+        setLoading(false)
+    }
+    async function updatePassword(password: string){
+        setLoading(true)
+
+        const { error } = await supabase.auth.updateUser({ password })
+
+        if(error){
+            alert("Error: " + error.message)
+            setLoading(false)
+            return
+        }
+
+        alert("Succesfully Reset Password")
+        navigate("/dashboard")
+        setLoading(false)
+    }
 
     return (
         <AuthContext.Provider value={{
@@ -223,7 +258,9 @@ export default function AuthProvider(props: Props) {
             signInWithGoogle,
             setLocalUser,
             setCaptchaToken,
-            captchaToken
+            captchaToken,
+            sendResetPassword,
+            updatePassword
         }}>
             {props.children}
         </AuthContext.Provider>

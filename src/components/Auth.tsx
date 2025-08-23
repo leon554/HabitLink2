@@ -1,4 +1,4 @@
-import { useContext, useState, useRef } from "react"
+import { useContext, useState } from "react"
 import { AlertContext } from "./Alert/AlertProvider"
 import { AiOutlineLoading } from "react-icons/ai";
 import { AuthContext } from "./Providers/AuthProvider";
@@ -9,7 +9,7 @@ import CheckBox from "./InputComponents/CheckBox";
 import { useNavigate } from "react-router-dom";
 import TextBoxLimited from "./primatives/TextBoxLimited";
 import { Turnstile } from '@marsidev/react-turnstile'
-import { themeContext } from "./Providers/ThemeProvider";
+
 
 
 interface FormProps{
@@ -26,7 +26,6 @@ export default function Auth() {
     const auth = useContext(AuthContext)
     const {alert} = useContext(AlertContext)
     const [checked, setChecked] = useState(false)
-    const theme = useContext(themeContext)
 
     const submit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -59,9 +58,18 @@ export default function Auth() {
         if(response == SignUpResponses.UserExists) setLogin(true)
     }
 
+    async function resetPassword(){
+        if(formData.email == ""){
+            alert("Enter valid email to reset password")
+            return
+        }
+
+        auth.sendResetPassword(formData.email)
+    }
+
     return (
         <div className="flex justify-center mt-17">
-            <div className="shadow-md shadow-gray-200 dark:shadow-none outline-1 outline-border bg-panel1 w-[90%] max-w-100 flex justify-center rounded-xl p-5 flex-col items-center ">
+            <div className="shadow-md shadow-gray-200 dark:shadow-none outline-1 outline-border bg-panel1 w-[90%] max-w-94 flex justify-center rounded-xl p-5 flex-col items-center ">
                 <p className="text-title  text-2xl m-1 mt-4 font-semibold">
                     {login ? "Log In" : "Sign Up"}
                 </p>
@@ -87,14 +95,22 @@ export default function Auth() {
                             placeHolder="Enter email"
                             charLimit={70}/>
                     </div>
-                    <div>
+                    <div className="flex flex-col items-end mb-1">
                         <TextBoxLimited
                             name="Password"
                             value={formData.password}
                             setValue={data => setFormData(prev => ({...prev, password: data}))}
                             charLimit={40}
                             password={true}
-                            placeHolder={login ? "Enter Password" : "Create password"}/>
+                            placeHolder={login ? "Enter Password" : "Create password"}
+                            outerDivStyles="w-full"/>
+                        {login ? 
+                        <p className="text-xs  text-subtext3 underline hover:cursor-pointer mt-1"
+                            onClick={resetPassword}>
+                            Forgot password
+                        </p>
+                        : null
+                        }
                     </div>
                     {!login ? <div>
                         <TextBoxLimited
@@ -124,8 +140,6 @@ export default function Auth() {
                         </label>
                     </div>
                     : "" }
-                    {login ? 
-                    null :
                     <div className="w-full flex justify-center">
                         <Turnstile
                             siteKey="0x4AAAAAABuQp8at38COv4fq"
@@ -135,7 +149,6 @@ export default function Auth() {
                             
                         />
                     </div>
-                        }
                     <button className="flex justify-center gap-2 bg-btn rounded-sm p-1 text-btn-text font-medium text-sm  outline-border2 darkmode:outline-0 mt-1.5 hover:cursor-pointer  duration-400 ease-in-out  h-8 items-center"
                         type="submit">
                         {auth.loading ? <AiOutlineLoading className="animate-spin" /> : (login? "Log In"  : "Sign Up")}  {auth.loading ? "" : <LuLogIn />}
@@ -163,7 +176,6 @@ export default function Auth() {
                                 {(!login ? " Sign up with Google" : " Log in with Google")}
                             </span>                         
                     </button>
-
                     <div className="flex justify-center mt-1.5 mb-8">
                         <p className="text-[13px] text-subtext3 text-center">
                             {login ? "Don't have and acount?" : "Allready have an acount?"}
