@@ -81,7 +81,7 @@ export default function HabitStudio() {
         if(target == 0 && habitTypes[selectedTypeIndex] != "Normal") {alert("Habit daily goal can't be 0"); return}
 
         await HC.createHabit(habit.habit, "", completionDaysString, habit.emoji, habit.habit_type, target)
-        alert("Habit Succefully Created!")
+        alert("Habit Successfully Created!")
         habits.splice(habitIndex, 1)
     }
     function getCompDaysString(compDaysSate: CompDaysStateType){
@@ -124,10 +124,10 @@ export default function HabitStudio() {
                 <div className="w-full flex justify-center flex-col items-stretch ">
                     <div>
                         <div className="flex items-center gap-2 mb-2.5">
-                            <p className="text-sm font-medium text-subtext1">Avaliable Days</p> 
+                            <p className="text-sm font-medium text-subtext1">Available Days</p> 
                             <IoInformationCircleOutline size={14}  className="hover:cursor-pointer text-subtext1" onClick={() => {
                                 triggerHaptic()
-                                alert("You can either choose specific days of the week that your avaliable, or set a target number of days per week, regardless of which days they fall on.")
+                                alert("You can either choose specific days of the week that your available, or set a target number of days per week, regardless of which days they fall on.")
                             }}/>
                         </div>
                         <div className=" flex justify-stretch gap-2">
@@ -168,7 +168,7 @@ export default function HabitStudio() {
                 </div>
                 {habits.length == 0 ? "" :
                     <div className="w-full flex flex-col items-center gap-3">
-                        <p className="text-sm font-medium  text-subtext1 mt-2 w-full">Genrated Habits</p>  
+                        <p className="text-sm font-medium  text-subtext1 mt-2 w-full">Generated Habits</p>  
                         {habits.map((h, i) => {
                             return(
                                 <div key={i} className="shadow-sm shadow-gray-200 dark:shadow-none outline-1 bg-panel1 w-full items-center p-3 rounded-md outline-border flex  justify-between gap-1">
@@ -277,7 +277,7 @@ export default function HabitStudio() {
                         <div className="flex items-center gap-2 mb-2 w-full">
                             <p className="text-sm font-medium  text-subtext1">Habit Type </p> 
                             <IoInformationCircleOutline size={14}  className="hover:cursor-pointer text-subtext1" onClick={() => {
-                                alert("Normal: e.g. go to the gym its yes no \n Time Based: e.g Plank can log 13s \n Distance Based: e.g Walking you walked 12km \n Itteration Based: E.g drink 3 cups of water a day")
+                                alert("Normal: e.g. go to the gym its yes no \n Time Based: e.g Plank can log 13s \n Distance Based: e.g Walking you walked 12km \n Iteration Based: E.g drink 3 cups of water a day")
                             }}/>
                         </div>
 

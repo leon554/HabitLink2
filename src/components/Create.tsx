@@ -175,7 +175,7 @@ export default function Create({compact, onCreate, initialName} : Props){
                         <p className="text-sm font-medium  text-subtext1">Habit Type </p> 
                         <IoInformationCircleOutline size={14}  className="hover:cursor-pointer text-subtext1" onClick={() => {
                             triggerHaptic()
-                            alert("Normal: e.g. go to the gym its yes no \n Time Based: e.g Plank can log 13s \n Distance Based: e.g Walking you walked 12km \n Itteration Based: E.g drink 3 cups of water a day")
+                            alert("Normal: e.g. go to the gym its yes no \n Time Based: e.g Plank can log 13s \n Distance Based: e.g Walking you walked 12km \n Iteration Based: E.g drink 3 cups of water a day")
                         }}/>
                     </div>
                     <div className="flex flex-wrap gap-2 justify-stretch mb-6 w-[90%] max-w-[450px]">

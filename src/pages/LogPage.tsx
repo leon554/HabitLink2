@@ -75,7 +75,7 @@ export default function LogPage() {
                     No Habits :(
                 </p>
                 <p className="text-sm text-subtext3">
-                    You currently have no habits to log try adding a new habit and then comming back 💪
+                    You currently have no habits to log try adding a new habit and then coming back 💪
                 </p>
                 <div className="flex gap-3 w-full">
                     <ButtonComp

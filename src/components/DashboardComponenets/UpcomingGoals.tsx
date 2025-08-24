@@ -49,20 +49,20 @@ export default function UpcomingGoals() {
                         <TbTargetArrow />
                     </div>
                     <p className="text-lg text-title font-semibold leading-none pb-1">
-                        Upcomming Goals
+                        Upcoming Goals
                     </p>
                 </div>
                 {HC.isCalculating.current.isLoading() ? 
                 <div>
                     <p className="text-xs text-subtext2 animate-pulse">
-                        Fteching you're upcomming goals…
+                        Fetching you're upcoming goals…
                     </p>
                 </div> :
                 <div className="w-full flex flex-col gap-2">
                     {upcommingGoals.length == 0 ?
                     <div className="flex flex-col items-start gap-3 flex-wrap">
                         <p className="text-subtext2 text-sm">
-                            No upcomming goals, try and create a new goal
+                            No upcoming goals, try and create a new goal
                         </p>
                         <ButtonComp
                             name={"New Goal"}

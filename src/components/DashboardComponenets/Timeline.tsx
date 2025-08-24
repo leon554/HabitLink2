@@ -172,7 +172,7 @@ export default function Timeline() {
                     </p>
 
                      <p className="text-sm text-subtext2">
-                        There are two options "Information" and "Zoom" when the information mode is selected you can hover over entries and see information about them. When the zoom mode is selected you can over over entries and a new timeline will apear where you can zoom in and out on entries around the original entry you were hovering on.
+                        There are two options "Information" and "Zoom" when the information mode is selected you can hover over entries and see information about them. When the zoom mode is selected you can over over entries and a new timeline will appear where you can zoom in and out on entries around the original entry you were hovering on.
                     </p>
                     <ButtonComp
                         name={"Done"}

@@ -142,13 +142,13 @@ export default function HabitCalander() {
             <Model open={open} onClose={() => setOpen(false)}>
                 <div className=" m-5 mx-7 flex flex-col gap-2 w-[80%] max-w-[600px] bg-panel1 rounded-2xl p-8 " onClick={e => e.stopPropagation()}>
                     <p className="text-lg text-title font-medium">
-                        Calander Info
+                        Calendar Info
                     </p>
                     <p className="text-sm text-subtext2">
-                        To view the info of any sqaure simply just hover over that sqaure.
+                        To view the info of any square simply just hover over that square.
                     </p>
                     <p className="text-sm text-subtext2 mt-2">
-                        When hovering over a sqaure you will see these emojis: ❌✅📊
+                        When hovering over a square you will see these emojis: ❌✅📊
                     </p>
                     <p className="text-sm text-subtext2 mt-2">
                         ❌ Represents all the habits that was set to be completed but wasn't on a specific day.

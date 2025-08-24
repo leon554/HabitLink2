@@ -61,7 +61,7 @@ export default function HabitLogCard({habit: h}: HabitProps) {
             return
         }
         if(isSkippedToday()){
-            alert("Habit is skipped for today, unskip the habit to add entries to it.")
+            alert("Habit is skipped for today, un-skip the habit to add entries to it.")
             return
         }
         if(h.type != HabitTypeE.Normal){
@@ -166,7 +166,7 @@ export default function HabitLogCard({habit: h}: HabitProps) {
                                 onSubmit={async () => {
                                     triggerHaptic()
                                     await handleSubmit(value)
-                                    alert("Succes, Well Done! 🎉🎉🎉")
+                                    alert("Success, Well Done! 🎉🎉🎉")
                                 }} />
                         </div>
                     </Model>
@@ -179,9 +179,9 @@ export default function HabitLogCard({habit: h}: HabitProps) {
                                 This will skip your habit today without loosing your streak or other related stats.
                             </p>
                              <p className='text-subtext2 text-xs'>
-                                Note: if you skip this habit it will remove all other entries for this habit that happend today.
+                                Note: if you skip this habit it will remove all other entries for this habit that happened today.
                             </p>
-                            <div className='flex items-center w-fullmt-2 gap-4'>
+                            <div className='flex items-center w-full mt-2 gap-4'>
                                 <ButtonComp
                                     name={<>
                                         {loading ? (

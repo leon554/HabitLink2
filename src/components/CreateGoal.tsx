@@ -196,7 +196,7 @@ export default function CreateGoal() {
                                 <p className="text-sm font-medium  text-subtext-1">Goal Type </p> 
                                 <IoInformationCircleOutline size={14} color="#f5f5f4" className="hover:cursor-pointer" onClick={() => {
                                     triggerHaptic()
-                                    alert("Normal: e.g. Get promotion at work, Time based: e.g Run a 3 hour marathon, Distance based: Run 5km in 20 minutes, Itteration based can be anything: e.g Weight 80kg  where you set the start value to your current weight and the goal value to your goal weight. Note with selecting one of these numeric type everytime you log your goal that value you logged will become your current value, if you want cumulative progress link a habit which will in turn track your progress such as: Goal: 'gym 30 times' and habit: 'gym' ")
+                                    alert("Normal: e.g. Get promotion at work, Time based: e.g Run a 3 hour marathon, Distance based: Run 5km in 20 minutes, Iteration based can be anything: e.g Weight 80kg  where you set the start value to your current weight and the goal value to your goal weight. Note with selecting one of these numeric type everytime you log your goal that value you logged will become your current value, if you want cumulative progress link a habit which will in turn track your progress such as: Goal: 'gym 30 times' and habit: 'gym' ")
                                 }}/>
                             </div>
                             <div className="flex flex-wrap gap-2 justify-stretch mb-6 w-[90%] max-w-[450px]">
@@ -371,7 +371,7 @@ export default function CreateGoal() {
                                     <div className="shadow-sm shadow-gray-200 dark:shadow-none outline-1 rounded-md outline-border flex-grow-1 p-1.5 flex justify-center px-2 hover:cursor-pointer hover:bg-panel2 transition-colors duration-150 ease-in-out"
                                         onClick={() => {
                                             triggerHaptic()
-                                            setHabitName(Util.capitilizeFirst(h) ?? "jfhfd")
+                                            setHabitName(Util.capitilizeFirst(h) ?? "")
                                             setShowNewHabitModal(true)
                                         }}>
                                         <p className="text-xs text-subtext2 font-medium">

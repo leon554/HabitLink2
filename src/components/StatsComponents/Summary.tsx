@@ -40,9 +40,9 @@ export default function Summary() {
                         <InfoBox value={`${Math.round(p.dataSum)}`} text={currentHabit?.type == HabitTypeE.Distance_Based ? 
                             "Total Km" :
                             currentHabit?.type == HabitTypeE.Iteration_Based ?
-                            "Total Itterations" :
+                            "Total Iterations" :
                             "Total Hours"} toolTipText="The sum of all the data logged for the current habit"/>
-                        <InfoBox value={`${p.partialComps}`} text="Partial Completions" toolTipText="This is the number of days the current habit had atleast one entry but where the current habits goal wasnt reached"/>
+                        <InfoBox value={`${p.partialComps}`} text="Partial Completions" toolTipText="This is the number of days the current habit had at least one entry but where the current habits goal wasn't reached"/>
                         <InfoBox value={`${Math.round(p.dataSum/(p.entries ?? 1)*10)/10}`} text={currentHabit?.type == HabitTypeE.Distance_Based ? 
                         "Avg Km/Entry" :
                         currentHabit?.type == HabitTypeE.Iteration_Based ?

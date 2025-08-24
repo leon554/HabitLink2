@@ -45,12 +45,12 @@ export default function DashBoardStats() {
                     </div>
                     <div className="shadow-md shadow-gray-200 dark:shadow-none bg-panel2 p-3 rounded-xl px-4 flex-col flex gap-2 outline-1 outline-border2">
                         <p className="text-title text-sm font-medium">
-                            Perfomance
+                            Performance
                         </p>
                         <div className="grid grid-cols-2 gap-x-12 gap-2 max-sm:grid-cols-1 max-sm:gap-2">
                             <InfoBox value={p(Math.round(Math.min(Math.max(...strengths), 100)))+ "%"} text="Max Strength" toolTipText="The highest strength of all your habits"/>
                             <InfoBox value={p(Math.round(Math.max(...consistencies)*100))+ "%"} text="Max Consistency" toolTipText="The highest consistency of all your habits"/>
-                            <InfoBox value={p(Math.round(Math.min(...strengths))) + "%"} text="Min Strength" toolTipText="The lowest strenght of all of your habits"/>
+                            <InfoBox value={p(Math.round(Math.min(...strengths))) + "%"} text="Min Strength" toolTipText="The lowest strength of all of your habits"/>
                             <InfoBox value={p(Math.round(Math.min(...consistencies)*100))+ "%"} text="Min Consistency" toolTipText="The lowest consistency of all of your habits "/>
                         </div>
                     </div>
@@ -83,11 +83,11 @@ export default function DashBoardStats() {
                             Completions
                         </p>
                         <div className="grid grid-cols-2 gap-x-12 gap-2 max-sm:grid-cols-1 max-sm:gap-2">
-                            <InfoBox value={entries.length} text="Total Entries" toolTipText="Total entries of all your habits. A entry just counts as data you logged regarless if you had a specific habit scheduled or if you met a specific habits goal."/>
-                            <InfoBox value={Math.abs((habitStats.map(s => s.validComps)).reduce((s, a) => s+ a, 0) - habitStats.map(s => s.completions).reduce((s, a) => s + a, 0))} text="Unscheduled Completions" toolTipText="A unscheduled completion counts as a day where you met a habits goal where it wasnt scheduled for that day"/>
+                            <InfoBox value={entries.length} text="Total Entries" toolTipText="Total entries of all your habits. A entry just counts as data you logged regardless if you had a specific habit scheduled or if you met a specific habits goal."/>
+                            <InfoBox value={Math.abs((habitStats.map(s => s.validComps)).reduce((s, a) => s+ a, 0) - habitStats.map(s => s.completions).reduce((s, a) => s + a, 0))} text="Unscheduled Completions" toolTipText="A unscheduled completion counts as a day where you met a habits goal where it wasn't scheduled for that day"/>
                             <InfoBox value={(habitStats.map(s => s.validComps)).reduce((s, a) => s+ a, 0)} text="Scheduled Completions" toolTipText="The total scheduled completions of all of your habits. A scheduled completion counts as a day where a habit was scheduled and you reached its goal/target"/>
-                            <InfoBox value={(habitStats.map(s => s.partialComps)).reduce((s, a) => s+ a, 0)} text="Partial Completions" toolTipText="The total partial completions of all your habits. A partial completions counts as a day you logged a habit but didnt reach its goal regardless if it was due or not"/>
-                            <InfoBox value={(habitStats.map(s => s.missedSessions)).reduce((s, a) => s+ a, 0)} text="Missed Days" toolTipText="The total days where a habit was scheduled but it was't completed/goal wasn's reached"/>
+                            <InfoBox value={(habitStats.map(s => s.partialComps)).reduce((s, a) => s+ a, 0)} text="Partial Completions" toolTipText="The total partial completions of all your habits. A partial completions counts as a day you logged a habit but didn't reach its goal regardless if it was due or not"/>
+                            <InfoBox value={(habitStats.map(s => s.missedSessions)).reduce((s, a) => s+ a, 0)} text="Missed Days" toolTipText="The total days where a habit was scheduled but it was't completed/goal wasn't reached"/>
                             <InfoBox value={Util.fetchAllMapItems(HC.habitsCompletions).flat().filter(c => c.skip).length} text="Skipped Days" toolTipText="The total amount of times you skipped your habits"/>
                         </div>
                     </div>

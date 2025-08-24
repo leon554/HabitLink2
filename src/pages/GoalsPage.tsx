@@ -98,7 +98,7 @@ export default function GoalsPage() {
                         No Goals :(
                     </p>
                     <p className="text-sm text-subtext3">
-                        You currently have no goals, try adding a new goal and then comming back 💪
+                        You currently have no goals, try adding a new goal and then coming back 💪
                     </p>
                     <div className="flex gap-3 w-full">
                         <ButtonComp

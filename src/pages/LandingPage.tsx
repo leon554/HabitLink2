@@ -112,7 +112,7 @@ export default function LandingPage() {
                 <FeatureCard
                   icon={<FaRegClock className="text-blue-500 dark:text-highlight" size={18} />}
                   title="Consistency & streaks"
-                  text="See concistency, strength, and streaks at a glance to stay on track."
+                  text="See consistency, strength, and streaks at a glance to stay on track."
                 />
                 <FeatureCard
                   icon={<FaMagic className="text-blue-500 dark:text-highlight" size={18} />}

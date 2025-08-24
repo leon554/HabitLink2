@@ -46,7 +46,7 @@ export default function CompletionsMonth() {
                         <TbCalendarClock />
                     </div>
                     <p className="text-title font-semibold leading-none pb-1">
-                        Completion Calander
+                        Completion Calendar
                     </p>
                 </div>
                 <IoInformationCircleOutline size={14} color="#57534E" className="hover:cursor-pointer " onClick={() => {
@@ -109,11 +109,11 @@ export default function CompletionsMonth() {
             <Model open={open} onClose={() => setOpen(false)}>
                 <div className="m-5 mx-7 flex flex-col gap-2 w-[80%] max-w-[600px] bg-panel1 rounded-2xl p-8 " onClick={e => e.stopPropagation()}>
                     <p className="text-lg font-medium mb-2">
-                        Calander Info
+                        Calendar Info
                     </p>
                     <div className="max-h-[50dvh] overflow-y-scroll no-scrollbar">
                         <p className="text-subtext2 text-sm text-justify">
-                            The calander shows completions from the past 16 weeks with the current week being on the right
+                            The calendar shows completions from the past 16 weeks with the current week being on the right
                             and the 16th week being on the left.
                         </p>
                         <p className="text-subtext2 text-sm">
@@ -191,5 +191,5 @@ export default function CompletionsMonth() {
 }
 
 function getDayStatus(day: HabitUtil.compDaysType){
-    return day.skip ? "Skiped" : day.done ? "Completed" : day.complete ? "Missed" : "No Entries"
+    return day.skip ? "Skipped" : day.done ? "Completed" : day.complete ? "Missed" : "No Entries"
 }

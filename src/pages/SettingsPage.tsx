@@ -51,7 +51,7 @@ export default function SettingsPage() {
 
     async function submitBug(){
         if(selectedPage == null || selectedType == null){
-            alert("Select a page and bug type before submiting")
+            alert("Select a page and bug type before submitting")
             return
         }
 
@@ -68,11 +68,11 @@ export default function SettingsPage() {
                 </p>
             </div>
             <InfoPanel>
-                <InfoPanel.Title title="Acount"/>
+                <InfoPanel.Title title="Account"/>
                 <InfoPanel.BodyContainer>
                     <InfoPanel.BubbleText text="Status:" bubbleText={`${Util.capitilizeFirst(auth.user?.role)}`} mb={4}/>
                     <InfoPanel.BubbleText text="AI Tokens:" bubbleText={`${auth.localUser?.tokens}`} mb={0}/>
-                    <InfoPanel.SubText text={`Acount created: ${auth.user?.created_at}`}/>
+                    <InfoPanel.SubText text={`Account created: ${auth.user?.created_at}`}/>
                 </InfoPanel.BodyContainer>
             </InfoPanel>
             <InfoPanel>
