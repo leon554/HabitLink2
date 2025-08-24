@@ -33,9 +33,11 @@ export default function Navbar() {
         <>
             <div className="dark:bg-panel1 bg-highlight border-b-1 border-border dark:border-b-1 dark:border-border flex justify-between h-13 items-stretch p-0 fixed top-0 left-0 w-full z-30">
                 <div className="flex items-center gap-2">
-                    <p className="ml-4 text-gray-800 dark:text-neutral-100  text-xl font-mono">
-                        HabitLink
-                    </p>
+                    <div className="flex items-center">
+                        <p className=" text-gray-800 dark:text-neutral-100  text-xl font-mono ml-4">
+                            HabitLink
+                        </p>
+                    </div>
                     <p className="text-xs text-subtext3">
                         (Beta 1.1)
                     </p>
@@ -50,7 +52,7 @@ export default function Navbar() {
                             </Link>
                         </> : 
                         
-                        screenWidth > 500 ? 
+                        screenWidth > 600 ? 
                         <>
                             <Link to={"/dashboard"}>
                                 <button className="h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 text-sm  text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer">

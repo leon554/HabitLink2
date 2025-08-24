@@ -78,8 +78,8 @@ export default function SettingsPage() {
             <InfoPanel>
                 <InfoPanel.Title title="Usage"/>
                 <InfoPanel.BodyContainer>
-                    <InfoPanel.SubText text={`Total Goal Amount: ${String(Array.from(HC.goals.values()).length)}/${auth.localUser?.role == "free" ? "10" : "500"}`}/>
-                    <InfoPanel.SubText text={`Total Habit Amount: ${String(Array.from(HC.habits.values()).length)}/${auth.localUser?.role == "free" ? "10" : "500"}`}/>
+                    <InfoPanel.SubText text={`Total Goal Amount: ${String(Array.from(HC.goals.values()).length)}/${auth.localUser?.role == "free" ? "30" : "500"}`}/>
+                    <InfoPanel.SubText text={`Total Habit Amount: ${String(Array.from(HC.habits.values()).length)}/${auth.localUser?.role == "free" ? "30" : "500"}`}/>
                     <InfoPanel.SubText text={`Total habit completions: ${String(completions)}`}/>
                     <InfoPanel.SubText text={`Total goal completions: ${String(goalComps)}`}/>
                 </InfoPanel.BodyContainer>
