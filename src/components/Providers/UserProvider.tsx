@@ -2,13 +2,14 @@ import { createContext, useContext, useEffect, useRef, useState } from "react"
 import { AuthContext } from "./AuthProvider";
 import { supabase } from "../../supabase-client";
 import { AlertContext } from "../Alert/AlertProvider";
-import {type ChartDataType, type GaolCompletionType, type GoalType, type HabitCompletionType, type HabitType, type IssueType, type ReturnObj, type SubmitIssueType } from "../../utils/types";
+import { type GaolCompletionType, type GoalType, type HabitCompletionType, type HabitType, type IssueType, type ReturnObj, type SubmitIssueType } from "../../utils/types";
 import { dateUtils } from "../../utils/dateUtils";
 import { Util } from "../../utils/util";
 import { GOAL_LIM_FREE, HABIT_LIM_FREE } from "../../utils/Constants";
 import { LockingLoading } from "@/utils/LockingLoad";
 import { type RefObject } from "react";
 import type { habitWorkerPayload, habitWorkerReturnType } from "@/workers/habitWorker";
+import {type  HabitStats } from "../../utils/types";
 
 
 interface UserType{
@@ -86,21 +87,7 @@ export const UserContext = createContext<UserType>(initialValues)
 interface Props {
     children: React.ReactNode;
 }
-export interface HabitStats{
-    compRate: number
-    partialComps: number
-    completions: number
-    missedSessions: number
-    strength: number
-    streak: number
-    entries: number
-    dataSum: number
-    validComps: number
-    completableDays: number
-    chartData: ChartDataType[]
-    compsPerWeek: {completions: number, allCompletions: number, week: Date}[]
-    compsPerMonth: {month: number, data: number}[]
-}
+
 export interface GaolStats{
     habitID: number
     consistency: number
@@ -133,7 +120,6 @@ export default function UserProvider(props: Props) {
         if(!userid) return
         
         const fetchData = async () => {
-            console.time("DataFetch")
             lock()
             await getHabits()
             await getGoals()
@@ -142,7 +128,6 @@ export default function UserProvider(props: Props) {
             unLock()
             await getIssues()
             hasRanRef.current = true
-            console.timeEnd("DataFetch")
         }
         fetchData()
 
@@ -151,8 +136,7 @@ export default function UserProvider(props: Props) {
     useEffect(() => {
 
         if(habits.size == 0 || habitsCompletions.size == 0) return
-        console.time("HabitGoalStats")
-        
+
         lock()
         const habitWorker = new Worker(new URL('../../workers/habitWorker.ts', import.meta.url), { type: 'module' })
         
@@ -174,7 +158,6 @@ export default function UserProvider(props: Props) {
             goals
         } as habitWorkerPayload)
 
-        console.timeEnd("HabitGoalStats")
 
         return () => {
             habitWorker.terminate()
@@ -183,7 +166,7 @@ export default function UserProvider(props: Props) {
     }, [habitsCompletions, habits, goals])
 
     useEffect(() => {
-        console.time("GoalProgress")
+
         lock()
         const values: Map<number, number> = new Map<number, number>()
         goals.forEach(g => {
@@ -208,7 +191,6 @@ export default function UserProvider(props: Props) {
         })
         setGoalProgress(values)
         unLock()
-        console.timeEnd("GoalProgress")
     }, [goalCompletions])
 
 

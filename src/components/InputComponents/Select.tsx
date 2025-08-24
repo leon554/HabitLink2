@@ -79,6 +79,7 @@ export default function Select(props: SelectProps) {
                 {props.items && props.items.map((h) => {
                     return (
                     <p
+                        key={crypto.randomUUID()}
                         className={`hover:bg-highlight gap-1.5 w-full flex items-center justify-start p-1 px-0.5 ${props.largeText ? "" : "text-sm"} rounded-xl transition duration-100 ease-in-out hover:cursor-pointer text-nowrap hover:text-btn-text px-3`}
                         onClick={() => {
                             triggerHaptic()

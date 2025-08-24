@@ -1,14 +1,11 @@
 import { motion, AnimatePresence } from "motion/react";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { AlertContext } from "./AlertProvider";
 import { triggerHaptic } from "tactus";
 
 export default function Alert() {
   const AlertData = useContext(AlertContext);
 
-  useEffect(() => {
-    console.log(AlertData.message)
-  }, [AlertData.message])
   return (
     <>
       <div className={`bg-black w-full h-full fixed  top-0 z-60 ${AlertData.showing ? "opacity-65" : "opacity-0"}`} style={{

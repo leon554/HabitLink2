@@ -1,4 +1,4 @@
-import { type HabitStats } from "@/components/Providers/UserProvider"
+
 export enum SignUpResponses{
     SignUpError,
     UserExists,
@@ -160,6 +160,21 @@ export interface ReturnObj<T> {
   success: boolean
   message?: string
   payload?: T
+}
+export interface HabitStats{
+    compRate: number
+    partialComps: number
+    completions: number
+    missedSessions: number
+    strength: number
+    streak: number
+    entries: number
+    dataSum: number
+    validComps: number
+    completableDays: number
+    chartData: ChartDataType[]
+    compsPerWeek: {completions: number, allCompletions: number, week: Date}[]
+    compsPerMonth: {month: number, data: number}[]
 }
 export const defaultHabitStats: HabitStats = {
   compRate: 0,

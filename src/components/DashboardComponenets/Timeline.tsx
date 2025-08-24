@@ -59,6 +59,7 @@ export default function Timeline() {
                     {completionsToday.map((c, index) => {
                         return (
                             <div
+                                key={index}
                                 className="absolute h-5 w-1 bg-highlight rounded-2xl hover:cursor-pointer group"
                                 style={{ left: `${((Number(c.date) - startDay) / totalDayMs) * 100}%` }}
                                 onMouseEnter={() => {
@@ -103,7 +104,9 @@ export default function Timeline() {
                                                     if(Math.abs(Number(c1.date) - Number(c.date)) <= oneHourMs/2){
                                                         const min = Number(c.date) - oneHourMs/2
                                                         return(
-                                                            <div className="absolute h-4 w-1 bg-highlight rounded-2xl hover:cursor-pointer group/nested top-1/2 transform -translate-y-1/2"
+                                                            <div 
+                                                                key={i}
+                                                                className="absolute h-4 w-1 bg-highlight rounded-2xl hover:cursor-pointer group/nested top-1/2 transform -translate-y-1/2"
                                                                 style={{ left: `${(( (Number(c1.date) - min)) / oneHourMs) * 100}%` }}
                                                                 onMouseEnter={() => setHoveredIndex2(i)} 
                                                                 onMouseLeave={() => setHoveredIndex2(null)} 

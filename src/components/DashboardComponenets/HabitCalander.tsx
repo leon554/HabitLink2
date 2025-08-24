@@ -10,7 +10,6 @@ import { TbCalendarMonthFilled } from "react-icons/tb";
 import ButtonComp from "../primatives/ButtonComp"
 import { colord } from "colord";
 import { themeContext } from "../Providers/ThemeProvider"
-import { useLocation } from "react-router-dom"
 
 
 
@@ -19,8 +18,7 @@ export default function HabitCalander() {
     const HC = useContext(UserContext)
     const {dark} = useContext(themeContext)
     const [open, setOpen] = useState(false)
-    const location = useLocation()
-    const {firstResult: compDays, maxMiss, maxComp} = useMemo(() => HabitUtil.GetCompletionDaysThisPeriodAllHabits(Util.fetchAllMapItems(HC.habits), HC.habitsCompletions), [HC.habitsCompletions, HC.habits, location.key]) 
+    const {firstResult: compDays, maxMiss, maxComp} = useMemo(() => HabitUtil.GetCompletionDaysThisPeriodAllHabits(Util.fetchAllMapItems(HC.habits), HC.habitsCompletions), [HC.habitsCompletions, HC.habits]) 
     const days = ["S", "M", "T", "W", "T", "F", "S", " "]
     const calanderRef = useRef<HTMLDivElement>(null)
     const [columns, setColumns] = useState(16)
@@ -80,7 +78,9 @@ export default function HabitCalander() {
                     <div className="flex flex-col  gap-1.5 mr-0.5 ">
                         {Array(8).fill(null).map((_, i) => {
                             return(
-                                <p className="flex items-center text-xs font-mono text-subtext3 ">
+                                <p 
+                                    key={crypto.randomUUID()}
+                                    className="flex items-center text-xs font-mono text-subtext3 ">
                                     {days[i]}
                                 </p>
                             )
@@ -92,23 +92,25 @@ export default function HabitCalander() {
                                 <div key={i} className="flex flex-col-reverse items-center gap-1.5 w-full min-w-4 mb-[5px]">
                                     {d.map(v => {
                                         return(
-                                            <ToolTip tooltip={
-                                                <div className="rounded-2xl bg-panel2 outline-1 outline-border2 p-3 max-w-[600px] w-30">
-                                                    <div className=" text-xs text-center text-subtext2 w-full">
-                                                        {dateUtils.formatDate(v.day)} {dateUtils.isDatesSameDay(v.day , new Date()) ? "Today" : ""}  {getDayStatus(v)} 
+                                            <div className="h-4 w-full" key={crypto.randomUUID()}>
+                                                <ToolTip tooltip={
+                                                    <div className="rounded-2xl bg-panel2 outline-1 outline-border2 p-3 max-w-[600px] w-30">
+                                                        <div className=" text-xs text-center text-subtext2 w-full">
+                                                            {dateUtils.formatDate(v.day)} {dateUtils.isDatesSameDay(v.day , new Date()) ? "Today" : ""}  {getDayStatus(v)} 
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            }>
-                                                <p className={`w-full h-4 bg-panel2 border-border2/70  shadow-sm shadow-gray-200 dark:shadow-none
-                                                    ${v.completeAmount != 0 || v.missAmount != 0? "dark:border-0 border-1" : "dark:border-0 border-1"}  
-                                                    ${v.creation ? "" : "rounded-sm "}
-                                                    hover:scale-[1.2] transition-all hover:cursor-default ${HC.isCalculating.current.isLoading() ? "animate-pulse duration-1000 " : "duration-200"}`}
-                                                    style={{backgroundColor:  HC.isCalculating.current.isLoading() ? panel: v.completeAmount - v.missAmount < 0 ? 
-                                                        Util.getInterpolatedColor(0, maxMiss, Math.max((v.missAmount), 0), panel, "#ef4444"):
-                                                        Util.getInterpolatedColor(0, maxComp, Math.max((v.completeAmount), 0), panel, highlight)}}>
+                                                }>
+                                                    <p className={`w-full h-4 bg-panel2 border-border2/70  shadow-sm shadow-gray-200 dark:shadow-none
+                                                        ${v.completeAmount != 0 || v.missAmount != 0? "dark:border-0 border-1" : "dark:border-0 border-1"}  
+                                                        ${v.creation ? "" : "rounded-sm "}
+                                                        hover:scale-[1.2] transition-all hover:cursor-default ${HC.isCalculating.current.isLoading() ? "animate-pulse duration-1000 " : "duration-200"}`}
+                                                        style={{backgroundColor:  HC.isCalculating.current.isLoading() ? panel: v.completeAmount - v.missAmount < 0 ? 
+                                                            Util.getInterpolatedColor(0, maxMiss, Math.max((v.missAmount), 0), panel, "#ef4444"):
+                                                            Util.getInterpolatedColor(0, maxComp, Math.max((v.completeAmount), 0), panel, highlight)}}>
 
-                                                </p>
-                                            </ToolTip>
+                                                    </p>
+                                                </ToolTip>
+                                            </div>
                                         )
                                     })}
                                 </div>

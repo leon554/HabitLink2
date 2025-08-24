@@ -68,10 +68,6 @@ export default function AuthProvider(props: Props) {
 
     useEffect(() => {
         const {data: authListener} = supabase.auth.onAuthStateChange(async (_event, session) => {
-            console.log("------------------------------------")
-            console.log("Event: " + _event + ", Session: " );
-            console.log(session)
-            console.log("------------------------------------")
             setSession(session)
         })
 

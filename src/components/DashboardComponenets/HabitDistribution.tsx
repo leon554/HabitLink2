@@ -127,7 +127,7 @@ export default function HabitDistribution(p: Props) {
             {HC.habits.size < 2 ? (
                 <div className="h-55 border-1 border-border2 flex justify-center items-center rounded-2xl">
                 <p className="text-sm p-6 max-sm:text-xs text-subtext3 flex flex-wrap text-center justify-center items-center gap-2">
-                    Create {2 - chartData.length} more habit/s to see this graph <FaChartLine />
+                    Create {2 - HC.habits.size} more habit/s to see this graph <FaChartLine />
                 </p>
                 </div>
             ) : (

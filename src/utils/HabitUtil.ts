@@ -599,7 +599,6 @@ export namespace HabitUtil{
     }
 
     export function GetCompletionDaysThisPeriodAllHabits(habits: HabitType[], completions: Map<number, HabitCompletionType[]>){
-        console.time("Calander")
         const results = habits.map((h, _) => {
             return getCompletionDaysThisPeriod(h, completions.get(h.id))
         })
@@ -632,7 +631,6 @@ export namespace HabitUtil{
                 }
             }
         }
-        console.timeEnd("Calander")
         return {firstResult, maxMiss, maxComp}
     }
 

@@ -1,7 +1,8 @@
 import type { HabitType, GoalType, HabitCompletionType, HabitTypeE, ChartDataType} from "@/utils/types"
-import  type { HabitStats, GaolStats } from "@/components/Providers/UserProvider"
+import  type { GaolStats } from "@/components/Providers/UserProvider"
 import { HabitUtil } from "@/utils/HabitUtil"
 import { Util } from "@/utils/util"
+import { type HabitStats } from "@/utils/types"
 
 
 export interface habitWorkerPayload{
