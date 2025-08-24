@@ -1,5 +1,5 @@
 import InfoBox from "./InfoBox";
-import { HabitTypeE } from "../../utils/types";
+import { defaultHabitStats, HabitTypeE } from "../../utils/types";
 import { UserContext } from "../Providers/UserProvider";
 import { useContext, useState } from "react";
 import { IoInformationCircleOutline } from "react-icons/io5";
@@ -10,7 +10,7 @@ export default function Summary() {
 
     const [open, setOpen] = useState(false)
     const {habitStats, currentHabit} = useContext(UserContext)
-    const p = habitStats.get(currentHabit!.id)!
+    const p = habitStats.get(currentHabit!.id) ?? defaultHabitStats
 
     return (
         <div className="shadow-md shadow-gray-200 dark:shadow-none w-full relative bg-panel1 rounded-2xl font outline-1 outline-border text-title justify-center p-7 pt-5 pb-7 flex flex-col items-center gap-4">

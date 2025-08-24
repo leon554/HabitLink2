@@ -612,6 +612,7 @@ export namespace HabitUtil{
 
         let maxMiss = 0
         let maxComp = 0
+        if(completions.size == 0) return {firstResult, maxMiss, maxComp}
 
         for(let i = 0; i < results.length; i++){
             for(let j = 0; j < results[i].length; j++){

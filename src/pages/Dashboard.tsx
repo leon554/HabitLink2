@@ -133,7 +133,7 @@ export default function Dashboard() {
                                 </div>
                                 <div className="flex  items-center gap-3">
                                     <p className="text-title text-lg font-medium flex items-center gap-1.5">
-                                        {<IoFlame className="text-highlight" size={16}/>} {HC.isCalculating.current.isLoading() ? 0 : Math.round(Util.avgNumArr(habitStats.map(s => s.streak)))} 
+                                        {<IoFlame className="text-highlight" size={16}/>} {HC.isCalculating.current.isLoading() ? 0 : Util.preventNan(Math.round(Util.avgNumArr(habitStats.map(s => s.streak))))} 
                                     </p>
                                     <p className="text-subtext2 text-xs ml-[-4px]">
                                         Avg Streak

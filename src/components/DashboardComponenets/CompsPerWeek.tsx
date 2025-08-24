@@ -35,14 +35,14 @@ export default function CompsPerWeek(p: Props) {
 
     const rawWeekData = useMemo(() => {
         return p.habitId ? 
-            HC.habitStats.get(p.habitId)!.compsPerWeek : 
-            Util.fetchAllMapItems(HC.habitStats).map(i => i.compsPerWeek).flat()
+            HC.habitStats.get(p.habitId)?.compsPerWeek ?? [] : 
+            Util.fetchAllMapItems(HC.habitStats).map(i => i?.compsPerWeek ?? []).flat()
     }, [HC.habitStats, HC.currentHabit, settings]) 
 
     const rawMonthData = useMemo(() => {
         return p.habitId ? 
-            HC.habitStats.get(p.habitId)!.compsPerMonth : 
-            Util.fetchAllMapItems(HC.habitStats).map(i => i.compsPerMonth).flat()
+            HC.habitStats.get(p.habitId)?.compsPerMonth ?? [] : 
+            Util.fetchAllMapItems(HC.habitStats).map(i => i?.compsPerMonth ?? []).flat()
     }, [HC.habitStats, HC.currentHabit, settings]) 
 
     const [formatedChartData, setFormatedChartData] = useState(new Map<string|number, number>()) 

@@ -148,4 +148,9 @@ export namespace Util{
         })
         return fixed.join("")
     }
+    export function preventNan(value: number | undefined){
+        if(value === undefined) return 0
+        if(!Number.isFinite(value)) return 0
+        return isNaN(value) ? 0 : value
+    }
 }

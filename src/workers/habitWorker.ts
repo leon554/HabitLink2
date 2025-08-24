@@ -1,6 +1,7 @@
 import type { HabitType, GoalType, HabitCompletionType, HabitTypeE, ChartDataType} from "@/utils/types"
 import  type { HabitStats, GaolStats } from "@/components/Providers/UserProvider"
 import { HabitUtil } from "@/utils/HabitUtil"
+import { Util } from "@/utils/util"
 
 
 export interface habitWorkerPayload{
@@ -21,28 +22,29 @@ self.onmessage = function(event){
 
 function calculateStat({habits, habitsCompletions, goals}: habitWorkerPayload){
     const HabitStatsMap = new Map<number, HabitStats>()
+    const prev = Util.preventNan
     habits.forEach(h => {
         const currentHabitComps = habitsCompletions.get(h.id) ?? []
 
         const {compRate, missedSessions, validCompletions: validComps, completableDays, compsPerWeek} = HabitUtil.getCompletionRate(h, currentHabitComps)
-        const strength = HabitUtil.getStrength(h, currentHabitComps)
-        const streak = HabitUtil.getStreak(h, currentHabitComps)
+        const strength = prev(HabitUtil.getStrength(h, currentHabitComps))
+        const streak = prev(HabitUtil.getStreak(h, currentHabitComps))
         const {validComps: completions, partialComps} = HabitUtil.getCompletions(h, currentHabitComps)
-        const entries = h ? habitsCompletions.get(Number(h.id))?.length : 0
-        const dataSum = HabitUtil.getHabitDataSum(currentHabitComps, h?.type as HabitTypeE)
+        const entries = prev(h ? habitsCompletions.get(Number(h.id))?.length : 0)
+        const dataSum = prev(HabitUtil.getHabitDataSum(currentHabitComps, h?.type as HabitTypeE))
         const chartData = HabitUtil.getCompRateStrengthOverTimeChartData(h, currentHabitComps) as ChartDataType[]
         const compsPerMonth = HabitUtil.getCompletionsPerMonth(h, habitsCompletions.get(h.id))
 
 
         const data = {
             compRate: isNaN(compRate) ? 0 : Math.min(Math.max(0, compRate), 1), 
-            missedSessions, 
-            validComps, 
+            missedSessions : prev(missedSessions), 
+            validComps: prev(validComps), 
             completableDays,
             strength,
             streak,
-            completions,
-            partialComps,
+            completions: prev(completions),
+            partialComps: prev(partialComps),
             entries,
             dataSum,
             chartData,

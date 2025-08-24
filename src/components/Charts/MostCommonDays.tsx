@@ -133,7 +133,7 @@ export default function MostCommonDays(p: Props) {
                 </div>
             </div>
             {comps.length < 5 ? 
-                <div className="h-44 w-full flex justify-center items-center  outline-1 rounded-2xl outline-border2">
+                <div className="h-52 w-full flex justify-center items-center  outline-1 rounded-2xl outline-border2">
                     <p className="flex items-center gap-1.5 text-subtext2 text-sm">
                         Log 5 or more entries to unlock <FaChartLine />
                     </p>

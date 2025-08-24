@@ -16,6 +16,7 @@ export default function DashBoardStats() {
     const strengths = habitStats.map(h => h.strength)
     const consistencies = habitStats.map(h => h.compRate)
     const entries = Util.fetchAllMapItems(HC.habitsCompletions).reduce((s, a) => [...s, ...a], [])
+    const p = Util.preventNan
 
     return (
         HC.isCalculating.current.isLoading() ? 
@@ -47,10 +48,10 @@ export default function DashBoardStats() {
                             Perfomance
                         </p>
                         <div className="grid grid-cols-2 gap-x-12 gap-2 max-sm:grid-cols-1 max-sm:gap-2">
-                            <InfoBox value={Math.round(Math.min(Math.max(...strengths), 100))+ "%"} text="Max Strength" toolTipText="The highest strength of all your habits"/>
-                            <InfoBox value={Math.round(Math.max(...consistencies)*100)+ "%"} text="Max Consistency" toolTipText="The highest consistency of all your habits"/>
-                            <InfoBox value={Math.round(Math.min(...strengths)) + "%"} text="Min Strength" toolTipText="The lowest strenght of all of your habits"/>
-                            <InfoBox value={Math.round(Math.min(...consistencies)*100)+ "%"} text="Min Consistency" toolTipText="The lowest consistency of all of your habits "/>
+                            <InfoBox value={p(Math.round(Math.min(Math.max(...strengths), 100)))+ "%"} text="Max Strength" toolTipText="The highest strength of all your habits"/>
+                            <InfoBox value={p(Math.round(Math.max(...consistencies)*100))+ "%"} text="Max Consistency" toolTipText="The highest consistency of all your habits"/>
+                            <InfoBox value={p(Math.round(Math.min(...strengths))) + "%"} text="Min Strength" toolTipText="The lowest strenght of all of your habits"/>
+                            <InfoBox value={p(Math.round(Math.min(...consistencies)*100))+ "%"} text="Min Consistency" toolTipText="The lowest consistency of all of your habits "/>
                         </div>
                     </div>
                     <div className="shadow-md shadow-gray-200 dark:shadow-none bg-panel2 p-3 rounded-xl px-4 flex-col flex gap-2 outline-1 outline-border2">
@@ -58,10 +59,10 @@ export default function DashBoardStats() {
                             Averages
                         </p>
                         <div className="grid grid-cols-2 gap-x-12 gap-2 max-sm:grid-cols-1 max-sm:gap-2">
-                            <InfoBox value={Math.round(Util.avgNumArr(strengths)) + "%"} text="Strength Avg" toolTipText="The average strength of all your habits. "/>
-                            <InfoBox value={Math.round(Util.avgNumArr(consistencies)*100) + "%"} text="Consistency Avg" toolTipText="The Avg consistency of all your habits"/>
-                            <InfoBox value={Math.round(Util.standardDeviation(strengths))} text="Strength SD" toolTipText="The standard deviation of all your habits strengths"/>
-                            <InfoBox value={Math.round(Util.standardDeviation(consistencies)*100)} text="Consistency SD" toolTipText="This is the standard deviation of all your habits consistencies"/>
+                            <InfoBox value={p(Math.round(Util.avgNumArr(strengths))) + "%"} text="Strength Avg" toolTipText="The average strength of all your habits. "/>
+                            <InfoBox value={p(Math.round(Util.avgNumArr(consistencies)*100)) + "%"} text="Consistency Avg" toolTipText="The Avg consistency of all your habits"/>
+                            <InfoBox value={p(Math.round(Util.standardDeviation(strengths)))} text="Strength SD" toolTipText="The standard deviation of all your habits strengths"/>
+                            <InfoBox value={p(Math.round(Util.standardDeviation(consistencies)*100))} text="Consistency SD" toolTipText="This is the standard deviation of all your habits consistencies"/>
                         </div>
                     </div>
                 </div>
@@ -71,10 +72,10 @@ export default function DashBoardStats() {
                             Streaks
                         </p>
                         <div className="grid grid-cols-2 gap-x-12 gap-2 max-sm:grid-cols-1 max-sm:gap-2">
-                            <InfoBox value={Math.max(...habitStats.map(s => s.streak))} text="Best Streak" toolTipText="The best streak of all your habits"/>
-                            <InfoBox value={Math.min(...habitStats.map(s => s.streak))} text="Worst Streak" toolTipText="The worst streak of all your habits"/>
-                            <InfoBox value={Math.round(Util.avgNumArr(habitStats.map(s => s.streak)))} text="Avg Streak" toolTipText="The average streak of all your habits"/>
-                            <InfoBox value={Math.round(Util.standardDeviation(habitStats.map(s => s.streak)))} text="Streak SD" toolTipText="The standard deviation of all your habits streaks"/>
+                            <InfoBox value={p(Math.max(...habitStats.map(s => s.streak)))} text="Best Streak" toolTipText="The best streak of all your habits"/>
+                            <InfoBox value={p(Math.min(...habitStats.map(s => s.streak)))} text="Worst Streak" toolTipText="The worst streak of all your habits"/>
+                            <InfoBox value={p(Math.round(Util.avgNumArr(habitStats.map(s => s.streak))))} text="Avg Streak" toolTipText="The average streak of all your habits"/>
+                            <InfoBox value={p(Math.round(Util.standardDeviation(habitStats.map(s => s.streak))))} text="Streak SD" toolTipText="The standard deviation of all your habits streaks"/>
                         </div>
                     </div>
                     <div className="shadow-md shadow-gray-200 dark:shadow-none bg-panel2 p-3 rounded-xl px-4 flex-col flex gap-2 outline-1 outline-border2">
@@ -95,8 +96,8 @@ export default function DashBoardStats() {
                             Additional
                         </p>
                         <div className="grid grid-cols-2 gap-x-12 gap-2 max-sm:grid-cols-1 max-sm:gap-2">
-                            <InfoBox value={differenceInDays(new Date(), new Date(avgHabitAge)) + "d"} text="Avg Habit Age" toolTipText="The average age of all your habits"/>
-                            <InfoBox value={differenceInDays(new Date(), new Date(avgGoalAge)) + "d"} text="Avg Goal Age" toolTipText="The average age of all your goals"/>
+                            <InfoBox value={p(differenceInDays(new Date(), new Date(avgHabitAge))) + "d"} text="Avg Habit Age" toolTipText="The average age of all your habits"/>
+                            <InfoBox value={p(differenceInDays(new Date(), new Date(avgGoalAge))) + "d"} text="Avg Goal Age" toolTipText="The average age of all your goals"/>
                         </div>
                     </div>
                 </div>

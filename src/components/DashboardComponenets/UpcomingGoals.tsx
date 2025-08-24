@@ -7,6 +7,7 @@ import { HabitUtil } from "@/utils/HabitUtil"
 import { useNavigate } from "react-router-dom"
 import { TbTargetArrow } from "react-icons/tb";
 import { TbCalendarCheck } from "react-icons/tb";
+import ButtonComp from "../primatives/ButtonComp"
 
 
 export default function UpcomingGoals() {
@@ -59,9 +60,17 @@ export default function UpcomingGoals() {
                 </div> :
                 <div className="w-full flex flex-col gap-2">
                     {upcommingGoals.length == 0 ?
-                    <p className="text-subtext2 text-xs">
-                        No upcomming goals, try and create a new goal
-                    </p>:
+                    <div className="flex flex-col items-start gap-3 flex-wrap">
+                        <p className="text-subtext2 text-sm">
+                            No upcomming goals, try and create a new goal
+                        </p>
+                        <ButtonComp
+                            name={"New Goal"}
+                            highlight={false}
+                            onSubmit={() => navigate("/creategoal")}
+                            small={true}/>
+                    </div>
+                    :
                     upcommingGoals.map((g, i) => {
                         return(
                             <div className={`bg-panel2 px-2 rounded-xl border-1 border-border2 hover:cursor-pointer hover:scale-99 transition-all duration-150 ease-in-out text-sm  py-2  flex justify-between items-center gap-2 shadow-sm shadow-gray-200 dark:shadow-none`} key={i}
@@ -105,10 +114,15 @@ export default function UpcomingGoals() {
                     </p>
                 </div>
                 :
-                <div className="h-10 flex items-center">
+                <div className="flex flex-col items-start gap-3">
                     <p className="text-subtext2 text-sm">
-                        🎉 Congratulations! You've completed all your habits for today — well done! 🎉
+                        🎉 Congratulations! You've completed all your habits for today — well done! 🎉 You can always add another habit 😄
                     </p>
+                    <ButtonComp
+                            name={"New Habit"}
+                            highlight={false}
+                            onSubmit={() => navigate("/create")}
+                            small={true}/>
                 </div>:
                 <div className="w-full max-h-36 overflow-y-scroll no-scrollbar flex flex-col gap-2  p-[1px] justify-stretch items-center">
                     {tasksToday.map((t, _) => {

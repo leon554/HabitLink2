@@ -10,6 +10,7 @@ import { TbCalendarMonthFilled } from "react-icons/tb";
 import ButtonComp from "../primatives/ButtonComp"
 import { colord } from "colord";
 import { themeContext } from "../Providers/ThemeProvider"
+import { useLocation } from "react-router-dom"
 
 
 
@@ -18,10 +19,12 @@ export default function HabitCalander() {
     const HC = useContext(UserContext)
     const {dark} = useContext(themeContext)
     const [open, setOpen] = useState(false)
-    const {firstResult: compDays, maxMiss, maxComp} = useMemo(() => HabitUtil.GetCompletionDaysThisPeriodAllHabits(Util.fetchAllMapItems(HC.habits), HC.habitsCompletions) ?? [], [HC.habitsCompletions]) 
+    const location = useLocation()
+    const {firstResult: compDays, maxMiss, maxComp} = useMemo(() => HabitUtil.GetCompletionDaysThisPeriodAllHabits(Util.fetchAllMapItems(HC.habits), HC.habitsCompletions), [HC.habitsCompletions, HC.habits, location.key]) 
     const days = ["S", "M", "T", "W", "T", "F", "S", " "]
     const calanderRef = useRef<HTMLDivElement>(null)
     const [columns, setColumns] = useState(16)
+
 
 
     const [panel, setPanel] = useState(colord(getComputedStyle(document.documentElement).getPropertyValue('--color-panel2').trim()).toHex())
@@ -35,6 +38,7 @@ export default function HabitCalander() {
 
         return () => clearTimeout(timeout);
     }, [dark])
+    
 
     useEffect(() => {
         if (!calanderRef.current) return;
@@ -85,7 +89,7 @@ export default function HabitCalander() {
                     {compDays.map((d, i) => {
                         if(compDays.length - i <= columns){
                             return(
-                                <div key={i} className="flex flex-col-reverse items-center gap-1.5 w-full min-w-4 ">
+                                <div key={i} className="flex flex-col-reverse items-center gap-1.5 w-full min-w-4 mb-[5px]">
                                     {d.map(v => {
                                         return(
                                             <ToolTip tooltip={
@@ -95,7 +99,7 @@ export default function HabitCalander() {
                                                     </div>
                                                 </div>
                                             }>
-                                                <p className={`w-full h-4 border-border2/70  shadow-sm shadow-gray-200 dark:shadow-none
+                                                <p className={`w-full h-4 bg-panel2 border-border2/70  shadow-sm shadow-gray-200 dark:shadow-none
                                                     ${v.completeAmount != 0 || v.missAmount != 0? "dark:border-0 border-1" : "dark:border-0 border-1"}  
                                                     ${v.creation ? "" : "rounded-sm "}
                                                     hover:scale-[1.2] transition-all hover:cursor-default ${HC.isCalculating.current.isLoading() ? "animate-pulse duration-1000 " : "duration-200"}`}

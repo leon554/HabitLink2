@@ -42,7 +42,7 @@ export default function BestHabits() {
     }
 
     return (
-        <div className="flex flex-col gap-3 m-7 my-6">
+        <div className="flex flex-col gap-3 m-7 my-6 h-full">
             <div className="flex justify-between items-center">
                 <div className="flex items-center gap-4 mb-2">
                     <div className="shadow-sm shadow-gray-200 dark:shadow-none bg-panel2 outline-1 outline-border2 text-subtext2 p-1.5 rounded-lg">
@@ -97,58 +97,61 @@ export default function BestHabits() {
                     )
                 })}
             </div>
-            <div className="flex items-center gap-4 mb-1.5 mt-3.5">
-                <div className="shadow-sm shadow-gray-200 dark:shadow-none bg-panel2 outline-1 outline-border2 text-subtext2  p-1.5 rounded-lg">
-                    <TbArrowBigDownLines />
+            <div className=" h-full ">
+                
+                <div className="flex items-center gap-4 mb-1.5 mt-3.5 ">
+                    <div className="shadow-sm shadow-gray-200 dark:shadow-none bg-panel2 outline-1 outline-border2 text-subtext2  p-1.5 rounded-lg">
+                        <TbArrowBigDownLines />
+                    </div>
+                    <p className="text-lg text-title font-semibold leading-none pb-1">
+                        Worst Habits
+                    </p>
                 </div>
-                <p className="text-lg text-title font-semibold leading-none pb-1">
-                    Worst Habits
-                </p>
-            </div>
-            {HC.habits.size < 6 ? 
-            <div className="outline-1 h-20 outline-border2 rounded-xl flex justify-center items-center">
-                <p className="text-subtext3 text-xs">
-                    Create {6- HC.habits.size} more habits to see your worst habits
-                </p>
-            </div>: 
-            <div className="flex flex-col gap-2">
-                {habits.slice(-3).reverse().map((h, _) => {
-                    return(
-                        <div className={`shadow-sm shadow-gray-200 dark:shadow-none h-[42px] bg-panel2 ${HC.isCalculating.current.isLoading() ? "animate-pulse" : ""} px-2 rounded-xl border-1 hover:scale-99 transition-all duration-150 ease-in-out hover:cursor-pointer  flex justify-between items-center text-sm text-subtext2 py-2 border-b-1 border-border2 gap-2 pb-3`}
-                            onClick={() => {
-                                HC.setCurrentHabit(HC.habits.get(h.id) ?? null)
-                                navigate("/stats")
-                            }}>
-                            {HC.isCalculating.current.isLoading() ?
-                                null :
-                                <>
-                                    <p className=" text-md truncate">
-                                        {h.icon} {Util.capitilizeFirst(h.name)}
-                                    </p>
-                                    <p>
+                {HC.habits.size < 6 ? 
+                <div className="outline-1 h-[76%] outline-border2 rounded-xl mt-6 flex justify-center items-center">
+                    <p className="text-subtext3 text-xs">
+                        Create {6- HC.habits.size} more habits to see your worst habits
+                    </p>
+                </div>: 
+                <div className="flex flex-col gap-2">
+                    {habits.slice(-3).reverse().map((h, _) => {
+                        return(
+                            <div className={`shadow-sm shadow-gray-200 dark:shadow-none h-[42px] bg-panel2 ${HC.isCalculating.current.isLoading() ? "animate-pulse" : ""} px-2 rounded-xl border-1 hover:scale-99 transition-all duration-150 ease-in-out hover:cursor-pointer  flex justify-between items-center text-sm text-subtext2 py-2 border-b-1 border-border2 gap-2 pb-3`}
+                                onClick={() => {
+                                    HC.setCurrentHabit(HC.habits.get(h.id) ?? null)
+                                    navigate("/stats")
+                                }}>
+                                {HC.isCalculating.current.isLoading() ?
+                                    null :
+                                    <>
+                                        <p className=" text-md truncate">
+                                            {h.icon} {Util.capitilizeFirst(h.name)}
+                                        </p>
+                                        <p>
 
-                                    </p>
-                                    <div className="flex gap-2 items-center text-subtext3">
-                                        <div className="flex gap-1 items-center">
-                                            📈 
-                                            <p className="text-xs w-8 ">
-                                                {Math.round(h.consistency*100)}% 
-                                            </p>
+                                        </p>
+                                        <div className="flex gap-2 items-center text-subtext3">
+                                            <div className="flex gap-1 items-center">
+                                                📈 
+                                                <p className="text-xs w-8 ">
+                                                    {Math.round(h.consistency*100)}% 
+                                                </p>
+                                            </div>
+                                            <div className="flex gap-0.5 items-center">
+                                                💪 
+                                                <p className="text-xs w-8 text-center">
+                                                    {`${Math.round(h.strength)}`}%
+                                                </p>
+                                            </div>
                                         </div>
-                                        <div className="flex gap-0.5 items-center">
-                                            💪 
-                                            <p className="text-xs w-8 text-center">
-                                                {`${Math.round(h.strength)}`}%
-                                            </p>
-                                        </div>
-                                    </div>
-                                </>
-                            }
-                        </div>
-                    )
-                })}
+                                    </>
+                                }
+                            </div>
+                        )
+                    })}
+                </div>
+                }
             </div>
-            }
         </div>
     )
 }
