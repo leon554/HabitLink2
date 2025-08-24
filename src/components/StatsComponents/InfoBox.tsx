@@ -1,10 +1,12 @@
 import type { ReactNode } from "react"
 import ToolTip from "../ToolTip"
+import { AnimatedNumber } from "../AnimateNumber"
 
 interface Props{
     value: string | number | ReactNode
     text: string
     toolTipText: string
+    addPercent: boolean
 }
 export default function InfoBox(p: Props) {
     return (
@@ -20,7 +22,7 @@ export default function InfoBox(p: Props) {
                     {p.text}
                 </p>
                 <p className="text-md text-subtext1 leading-none">
-                    {p.value}
+                    {isNaN(Number(p.value)) ? p.value : <AnimatedNumber value={Number(p.value)} duration={0.8}/>}{p.addPercent ? "%" : null}
                 </p>
             </div>
         </ToolTip>

@@ -65,6 +65,14 @@ export default function LogPage() {
                             <Switch setStatus={(b: boolean) => setSettings({...settings, showDue: b})} 
                                 ticked={settings.showDue} />
                         </div>
+
+                        <div className="flex items-center w-full gap-3 ">
+                            <p className="text-subtext1 dark:text-subtext2  text-sm">
+                                Show streaks:
+                            </p>
+                            <Switch setStatus={(b: boolean) => setSettings({...settings, dontShowStreaks: !b})} 
+                                ticked={!settings.dontShowStreaks} />
+                        </div>
                     </div>
                 </div>
             </div>

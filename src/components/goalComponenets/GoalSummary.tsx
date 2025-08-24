@@ -56,12 +56,12 @@ export default function GoalSummary() {
                 </div>
             </div>
             <div className="gap-3 gap-x-14 grid-cols-2 max-sm:grid-cols-1 grid  items-stretch w-full">
-                <InfoBox value={String(habits.length)} text="Associated Habits" toolTipText="The number of habits associated to this goal. All associated habits are used for the data displayed for this goal"/>
-                <InfoBox value={onTrack} text="On Track" toolTipText="This indicator shows whether you're on track to complete your goal. It is calculated by comparing your time progress with your actual progress. If your actual progress is greater than your time progress, the result is 'Yes', meaning you're on track. Both values can be viewed at the top of the page."/>
-                <InfoBox value={String(Math.max(...concistencies)) + "%"} text="Max Consistency" toolTipText="This is the highest consistency of all your associated habits"/>
-                <InfoBox value={String(Math.min(...concistencies)) + "%"} text="Min Consistency" toolTipText="This is the lowest consistency of all your associated habits"/>
-                <InfoBox value={String(Math.max(...strengths)) + "%"} text="Max Strength" toolTipText="This is the highest strength of all your associated habits"/>
-                <InfoBox value={String(Math.min(...strengths)) + "%"} text="Min Strength" toolTipText="This is the lowest consistency of all your associated habits"/>
+                <InfoBox addPercent={false} value={String(habits.length)} text="Associated Habits" toolTipText="The number of habits associated to this goal. All associated habits are used for the data displayed for this goal"/>
+                <InfoBox addPercent={false} value={onTrack} text="On Track" toolTipText="This indicator shows whether you're on track to complete your goal. It is calculated by comparing your time progress with your actual progress. If your actual progress is greater than your time progress, the result is 'Yes', meaning you're on track. Both values can be viewed at the top of the page."/>
+                <InfoBox addPercent={true} value={String(Math.max(...concistencies)) } text="Max Consistency" toolTipText="This is the highest consistency of all your associated habits"/>
+                <InfoBox addPercent={true} value={String(Math.min(...concistencies)) } text="Min Consistency" toolTipText="This is the lowest consistency of all your associated habits"/>
+                <InfoBox addPercent={true} value={String(Math.max(...strengths)) } text="Max Strength" toolTipText="This is the highest strength of all your associated habits"/>
+                <InfoBox addPercent={true} value={String(Math.min(...strengths)) } text="Min Strength" toolTipText="This is the lowest consistency of all your associated habits"/>
             </div>
         </div>
     )

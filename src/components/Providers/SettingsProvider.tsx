@@ -8,6 +8,7 @@ interface Settings{
     showRanks: boolean
     countUnscheduledCompletions: boolean
     dontShowRed: boolean
+    dontShowStreaks: boolean
 }
 const initialSettings: Settings = {
     showDetails: true,
@@ -15,7 +16,8 @@ const initialSettings: Settings = {
     showDue: false,
     showRanks: false,
     countUnscheduledCompletions: false,
-    dontShowRed: false
+    dontShowRed: false,
+    dontShowStreaks: false
 }
 interface SettingsType{
   settings: Settings 

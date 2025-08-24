@@ -162,7 +162,6 @@ export default function UserProvider(props: Props) {
 
         return () => {
             habitWorker.terminate()
-            //unLock()
         }
     }, [habitsCompletions, habits, goals])
 

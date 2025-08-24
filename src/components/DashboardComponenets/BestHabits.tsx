@@ -1,10 +1,12 @@
-import { useContext, useState } from "react"
+import { useContext, useState} from "react"
 import { UserContext } from "../Providers/UserProvider"
 import { Util } from "@/utils/util"
 import { TbTrophy } from "react-icons/tb";
 import { TbArrowBigDownLines } from "react-icons/tb";
 import Select from "../InputComponents/Select";
 import { useNavigate } from "react-router-dom";
+import { AnimatedNumber } from "../AnimateNumber";
+
 
 interface Data{
     id: number
@@ -26,7 +28,8 @@ export default function BestHabits() {
             name: h.name,
             icon: h.icon,
             consistency: HC.habitStats.get(h.id)?.compRate ?? 0, 
-            strength: HC.habitStats.get(h.id)?.strength  ?? 0
+            strength: HC.habitStats.get(h.id)?.strength  ?? 0,
+            streak: HC.habitStats.get(h.id)?.streak  ?? 0
         }
     }).sort((a,b) => getProperData(b) - getProperData(a))
 
@@ -41,6 +44,7 @@ export default function BestHabits() {
         }
     }
 
+
     return (
         <div className="flex flex-col gap-3 m-7 my-6 h-full">
             <div className="flex justify-between items-center">
@@ -51,6 +55,7 @@ export default function BestHabits() {
                     <p className="text-lg text-title font-semibold leading-none pb-1">
                         Best Habits
                     </p>
+                   
                 </div>
                 <div className="flex gap-1.5 items-center mb-2">
                      <Select items={items}
@@ -76,20 +81,19 @@ export default function BestHabits() {
                                     <p className=" text-md truncate">
                                         {h.icon} {Util.capitilizeFirst(h.name)}
                                     </p>
-                                    <p>
-
-                                    </p>
                                     <div className="flex gap-2 items-center text-subtext3">
+                                        
                                         <div className="flex gap-1 items-center">
                                             📈 
                                             <p className="text-xs w-8 ">
-                                                {Math.round(h.consistency*100)}% 
+                                                <AnimatedNumber value={Math.round(h.consistency*100) }/>%
                                             </p>
                                         </div>
                                         <div className="flex gap-0.5 items-center">
                                             💪 
                                             <p className="text-xs w-8 text-center">
-                                                {`${Math.round(h.strength)}`}%
+                                                <AnimatedNumber value={Math.round(h.strength) }/>%
+
                                             </p>
                                         </div>
                                     </div>
@@ -129,20 +133,18 @@ export default function BestHabits() {
                                         <p className=" text-md truncate">
                                             {h.icon} {Util.capitilizeFirst(h.name)}
                                         </p>
-                                        <p>
-
-                                        </p>
                                         <div className="flex gap-2 items-center text-subtext3">
-                                            <div className="flex gap-1 items-center">
-                                                📈 
-                                                <p className="text-xs w-8 ">
-                                                    {Math.round(h.consistency*100)}% 
-                                                </p>
+                                           <div className="flex gap-1 items-center">
+                                            📈 
+                                            <p className="text-xs w-8 ">
+                                                <AnimatedNumber value={Math.round(h.consistency*100) }/>%
+                                            </p>
                                             </div>
                                             <div className="flex gap-0.5 items-center">
                                                 💪 
                                                 <p className="text-xs w-8 text-center">
-                                                    {`${Math.round(h.strength)}`}%
+                                                    <AnimatedNumber value={Math.round(h.strength) }/>%
+
                                                 </p>
                                             </div>
                                         </div>

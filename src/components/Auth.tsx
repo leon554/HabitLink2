@@ -20,7 +20,7 @@ interface FormProps{
 }
 export default function Auth() {
     const [formData, setFormData] = useState<FormProps>({name: "", email: "", password: "", confirmPassword: ""})
-    const [login, setLogin] = useState(false)
+    const [login, setLogin] = useState(true)
     const navigate = useNavigate()
 
     const auth = useContext(AuthContext)

@@ -47,7 +47,7 @@ export default function Navbar() {
                         <>
                             <Link to={"/auth"}>
                                 <button className="h-13 pl-4 pr-4 text-xs font-medium text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer">
-                                    Sign up
+                                    Sign In
                                 </button>
                             </Link>
                         </> : 
