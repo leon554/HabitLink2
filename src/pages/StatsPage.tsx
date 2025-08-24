@@ -17,11 +17,14 @@ import FullCircleProgressBar from "@/components/InputComponents/FullCircleProgre
 import { triggerHaptic } from "tactus";
 import CompsPerWeek from "@/components/DashboardComponenets/CompsPerWeek";
 import SkipChart from "@/components/StatsComponents/SkipChart";
+import ButtonComp from "@/components/primatives/ButtonComp";
 
 export default function StatsPage() {
     const HC = useContext(UserContext)
     const auth = useContext(AuthContext)
     const navigate =  useNavigate()
+
+    const compRate = HC.habitStats.get(HC.currentHabit?.id ?? 0)?.compRate ?? 0
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -72,26 +75,37 @@ export default function StatsPage() {
             : HC.isCalculating.current.isLoading() || auth.loading? 
             <AiOutlineLoading className="animate-spin text-subtext1 mt-25" size={30}/> :
             Util.fetchAllMapItems(HC.habits).length == 0 && !HC.currentHabit ? 
-               <div className="w-[90%] max-w-[600px] bg-panel1 rounded-2xl outline-1 outline-border  p-7 flex flex-col gap-4 mt-18">
+               <div className="shadow-md shadow-gray-200 dark:shadow-none w-[90%] max-w-[400px] bg-panel1 rounded-2xl outline-1 outline-border  p-7 flex flex-col gap-4 mt-18">
                     <p className="text-lg text-title font-medium leading-none">
                         No Habits :(
                     </p>
                     <p className="text-sm text-subtext3">
                         You currently have no habits, try adding a new habit and then comming back 💪
                     </p>
-                    <button className="w-full bg-btn rounded-xl py-1 text-btn-text font-medium text-sm hover:cursor-pointer" 
-                        onClick={() => {
-                            triggerHaptic()
-                            navigate("/create")
-                        }}>
-                        New Habit
-                    </button>
+                    <div className="flex gap-3 w-full">
+                        <ButtonComp
+                            name={"New Habit"}
+                            highlight={true}
+                            onSubmit={() => {
+                                navigate("/create")
+                            }}
+                            short={true}
+                            style="w-full"/>
+                        <ButtonComp
+                            name={"Learn More"}
+                            highlight={false}
+                            onSubmit={() => {
+                                navigate("/help")
+                            }}
+                            short={true}
+                            style="w-full"/>
+                    </div>
                 </div>          
             :
             <div className="w-full flex justify-center gap-4 mb-15"> 
                 <div className="mt-20 gap-3 flex flex-col items-center w-[90%] max-w-[600px]">
                     <StatsTitle/>
-                    <ConsistencyPanel compRate={HC.habitStats.get(HC.currentHabit!.id)?.compRate ?? 0} strength={HC.habitStats.get(HC.currentHabit!.id)?.strength ?? 0}/>
+                    <ConsistencyPanel compRate={compRate} strength={HC.habitStats.get(HC.currentHabit!.id)?.strength ?? 0}/>
                     <Summary/>
                     <CompletionThisWeek/>
                     <CompletionsMonth/>

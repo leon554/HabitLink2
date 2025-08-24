@@ -135,15 +135,13 @@ export default function UserProvider(props: Props) {
 
     useEffect(() => {
 
-        if(habits.size == 0 || habitsCompletions.size == 0) return
-
         lock()
         const habitWorker = new Worker(new URL('../../workers/habitWorker.ts', import.meta.url), { type: 'module' })
         
         habitWorker.onmessage = (event) => {
             const data = event.data as habitWorkerReturnType
-            setHabitStats(data.habitStats)
-            setGoalStats(data.goalStats)
+            setHabitStats(new Map(data.habitStats))
+            setGoalStats(new Map(data.goalStats))
             unLock()
         }
         

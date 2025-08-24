@@ -19,6 +19,7 @@ import MostCommonDays from "@/components/Charts/MostCommonDays"
 import HabitDistribution from "@/components/DashboardComponenets/HabitDistribution"
 import MissVsCompChart from "@/components/DashboardComponenets/MissVsCompChart"
 import { IoFlame } from "react-icons/io5"
+import ButtonComp from "@/components/primatives/ButtonComp"
 
 
 export default function Dashboard() {
@@ -50,7 +51,7 @@ export default function Dashboard() {
                         {!session.loading ? `Welcome Back, ${Util.capitilizeFirst(session.localUser?.name)?.split(" ")[0]}` : <AiOutlineLoading className="animate-spin"/>}
                     </p>
                 </div>
-               <div className="w-[90%] max-w-[600px] bg-panel1 rounded-2xl outline-1 mb-10 outline-border mt-2 p-7 flex flex-col gap-5">
+               <div className="shadow-md shadow-gray-200 dark:shadow-none w-[90%] max-w-[600px] bg-panel1 rounded-2xl outline-1 mb-10 outline-border mt-2 p-7 flex flex-col gap-5">
                     <div className="flex items-center gap-3">
                         <div className="bg-panel2 text-subtext2 outline-1 outline-border2 p-1.5 rounded-2xl">
                             <TbInfoCircle />
@@ -60,19 +61,19 @@ export default function Dashboard() {
                     <p className="text-sm text-subtext3">New here? Build <strong>habits</strong>, link & associate them to your <strong>goals</strong>, and your progress and goal stataistics updates automatically.</p>
                     <div className="flex flex-col gap-4">
                         <div className="grid gap-3 ">
-                            <div className="rounded-xl bg-panel2 outline-1 outline-border2 p-4">
+                            <div className="rounded-xl bg-panel2 outline-1 outline-border2 p-4 shadow-md shadow-gray-200 dark:shadow-none">
                                 <p className="text-sm text-title font-semibold mb-1">Habits</p>
                                 <p className="text-sm text-subtext3">Create and track recurring actions like “Go to the gym” or "Drink 8 glasses of water".</p>
                             </div>
-                            <div className="rounded-xl bg-panel2 outline-1 outline-border2 p-4 flex flex-col gap-1">
+                            <div className="rounded-xl bg-panel2 outline-1 outline-border2 p-4 flex flex-col gap-1 shadow-md shadow-gray-200 dark:shadow-none">
                                 <p className="text-sm text-title font-semibold mb-1">Goals</p>
                                 <p className="text-sm text-subtext3 mb-3">Each goal should have at least one habit linked or associated. Progress comes from <strong>linked</strong> habits or manaul input.</p>
                                 <div className="grid grid-cols-2 gap-3">
-                                    <div className="rounded-2xl bg-panel2 outline-1 outline-border2 p-3">
+                                    <div className="rounded-2xl bg-panel2 outline-1 outline-border2 p-3 shadow-sm shadow-gray-200 dark:shadow-none">
                                         <p className="text-xs text-title font-semibold mb-1">Link a habit</p>
                                         <p className="text-[11px] text-subtext3">Completions automatically advance the goal.</p>
                                     </div>
-                                    <div className="rounded-2xl bg-panel2 outline-1 outline-border2 p-3">
+                                    <div className="rounded-2xl bg-panel2 outline-1 outline-border2 p-3 shadow-sm shadow-gray-200 dark:shadow-none">
                                         <p className="text-xs text-title font-semibold mb-1">Associate a habit</p>
                                         <p className="text-[11px] text-subtext3">Counts toward stats only (consistency, strength).</p>
                                     </div>
@@ -97,15 +98,24 @@ export default function Dashboard() {
                                 <li>Track your habits consistently to create lasting habits and reach your goals.</li>
                             </ul>
                         </div>
-                        <div className="rounded-xl bg-panel2 outline-1 outline-border2 p-4">
+                        <div className="rounded-xl bg-panel2 outline-1 outline-border2 p-4 shadow-md shadow-gray-200 dark:shadow-none">
                             <p className="text-sm text-subtext3">
                                 <strong>Example:</strong> Habit “Go to the gym”. Goal “Gym 30 times”. When the habit is <strong>linked</strong>, each log advances the goal. If only <strong>associated</strong>, it won’t change progress but contributes to stats like consistency and strength.
                             </p>
                         </div>
                         <div className="flex gap-3 pt-1 items-center">
-                            <button onClick={() => navigate("/create")} className="px-3 py-1.5 hover:cursor-pointer rounded-md bg-highlight text-black text-sm font-medium">Create a Habit</button>
-                            <button onClick={() => navigate("/creategoal")} className="px-3 py-1.5 hover:cursor-pointer rounded-md bg-panel2 outline-1 outline-border2 text-subtext2 text-sm">Create a Goal</button>
-                             <button onClick={() => navigate("/help")} className="px-3 py-1.5 hover:cursor-pointer rounded-md bg-panel2 outline-1 outline-border2 text-subtext2 text-sm">Learn More</button>
+                            <ButtonComp
+                                name={"Create Habit"}
+                                highlight={true}
+                                onSubmit={() => navigate("/create")}/>
+                            <ButtonComp
+                                name={"Create Goal"}
+                                highlight={false}
+                                onSubmit={() => navigate("/creategoal")}/>
+                            <ButtonComp
+                                name={"Learn More"}
+                                highlight={false}
+                                onSubmit={() => navigate("/help")}/>
                         </div>
                     </div>
                 </div>
@@ -122,7 +132,8 @@ export default function Dashboard() {
                     <div className="w-full flex flex-col gap-5 h-full">
                         <div className="shadow-md shadow-gray-200 dark:shadow-none rounded-2xl bg-panel1 outline-1 outline-border h-16 flex items-center justify-center">
                             <div className="flex  gap-3 items-center justify-around w-full mx-7">
-                                <div className="flex items-center gap-3">
+                                <div className="flex items-center gap-3 hover:cursor-pointer"
+                                    onClick={() => navigate("/log")}>
                                     <div className="h-2 w-2 mt-[3px] bg-highlight rounded-full"></div>
                                     <p className="text-title text-lg font-medium">
                                         {HC.isCalculating.current.isLoading() ? 0 : tasksToday.length}
@@ -131,7 +142,7 @@ export default function Dashboard() {
                                         Habit/s Due Today
                                     </p>
                                 </div>
-                                <div className="flex  items-center gap-3">
+                                <div className="flex  items-center gap-3 hover:cursor-default">
                                     <p className="text-title text-lg font-medium flex items-center gap-1.5">
                                         {<IoFlame className="text-highlight" size={16}/>} {HC.isCalculating.current.isLoading() ? 0 : Util.preventNan(Math.round(Util.avgNumArr(habitStats.map(s => s.streak))))} 
                                     </p>

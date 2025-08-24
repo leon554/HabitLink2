@@ -9,6 +9,7 @@ import { SettingsContext } from "../components/Providers/SettingsProvider"
 import { Util } from "@/utils/util"
 import { useNavigate } from "react-router-dom"
 import { triggerHaptic } from "tactus"
+import ButtonComp from "@/components/primatives/ButtonComp"
 
 export default function LogPage() {
     const [showSettings, setShowSettings] = useState(false)
@@ -69,20 +70,31 @@ export default function LogPage() {
             </div>
             : ""}
             {Util.fetchAllMapItems(user.habits).length == 0 ? 
-            <div className="w-[90%] max-w-[600px] bg-panel1 rounded-2xl outline-1 outline-border mt-2 p-7 flex flex-col gap-4">
-                <p className="text-lg text-title font-medium leading-none">
+            <div className="shadow-md shadow-gray-200 dark:shadow-none w-[90%] max-w-[600px] bg-panel1 rounded-2xl outline-1 outline-border mt-2 p-7 flex flex-col gap-4">
+                <p className="text-lg text-title font-medium leading-none ">
                     No Habits :(
                 </p>
                 <p className="text-sm text-subtext3">
                     You currently have no habits to log try adding a new habit and then comming back 💪
                 </p>
-                <button className="w-full bg-btn rounded-xl py-1 text-btn-text font-medium text-sm hover:cursor-pointer" 
-                    onClick={() => {
-                        triggerHaptic()
-                        navigate("/create")
-                    }}>
-                    New Habit
-                </button>
+                <div className="flex gap-3 w-full">
+                    <ButtonComp
+                        name={"New Habit"}
+                        highlight={true}
+                        onSubmit={() => {
+                            navigate("/create")
+                        }}
+                        short={true}
+                        style="w-full"/>
+                    <ButtonComp
+                        name={"Learn More"}
+                        highlight={false}
+                        onSubmit={() => {
+                            navigate("/help")
+                        }}
+                        short={true}
+                        style="w-full"/>
+                </div>
             </div>
             :
             <div className="w-[90%] max-w-[600px] flex flex-col gap-2 overflow-auto no-scrollbar rounded-2xl ">
@@ -100,6 +112,19 @@ export default function LogPage() {
                         </div>
                     ) : null
                 )}       
+                {user.habits.size < 5 ? 
+                <div className="p-3 bg-panel1 border-1 border-border rounded-2xl shadow-md shadow-gray-200 dark:shadow-none mb-3 flex justify-between items-center">
+                    <p className="text-subtext2 font-medium ">
+                       🌱 Add new habit
+                    </p>
+                    <ButtonComp
+                        name={"New Habit"}
+                        highlight={false}
+                        onSubmit={() => 
+                            navigate("/create")
+                        }
+                        style="bg-panel2 rounded-xl"/>
+                </div> : null}
             </div>
             }
         </div>

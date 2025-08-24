@@ -19,6 +19,7 @@ import { AiOutlineLoading } from "react-icons/ai"
 import { triggerHaptic } from "tactus"
 import LogChart from "@/components/goalComponenets/LogChart"
 import { TbGauge } from "react-icons/tb"
+import ButtonComp from "@/components/primatives/ButtonComp"
 
 
 export default function GoalsPage() {
@@ -92,20 +93,32 @@ export default function GoalsPage() {
             : HC.isCalculating.current.isLoading() || auth.loading ?
             <AiOutlineLoading className="animate-spin text-subtext1 mt-25" size={30}/> :
             Util.fetchAllMapItems(HC.goals).length == 0 ? 
-                <div className="w-[90%] max-w-[600px] bg-panel1 rounded-2xl outline-1 outline-border  p-7 flex flex-col gap-4 mt-18">
+                <div className="shadow-md shadow-gray-200 dark:shadow-none w-[90%] max-w-[400px] bg-panel1 rounded-2xl outline-1 outline-border  p-7 flex flex-col gap-4 mt-18">
                     <p className="text-lg text-title font-medium leading-none">
                         No Goals :(
                     </p>
                     <p className="text-sm text-subtext3">
                         You currently have no goals, try adding a new goal and then comming back 💪
                     </p>
-                    <button className="w-full bg-btn rounded-xl py-1 text-btn-text font-medium text-sm hover:cursor-pointer" 
-                        onClick={() => {
-                            triggerHaptic()
-                            navigate("/creategoal")
-                        }}>
-                        New Goal
-                    </button>
+                    <div className="flex gap-3 w-full">
+                        <ButtonComp
+                            name={"New Goal"}
+                            highlight={true}
+                            onSubmit={() => {
+                                navigate("/creategoal")
+                            }}
+                            short={true}
+                            style="w-full"/>
+                        <ButtonComp
+                            name={"Learn More"}
+                            highlight={false}
+                            onSubmit={() => {
+                                navigate("/help")
+                            }}
+                            short={true}
+                            style="w-full"/>
+                    </div>
+
                 </div>        
             :
             <div className="w-full flex flex-col items-center gap-3">
