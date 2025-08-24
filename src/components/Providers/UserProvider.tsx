@@ -112,6 +112,7 @@ export default function UserProvider(props: Props) {
     const auth = useContext(AuthContext)
     const {alert} = useContext(AlertContext)
     const hasRanRef = useRef(false)
+    const hasPostedRef = useRef(false)
 
     useEffect(() => {
         if(hasRanRef.current) return
@@ -135,13 +136,15 @@ export default function UserProvider(props: Props) {
 
     useEffect(() => {
 
-        lock()
+        hasPostedRef.current ? null : lock()
+        hasPostedRef.current = true
         const habitWorker = new Worker(new URL('../../workers/habitWorker.ts', import.meta.url), { type: 'module' })
         
         habitWorker.onmessage = (event) => {
             const data = event.data as habitWorkerReturnType
             setHabitStats(new Map(data.habitStats))
             setGoalStats(new Map(data.goalStats))
+            hasPostedRef.current = false
             unLock()
         }
         
@@ -159,7 +162,7 @@ export default function UserProvider(props: Props) {
 
         return () => {
             habitWorker.terminate()
-            unLock()
+            //unLock()
         }
     }, [habitsCompletions, habits, goals])
 
@@ -249,7 +252,7 @@ export default function UserProvider(props: Props) {
             return
         }
         await getGoals()
-        alert("Succefully Added Goal")
+        alert("Successfully Added Goal")
         setLoading(false)
     }
     async function archiveGoal(goalId: number){
