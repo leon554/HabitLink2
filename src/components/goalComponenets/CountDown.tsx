@@ -33,7 +33,7 @@ export default function CountDown() {
         const intervalID = setInterval(calcTime, 1000);
 
         return () => clearInterval(intervalID);
-    }, [HC.getCurrentGoal()]);
+    }, [HC.getCurrentGoal]);
 
     async function updateCurrentValue(){
         if(value == "") {alert("Enter something"); return}

@@ -9,6 +9,7 @@ import CheckBox from "./InputComponents/CheckBox";
 import { useNavigate } from "react-router-dom";
 import TextBoxLimited from "./primatives/TextBoxLimited";
 import { Turnstile } from '@marsidev/react-turnstile'
+import { themeContext } from "./Providers/ThemeProvider";
 
 
 
@@ -24,6 +25,7 @@ export default function Auth() {
     const navigate = useNavigate()
 
     const auth = useContext(AuthContext)
+    const theme = useContext(themeContext)
     const {alert} = useContext(AlertContext)
     const [checked, setChecked] = useState(false)
 
@@ -143,6 +145,7 @@ export default function Auth() {
                     <div className="w-full flex justify-center">
                         <Turnstile
                             siteKey="0x4AAAAAABuQp8at38COv4fq"
+                            options={{theme: theme.dark ? "dark" : "light"}}
                             onSuccess={(token) => {
                                 auth.setCaptchaToken(token)
                             }}

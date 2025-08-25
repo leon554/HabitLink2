@@ -1,4 +1,4 @@
-import { useContext, useEffect} from "react"
+import { useContext, useEffect, useState} from "react"
 import { UserContext } from "../components/Providers/UserProvider"
 import CountDown from "../components/goalComponenets/CountDown"
 import AssociatedHabits from "../components/goalComponenets/AssociatedHabits"
@@ -12,7 +12,6 @@ import GoalSummary from "@/components/goalComponenets/GoalSummary"
 import GoalEdit from "@/components/goalComponenets/GoalEdit"
 import { HabitTypeE, type GoalType } from "@/utils/types"
 import { useNavigate } from "react-router-dom"
-import FullCircleProgressBar from "@/components/InputComponents/FullCircleProgressBar"
 import ToolTip from "@/components/ToolTip"
 import { AuthContext } from "@/components/Providers/AuthProvider"
 import { AiOutlineLoading } from "react-icons/ai"
@@ -20,6 +19,7 @@ import { triggerHaptic } from "tactus"
 import LogChart from "@/components/goalComponenets/LogChart"
 import { TbGauge } from "react-icons/tb"
 import ButtonComp from "@/components/primatives/ButtonComp"
+import ProgressBar from "@/components/InputComponents/ProgressBar"
 
 
 export default function GoalsPage() {
@@ -33,6 +33,39 @@ export default function GoalsPage() {
     const isGoalFinished =   progress >= 1;
     const goal = HC.getCurrentGoal()
     const navigate = useNavigate()
+
+    const [timeLeft, setTimeLeft] = useState(Array.from(HC.goals.values())
+        .filter(v => !v.archived)
+        .map(v => {
+            return (v.completionDate ?? 0) - Date.now()
+        })
+    );
+    const startTime = Array.from(HC.goals.values()).map(g => new Date(g.created_at).getTime())
+    const completionTime = Array.from(HC.goals.values()).map(g => g.completionDate)
+
+    useEffect(() => {
+        if(HC.goals.size == 0) return 
+
+        if(timeLeft.length == 0){
+            setTimeLeft(Array.from(HC.goals.values())
+            .filter(v => !v.archived)
+            .map(v => {
+                return (v.completionDate ?? 0) - Date.now()
+            }))
+        }
+
+        function calcTime(){
+            setTimeLeft(timeLeft.map((_, i) => completionTime[i] - Date.now()));
+        }
+        calcTime()
+        const intervalID = setInterval(calcTime, 1000);
+
+        return () => {
+            clearInterval(intervalID);
+        }
+    }, [HC.currentGaol, HC.goals]);
+
+
 
     useEffect(() => {
         const updateGoal = async () => {
@@ -60,34 +93,76 @@ export default function GoalsPage() {
                             Select Goal
                         </p>
                     </div>
-                    <div className="flex flex-col hover:cursor-pointer items-stretch gap-2.5 mb-2 w-[90%] max-w-[600px]">
-                        {Array.from(HC.goals.values()).map((g, i) => {
+                    <div className="flex flex-col  items-stretch gap-2.5 mb-2 w-[90%] max-w-[600px]">
+                        {Array.from(HC.goals.values()).filter(g => !g.archived).map((g, i) => {
                             return(
-                                <div key={i} className="shadow-md shadow-gray-200 dark:shadow-none grow-1 bg-panel1 rounded-2xl outline-1 outline-border p-3.5 items-center flex justify-between"
+                                <div key={i} className="hover:cursor-pointer gap-7 shadow-md shadow-gray-200 dark:shadow-none grow-1 bg-panel1 rounded-2xl outline-1 outline-border p-3.5 items-center flex justify-between"
                                     onClick={() => {
                                         triggerHaptic()
                                         HC.setCurrentGoal(g.id)
                                     }}>
-                                    <p className="text-subtext2 font-medium truncate overflow-hidden whitespace-nowrap">
+                                    <p className="text-subtext2 font-medium truncate overflow-hidden whitespace-nowrap w-[55%]">
                                         🎯 {g.name}
                                     </p>
-                                    <div className="hover:cursor-pointer">
+                                    <div className="hover:cursor-pointer w-[30%] ">
                                         <ToolTip tooltip={
-                                            <div className="bg-panel1 rounded-2xl outline-1 outline-border p-2 flex flex-col items-center gap-2">
-                                                <p className="text-xs text-center text-subtext2">
-                                                    Progress Of Goal
+                                            <div className="bg-panel1 rounded-2xl outline-1 outline-border p-3 flex flex-col items-center gap-2">
+                                                <p className="text-xs text-center text-subtext2 whitespace-nowrap">
+                                                    Goal Time Progress
+                                                </p>
+                                                <p className="text-sm font-medium text-subtext2">
+                                                    {Math.round((1 - (timeLeft[i])/(completionTime[i] - startTime[i])) * 100*1000)/1000}%
+                                                </p>
+                                                <p className="text-xs text-center text-subtext2 whitespace-nowrap">
+                                                    Goal Progress
                                                 </p>
                                                 <p className="text-sm font-medium text-subtext2">
                                                     {Math.round(HC.goalProgress.get(g.id) ?? 0)}%
                                                 </p>
                                             </div>
                                         }>
-                                            <FullCircleProgressBar value={Math.round(HC.goalProgress.get(g.id) ?? 0)} size={30} fontsize={0} thickness={4}/>
+                                            <div className="w-full flex flex-col gap-2">
+                                                <div className="flex w-full  items-center gap-5">
+                                                    <p className="text-sm w-3">
+                                                        ⏰
+                                                    </p>
+                                                    <div className="w-full">
+                                                        <ProgressBar min={0} max={100} current={(1 - (timeLeft[i])/(completionTime[i] - startTime[i])) * 100} height={7}/>
+                                                    </div>
+                                                </div>
+                                                <div className="flex w-full  items-center gap-5">
+                                                    <p className="text-sm w-3">
+                                                        📊
+                                                    </p>
+                                                    <div className="w-full">
+                                                        <ProgressBar min={0} max={100} current={Math.round(HC.goalProgress.get(g.id) ?? 0)} height={7}/>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </ToolTip>
                                     </div>
                                 </div>
                             )
                         })}
+                        {Array.from(HC.goals.values()).some(g => g.archived) ? 
+                        <div className=" max-w-[600px] bg-panel1 w-full rounded-2xl p-5  outline-1 outline-border">
+                            <p className="text-subtext1 font-medium">
+                                Archived Goals
+                            </p>
+                            <div className="mt-3 flex  flex-wrap gap-3">
+                                {Array.from(HC.goals.values()).filter(g => g.archived).map(g => {
+                                    return(
+                                        <div className="outline-1 outline-border2 rounded-md p-1.5 px-2 hover:cursor-pointer hover:bg-panel2 transition-all duration-200 ease-in-out"
+                                            onClick={() => HC.setCurrentGoal(g.id)}>
+                                            <p className="text-xs font-medium text-subtext2">
+                                                {g.name}
+                                            </p>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </div>
+                        : null}
                     </div>
                 </div>
             : HC.isCalculating.current.isLoading() || auth.loading ?

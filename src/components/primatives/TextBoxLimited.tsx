@@ -53,6 +53,7 @@ export default function TextBoxLimited({name, password, value, setValue, charLim
             :
             <input type={!password || showPass ? "text" : "password"}
                 className="shadow-sm shadow-gray-200 dark:shadow-none outline-1 outline-border2 rounded-md px-2 text-subtext3 text-xs h-7 "
+                style={{}}
                 placeholder={placeHolder}
                 value={value}
                 onChange={e => numeric ? isNaN(Number(e.target.value)) ?

@@ -18,9 +18,13 @@ export default function GoalTitlePanel() {
                 {HC.getCurrentGoal()?.description}
             </p>
             <div className="text-subtext2 hover:cursor-pointer absolute top-3 right-3">
-                <Select items={Array.from(HC.goals.values()).filter(g => !g.archived).map(h =>({name: h.name, id: h.id}))} 
+                <Select items={[...Array.from(HC.goals.values()).filter(g => !g.archived).map(h =>({name: h.name, id: h.id})), {name: "Home", id: -1}]} 
                                         selectedItem={{name: HC.getCurrentGoal()?.name ?? "Loading...", id: HC.getCurrentGoal()?.id ?? 0}}
-                                        setSelectedItem={(id: number) => HC.setCurrentGoal(id)}
+                                        setSelectedItem={(id: number) => {
+                                            id == -1 ? 
+                                                HC.setCurrentGoal(null):
+                                                HC.setCurrentGoal(id)
+                                        }}
                                         setText={<HiOutlineSwitchHorizontal/>}
                                         style="outline-0 p-0 justify-end flex"
                                         origin={Origin.topRight}/>
