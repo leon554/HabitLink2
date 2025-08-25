@@ -54,34 +54,34 @@ export default function Dashboard() {
                 <div className="w-full flex flex-col items-center justify-center mt-17 gap-2">
                     <div className="w-[90%] max-w-[600px] bg-panel1 rounded-2xl outline-1 outline-border flex justify-center items-center p-5">
                         <p className="text-2xl font-medium text-title">
-                            {!session.loading ? `Welcome Back, ${Util.capitilizeFirst(session.localUser?.name)?.split(" ")[0]}` : <AiOutlineLoading className="animate-spin"/>}
+                            {!session.loading ? `Welcome, ${Util.capitilizeFirst(session.localUser?.name)?.split(" ")[0]}` : <AiOutlineLoading className="animate-spin"/> } 👋
                         </p>
                     </div>
                     <div className="shadow-md shadow-gray-200 dark:shadow-none w-[90%] max-w-[600px] bg-panel1 rounded-2xl outline-1 mb-10 outline-border mt-2 p-7 flex flex-col gap-5">
                         <div className="flex items-center gap-3">
-                            <div className="bg-panel2 text-subtext2 outline-1 outline-border2 p-1.5 rounded-2xl">
+                            <div className="bg-highlight/60 text-btn-text  p-1.5 rounded-lg ">
                                 <TbInfoCircle />
                             </div>
                             <p className="text-lg text-title font-semibold leading-none">Overview</p>
                         </div>
-                        <p className="text-sm text-subtext3">New here? Build <strong>habits</strong>, link & associate them to your <strong>goals</strong>, and your progress and goal stataistics updates automatically.</p>
+                        <p className="text-sm text-subtext3">New here? Build <strong>habits</strong>, link & associate them to your <strong>goals</strong>, and your progress and goal statistics updates automatically.</p>
                         <div className="flex flex-col gap-4">
                             <div className="grid gap-3">
                                 <div className="rounded-xl bg-panel2 outline-1 outline-border2 p-4 shadow-md shadow-gray-200 dark:shadow-none">
-                                    <p className="text-sm text-title font-semibold mb-1">Habits</p>
+                                    <p className="text-sm text-title font-semibold mb-1">💪 Habits</p>
                                     <p className="text-sm text-subtext3">Create and track recurring actions like "Go to the gym" or "Drink 8 glasses of water".</p>
                                 </div>
                                 <div className="rounded-xl bg-panel2 outline-1 outline-border2 p-4 flex flex-col gap-1 shadow-md shadow-gray-200 dark:shadow-none">
-                                    <p className="text-sm text-title font-semibold mb-1">Goals</p>
-                                    <p className="text-sm text-subtext3 mb-3">Each goal should have at least one habit linked or associated. Progress comes from <strong>linked</strong> habits or manaul input.</p>
+                                    <p className="text-sm text-title font-semibold mb-1">🎯 Goals</p>
+                                    <p className="text-sm text-subtext3 mb-3">Each goal should have at least one habit linked or associated. Progress comes from <strong>linked</strong> habits or manual input.</p>
                                     <div className="grid grid-cols-2 gap-3">
                                         <div className="rounded-2xl bg-panel2 outline-1 outline-border2 p-3 shadow-sm shadow-gray-200 dark:shadow-none">
-                                            <p className="text-xs text-title font-semibold mb-1">Link a habit</p>
+                                            <p className="text-xs text-title font-semibold mb-1">🔗 Link a habit</p>
                                             <p className="text-[11px] text-subtext3">Completions automatically advance the goal.</p>
                                         </div>
                                         <div className="rounded-2xl bg-panel2 outline-1 outline-border2 p-3 shadow-sm shadow-gray-200 dark:shadow-none">
-                                            <p className="text-xs text-title font-semibold mb-1">Associate a habit</p>
-                                            <p className="text-[11px] text-subtext3">Counts toward stats only (consistency, strength).</p>
+                                            <p className="text-xs text-title font-semibold mb-1">🧩 Associate a habit</p>
+                                            <p className="text-[11px] text-subtext3">Counts towards stats only (consistency, strength).</p>
                                         </div>
                                     </div>
                                 </div>
@@ -108,10 +108,7 @@ export default function Dashboard() {
                                     name={"Create Goal"}
                                     highlight={false}
                                     onSubmit={() => navigate("/creategoal")}/>
-                                <ButtonComp
-                                    name={"Learn More"}
-                                    highlight={false}
-                                    onSubmit={() => navigate("/help")}/>
+                                
                             </div>
                         </div>
                     </div>

@@ -75,7 +75,9 @@ export default function AuthProvider(props: Props) {
     }, [])
     
     useEffect(() => {
-        if(session === undefined) return
+        if(session === undefined){
+            return
+        }
         const nav = async () => {
             await navigateUser(session)
         }

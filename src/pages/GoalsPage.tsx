@@ -55,7 +55,9 @@ export default function GoalsPage() {
         }
 
         function calcTime(){
-            setTimeLeft(timeLeft.map((_, i) => completionTime[i] - Date.now()));
+            setTimeLeft(prev =>
+                prev.map((_, i) => (completionTime[i] ?? 0) - Date.now())
+            );
         }
         calcTime()
         const intervalID = setInterval(calcTime, 1000);
