@@ -6,7 +6,7 @@ interface Props{
     value: string | number | ReactNode
     text: string
     toolTipText: string
-    addPercent: boolean
+    addPercent?: boolean
 }
 export default function InfoBox(p: Props) {
     return (
