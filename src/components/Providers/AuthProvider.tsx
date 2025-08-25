@@ -102,7 +102,6 @@ export default function AuthProvider(props: Props) {
     }
 
     async function navigateUser(session: Session | null){
-        setLoading(true)
         const currentPath = location.pathname
         if(session === null) {
             unprotectedPaths.includes(currentPath) ? navigate(currentPath) : navigate("/"); 
@@ -111,6 +110,7 @@ export default function AuthProvider(props: Props) {
             protectedPaths.includes(currentPath) ? navigate(currentPath) : navigate("/dashboard"); 
         }
 
+        setLoading(true)
         const { data, error} = await supabase.auth.getUser()
 
         if(error){
