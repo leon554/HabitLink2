@@ -1,0 +1,26 @@
+{
+  "name": "HabitLink - Build Habits & Achieve Goals",
+  "short_name": "HabitLink",
+  "description": "Track habits, connect them to goals, and see clear progress with detailed charts and insights.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3B82F6",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/habitlinklogo2.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/apple.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["productivity", "lifestyle", "health"],
+  "lang": "en",
+  "dir": "ltr"
+}

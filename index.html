@@ -3,18 +3,89 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" href="/habitlinklogo2.svg" />
+    
+    <!-- Favicon and App Icons -->
+    <link rel="icon" type="image/svg+xml" href="/habitlinklogo2.svg" />
     <link rel="apple-touch-icon" href="/apple.png">
-    <title>HabitLink</title>
-    <meta name="description" content="Track habits, connect them to goals, and see clear progress with detailed charts and insights. Build habits that stick with HabitLink." />
-    <meta name="keywords" content="habit tracker, goal tracker, productivity app, consistency tracking, streaks, self improvement" />
-    <meta property="og:title" content="HabitLink – Build Habits & Achieve Goals" />
-    <meta property="og:description" content="HabitLink helps you build lasting habits by linking them to real goals with analytics and insights." />
-    <meta property="og:image" content="/habitlinklogo2.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/habitlinklogo2.svg">
+    <link rel="icon" type="image/png" sizes="16x16" href="/habitlinklogo2.svg">
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Primary Meta Tags -->
+    <title>HabitLink - Build Habits & Achieve Goals | Habit Tracking App</title>
+    <meta name="title" content="HabitLink - Build Habits & Achieve Goals | Habit Tracking App">
+    <meta name="description" content="Track habits, connect them to goals, and see clear progress with detailed charts and insights. Build habits that stick with HabitLink's advanced analytics and goal tracking." />
+    <meta name="keywords" content="habit tracker, goal tracker, productivity app, consistency tracking, streaks, self improvement, habit building, goal achievement, personal development, habit analytics" />
+    <meta name="author" content="HabitLink">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="7 days">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
     <meta property="og:url" content="https://habit-link.com" />
+    <meta property="og:title" content="HabitLink – Build Habits & Achieve Goals" />
+    <meta property="og:description" content="Track habits, connect them to goals, and see clear progress with detailed charts and insights. Build habits that stick with HabitLink's advanced analytics." />
+    <meta property="og:image" content="https://habit-link.com/habitlinklogo2.svg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="HabitLink" />
+    <meta property="og:locale" content="en_US" />
+    
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://habit-link.com" />
+    <meta name="twitter:title" content="HabitLink – Build Habits & Achieve Goals" />
+    <meta name="twitter:description" content="Track habits, connect them to goals, and see clear progress with detailed charts and insights. Build habits that stick with HabitLink." />
+    <meta name="twitter:image" content="https://habit-link.com/habitlinklogo2.svg" />
+    
+    <!-- Additional SEO Meta Tags -->
+    <meta name="theme-color" content="#3B82F6">
+    <meta name="msapplication-TileColor" content="#3B82F6">
+    <meta name="application-name" content="HabitLink">
+    <meta name="apple-mobile-web-app-title" content="HabitLink">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://habit-link.com" />
+    
+    <!-- Preconnect to external domains for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "HabitLink",
+      "description": "Track habits, connect them to goals, and see clear progress with detailed charts and insights. Build habits that stick with HabitLink.",
+      "url": "https://habit-link.com",
+      "applicationCategory": "ProductivityApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "HabitLink"
+      },
+      "featureList": [
+        "Habit Tracking",
+        "Goal Setting",
+        "Progress Analytics",
+        "Consistency Monitoring",
+        "Streak Tracking",
+        "Dark Mode",
+        "Mobile Responsive"
+      ]
+    }
+    </script>
   </head>
-  <body >
+  <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
