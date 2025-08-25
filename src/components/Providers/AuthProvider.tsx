@@ -1,5 +1,5 @@
 import type { Session, User } from "@supabase/supabase-js";
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "../../supabase-client";
 import { AlertContext } from "../Alert/AlertProvider";
 import { SignUpResponses, type LemonSqueezyProduct, type UserType } from "../../utils/types";
@@ -54,7 +54,7 @@ export default function AuthProvider(props: Props) {
     const [user, setUser] = useState<null|User>(null)
     const [localUser, setLocalUser] = useState<UserType|null>(null)
     const [loading, setLoading] = useState(false)
-    const hasNavigatedRef = useRef(false)
+
     const [logOutLoading, setLogOutLoading] = useState(false)
     const [products, setProducts] = useState<LemonSqueezyProduct[]>([])
     const [captchaToken, setCaptchaToken] = useState("")
@@ -75,11 +75,9 @@ export default function AuthProvider(props: Props) {
     }, [])
     
     useEffect(() => {
-        if(session === undefined || hasNavigatedRef.current) return
+        if(session === undefined) return
         const nav = async () => {
             await navigateUser(session)
-            !unprotectedPaths.includes(location.pathname)?
-                hasNavigatedRef.current = true : null
         }
         nav()
     }, [session])
@@ -104,6 +102,7 @@ export default function AuthProvider(props: Props) {
     }
 
     async function navigateUser(session: Session | null){
+        setLoading(true)
         const currentPath = location.pathname
         if(session === null) {
             unprotectedPaths.includes(currentPath) ? navigate(currentPath) : navigate("/"); 
@@ -111,8 +110,6 @@ export default function AuthProvider(props: Props) {
         }else{
             protectedPaths.includes(currentPath) ? navigate(currentPath) : navigate("/dashboard"); 
         }
-
-        setLoading(true)
 
         const { data, error} = await supabase.auth.getUser()
 
