@@ -7,41 +7,29 @@ Sitemap: https://habit-link.com/sitemap.xml
 # Crawl delay (optional - helps prevent overwhelming the server)
 Crawl-delay: 1
 
-# Disallow any admin or private areas (if they exist)
+# Disallow private/app areas (authenticated sections)
 Disallow: /api/
 Disallow: /admin/
 Disallow: /private/
 Disallow: /auth/
 Disallow: /reset/
+Disallow: /dashboard
+Disallow: /log
+Disallow: /create
+Disallow: /creategoal
+Disallow: /stats
+Disallow: /goals
+Disallow: /settings
+Disallow: /studio
+Disallow: /thanks
 
-# Allow all public content
-Allow: /dashboard
-Allow: /log
-Allow: /create
-Allow: /creategoal
-Allow: /stats
-Allow: /goals
-Allow: /settings
-Allow: /help
-Allow: /studio
+# Allow public marketing/legal content
+Disallow: /help
 Allow: /terms
 Allow: /priv
 Allow: /refund
-Allow: /thanks
 
-# Specific rules for search engines
-User-agent: Googlebot
-Allow: /
-Crawl-delay: 0.5
-
-User-agent: Bingbot
-Allow: /
-Crawl-delay: 0.5
-
-# Block access to development files
-Disallow: /*.js$
-Disallow: /*.css$
-Disallow: /*.map$
+# Allow rendering resources (do NOT block JS/CSS)
 
 # Allow access to important assets
 Allow: /*.svg$

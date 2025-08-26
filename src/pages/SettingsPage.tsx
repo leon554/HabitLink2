@@ -1,4 +1,5 @@
 import { useContext, useRef, useState } from "react"
+import SEO from "@/components/SEO"
 import { UserContext } from "../components/Providers/UserProvider"
 import InfoPanel from "../components/InfoPanel"
 import { AuthContext } from "../components/Providers/AuthProvider"
@@ -62,6 +63,9 @@ export default function SettingsPage() {
     }
     return (
         <div className="flex flex-col justify-center mt-20 gap-3 items-center">
+            {/* Prevent indexing of the settings page */}
+            <SEO title="Settings | HabitLink" description="Your HabitLink settings." url="https://habit-link.com/settings" />
+            <meta name="robots" content="noindex, nofollow" />
             <div className="shadow-md shadow-gray-200 dark:shadow-none bg-panel1 flex flex-col items-center rounded-2xl w-[90%] max-w-[600px]  p-5 outline-1 outline-border ">
                 <p className="text-title text-xl font-semibold">
                     Settings 

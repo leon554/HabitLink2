@@ -116,6 +116,9 @@ export default function LandingPage() {
             >
               <section className="relative">
                 <div className="mx-auto w-[90%] md:w-auto md:max-w-7xl md:px-6 lg:px-8 py-10 md:py-16">
+                  <h2 className="text-2xl md:text-3xl font-semibold text-title mb-4 md:mb-6 text-center md:text-left">
+  
+                  </h2>
                   <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                     <FeatureCard
                       icon={<TbTargetArrow className="text-blue-500 dark:text-highlight" size={20} />}
@@ -151,6 +154,9 @@ export default function LandingPage() {
             >
               <section className="relative">
                 <div className="mx-auto w-[90%] md:w-auto md:max-w-7xl md:px-6 lg:px-8 py-10 md:py-16">
+                  <h2 className="text-2xl md:text-3xl font-semibold text-title mb-4 md:mb-6 text-center md:text-left">
+                    
+                  </h2>
                   <div className="shadow-md shadow-gray-200 dark:shadow-none rounded-2xl border bg-panel1 border-border p-6 md:p-10">
                     <div className="grid md:grid-cols-3">
                       <HowItWorksStep
@@ -172,7 +178,7 @@ export default function LandingPage() {
                     </div>
                     <div className="max-md:mt-5 flex justify-center md:justify-start">
                       <Link to="/auth">
-                        <button className="shadow-gray-200 dark:shadow-none m-3 inline-flex items-center justify-center rounded-lg bg-blue-500 dark:bg-highlight text-white dark:text-btn-text px-5 py-3 font-medium shadow-sm hover:opacity-90 transition">
+                        <button className="shadow-gray-200 hover:cursor-pointer min-h-[24px] min-w-[24px] p-3 dark:shadow-none m-3 inline-flex items-center justify-center rounded-lg bg-blue-500 dark:bg-highlight text-white dark:text-btn-text px-5 py-3 font-medium shadow-sm hover:opacity-90 transition">
                           Start tracking now
                         </button>
                       </Link>
@@ -217,18 +223,30 @@ export default function LandingPage() {
               <div className="mx-auto w-[90%] md:w-auto md:max-w-7xl md:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-subtext3">
                 <p>© {new Date().getFullYear()} HabitLink. All rights reserved.</p>
                 <div className="flex gap-3">
-                  <p className="text-sm text-subtext3 underline hover:cursor-pointer" 
-                      onClick={() => navigate("/terms")}>
-                      Terms & Conditions
-                  </p>
-                  <p className="text-sm text-subtext3 underline hover:cursor-pointer" 
-                      onClick={() => navigate("/refund")}>
-                      Refund Policy
-                  </p>
-                  <p className="text-sm text-subtext3 underline hover:cursor-pointer" 
-                      onClick={() => navigate("/priv")}>
-                      Privacy Policy
-                  </p>
+                  <button
+                    type="button"
+                    className="inline-flex items-center justify-center px-3 py-2 rounded-md text-sm text-subtext3 underline hover:cursor-pointer min-w-[44px] min-h-[44px]"
+                    onClick={() => navigate("/terms")}
+                    aria-label="View Terms and Conditions"
+                  >
+                    Terms & Conditions
+                  </button>
+                  <button
+                    type="button"
+                    className="inline-flex items-center justify-center px-3 py-2 rounded-md text-sm text-subtext3 underline hover:cursor-pointer min-w-[44px] min-h-[44px]"
+                    onClick={() => navigate("/refund")}
+                    aria-label="View Refund Policy"
+                  >
+                    Refund Policy
+                  </button>
+                  <button
+                    type="button"
+                    className="inline-flex items-center justify-center px-3 py-2 rounded-md text-sm text-subtext3 underline hover:cursor-pointer min-w-[44px] min-h-[44px]"
+                    onClick={() => navigate("/priv")}
+                    aria-label="View Privacy Policy"
+                  >
+                    Privacy Policy
+                  </button>
                 </div>
               </div>
             </footer>
@@ -248,11 +266,11 @@ function FeatureCard({
   text: string
 }) {
   return (
-    <div className="shadow-md shadow-gray-200 dark:shadow-none rounded-xl border border-border bg-panel1 p-5 hover:-translate-y-0.5 transition-transform">
+    <div className="shadow-md shadow-gray-200 dark:shadow-none rounded-xl border border-border bg-panel1 p-5 hover:-translate-y-0.5 transition-transform" role="group" aria-labelledby={`feature-${title.replace(/\s+/g, '-').toLowerCase()}`}>
       <div className="flex items-start gap-3">
         <div className="mt-1">{icon}</div>
         <div>
-          <h3 className="text-title font-medium">{title}</h3>
+          <h3 id={`feature-${title.replace(/\s+/g, '-').toLowerCase()}`} className="text-title font-medium">{title}</h3>
           <p className="mt-1 text-sm text-subtext2 leading-relaxed">{text}</p>
         </div>
       </div>
