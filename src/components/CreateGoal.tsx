@@ -327,6 +327,13 @@ export default function CreateGoal() {
                                 setShowInfo(true)
                             }}/>
                         </div>
+                        {HC.habits.size == 0 ?
+                            <div className="w-[90%]">
+                                <p className="text-sm text-subtext3">
+                                    You don’t have any habits yet. Create one first before adding a goal, just click the “New Habit” button below 💪
+                                </p>
+                            </div> : null
+                        }
                         <div className="flex flex-col p-[2px] gap-2 mb-3 items-stretch w-[91%] max-h-[262px] overflow-y-scroll no-scrollbar rounded-lg">
                             {Array.from(HC.habits.values()).map((h, i) => {
                                 return(

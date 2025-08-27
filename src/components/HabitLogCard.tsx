@@ -128,7 +128,7 @@ export default function HabitLogCard({habit: h}: HabitProps) {
                     {settings.dontShowStreaks ? 
                     null :
                         <p className={`text-xs text-subtext2 flex gap-0.5 items-center ${settings.showDetails ? "mt-1" : ""}`}>
-                            {UC.habitStats.get(h.id)?.streak}  {<IoFlame/>}
+                            {UC.habitStats.get(h.id)?.streak}  {<IoFlame className=''/>}
                         </p>
                     }
                 </div>

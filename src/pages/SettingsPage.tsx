@@ -75,6 +75,7 @@ export default function SettingsPage() {
                 <InfoPanel.Title title="Account"/>
                 <InfoPanel.BodyContainer>
                     <InfoPanel.BubbleText text="Status:" bubbleText={`${Util.capitilizeFirst(auth.user?.role)}`} mb={4}/>
+                    <InfoPanel.BubbleText text="User ID:" bubbleText={`U-${auth.localUser?.id}`} mb={4}/>
                     <InfoPanel.BubbleText text="AI Tokens:" bubbleText={`${auth.localUser?.tokens}`} mb={0}/>
                     <InfoPanel.SubText text={`Account created: ${auth.user?.created_at}`}/>
                 </InfoPanel.BodyContainer>
@@ -139,6 +140,14 @@ export default function SettingsPage() {
                         })}
                     </div>
                 </div>}
+                <div className="w-full  flex justify-center">
+                    <InfoPanel>
+                        <InfoPanel.Title title="Contact"/>
+                        <InfoPanel.BodyContainer>
+                            <InfoPanel.SubText text="habitlinkapp@gmail.com"/>
+                        </InfoPanel.BodyContainer>
+                    </InfoPanel>
+                </div>
                 <div className="w-full mb-10 flex justify-center">
                     <InfoPanel>
                         <InfoPanel.Title title="Policies"/>

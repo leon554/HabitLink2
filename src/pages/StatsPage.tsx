@@ -113,6 +113,12 @@ export default function StatsPage() {
                 <div className="w-full flex justify-center gap-4 mb-15"> 
                     <div className="mt-20 gap-3 flex flex-col items-center w-[90%] max-w-[600px]">
                         <StatsTitle/>
+                        {(HC.habitsCompletions.get(HC.currentHabit?.id ?? 0)?.length ?? 0) == 0 ?
+                        <div className="bg-panel1 outline-1 rounded-2xl p-7 outline-border">
+                           <p className="text-sm text-subtext2">
+                                ✨ You don’t have any entries for this habit yet. Try logging your first one and once you do you’ll start seeing some helpful stats that show your progress. ✨
+                            </p>
+                        </div> : null}
                         <ConsistencyPanel compRate={compRate} strength={HC.habitStats.get(HC.currentHabit!.id)?.strength ?? 0}/>
                         <Summary/>
                         <CompletionThisWeek/>

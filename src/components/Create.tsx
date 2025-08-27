@@ -29,7 +29,20 @@ export default function Create({compact, onCreate, initialName} : Props){
     const [distance, setDistance] = useState(0)
     const [amount, setAmount] = useState(0)
     const [description, setDescription] = useState("")
-    const habitEmojis = ["💪","📖","🧘","📝","🥗","🚰","😴","📚","🏃","🧹","🛏️","🪥","💻","🎨","🎵","☀️","📅","💸","📵","🧼","🧊","🏋️","🧠","🎯","👣","🍎","🚭","🍵","🌿","🕯️","👨‍🍳","🚿","🪑","🐶","🤝"];
+    const habitEmojis = [
+        "💪","📖","🧘","📝","🥗","🚰","😴","📚","🏃","🧹",
+        "🛏️","🪥","💻","🎨","🎵","☀️","📅","💸","📵","🧼",
+        "🧊","🏋️","🧠","🎯","👣","🍎","🚭","🍵","🌿","🕯️",
+        "👨‍🍳","🚿","🪑","🐶","🤝","🚴","🏊","🥊","🏸","⛹️",
+        "🧗","🛹","🚶","🧎","🏕️","🌍","🌳","🌱","🌸","🪴",
+        "🧑‍🌾","🐟","🍞","🍳","🍊","🥛","🥒","🥕","🌽","🍓",
+        "🍌","🥜","🫘","🍚","🍱","🍣","🥟","🍲","🥘","🫖",
+        "☕","🥤","🍺","🍷","🍸","🍹","🥂","🧋","🥡","🍫",
+        "🍪","🍩","🍿","🥨","🥯","🍯","🥬","🍍","🥥","🥭",
+        "🎮","🎧","📺","📷","📸","🎬","🎤","🎹","🎻","🥁",
+        "🐕","🚗","🚌","🚆","✈️","🛳️","📦","📮","✉️","📞",
+        "📱","💡","🕰️","🛒","🧺","🧴","🧷","🧩","🪙","💳"
+    ];
     const habitTypes = ["Normal", "Time Based", "Distance Based", "Iteration Based"]
     const emojiDiv = useRef<HTMLDivElement>(null)
     const loadingRef = useRef(-1)
@@ -219,7 +232,7 @@ export default function Create({compact, onCreate, initialName} : Props){
                                 }}>
                                 {"<"}
                             </button> : ""}
-                            <div className={`${compact ? "flex overflow-x-scroll gap-2 p-1 no-scrollbar rounded-md" : "flex flex-wrap"}  md:flex-wrap gap-2 justify-stretch`} ref={emojiDiv}>
+                            <div className={`${compact ? "flex overflow-x-scroll gap-2  no-scrollbar rounded-md max-h-40 overflow-y-scroll no-scrollbar p-[1px]" : "flex flex-wrap max-h-40 overflow-y-scroll no-scrollbar p-[1px] rounded-md"}  md:flex-wrap gap-2 justify-stretch`} ref={emojiDiv}>
                                 {habitEmojis.map((h, i) => {
                                     return(
                                         <>

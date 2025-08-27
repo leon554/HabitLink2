@@ -257,18 +257,21 @@ export default function UserProvider(props: Props) {
     async function archiveGoal(goalId: number){
         setLoading(true)
 
+        const isArchived = goals.get(goalId)?.archived
+        if(isArchived === undefined) {setLoading(false); return}  
+
+        console.log(isArchived)
         const { error } = await supabase
             .from('goals')
-            .update({ archived: true })
+            .update({ archived: !isArchived })
             .eq('id', goalId)
-            .select()
         if(error){
             alert("Archive goal error: " + error.message)
             setLoading(false)
             return
         }
 
-        setGaols(Util.updateMap(goals, goalId, {...goals.get(goalId)!, archived: true}))
+        setGaols(Util.updateMap(goals, goalId, {...goals.get(goalId)!, archived: !isArchived}))
         setLoading(false)
     }
     async function deleteGoal(goalId: number){

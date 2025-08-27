@@ -5,13 +5,14 @@ import { useContext, useState } from "react";
 import { IoInformationCircleOutline } from "react-icons/io5";
 import Model from "../InputComponents/Model";
 import { TbChartCandle } from "react-icons/tb";
+import { Util } from "@/utils/util";
 
 export default function Summary() {
 
     const [open, setOpen] = useState(false)
     const {habitStats, currentHabit} = useContext(UserContext)
     const p = habitStats.get(currentHabit!.id) ?? defaultHabitStats
-
+    const prev = Util.preventNan
     return (
         <div className="shadow-md shadow-gray-200 dark:shadow-none w-full relative bg-panel1 rounded-2xl font outline-1 outline-border text-title justify-center p-7 pt-5 pb-7 flex flex-col items-center gap-4">
             <div className="w-full flex justify-between items-center">
@@ -43,7 +44,7 @@ export default function Summary() {
                             "Total Iterations" :
                             "Total Hours"} toolTipText="The sum of all the data logged for the current habit"/>
                         <InfoBox addPercent={false} value={`${p.partialComps}`} text="Partial Completions" toolTipText="This is the number of days the current habit had at least one entry but where the current habits goal wasn't reached"/>
-                        <InfoBox addPercent={false}  value={`${Math.round(p.dataSum/(p.entries ?? 1)*10)/10}`} text={currentHabit?.type == HabitTypeE.Distance_Based ? 
+                        <InfoBox addPercent={false}  value={`${prev(Math.round(p.dataSum/(p.entries ?? 1)*10)/10)}`} text={currentHabit?.type == HabitTypeE.Distance_Based ? 
                         "Avg Km/Entry" :
                         currentHabit?.type == HabitTypeE.Iteration_Based ?
                         "Avg Count/Entry" :

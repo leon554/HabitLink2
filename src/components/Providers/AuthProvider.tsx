@@ -70,12 +70,12 @@ export default function AuthProvider(props: Props) {
         const {data: authListener} = supabase.auth.onAuthStateChange(async (_event, session) => {
             setSession(session)
         })
-
         return () => {authListener.subscription.unsubscribe()}
     }, [])
     
     useEffect(() => {
         if(session === undefined){
+            setLoading(true)
             return
         }
         const nav = async () => {
@@ -105,14 +105,16 @@ export default function AuthProvider(props: Props) {
 
     async function navigateUser(session: Session | null){
         const currentPath = location.pathname
+        setLoading(true)
+        
         if(session === null) {
             unprotectedPaths.includes(currentPath) ? navigate(currentPath) : navigate("/"); 
+            setLoading(false)
             return
         }else{
             protectedPaths.includes(currentPath) ? navigate(currentPath) : navigate("/dashboard"); 
         }
 
-        setLoading(true)
         const { data, error} = await supabase.auth.getUser()
 
         if(error){

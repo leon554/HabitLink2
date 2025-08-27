@@ -23,7 +23,7 @@ import ButtonComp from "@/components/primatives/ButtonComp"
 import SEO from "@/components/SEO"
 
 export default function Dashboard() {
-    const session = useContext(AuthContext);
+    const auth = useContext(AuthContext);
     const HC = useContext(UserContext);
     const habitStats = Util.fetchAllMapItems(HC.habitStats);
     const tasksToday = Util.fetchAllMapItems(HC.habits).filter(h => HabitUtil.isDueToday(h, HC.habitsCompletions.get(h.id)))
@@ -54,12 +54,12 @@ export default function Dashboard() {
                 <div className="w-full flex flex-col items-center justify-center mt-17 gap-2">
                     <div className="w-[90%] max-w-[600px] bg-panel1 rounded-2xl outline-1 outline-border flex justify-center items-center p-5">
                         <p className="text-2xl font-medium text-title">
-                            {!session.loading ? `Welcome, ${Util.capitilizeFirst(session.localUser?.name)?.split(" ")[0]}` : <AiOutlineLoading className="animate-spin"/> } 👋
+                            {!auth.loading ? `Welcome, ${Util.capitilizeFirst(auth.localUser?.name)?.split(" ")[0]}` : <AiOutlineLoading className="animate-spin"/> } 👋
                         </p>
                     </div>
-                    <div className="shadow-md shadow-gray-200 dark:shadow-none w-[90%] max-w-[600px] bg-panel1 rounded-2xl outline-1 mb-10 outline-border mt-2 p-7 flex flex-col gap-5">
+                    <div className="shadow-md shadow-gray-200 dark:shadow-none w-[90%] max-w-[600px] bg-panel1 rounded-2xl outline-1 mb-0.5 outline-border mt-2 p-7 flex flex-col gap-5">
                         <div className="flex items-center gap-3">
-                            <div className="bg-highlight/60 text-btn-text  p-1.5 rounded-lg ">
+                            <div className="bg-panel2 text-subtext2  p-1.5 rounded-lg ">
                                 <TbInfoCircle />
                             </div>
                             <p className="text-lg text-title font-semibold leading-none">Overview</p>
@@ -112,12 +112,24 @@ export default function Dashboard() {
                             </div>
                         </div>
                     </div>
+                    <div className="shadow-md shadow-gray-200 dark:shadow-none w-[90%] max-w-[600px] bg-panel1 rounded-2xl outline-1 mb-10 outline-border mt-2 p-7 flex flex-col gap-5">
+                        <div className="flex items-center gap-3">
+                            <div className="bg-panel2 text-subtext2  p-1.5 rounded-lg ">
+                                <TbInfoCircle />
+                            </div>
+                            <p className="text-lg text-title font-semibold leading-none">Beta </p>
+                        </div>
+                        <p className="text-sm text-subtext3 mb-">
+                            Note: HabitLink is currently in beta, so you may run into a few bugs.  
+                            Found an issue or have a feature idea? Head over to the Settings page to report it or share your suggestion! 
+                        </p>
+                    </div>
                 </div>
             ) : (
                 <div className="flex flex-col items-center w-full mt-18 gap-5 mb-10">
                     <div className="w-full rounded-2xl flex justify-center items-center p-5 max-sm:p-2">
                         <p className="text-4xl max-sm:text-2xl font-bold text-title text-center">
-                            {!session.loading ? `Welcome Back, ${Util.capitilizeFirst(session.localUser?.name)?.split(" ")[0]} 👋` : <AiOutlineLoading className="animate-spin"/>}
+                            {!auth.loading ? `Welcome Back, ${Util.capitilizeFirst(auth.localUser?.name)?.split(" ")[0]} 👋` : <AiOutlineLoading className="animate-spin"/>}
                         </p>
                     </div>
                     <div className="flex max-md:flex-col gap-5 justify-center max-md:items-center md:w-[90%] max-md:w-full">
@@ -128,7 +140,8 @@ export default function Dashboard() {
                                         <div className="flex items-center gap-3 hover:cursor-pointer"
                                             onClick={() => navigate("/log")}>
                                             <div className="h-2 w-2 mt-[3px] bg-highlight rounded-full"></div>
-                                            <p className="text-title text-lg font-medium">
+                                            <p className={`text-title text-lg font-medium 
+                                                    ${HC.isCalculating.current.isLoading() ? "animate-pulse" : ""}`}>
                                                 {HC.isCalculating.current.isLoading() ? 0 : tasksToday.length}
                                             </p>
                                             <p className="text-subtext2 text-xs ml-[-4px]">
@@ -136,7 +149,8 @@ export default function Dashboard() {
                                             </p>
                                         </div>
                                         <div className="flex items-center gap-3 hover:cursor-default">
-                                            <p className="text-title text-lg font-medium flex items-center gap-1.5">
+                                            <p className={`text-title text-lg font-medium flex items-center gap-1.5
+                                                    ${HC.isCalculating.current.isLoading() ? "animate-pulse" : ""}`}>
                                                 {<IoFlame className="text-highlight" size={16}/>} {HC.isCalculating.current.isLoading() ? 0 : Util.preventNan(Math.round(Util.avgNumArr(habitStats.map(s => s.streak))))} 
                                             </p>
                                             <p className="text-subtext2 text-xs ml-[-4px]">

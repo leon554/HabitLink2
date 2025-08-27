@@ -1,7 +1,9 @@
-import { useContext, useRef } from "react"
+import { useContext, useEffect, useRef } from "react"
 import { AiOutlineLoading } from "react-icons/ai"
 import { UserContext } from "../Providers/UserProvider"
 import ButtonComp from "../primatives/ButtonComp"
+import { AlertContext } from "../Alert/AlertProvider"
+import { AuthContext } from "../Providers/AuthProvider"
 
 interface Props{
     noAnimate?: boolean
@@ -9,12 +11,22 @@ interface Props{
 export default function DeleteArchiveGoal({noAnimate}: Props) {
 
     const HC = useContext(UserContext)
+    const auth = useContext(AuthContext)
+    const {alert} = useContext(AlertContext)
+    const goal = HC.goals.get(HC.currentGaol ?? 0)
     const currentBtn = useRef(0)
+
+    useEffect(() => {
+        if(goal === undefined && !HC.isCalculating.current.isLoading() && !HC.loading && !auth.loading){
+            alert("Goal undefined refresh page")
+        }
+
+    }, [goal])
 
     return (
         <div className="flex justify-center gap-3 w-full">
             <ButtonComp
-                name={HC.loading && currentBtn.current == 1 ? <AiOutlineLoading className="animate-spin"/>  : "Archive"} 
+                name={HC.loading && currentBtn.current == 1 ? <AiOutlineLoading className="animate-spin"/>  : goal?.archived ? "Un-Archive" : "Archive"} 
                 onSubmit={async () => {
                     currentBtn.current = 1
                     await HC.archiveGoal(HC.currentGaol!)
