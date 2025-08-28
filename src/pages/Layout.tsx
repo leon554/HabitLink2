@@ -12,7 +12,7 @@ export default function Layout() {
     const theme = useContext(themeContext)
     
     return (
-        <>
+        <div >
             <div className="absolute inset-0  opacity-20 dark:opacity-10 pointer-events-none -z-30 h-screen" />
             <Alert/>
             <Navbar/>
@@ -24,6 +24,6 @@ export default function Layout() {
                 <Outlet/>
             </main>
             }
-        </>
+        </div>
     )
 }

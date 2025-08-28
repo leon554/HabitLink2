@@ -98,7 +98,7 @@ export default function GoalsPage() {
                     <div className="flex flex-col  items-stretch gap-2.5 mb-2 w-[90%] max-w-[600px]">
                         {Array.from(HC.goals.values()).filter(g => !g.archived).map((g, i) => {
                             return(
-                                <div key={i} className="hover:cursor-pointer gap-7 shadow-md shadow-gray-200 dark:shadow-none grow-1 bg-panel1 rounded-2xl outline-1 outline-border p-3.5 items-center flex justify-between"
+                                <div key={i} className={`hover:cursor-pointer gap-7 shadow-md shadow-gray-200 dark:shadow-none grow-1 bg-panel1 rounded-2xl outline-1 outline-border p-3.5 items-center flex justify-between`}
                                     onClick={() => {
                                         triggerHaptic()
                                         HC.setCurrentGoal(g.id)
@@ -106,7 +106,7 @@ export default function GoalsPage() {
                                     <p className="text-subtext2 font-medium truncate overflow-hidden whitespace-nowrap w-[55%]">
                                         🎯 {g.name}
                                     </p>
-                                    <div className="hover:cursor-pointer w-[30%] ">
+                                    <div className="hover:cursor-pointer w-[23%] ">
                                         <ToolTip tooltip={
                                             <div className="bg-panel1 rounded-2xl outline-1 outline-border p-3 flex flex-col items-center gap-2">
                                                 <p className="text-xs text-center text-subtext2 whitespace-nowrap">
@@ -124,22 +124,32 @@ export default function GoalsPage() {
                                             </div>
                                         }>
                                             <div className="w-full flex flex-col gap-2">
-                                                <div className="flex w-full  items-center gap-5">
-                                                    <p className="text-sm w-3">
-                                                        ⏰
+                                                {Math.round(HC.goalProgress.get(g.id) ?? 0) >= 100 ? 
+                                                <div className="flex items-center gap-2 justify-center outline-1 py-2 rounded-lg outline-highlight/30">
+                                                    <p className="text-sm  text-highlight flex items-center gap-3">
+                                                        Completed 🎉
                                                     </p>
-                                                    <div className="w-full">
-                                                        <ProgressBar min={0} max={100} current={(1 - (timeLeft[i])/(completionTime[i] - startTime[i])) * 100} height={7}/>
+                                                    
+                                                </div> :
+                                                <>
+                                                    <div className="flex w-full  items-center gap-5">
+                                                        <p className="text-sm w-3">
+                                                            ⏰
+                                                        </p>
+                                                        <div className="w-full">
+                                                            <ProgressBar min={0} max={100} current={(1 - (timeLeft[i])/(completionTime[i] - startTime[i])) * 100} height={7}/>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div className="flex w-full  items-center gap-5">
-                                                    <p className="text-sm w-3">
-                                                        📊
-                                                    </p>
-                                                    <div className="w-full">
-                                                        <ProgressBar min={0} max={100} current={Math.round(HC.goalProgress.get(g.id) ?? 0)} height={7}/>
+                                                    <div className="flex w-full  items-center gap-5">
+                                                        <p className="text-sm w-3">
+                                                            📊
+                                                        </p>
+                                                        <div className="w-full">
+                                                            <ProgressBar min={0} max={100} current={Math.round(HC.goalProgress.get(g.id) ?? 0)} height={7}/>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                </>
+                                                }
                                             </div>
                                         </ToolTip>
                                     </div>

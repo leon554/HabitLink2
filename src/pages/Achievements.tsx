@@ -1,5 +1,6 @@
 import { UserContext } from "@/components/Providers/UserProvider"
 import { dateUtils } from "@/utils/dateUtils";
+import { AchievementsEnum } from "@/utils/types";
 import { useContext } from "react"
 import { FaCheck } from "react-icons/fa";
 import { FaLock } from "react-icons/fa";
@@ -29,6 +30,7 @@ export default function Achievements() {
             </div>
             <div className="w-[90%] max-w-[600px] flex flex-col gap-4 flex-wrap">
                 {Array.from(HC.achievements.values()).map(a => {
+                    if(!Object.values(AchievementsEnum).includes(a.id)) return
                     return(
                         <div className={`hover:cursor-default hover:scale-98 transition-all justify-center duration-200 ease-in-out flex-grow shadow-md shadow-gray-200 dark:shadow-none p-4 bg-panel1 ${a.userAchievements.length == 0 ? "outline-border" : "outline-highlight/30 "} rounded-2xl outline-1 flex flex-col gap-3`}>
                             <div className="flex items-center justify-between w-full gap-3">
