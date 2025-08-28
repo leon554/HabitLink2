@@ -59,7 +59,7 @@ export default function Dashboard() {
                     </div>
                     <div className="shadow-md shadow-gray-200 dark:shadow-none w-[90%] max-w-[600px] bg-panel1 rounded-2xl outline-1 mb-0.5 outline-border mt-2 p-7 flex flex-col gap-5">
                         <div className="flex items-center gap-3">
-                            <div className="bg-panel2 text-subtext2  p-1.5 rounded-lg ">
+                            <div className="bg-panel2 text-subtext2  p-1.5 rounded-lg outline-1 outline-border2">
                                 <TbInfoCircle />
                             </div>
                             <p className="text-lg text-title font-semibold leading-none">Overview</p>

@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useRef, useState } from "react"
 import { AuthContext } from "./AuthProvider";
 import { supabase } from "../../supabase-client";
 import { AlertContext } from "../Alert/AlertProvider";
-import { AchievementsEnum, type Achievement, type GaolCompletionType, type GoalType, type HabitCompletionType, type HabitType, type IssueType, type ReturnObj, type SubmitIssueType } from "../../utils/types";
+import {  type Achievement, type GaolCompletionType, type GoalType, type HabitCompletionType, type HabitType, type IssueType, type ReturnObj, type SubmitIssueType } from "../../utils/types";
 import { dateUtils } from "../../utils/dateUtils";
 import { Util } from "../../utils/util";
 import { GOAL_LIM_FREE, HABIT_LIM_FREE } from "../../utils/Constants";
@@ -14,6 +14,7 @@ import Model from "../InputComponents/Model";
 import ButtonComp from "../primatives/ButtonComp";
 import { useNavigate } from "react-router-dom";
 import { FaCheck } from "react-icons/fa";
+import { useAchievementChecks } from "../Hooks/useAchievementChecks";
 
 
 interface UserType{
@@ -120,16 +121,8 @@ export default function UserProvider(props: Props) {
     const [achievementData, setAchievementData] = useState<string[]>([])
     const [updatedStats, setUpdatedStats] = useState(false)
     const navigate = useNavigate()
-    const achievementChecks: Record<number, () => boolean> = {
-        [AchievementsEnum.create5Habits]: () => habits.size >= 5,
-        [AchievementsEnum.have3ActiveGoals]: () => goals.size >= 3,
-        [AchievementsEnum.habitEntries100]: () => Array.from(habitsCompletions.values()).flat().length >= 100,
-        [AchievementsEnum.habitEntries250]: () => Array.from(habitsCompletions.values()).flat().length >= 250,
-        [AchievementsEnum.habitEntries500]: () => Array.from(habitsCompletions.values()).flat().length >= 500,
-        [AchievementsEnum.habitEntries1000]: () => Array.from(habitsCompletions.values()).flat().length >= 1000,
-        [AchievementsEnum.habitEntries5000]: () => Array.from(habitsCompletions.values()).flat().length >= 5000,
-        [AchievementsEnum.habitEntries10000]: () => Array.from(habitsCompletions.values()).flat().length >= 10000,
-    };
+
+    const achievementChecks = useAchievementChecks(habits, goals, habitsCompletions, habitStats, updatedStats)
 
     const auth = useContext(AuthContext)
     const {alert} = useContext(AlertContext)
@@ -169,6 +162,7 @@ export default function UserProvider(props: Props) {
             setHabitStats(new Map(data.habitStats))
             setGoalStats(new Map(data.goalStats))
             hasPostedRef.current = false
+            setTimeout(() => setUpdatedStats(!updatedStats), 100)
             unLock()
         }
         
@@ -183,7 +177,6 @@ export default function UserProvider(props: Props) {
             goals
         } as habitWorkerPayload)
 
-        setUpdatedStats(!updatedStats)
 
         return () => {
             habitWorker.terminate()
@@ -702,7 +695,7 @@ export default function UserProvider(props: Props) {
         setLoading(true)
         const userid = auth.getUserId()
 
-        const { data, error } = await supabase
+       const { data, error } = await supabase
             .from("achievements")
             .select(`
                 id,
@@ -710,7 +703,8 @@ export default function UserProvider(props: Props) {
                 description,
                 userAchievements!left(achievement_id, created_at)
             `)
-            .eq("userAchievements.user_id", userid);
+            .eq("userAchievements.user_id", userid)
+            .order("id", { ascending: true });
 
 
         if (error){
@@ -727,8 +721,10 @@ export default function UserProvider(props: Props) {
         setLoading(false)
     }
     async function addAchievementComps(ids: number[]){
-        setLoading(true)
         const userid = auth.getUserId()
+        if(!userid) return false
+
+        setLoading(true)
         const rows = ids.map(id => ({
             user_id: userid,
             achievement_id: id
@@ -742,7 +738,7 @@ export default function UserProvider(props: Props) {
         if(error){
             alert("Achievement Update Error: " + error.message)
             setLoading(false)
-            return
+            return false
         }
 
         const modifiedRows = data as {achievement_id: number, created_at: string}[]
@@ -752,6 +748,7 @@ export default function UserProvider(props: Props) {
         })
         setAchievements(new Map(map))
         setLoading(false)
+        return true
     }
 
     async function checkAchievements(){
@@ -767,8 +764,9 @@ export default function UserProvider(props: Props) {
         })
 
         if(completedAchievements.length == 0) return
+        const success = await addAchievementComps(completedAchievements)
+        if(!success) return
         setAchievementData([...completedAchievements.map(id => achievements.get(id)?.name ?? "")])
-        await addAchievementComps(completedAchievements)
         setShowAchievementModal(true)
     }
     return (
@@ -821,10 +819,10 @@ export default function UserProvider(props: Props) {
                             "Congratulations! You’ve just unlocked a new achievement! 🎉🎉" :
                             "Congratulations! You’ve just unlocked some new achievements! 🎉🎉"}
                     </p>
-                    <div className=" flex justify-center items-center mt-7 gap-2 flex-col max-h-40  overflow-y-scroll no-scrollbar">
+                    <div className=" flex  items-center mt-7 gap-2 flex-col max-h-[160px]  overflow-y-scroll no-scrollbar rounded-md">
                         {achievementData.map(a => {
                             return(
-                                <div className="border-1 w-full p-3 py-1 rounded-md border-border2 bg-panel2">
+                                <div className="border w-full p-3 py-1 rounded-md border-border2 bg-panel2">
                                     <p className="text-subtext2 font-medium text-sm flex items-center gap-2">
                                         <FaCheck className="text-highlight"/> {a}
                                     </p>
@@ -847,6 +845,7 @@ export default function UserProvider(props: Props) {
                             highlight={true}
                             onSubmit={() => {
                                 navigate("/achievements")
+                                setShowAchievementModal(false)
                                 setAchievementData([])
                             }}
                             noAnimation={true}
