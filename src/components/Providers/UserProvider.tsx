@@ -160,7 +160,6 @@ export default function UserProvider(props: Props) {
     }, [auth.session])
 
     useEffect(() => {
-
         hasPostedRef.current ? null : lock()
         hasPostedRef.current = true
         const habitWorker = new Worker(new URL('../../workers/habitWorker.ts', import.meta.url), { type: 'module' })
@@ -735,9 +734,9 @@ export default function UserProvider(props: Props) {
             achievement_id: id
             }));
 
-        const { data, error } = await supabase
+       const { data, error } = await supabase
             .from("userAchievements")
-            .insert(rows)
+            .upsert(rows, { onConflict: "user_id,achievement_id" }) 
             .select();
         
         if(error){
