@@ -22,6 +22,8 @@ interface SelectProps {
   largeText?: boolean
   setBlur?: (blur: boolean) => void
   onBtnClick? : () => void
+  dropUp?: boolean
+  divStyles?: string
 }
 export default function Select(props: SelectProps) {
     const focusElement = useRef<null|HTMLDivElement>(null)
@@ -54,7 +56,7 @@ export default function Select(props: SelectProps) {
     }, [props.blur])
 
     return (
-        <div className="relative" ref={focusElement}>
+        <div className={`relative ${props.divStyles}`} ref={focusElement}>
             <button className={`group relative transition-transform   hover:cursor-pointer ${props.style ? props.style : " outline-1 bg-stone-800 text-sm text-stone-300 font-mono p-3 rounded-md flex justify-center  "}`}
                  onClick={(e) => {
                     triggerHaptic()
@@ -68,9 +70,9 @@ export default function Select(props: SelectProps) {
                     : Util.capitilizeFirst(props.selectedItem.name))}
 
             </button>
-            <div className={`absolute top-full ${props.center ? "left-1/2 transform -translate-x-1/2" : "right-0 "} rounded-2xl p-2.5  overflow-y-scroll no-scrollbar max-h-100 px-1.5 mt-2 m-2 ${props.largeText ? "gap-1.5" : "gap-1"} flex flex-col justify-start items-start scale-0 transition-transform duration-200 bg-panel1 text-subtext1  outline-border2  z-20 w-fit outline-1`} style={{
+            <div className={`absolute ${props.dropUp ? "bottom-full" : "top-full"}  ${props.center ? "left-1/2 transform -translate-x-1/2" : "right-0 "} rounded-md p-2.5  overflow-y-scroll no-scrollbar max-h-100 px-1.5 mt-2 mb-1 ${props.largeText ? "gap-1.5" : "gap-1"} flex flex-col justify-start items-start scale-0 transition-transform duration-200 bg-panel1 text-subtext1  outline-border2  z-20 w-fit outline-1`} style={{
                 scale: clicked ? 1 : 0,
-                transformOrigin: props.origin ?? "top"
+                transformOrigin: props.origin ?? (props.dropUp ? "bottom" : "top")
                 }}
                 onWheel={e => {
                     e.stopPropagation();
@@ -80,7 +82,7 @@ export default function Select(props: SelectProps) {
                     return (
                     <p
                         key={crypto.randomUUID()}
-                        className={`hover:bg-highlight gap-1.5 w-full flex items-center justify-start p-1 px-0.5 ${props.largeText ? "" : "text-sm"} rounded-xl transition duration-100 ease-in-out hover:cursor-pointer text-nowrap hover:text-btn-text px-3`}
+                        className={`hover:bg-highlight gap-1.5 w-full flex items-center justify-start p-1 px-0.5 ${props.largeText ? "" : "text-sm"} rounded-md transition duration-100 ease-in-out hover:cursor-pointer text-nowrap hover:text-btn-text px-3`}
                         onClick={() => {
                             triggerHaptic()
                             setItem(h.id)

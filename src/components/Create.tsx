@@ -114,7 +114,7 @@ export default function Create({compact, onCreate, initialName} : Props){
         setDescription(habitArr)
     }
     return (
-        <div className="shadow-md shadow-gray-200 dark:shadow-none bg-panel1 outline-1 outline-border  max-w-[900px]  max-md:max-w-[500px] relative flex justify-center rounded-2xl flex-col items-center pb-4   p-4">
+        <div className={`shadow-md shadow-gray-200 dark:shadow-none bg-panel1 outline-1 outline-border  max-w-[900px]  max-md:max-w-[500px] relative flex justify-center rounded-2xl flex-col items-center pb-4   p-4`}>
             <p className="  text-title font-semibold text-2xl mt-6 mb-8">
                 Create New Habit
             </p>

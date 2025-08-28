@@ -10,7 +10,7 @@ export default function GoalTitlePanel() {
     const HC = useContext(UserContext)
 
     return (
-        <div className="w-[90%] max-w-[600px] mt-20 p-5 z-10 relative shadow-md shadow-gray-200 dark:shadow-none bg-panel1 text-title  outline-border outline-1 rounded-2xl flex justify-center flex-col items-center gap-2">
+        <div className="w-[90%] max-w-[600px] p-5 z-10 relative shadow-md shadow-gray-200 dark:shadow-none bg-panel1 text-title  outline-border outline-1 rounded-2xl flex justify-center flex-col items-center gap-2">
             <p className="text-2xl font-semibold text-center">
                 {Util.capitilizeFirst(HC.goals.get(HC.currentGaol!)?.name)}
             </p>

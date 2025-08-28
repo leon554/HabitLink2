@@ -1,11 +1,13 @@
 import { useContext } from "react";
 import Switch from "./InputComponents/Switch";
 import { SettingsContext } from "./Providers/SettingsProvider";
+import { themeContext } from "./Providers/ThemeProvider";
 
 
 export default function SettingsToggles() {
 
     const {settings, setSettings} = useContext(SettingsContext)
+    const theme = useContext(themeContext)
 
     return (
         <div className="shadow-md shadow-gray-200 dark:shadow-none w-[90%] max-w-[600px] bg-panel1 outline-1 outline-border rounded-2xl p-7 py-4 pb-6 flex flex-col gap-3">
@@ -21,12 +23,21 @@ export default function SettingsToggles() {
                 </div>
             </div>
             <hr className="text-border2"/>
-             <div className="flex justify-between items-center gap-4">
+            <div className="flex justify-between items-center gap-4">
                 <p className="text-xs text-subtext2">
                     Don't show red for habits that must be logged today on the log page
                 </p>
                 <div>
                     <Switch ticked={settings.dontShowRed} setStatus={(t) => setSettings({...settings, dontShowRed: t})}/>
+                </div>
+            </div>
+             <hr className="text-border2"/>
+             <div className="flex justify-between items-center gap-4">
+                <p className="text-xs text-subtext2">
+                    Dark Mode
+                </p>
+                <div>
+                    <Switch ticked={theme.dark ?? undefined} setStatus={(t) => theme.setDark(t)}/>
                 </div>
             </div>
         </div>

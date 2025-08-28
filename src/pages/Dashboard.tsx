@@ -21,6 +21,7 @@ import MissVsCompChart from "@/components/DashboardComponenets/MissVsCompChart"
 import { IoFlame } from "react-icons/io5"
 import ButtonComp from "@/components/primatives/ButtonComp"
 import SEO from "@/components/SEO"
+import { useIsMobile } from "@/components/Hooks/useIsMobile"
 
 export default function Dashboard() {
     const auth = useContext(AuthContext);
@@ -31,6 +32,7 @@ export default function Dashboard() {
     const [avgHabitStrength, setAvgHabitStrength] = useState(0);
     const [avgGoalProgress, setAvgGoalProgress] = useState(0);
     const navigate = useNavigate()
+    const isMobile = useIsMobile()
 
     useEffect(() => {
         const newAvgHabitComp = Util.avgNumArr(habitStats.map(h => h.compRate)) * 100;
@@ -51,7 +53,7 @@ export default function Dashboard() {
                 url="https://habit-link.com/dashboard"
             />
             {HC.habits.size === 0 ? (
-                <div className="w-full flex flex-col items-center justify-center mt-17 gap-2">
+                <div className={`w-full flex flex-col items-center justify-center ${isMobile ? "mb-24 mt-6" : "mt-17"}  gap-2`}>
                     <div className="w-[90%] max-w-[600px] bg-panel1 rounded-2xl outline-1 outline-border flex justify-center items-center p-5">
                         <p className="text-2xl font-medium text-title">
                             {!auth.loading ? `Welcome, ${Util.capitilizeFirst(auth.localUser?.name)?.split(" ")[0]}` : <AiOutlineLoading className="animate-spin"/> } 👋
@@ -126,7 +128,7 @@ export default function Dashboard() {
                     </div>
                 </div>
             ) : (
-                <div className="flex flex-col items-center w-full mt-18 gap-5 mb-10">
+                <div className={`flex flex-col items-center w-full ${isMobile ? "mb-24 mt-6" : "mt-17"} gap-5 mb-10`}>
                     <div className="w-full rounded-2xl flex justify-center items-center p-5 max-sm:p-2">
                         <p className="text-4xl max-sm:text-2xl font-bold text-title text-center">
                             {!auth.loading ? `Welcome Back, ${Util.capitilizeFirst(auth.localUser?.name)?.split(" ")[0]} 👋` : <AiOutlineLoading className="animate-spin"/>}

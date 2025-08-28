@@ -1,8 +1,10 @@
+import { useIsMobile } from "@/components/Hooks/useIsMobile"
 
 
 export default function Help() {
+    const isMobile = useIsMobile()
     return (
-        <div className="mt-18 text-title flex flex-col items-center gap-5 mb-10">
+        <div className={`${isMobile ? "mb-24 mt-6" : "mt-17"} text-title flex flex-col items-center gap-5 mb-10`}>
             {/* Prevent indexing of the help page */}
             <meta name="robots" content="noindex, nofollow" />
             <div className="shadow-md shadow-gray-200 dark:shadow-none bg-panel1 w-[90%] max-w-[500px] rounded-xl p-7 py-5 outline-1 outline-border flex flex-col gap-4">

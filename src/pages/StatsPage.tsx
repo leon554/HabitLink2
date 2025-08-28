@@ -19,12 +19,13 @@ import CompsPerWeek from "@/components/DashboardComponenets/CompsPerWeek";
 import SkipChart from "@/components/StatsComponents/SkipChart";
 import ButtonComp from "@/components/primatives/ButtonComp";
 import SEO from "@/components/SEO";
+import { useIsMobile } from "@/components/Hooks/useIsMobile";
 
 export default function StatsPage() {
     const HC = useContext(UserContext)
     const auth = useContext(AuthContext)
     const navigate =  useNavigate()
-
+    const isMobile = useIsMobile()
     const compRate = HC.habitStats.get(HC.currentHabit?.id ?? 0)?.compRate ?? 0
 
     useEffect(() => {
@@ -39,10 +40,10 @@ export default function StatsPage() {
                 keywords="habit statistics, habit analytics, consistency tracking, habit performance, habit metrics, habit charts, habit insights"
                 url="https://habit-link.com/stats"
             />
-            <div className="flex justify-center">
+            <div className={`flex justify-center ${isMobile ? "mb-15 mt-6" : "mt-20 mb-15"}`}>
                 {!HC.currentHabit && Util.fetchAllMapItems(HC.habits).length != 0 ?
-                    <div className="flex flex-col w-full items-center gap-2.5 mb-15">
-                        <div className="shadow-sm shadow-gray-200 dark:shadow-none  flex mt-20 items-center  flex-col gap-5 rounded-2xl bg-panel1 outline-1 outline-border w-[90%] max-w-[600px] p-4">
+                    <div className="flex flex-col w-full items-center gap-2.5 ">
+                        <div className="shadow-sm shadow-gray-200 dark:shadow-none  flex  items-center  flex-col gap-5 rounded-2xl bg-panel1 outline-1 outline-border w-[90%] max-w-[600px] p-4">
                             <p className="text-2xl text-center font-semibold text-title w-[90%]">
                                 Select a habit!
                             </p>
@@ -111,7 +112,7 @@ export default function StatsPage() {
                     </div>          
                 :
                 <div className="w-full flex justify-center gap-4 mb-15"> 
-                    <div className="mt-20 gap-3 flex flex-col items-center w-[90%] max-w-[600px]">
+                    <div className=" gap-3 flex flex-col items-center w-[90%] max-w-[600px]">
                         <StatsTitle/>
                         {(HC.habitsCompletions.get(HC.currentHabit?.id ?? 0)?.length ?? 0) == 0 ?
                         <div className="bg-panel1 outline-1 rounded-2xl p-7 outline-border">

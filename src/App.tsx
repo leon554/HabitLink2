@@ -13,9 +13,7 @@ import StatsPage from "./pages/StatsPage"
 import SettingsProvider from "./components/Providers/SettingsProvider"
 import GoalsPage from "./pages/GoalsPage"
 import CreateGaolPage from "./pages/CreateGaolPage"
-import { useContext} from "react"
 import SettingsPage from "./pages/SettingsPage"
-import { themeContext } from "./components/Providers/ThemeProvider"
 import Help from "./pages/Help"
 import HabitStudioPage from "./pages/HabitStudioPage"
 import Thankyou from "./pages/Thankyou"
@@ -26,11 +24,8 @@ import ResetPassword from "./components/ResetPassword"
 import Achievements from "./pages/Achievements"
 
 function App() {
-  const {dark, setDark} = useContext(themeContext)
-
-
   return (
-    <div className="">
+    <div className="h-[100dvh] overflow-y-auto overscroll-none no-scrollbar">
       <HelmetProvider>
         <Router>
           <SettingsProvider>
@@ -66,14 +61,6 @@ function App() {
           </SettingsProvider>
         </Router>
       </HelmetProvider>
-      <button
-      className="fixed z-50 bottom-3 right-3 bg-panel1 dark:bg-panel1 p-1 px-2 rounded-lg outline-border  hover:cursor-pointer outline-1 dark:outline-border"
-        onClick={() => {
-          setDark(!dark)
-        }}
-      >
-        {dark ? "☀️" : "🌙"}
-      </button>
     </div>
   )
 }

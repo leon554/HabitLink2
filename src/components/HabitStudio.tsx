@@ -11,6 +11,7 @@ import Model from "./InputComponents/Model"
 import { triggerHaptic } from "tactus"
 import TextBoxLimited from "./primatives/TextBoxLimited"
 import ButtonComp from "./primatives/ButtonComp"
+import { useIsMobile } from "./Hooks/useIsMobile"
 
 
 export interface habitAI{
@@ -47,6 +48,7 @@ export default function HabitStudio() {
 
     const {alert} = useContext(AlertContext)
     const HC = useContext(UserContext)
+    const isMobile = useIsMobile()
 
     async function genHabit(){
         const completionDaysString = (weeklyGoalComps == 0) ? getCompDaysString(weeklyGoalCompsDay) : `${weeklyGoalComps}`
@@ -105,8 +107,8 @@ export default function HabitStudio() {
     }
 
     return (
-        <div className="w-full flex justify-center flex-col items-center gap-3 mb-10">
-            <div className="mt-18 relative w-[90%] max-w-[500px] flex flex-col items-center bg-panel1 p-7 rounded-2xl outline-1 outline-border gap-5">
+        <div className={`${isMobile ? "mb-24 mt-6" : "mt-18"} w-full flex justify-center flex-col items-center gap-3 mb-10`}>
+            <div className=" relative w-[90%] max-w-[500px] flex flex-col items-center bg-panel1 p-7 rounded-2xl outline-1 outline-border gap-5">
                 <p className="text-xl font-medium text-title">
                     Habit Studio
                 </p>

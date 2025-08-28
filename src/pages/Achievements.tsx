@@ -1,3 +1,4 @@
+import { useIsMobile } from "@/components/Hooks/useIsMobile";
 import { UserContext } from "@/components/Providers/UserProvider"
 import { dateUtils } from "@/utils/dateUtils";
 import { AchievementsEnum } from "@/utils/types";
@@ -9,8 +10,10 @@ import { TbTrophy } from "react-icons/tb";
 export default function Achievements() {
 
     const HC = useContext(UserContext)
+    const isMobile = useIsMobile()
+
     return (
-        <div className="mt-20 flex flex-col items-center gap-4 mb-15">
+        <div className={`${isMobile ? "mb-24 mt-6" : "mt-20"} flex flex-col items-center gap-4 mb-15`}>
             <div className="bg-panel1 outline-1 outline-border rounded-2xl w-[90%] max-w-[600px] p-5 shadow-md shadow-gray-200 dark:shadow-none">
                 <div className="flex items-center gap-3 mb-2">
                     <div className="bg-panel2 text-subtext2  p-1.5 rounded-lg outline-1 outline-border2">

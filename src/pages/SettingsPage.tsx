@@ -14,6 +14,7 @@ import { triggerHaptic } from "tactus"
 import Premium from "@/components/Premium"
 import { useNavigate } from "react-router-dom"
 import SettingsToggles from "@/components/SettingsToggles"
+import { useIsMobile } from "@/components/Hooks/useIsMobile"
 
 export default function SettingsPage() {
 
@@ -29,6 +30,7 @@ export default function SettingsPage() {
     const [blur2, setBlur2] = useState(false)
     const bugs = Util.fetchAllMapItems(HC.issues)
     const btnClicked = useRef(0)
+    const isMobile = useIsMobile()
 
 
     const completions = Array.from(HC.habitsCompletions.values()).reduce((s, a) => s + Array.from(a.values()).length, 0)
@@ -62,7 +64,7 @@ export default function SettingsPage() {
         await HC.lodgeIssue({page: selectedPage.name, type: selectedType.name, description} as SubmitIssueType)
     }
     return (
-        <div className="flex flex-col justify-center mt-20 gap-3 items-center">
+        <div className={`${isMobile ? "mb-14 mt-6" : "mt-20"} flex flex-col justify-center gap-3 items-center`}>
             {/* Prevent indexing of the settings page */}
             <SEO title="Settings | HabitLink" description="Your HabitLink settings." url="https://habit-link.com/settings" />
             <meta name="robots" content="noindex, nofollow" />

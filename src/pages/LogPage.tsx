@@ -10,17 +10,19 @@ import { Util } from "@/utils/util"
 import { useNavigate } from "react-router-dom"
 import { triggerHaptic } from "tactus"
 import ButtonComp from "@/components/primatives/ButtonComp"
+import { useIsMobile } from "@/components/Hooks/useIsMobile"
 
 export default function LogPage() {
     const [showSettings, setShowSettings] = useState(false)
+    const isMobile = useIsMobile()
 
     const user = useContext(UserContext)
     const navigate = useNavigate()
     const {settings, setSettings} = useContext(SettingsContext)
 
     return (
-        <div className="flex items-center flex-col h-[97dvh] ">   
-            <div className="mt-18 w-[90%] max-w-[600px] ">
+        <div className={`flex items-center flex-col  ${isMobile ? "mb-20 mt-6 h-[87dvh]" : "h-[97dvh]"}`}>   
+            <div className={`w-[90%] max-w-[600px] ${isMobile ? "" : "mt-17"}`}>
                 <div className=" mb-2 bg-panel1 dark:bg-panel1 dark:outline-border dark:text-title  drop-shadow-sm  outline-1 outline-border rounded-2xl text-title flex justify-between items-center ">
                     <p className="  p-4  text-2xl font-semibold">
                         Log Your Habits

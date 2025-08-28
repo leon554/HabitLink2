@@ -20,6 +20,7 @@ import LogChart from "@/components/goalComponenets/LogChart"
 import { TbGauge } from "react-icons/tb"
 import ButtonComp from "@/components/primatives/ButtonComp"
 import ProgressBar from "@/components/InputComponents/ProgressBar"
+import { useIsMobile } from "@/components/Hooks/useIsMobile"
 
 
 export default function GoalsPage() {
@@ -33,6 +34,7 @@ export default function GoalsPage() {
     const isGoalFinished =   progress >= 1;
     const goal = HC.getCurrentGoal()
     const navigate = useNavigate()
+    const isMobile = useIsMobile()
 
     const [timeLeft, setTimeLeft] = useState(Array.from(HC.goals.values())
         .filter(v => !v.archived)
@@ -87,10 +89,10 @@ export default function GoalsPage() {
     }, [])
 
     return (
-        <div className="w-full flex justify-center mb-10 ">
+        <div className={`w-full flex justify-center ${isMobile ? "mb-24 mt-6" : "mt-20 mb-10"}`}>
             {!HC.getCurrentGoal() && Util.fetchAllMapItems(HC.goals).length != 0 ?
                 <div className="w-full flex flex-col items-center gap-2.5">
-                    <div className="shadow-md shadow-gray-200 dark:shadow-none w-[90%] max-w-[600px] mt-20 bg-panel1 text-title  rounded-2xl p-4 outline-1 outline-border flex justify-center flex-col items-center">
+                    <div className="shadow-md shadow-gray-200 dark:shadow-none w-[90%] max-w-[600px] bg-panel1 text-title  rounded-2xl p-4 outline-1 outline-border flex justify-center flex-col items-center">
                         <p className="text-2xl font-medium">
                             Select Goal
                         </p>
@@ -106,7 +108,7 @@ export default function GoalsPage() {
                                     <p className="text-subtext2 font-medium truncate overflow-hidden whitespace-nowrap w-[55%]">
                                         🎯 {g.name}
                                     </p>
-                                    <div className="hover:cursor-pointer w-[23%] ">
+                                    <div className="hover:cursor-pointer w-[25%] ">
                                         <ToolTip tooltip={
                                             <div className="bg-panel1 rounded-2xl outline-1 outline-border p-3 flex flex-col items-center gap-2">
                                                 <p className="text-xs text-center text-subtext2 whitespace-nowrap">
@@ -126,8 +128,8 @@ export default function GoalsPage() {
                                             <div className="w-full flex flex-col gap-2">
                                                 {Math.round(HC.goalProgress.get(g.id) ?? 0) >= 100 ? 
                                                 <div className="flex items-center gap-2 justify-center outline-1 py-2 rounded-lg outline-highlight/30">
-                                                    <p className="text-sm  text-highlight flex items-center gap-3">
-                                                        Completed 🎉
+                                                    <p className="text-sm  text-highlight flex items-center gap-3 text-center">
+                                                        Completed
                                                     </p>
                                                     
                                                 </div> :
