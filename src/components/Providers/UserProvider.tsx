@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useRef, useState } from "react"
 import { AuthContext } from "./AuthProvider";
 import { supabase } from "../../supabase-client";
 import { AlertContext } from "../Alert/AlertProvider";
-import { type GaolCompletionType, type GoalType, type HabitCompletionType, type HabitType, type IssueType, type ReturnObj, type SubmitIssueType } from "../../utils/types";
+import { AchievementsEnum, type Achievement, type GaolCompletionType, type GoalType, type HabitCompletionType, type HabitType, type IssueType, type ReturnObj, type SubmitIssueType } from "../../utils/types";
 import { dateUtils } from "../../utils/dateUtils";
 import { Util } from "../../utils/util";
 import { GOAL_LIM_FREE, HABIT_LIM_FREE } from "../../utils/Constants";
@@ -10,6 +10,10 @@ import { LockingLoading } from "@/utils/LockingLoad";
 import { type RefObject } from "react";
 import type { habitWorkerPayload, habitWorkerReturnType } from "@/workers/habitWorker";
 import {type  HabitStats } from "../../utils/types";
+import Model from "../InputComponents/Model";
+import ButtonComp from "../primatives/ButtonComp";
+import { useNavigate } from "react-router-dom";
+import { FaCheck } from "react-icons/fa";
 
 
 interface UserType{
@@ -45,6 +49,7 @@ interface UserType{
     goalCompletions: Map<number, GaolCompletionType[]>
     updateGoalName: (name: string, id: number) => Promise<ReturnObj<void>>
     getCurrentGoal: () => GoalType | undefined
+    achievements: Map<number, Achievement>
 }
 const initialValues: UserType = {
     createHabit: () => Promise.resolve(undefined),
@@ -78,7 +83,8 @@ const initialValues: UserType = {
     askGpt: () => Promise.resolve(""),
     goalCompletions: new Map<number, GaolCompletionType[]>(),
     updateGoalName: () => Promise.resolve({success: true}),
-    getCurrentGoal: () => undefined
+    getCurrentGoal: () => undefined,
+    achievements: new Map<number, Achievement>()
 }
 
 export const UserContext = createContext<UserType>(initialValues)
@@ -109,6 +115,22 @@ export default function UserProvider(props: Props) {
     const [habitStats, setHabitStats] = useState<Map<number, HabitStats>>(new Map<number, HabitStats>())
     const [goalStats, setGoalStats] = useState<Map<number, GaolStats[]>>(new Map<number, GaolStats[]>())
 
+    const [achievements, setAchievements] = useState<Map<number, Achievement>>(new Map())
+    const [showAchievementModal, setShowAchievementModal] = useState(false)
+    const [achievementData, setAchievementData] = useState<string[]>([])
+    const [updatedStats, setUpdatedStats] = useState(false)
+    const navigate = useNavigate()
+    const achievementChecks: Record<number, () => boolean> = {
+        [AchievementsEnum.create5Habits]: () => habits.size >= 5,
+        [AchievementsEnum.have3ActiveGoals]: () => goals.size >= 3,
+        [AchievementsEnum.habitEntries100]: () => Array.from(habitsCompletions.values()).flat().length >= 100,
+        [AchievementsEnum.habitEntries250]: () => Array.from(habitsCompletions.values()).flat().length >= 250,
+        [AchievementsEnum.habitEntries500]: () => Array.from(habitsCompletions.values()).flat().length >= 500,
+        [AchievementsEnum.habitEntries1000]: () => Array.from(habitsCompletions.values()).flat().length >= 1000,
+        [AchievementsEnum.habitEntries5000]: () => Array.from(habitsCompletions.values()).flat().length >= 5000,
+        [AchievementsEnum.habitEntries10000]: () => Array.from(habitsCompletions.values()).flat().length >= 10000,
+    };
+
     const auth = useContext(AuthContext)
     const {alert} = useContext(AlertContext)
     const hasRanRef = useRef(false)
@@ -126,8 +148,11 @@ export default function UserProvider(props: Props) {
             await getGoals()
             await getHabitsCompletions()
             await getGoalsCompletions()
+            await getAchievementData()
+            await checkAchievements()
             unLock()
             await getIssues()
+            setUpdatedStats(!updatedStats)
             hasRanRef.current = true
         }
         fetchData()
@@ -159,6 +184,7 @@ export default function UserProvider(props: Props) {
             goals
         } as habitWorkerPayload)
 
+        setUpdatedStats(!updatedStats)
 
         return () => {
             habitWorker.terminate()
@@ -190,8 +216,13 @@ export default function UserProvider(props: Props) {
             values.set(g.id, Math.min(progress, 100))
         })
         setGoalProgress(values)
+        setUpdatedStats(!updatedStats)
         unLock()
     }, [goalCompletions])
+
+    useEffect(() => {
+        checkAchievements()
+    }, [updatedStats])
 
 
     function lock(){
@@ -668,43 +699,162 @@ export default function UserProvider(props: Props) {
         if(!currentGaolId) return undefined
         return goals.get(currentGaolId)
     }
-    return (
+    async function getAchievementData(){
+        setLoading(true)
+        const userid = auth.getUserId()
+
+        const { data, error } = await supabase
+            .from("achievements")
+            .select(`
+                id,
+                name,
+                description,
+                userAchievements!left(achievement_id, created_at)
+            `)
+            .eq("userAchievements.user_id", userid);
+
+
+        if (error){
+            alert("Achievement fetch error: " + error.message)
+            setLoading(false)
+            return
+        };
+
+        const map = new Map<number, Achievement>()
+        data.forEach((d: Achievement) => {
+            map.set(d.id, d as Achievement)
+        })
+        setAchievements(new Map(map))
+        setLoading(false)
+    }
+    async function addAchievementComps(ids: number[]){
+        setLoading(true)
+        const userid = auth.getUserId()
+        const rows = ids.map(id => ({
+            user_id: userid,
+            achievement_id: id
+            }));
+
+        const { data, error } = await supabase
+            .from("userAchievements")
+            .insert(rows)
+            .select();
         
-        <UserContext.Provider value={{
-            isCalculating,
-            createHabit,
-            createGoal,
-            updateHabitName,
-            deleteHabit,
-            deleteHabitCompletion,
-            deleteIssue,
-            habits,
-            goals,
-            setGaols,
-            habitsCompletions,
-            loading,
-            currentGaol: currentGaolId,
-            issues,
-            setCurrentGoal: setCurrentGoalId,
-            currentHabit,
-            setCurrentHabit,
-            compleHabit: compleHabit,
-            removeTodaysHabitCompletion,
-            addGoalCompletion,
-            archiveGoal,
-            deleteGoal,
-            askGpt,
-            compleGoal,
-            lodgeIssue,
-            removeAssociatedHabit,
-            goalCompletions,
-            goalProgress,
-            habitStats,
-            goalStats,
-            updateGoalName,
-            getCurrentGoal
-        }}>
-            {props.children}
-        </UserContext.Provider>
+        if(error){
+            alert("Achievement Update Error: " + error.message)
+            setLoading(false)
+            return
+        }
+
+        const modifiedRows = data as {achievement_id: number, created_at: string}[]
+        const map = new Map(achievements)
+        modifiedRows.forEach(a => {
+            map.set(a.achievement_id, {...map.get(a.achievement_id)!, userAchievements: [{...a}]})
+        })
+        setAchievements(new Map(map))
+        setLoading(false)
+    }
+
+    async function checkAchievements(){
+        const completedAchievements: number[] = []
+        Array.from(achievements.values()).forEach(a => {
+            if(a.userAchievements.length != 0) return
+
+            const check = achievementChecks[a.id]
+
+            if(check && check()){
+                completedAchievements.push(a.id)
+            }
+        })
+
+        if(completedAchievements.length == 0) return
+        setAchievementData([...completedAchievements.map(id => achievements.get(id)?.name ?? "")])
+        await addAchievementComps(completedAchievements)
+        setShowAchievementModal(true)
+    }
+    return (
+        <>
+            <UserContext.Provider value={{
+                isCalculating,
+                createHabit,
+                createGoal,
+                updateHabitName,
+                deleteHabit,
+                deleteHabitCompletion,
+                deleteIssue,
+                habits,
+                goals,
+                setGaols,
+                habitsCompletions,
+                loading,
+                currentGaol: currentGaolId,
+                issues,
+                setCurrentGoal: setCurrentGoalId,
+                currentHabit,
+                setCurrentHabit,
+                compleHabit: compleHabit,
+                removeTodaysHabitCompletion,
+                addGoalCompletion,
+                archiveGoal,
+                deleteGoal,
+                askGpt,
+                compleGoal,
+                lodgeIssue,
+                removeAssociatedHabit,
+                goalCompletions,
+                goalProgress,
+                habitStats,
+                goalStats,
+                updateGoalName,
+                getCurrentGoal,
+                achievements
+            }}>
+                {props.children}
+            </UserContext.Provider>
+            <Model open={showAchievementModal} onClose={() => {
+                setShowAchievementModal(false)
+                setAchievementData([])
+            }}>
+                <div className="bg-panel1 p-7 outline-1 outline-border rounded-2xl w-[90%] max-w-[450px]"
+                    onClick={e => e.stopPropagation()}>
+                    <p className="font-medium text-title text-center">
+                        {achievementData.length == 0 ? 
+                            "Congratulations! You’ve just unlocked a new achievement! 🎉🎉" :
+                            "Congratulations! You’ve just unlocked some new achievements! 🎉🎉"}
+                    </p>
+                    <div className=" flex justify-center items-center mt-7 gap-2 flex-col max-h-40  overflow-y-scroll no-scrollbar">
+                        {achievementData.map(a => {
+                            return(
+                                <div className="border-1 w-full p-3 py-1 rounded-md border-border2 bg-panel2">
+                                    <p className="text-subtext2 font-medium text-sm flex items-center gap-2">
+                                        <FaCheck className="text-highlight"/> {a}
+                                    </p>
+                                </div>
+                            )
+                        })}
+                    </div>
+                    <div className=" flex mt-8 gap-3">
+                        <ButtonComp
+                            name="Done"
+                            highlight={true}
+                            onSubmit={() => {
+                                setShowAchievementModal(false)
+                                setAchievementData([])
+                            }}
+                            noAnimation={true}
+                            style="w-full"/>
+                        <ButtonComp
+                            name="Achievements"
+                            highlight={true}
+                            onSubmit={() => {
+                                navigate("/achievements")
+                                setAchievementData([])
+                            }}
+                            noAnimation={true}
+                            style="w-full"/>
+                    </div>
+                </div>
+            </Model>
+        </>
     )
 }

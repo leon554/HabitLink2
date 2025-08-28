@@ -191,3 +191,22 @@ export const defaultHabitStats: HabitStats = {
   compsPerWeek: [], 
   compsPerMonth: [] 
 };
+export interface Achievement{
+    id: number
+    name: string
+    description: string
+    userAchievements: {
+        achievement_id: number
+        created_at: string
+    }[]
+}
+export enum AchievementsEnum{
+    create5Habits = 1,
+    have3ActiveGoals = 2,
+    habitEntries100 = 3,
+    habitEntries250 = 4,
+    habitEntries500 = 5,
+    habitEntries1000 = 6,
+    habitEntries5000 = 7,
+    habitEntries10000 = 8,
+}

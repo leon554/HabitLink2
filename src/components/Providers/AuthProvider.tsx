@@ -58,7 +58,7 @@ export default function AuthProvider(props: Props) {
     const [logOutLoading, setLogOutLoading] = useState(false)
     const [products, setProducts] = useState<LemonSqueezyProduct[]>([])
     const [captchaToken, setCaptchaToken] = useState("")
-    const protectedPaths = ["/reset", "/dashboard", "/log", "/create", "/stats", "/goals", "/creategoal", "/settings", "/help", "/studio", "/thanks", "/priv", "/refund", "/terms"]
+    const protectedPaths = ["/achievements", "/reset", "/dashboard", "/log", "/create", "/stats", "/goals", "/creategoal", "/settings", "/help", "/studio", "/thanks", "/priv", "/refund", "/terms"]
     const unprotectedPaths = ["/", "/auth", "/priv", "/refund", "/terms", "/reset"]
     
 
@@ -85,7 +85,7 @@ export default function AuthProvider(props: Props) {
     }, [session])
 
     useEffect(() => {
-        if(localUser === null || session === null || session == undefined) return
+        if(localUser === null || session === null || session === undefined || user === undefined || user === null) return
         getProducst()
     }, [localUser])
 
@@ -96,7 +96,7 @@ export default function AuthProvider(props: Props) {
         });
 
         if(error){
-            alert("Product fetch error: " + error.message)
+            //alert("Product fetch error: " + error.message)
             setLoading(false)
             return
         }
@@ -118,7 +118,7 @@ export default function AuthProvider(props: Props) {
         const { data, error} = await supabase.auth.getUser()
 
         if(error){
-            alert(error.message)
+            alert("You've been logged out")
             await supabase.auth.signOut()
             navigate("/")
             setLoading(false)

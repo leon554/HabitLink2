@@ -23,6 +23,7 @@ import Terms from "./pages/Terms"
 import Refund from "./pages/Refund"
 import Privacy from "./pages/Privacy"
 import ResetPassword from "./components/ResetPassword"
+import Achievements from "./pages/Achievements"
 
 function App() {
   const {dark, setDark} = useContext(themeContext)
@@ -55,6 +56,7 @@ function App() {
                 <Route path="refund" element={<Refund/>}/>
                 <Route path="priv" element={<Privacy/>}/>
                 <Route path="reset" element={<ResetPassword/>}/>
+                <Route path="achievements" element={<Achievements/>}/>
               </Route>
             </Routes>
             

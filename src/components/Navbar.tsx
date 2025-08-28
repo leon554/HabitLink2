@@ -15,6 +15,7 @@ import { TbTargetArrow } from "react-icons/tb";
 import { IoMdBookmarks } from "react-icons/io";
 import { IoMdSettings } from "react-icons/io";
 import { IoLogOut } from "react-icons/io5";
+import { FaCheck } from "react-icons/fa";
 
 
 
@@ -92,7 +93,7 @@ export default function Navbar() {
                                     onBtnClick={() => setBlurSettings(true)}
                                     setText="Create"
                                     style="flex justify-end items-center h-13 max-md:text-xs max-md:px-3 pl-4 pr-4 text-sm  text-gray-800 dark:text-neutral-300 text-md hover:bg-blue-300 dark:hover:bg-green-500 hover:text-stone-800 ease-in-out duration-150 hover:cursor-pointer"/>
-                                <Select items={[{name: "Settings", id: 0}, {name: "Help", id: 2}, {name: "Log Out", id: 1}]}
+                                <Select items={[{name: "Achievements", id: 3}, {name: "Help", id: 2}, {name: "Settings", id: 0}, {name: "Log Out", id: 1}]}
                                         largeText={false}
                                         selectedItem={null}
                                         setSelectedItem={(id: number) => {
@@ -100,6 +101,8 @@ export default function Navbar() {
                                                 navitgate("/settings")
                                             }else if(id == 1){
                                                 logout()
+                                            }else if(id == 3){
+                                                navitgate("/achievements")
                                             }else{
                                                 navitgate("/help")
                                             }
@@ -119,6 +122,7 @@ export default function Navbar() {
                                             {name: "New Habit", id: 3, icon: <FaPlus  size={15}/>},
                                             {name: "New Goal", id: 2, icon: <FaPlus  size={15}/>},
                                             {name: "Habit Studio", id: 9, icon: <FaPlus  size={15}/>},
+                                            {name: "Achievements", id: 10, icon: <FaCheck  size={15}/>},
                                             {name: "Help", id: 8, icon: <IoMdBookmarks  size={15}/>}, 
                                             {name: "Settings", id: 1, icon: <IoMdSettings  size={15}/>}, 
                                             {name: "Log Out", id: 0, icon: <IoLogOut  size={15}/>}, 
@@ -155,6 +159,9 @@ export default function Navbar() {
                                         }
                                         if(id == 9){
                                             navitgate("/studio")
+                                        }
+                                        if(id == 10){
+                                            navitgate("/achievements")
                                         }
                                     }}
                                     origin={Origin.topRight}

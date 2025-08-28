@@ -208,7 +208,7 @@ export default function LandingPage() {
                     </div>
                     <div className="flex gap-3 w-full md:w-auto">
                       <Link to="/auth" className="flex-1 md:flex-none">
-                        <button className="w-full inline-flex items-center max-sm:text-sm justify-center rounded-lg bg-blue-500 dark:bg-highlight text-white dark:text-btn-text px-5 py-3 font-medium shadow-sm hover:opacity-90 transition">
+                        <button className="hover:cursor-pointer w-full inline-flex items-center max-sm:text-sm justify-center rounded-lg bg-blue-500 dark:bg-highlight text-white dark:text-btn-text px-5 py-3 font-medium shadow-sm hover:opacity-90 transition">
                           Create account
                         </button>
                       </Link>
