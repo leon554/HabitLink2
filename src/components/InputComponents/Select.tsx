@@ -70,7 +70,7 @@ export default function Select(props: SelectProps) {
                     : Util.capitilizeFirst(props.selectedItem.name))}
 
             </button>
-            <div className={`absolute ${props.dropUp ? "bottom-full" : "top-full"}  ${props.center ? "left-1/2 transform -translate-x-1/2" : "right-0 "} rounded-md p-2.5  overflow-y-scroll no-scrollbar max-h-100 px-1.5 mt-2 mb-1 ${props.largeText ? "gap-1.5" : "gap-1"} flex flex-col justify-start items-start scale-0 transition-transform duration-200 bg-panel1 text-subtext1  outline-border2  z-20 w-fit outline-1`} style={{
+            <div className={`absolute ${props.dropUp ? "bottom-full" : "top-full"}  ${props.center ? "left-1/2 transform -translate-x-1/2" : "right-0 "} rounded-xl p-2.5  overflow-y-scroll no-scrollbar max-h-100 px-1.5 mt-2 mb-1 ${props.largeText ? "gap-1.5" : "gap-1"} flex flex-col justify-start items-start scale-0 transition-transform duration-200 bg-panel1 text-subtext1  outline-border2  z-20 w-fit outline-1`} style={{
                 scale: clicked ? 1 : 0,
                 transformOrigin: props.origin ?? (props.dropUp ? "bottom" : "top")
                 }}
@@ -82,7 +82,7 @@ export default function Select(props: SelectProps) {
                     return (
                     <p
                         key={crypto.randomUUID()}
-                        className={`hover:bg-highlight gap-1.5 w-full flex items-center justify-start p-1 px-0.5 ${props.largeText ? "" : "text-sm"} rounded-md transition duration-100 ease-in-out hover:cursor-pointer text-nowrap hover:text-btn-text px-3`}
+                        className={`hover:bg-highlight gap-1.5 w-full flex items-center justify-start p-1 px-0.5 ${props.largeText ? "" : "text-sm"} rounded-lg transition duration-100 ease-in-out hover:cursor-pointer text-nowrap hover:text-btn-text px-3`}
                         onClick={() => {
                             triggerHaptic()
                             setItem(h.id)
