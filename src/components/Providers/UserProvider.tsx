@@ -184,7 +184,7 @@ export default function UserProvider(props: Props) {
     }, [habitsCompletions, habits, goals])
 
     useEffect(() => {
-
+        const idsToComplete: number[] = []
         lock()
         const values: Map<number, number> = new Map<number, number>()
         goals.forEach(g => {
@@ -197,20 +197,39 @@ export default function UserProvider(props: Props) {
                 const linkedHabitId = g.linkedHabit
                 const completions = habitsCompletions.get(linkedHabitId)
                 const validComps = completions?.filter(c => new Date(Number(c.date)).getTime() > startTime)
-                currentValue =  validComps?.reduce((s, c) => s += c.data, 0)
+                if(g.countdata){
+                    currentValue =  validComps?.reduce((s, c) => s += c.data, 0)
+                }else{
+                    currentValue =  validComps?.length
+                }
             }
-
             currentValue = currentValue ?? g.startValue ?? 0    
             const startValue = g.startValue
             const targetValue = g.targetValue
 
             const progress = Util.calculateProgress(startValue, currentValue, targetValue)*100
+            if(progress >= 100 && !g.completed){
+                alert("🎉 Amazing job! You just crushed your goal: '" + g.name + "' 🚀 Keep going!");
+                idsToComplete.push(g.id)
+            }
             values.set(g.id, Math.min(progress, 100))
         })
+    
+
         setGoalProgress(values)
         setUpdatedStats(!updatedStats)
-        unLock()
-    }, [goalCompletions])
+
+        if(idsToComplete.length !== 0){
+            (async () => {
+                await Promise.all(idsToComplete.map(id => {completeGoal(id)}));
+                unLock();
+            })();
+            idsToComplete.forEach(id => goals.get(id)!.completed = true)
+            setGaols(new Map(goals))
+        } else {
+            unLock();
+        }
+    }, [goalCompletions, habitsCompletions])
 
     useEffect(() => {
         checkAchievements()
@@ -321,7 +340,7 @@ export default function UserProvider(props: Props) {
         }
 
         goals.delete(goalId)
-        setGaols(goals)
+        setGaols(new Map(goals))
         setLoading(false)
     }
     async function getGoals(){
@@ -554,8 +573,7 @@ export default function UserProvider(props: Props) {
         setLoading(false)
         return data.text as string
     }
-    async function compleGoal(goalId: number){
-        if(loading) return
+    async function completeGoal(goalId: number){
         setLoading(true)
 
         const { error } = await supabase
@@ -566,7 +584,6 @@ export default function UserProvider(props: Props) {
         if(error){
             alert("Setting goal to completed in DB failed: " + error.message)
         }
-        setLoading(false)
     }
     async function lodgeIssue(issue: SubmitIssueType){
         setLoading(true)
@@ -750,7 +767,6 @@ export default function UserProvider(props: Props) {
         setLoading(false)
         return true
     }
-
     async function checkAchievements(){
         const completedAchievements: number[] = []
         Array.from(achievements.values()).forEach(a => {
@@ -795,7 +811,7 @@ export default function UserProvider(props: Props) {
                 archiveGoal,
                 deleteGoal,
                 askGpt,
-                compleGoal,
+                compleGoal: completeGoal,
                 lodgeIssue,
                 removeAssociatedHabit,
                 goalCompletions,

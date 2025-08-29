@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState} from "react"
+import { useContext, useEffect, useMemo, useState} from "react"
 import { UserContext } from "../components/Providers/UserProvider"
 import CountDown from "../components/goalComponenets/CountDown"
 import AssociatedHabits from "../components/goalComponenets/AssociatedHabits"
@@ -35,6 +35,7 @@ export default function GoalsPage() {
     const goal = HC.getCurrentGoal()
     const navigate = useNavigate()
     const isMobile = useIsMobile()
+    const goals = useMemo(() => Array.from(HC.goals.values()).filter(g => !g.archived), [HC.goals, HC.habitsCompletions, HC.goalCompletions])
 
     const [timeLeft, setTimeLeft] = useState(Array.from(HC.goals.values())
         .filter(v => !v.archived)
@@ -98,7 +99,7 @@ export default function GoalsPage() {
                         </p>
                     </div>
                     <div className="flex flex-col  items-stretch gap-2.5 mb-2 w-[90%] max-w-[600px]">
-                        {Array.from(HC.goals.values()).filter(g => !g.archived).map((g, i) => {
+                        {goals.map((g, i) => {
                             return(
                                 <div key={i} className={`hover:cursor-pointer gap-7 shadow-md shadow-gray-200 dark:shadow-none grow-1 bg-panel1 rounded-2xl outline-1 outline-border p-3.5 items-center flex justify-between`}
                                     onClick={() => {
@@ -182,7 +183,7 @@ export default function GoalsPage() {
             : HC.isCalculating.current.isLoading() || auth.loading ?
             <AiOutlineLoading className="animate-spin text-subtext1 mt-25" size={30}/> :
             Util.fetchAllMapItems(HC.goals).length == 0 ? 
-                <div className="shadow-md shadow-gray-200 dark:shadow-none w-[90%] max-w-[400px] bg-panel1 rounded-2xl outline-1 outline-border  p-7 flex flex-col gap-4 mt-18">
+                <div className="shadow-md shadow-gray-200 dark:shadow-none w-[90%] max-w-[400px] bg-panel1 rounded-2xl outline-1 outline-border  p-7 flex flex-col gap-4">
                     <p className="text-lg text-title font-medium leading-none">
                         No Goals :(
                     </p>
