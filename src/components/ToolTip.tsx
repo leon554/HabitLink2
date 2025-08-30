@@ -14,13 +14,16 @@ export default function ToolTip(p: Props) {
             className="flex relative w-full"
             onMouseEnter={() => setIsHovered(true)} 
             onMouseLeave={() => setIsHovered(false)} 
-            onTouchStart={() => setIsHovered(true)} 
-            onTouchEnd={() => setIsHovered(false)} 
+           onClick={e => {
+                e.stopPropagation();
+                setIsHovered(prev => !prev);
+            }}
         >
             {p.children}
             <div
                 className={`absolute z-10 origin-bottom bottom-full mb-2 left-1/2 -translate-x-1/2 
                 ${isHovered ? 'scale-100 delay-200' : 'scale-0'} transition-all duration-250 ease-in-out`}
+                onClick={e => e.stopPropagation()}
             >
                 {p.tooltip}
             </div>

@@ -46,7 +46,7 @@ export default function TextBoxLimited({name, password, value, setValue, charLim
             : ""} 
             {textArea ? 
             <textarea 
-                className="shadow-sm shadow-gray-200 dark:shadow-none outline-1 outline-border2 rounded-md px-2 py-1.5 text-subtext3 text-xs h-20 resize-none"
+                className="no-scrollbar shadow-sm shadow-gray-200 dark:shadow-none outline-1 outline-border2 rounded-md px-2 py-1.5 text-subtext3 text-xs h-20 resize-none"
                 placeholder={placeHolder}
                 value={value}
                 onChange={e => Util.setValueLim(setValue, e.target.value, charLimit)}/>

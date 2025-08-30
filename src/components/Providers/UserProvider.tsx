@@ -43,7 +43,7 @@ interface UserType{
     goalStats: Map<number, GaolStats[]>
     setCurrentGoal: (currentGaol: number| null) => void
     setCurrentHabit: (currentHabit: HabitType | null) => void
-    compleHabit: (habitId: number, value: number, skip: boolean, date?: Date) => Promise<void>,
+    completeHabit: (habitId: number, value: number, skip: boolean, date?: Date, notes?: string) => Promise<void>,
     removeTodaysHabitCompletion: (habitId: number) => Promise<void>
     addGoalCompletion: (value: number) => Promise<void>
     askGpt: (promt: string) => Promise<string|null>
@@ -51,6 +51,7 @@ interface UserType{
     updateGoalName: (name: string, id: number) => Promise<ReturnObj<void>>
     getCurrentGoal: () => GoalType | undefined
     achievements: Map<number, Achievement>
+    addNote: (note: string, habitId: number) => Promise<void>
 }
 const initialValues: UserType = {
     createHabit: () => Promise.resolve(undefined),
@@ -78,14 +79,15 @@ const initialValues: UserType = {
     goalStats: new Map<number, GaolStats[]>(),
     setCurrentGoal: () => null,
     setCurrentHabit: () => null,
-    compleHabit: () => Promise.resolve(undefined),
+    completeHabit: () => Promise.resolve(undefined),
     removeTodaysHabitCompletion: () => Promise.resolve(undefined),
     addGoalCompletion: () => Promise.resolve(undefined),
     askGpt: () => Promise.resolve(""),
     goalCompletions: new Map<number, GaolCompletionType[]>(),
     updateGoalName: () => Promise.resolve({success: true}),
     getCurrentGoal: () => undefined,
-    achievements: new Map<number, Achievement>()
+    achievements: new Map<number, Achievement>(),
+    addNote: () => Promise.resolve(undefined)
 }
 
 export const UserContext = createContext<UserType>(initialValues)
@@ -471,14 +473,14 @@ export default function UserProvider(props: Props) {
         await getHabitsCompletions()
         setLoading(false)
     }
-    async function compleHabit(habitId: number, value: number, skip: boolean = false, date?: Date){
+    async function completeHabit(habitId: number, value: number, skip: boolean = false, date?: Date, notes?: string){
         const userid = auth.getUserId()
 
         setLoading(true)
         const { error } = await supabase
             .from('habitCompletions')
             .insert([
-                { habitId, data: value, date: date ? date.getTime() : Date.now(), user_id: userid, skip},
+                { habitId, data: value, date: date ? date.getTime() : Date.now(), user_id: userid, skip, notes},
             ])
         if(error){
             alert("Habit Completion Error: " + error)
@@ -785,6 +787,31 @@ export default function UserProvider(props: Props) {
         setAchievementData([...completedAchievements.map(id => achievements.get(id)?.name ?? "")])
         setShowAchievementModal(true)
     }
+    async function addNote(note: string, habitId: number){
+        setLoading(true)
+
+        const { data, error } = await supabase
+            .from('habitCompletions')
+            .update({ notes: note})
+            .eq('habitId', habitId)
+            .order('created_at', { ascending: false })
+            .limit(1)
+            .select();
+
+        if(error){
+            alert("Adding note error please try again")
+            console.error(error)
+            setLoading(false)
+            return
+        }
+
+        const newComps = [...(habitsCompletions.get(habitId)?.filter(c => c.id !== data[0].id) ?? []), data[0]];
+        const newMap = new Map(habitsCompletions); 
+        newMap.set(habitId, newComps);  
+        setHabitsCompletions(newMap);
+        alert("Successfully added a note!")
+        setLoading(false)
+    }
     return (
         <>
             <UserContext.Provider value={{
@@ -805,7 +832,7 @@ export default function UserProvider(props: Props) {
                 setCurrentGoal: setCurrentGoalId,
                 currentHabit,
                 setCurrentHabit,
-                compleHabit: compleHabit,
+                completeHabit: completeHabit,
                 removeTodaysHabitCompletion,
                 addGoalCompletion,
                 archiveGoal,
@@ -820,7 +847,8 @@ export default function UserProvider(props: Props) {
                 goalStats,
                 updateGoalName,
                 getCurrentGoal,
-                achievements
+                achievements,
+                addNote
             }}>
                 {props.children}
             </UserContext.Provider>

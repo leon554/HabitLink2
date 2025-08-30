@@ -15,6 +15,8 @@ export default function CompletionsMonth() {
     const currentHabitCompletions = HC.currentHabit ? HC.habitsCompletions.get(HC.currentHabit?.id) : undefined
     const compDays = HabitUtil.getCompletionDaysThisPeriod(HC.currentHabit!, currentHabitCompletions) ?? []
     const days = ["S", "M", "T", "W", "T", "F", "S", " "]
+    const [openNotes, setOpenNotes] = useState(false)
+    const [notes, setNotes] = useState<string[]>([])
 
     const calanderRef = useRef<HTMLDivElement>(null)
     const [columns, setColumns] = useState(16)
@@ -39,7 +41,7 @@ export default function CompletionsMonth() {
     }, []);
 
     return (
-        <div className="shadow-md shadow-gray-200 dark:shadow-none w-full bg-panel1  rounded-2xl outline-1 outline-border relative text-title justify-center p-7 pt-5 pb-7 flex flex-col items-center gap-4 ">
+        <div className="shadow-md shadow-gray-200 dark:shadow-none w-full bg-panel1  rounded-2xl outline-1 outline-border relative text-title justify-center p-7 pt-6 pb-7 flex flex-col items-center gap-4 ">
             <div className="w-full flex items-center mb-2 justify-between">
                  <div className="flex items-center gap-4">
                     <div className="shadow-sm shadow-gray-200 dark:shadow-none bg-panel2 text-subtext2 outline-1 outline-border2 p-1.5 rounded-lg">
@@ -71,10 +73,21 @@ export default function CompletionsMonth() {
                                     {d.reverse().map(v => {
                                         return(
                                             <ToolTip tooltip={
-                                                <div className="rounded-2xl bg-panel2 outline-1 outline-border2 p-3 max-w-[300px] ">
+                                                <div className="rounded-2xl bg-panel2 outline-1 outline-border2 p-3 max-w-[300px] flex flex-col items-center">
                                                     <p className=" text-xs text-center text-subtext2 w-full">
                                                         {dateUtils.formatDate(v.day)} {getDayStatus(v)} {dateUtils.isDatesSameDay(v.day , new Date()) ? "Today" : ""} {dateUtils.isDatesSameDay(new Date(Number(HC.currentHabit?.creationDate)) , v.day) ? "Creation Date" : ""}
                                                     </p>
+                                                    {v.note != "" ? 
+                                                        <ButtonComp
+                                                            name={"Notes"}
+                                                            xs={true}
+                                                            highlight={false}
+                                                            onSubmit={() =>{
+                                                                setNotes(v.note.split(","))
+                                                                setOpenNotes(true)
+                                                            }}
+                                                            style="w-full mt-2"/> : null
+                                                    }
                                                 </div>
                                             }>
                                                 <p className={`shadow-sm shadow-gray-200 dark:shadow-none w-full h-4  outline-1 outline-border2 dark:outline-0 ${dateUtils.isDatesSameDay(v.day , new Date()) ? 
@@ -184,6 +197,29 @@ export default function CompletionsMonth() {
                         onSubmit={() => setOpen(false)}
                         noAnimation={true}
                         style="mt-6"/>
+                </div>
+            </Model>
+            <Model open={openNotes} onClose={() => {setOpenNotes(false); setNotes([])}}>
+                <div className="m-5 mx-7 flex flex-col gap-2 w-[80%] max-w-[600px] bg-panel1 rounded-2xl p-8 " onClick={e => e.stopPropagation()}>
+                    <p className="text-lg font-medium mb-2">
+                        Notes
+                    </p>
+                    <div className="max-h-[40dvh] overflow-y-scroll no-scrollbar flex flex-col gap-2">
+                       {notes.map(n => {
+                            if(n == "") return
+                            return(
+                                <p className="text-subtext2 text-sm  border-1 px-3 py-2 border-border2 rounded-xl bg-panel2 hover:cursor-default hover:scale-98 transition-transform duration-150 ease-in-out">
+                                    {n}
+                                </p>
+                            )
+                       })}
+                    </div>
+                   <ButtonComp
+                        name={"Done"}
+                        highlight={true}
+                        onSubmit={() => setOpenNotes(false)}
+                        noAnimation={true}
+                        style="mt-4"/>
                 </div>
             </Model>
         </div>

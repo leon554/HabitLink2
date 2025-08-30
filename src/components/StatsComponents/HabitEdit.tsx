@@ -81,7 +81,7 @@ export default function HabitEdit() {
             }
         }
 
-        await HC.compleHabit(HC.currentHabit!.id, HC.currentHabit?.type == HabitTypeE.Normal ? 1 : entryData, false ,dateObj)
+        await HC.completeHabit(HC.currentHabit!.id, HC.currentHabit?.type == HabitTypeE.Normal ? 1 : entryData, false ,dateObj)
         alert("Succefully added entry!")
     }
 

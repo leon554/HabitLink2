@@ -18,8 +18,8 @@ import { triggerHaptic } from "tactus";
 import { GoKebabHorizontal } from "react-icons/go";
 import { FiClipboard } from "react-icons/fi";
 import { TbPlayerSkipForwardFilled } from "react-icons/tb";
-import ButtonComp from './primatives/ButtonComp';
 import { IoFlame } from 'react-icons/io5';
+import SkipNotePanel from './SkipNotePanel';
 
 
 interface HabitProps{
@@ -35,6 +35,7 @@ export default function HabitLogCard({habit: h}: HabitProps) {
     const UC = useContext(UserContext)
     const {settings} = useContext(SettingsContext)
     const navigate = useNavigate()
+    const entries = UC.habitsCompletions.get(h.id)
 
     useEffect(() => {
         isCompletedToday()
@@ -61,7 +62,7 @@ export default function HabitLogCard({habit: h}: HabitProps) {
             alert("Wait for loading to finish")
             return
         }
-        if(isSkippedToday()){
+        if(HabitUtil.isSkippedToday(entries, h)){
             alert("Habit is skipped for today, un-skip the habit to add entries to it.")
             return
         }
@@ -72,21 +73,13 @@ export default function HabitLogCard({habit: h}: HabitProps) {
             if(isCompletedToday()){
                 await UC.removeTodaysHabitCompletion(h.id)
             }else{
-                await UC.compleHabit(h.id, 1, false)
+                await UC.completeHabit(h.id, 1, false)
             }
             setLoading(false)
         }
     }
-    async function handleSkip(){
-        setLoading(true)
-        await UC.removeTodaysHabitCompletion(h.id)
-        if(!isSkippedToday()){
-            await UC.compleHabit(h.id, h.target, true)
-        }
-        setLoading(false)
-    }
     async function handleSubmit(value: number){
-        await UC.compleHabit(h.id, value, false)
+        await UC.completeHabit(h.id, value, false)
     }
     function isNormalHabit(){
         return h.type == HabitTypeE.Normal
@@ -104,12 +97,8 @@ export default function HabitLogCard({habit: h}: HabitProps) {
         if(h.type != HabitTypeE.Normal) return HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id)) >= Number(h.target)
         return isToday
     }
-    function isSkippedToday(){
-        const completions = UC.habitsCompletions.get(h.id) ?? []
-        return completions.some(c => c.skip && dateUtils.isDatesSameDay(new Date(Number(c.date)), new Date()))
-    }
     function getLoadingColor(){
-        return isCompletedToday() && isNormalHabit() && !isSkippedToday() ? "text-green-500" : "text-stone-500"
+        return isCompletedToday() && isNormalHabit() && !HabitUtil.isSkippedToday(entries, h) ? "text-green-500" : "text-stone-500"
     }
 
     return (
@@ -147,14 +136,14 @@ export default function HabitLogCard({habit: h}: HabitProps) {
                         <button className={`h-7 flex justify-center shadow-sm shadow-gray-200 dark:shadow-none 
                             items-center rounded-lg p-2 mr-0 w-7 text-subtext1
                             text-2xl hover:cursor-pointer transition-transform hover:scale-[1.04] active:scale-[0.9]
-                            ease-in-out duration-250 ${isCompletedToday() ?  isSkippedToday() ? "outline-1 outline-amber-500 dark:bg-panel2 ": "dark:bg-panel2  outline-1 outline-highlight" : HabitUtil.isDueToday(h, UC.habitsCompletions.get(h.id)) && !settings.dontShowRed ? "outline-red-500 outline-1 dark:bg-panel2 " : "dark:bg-panel2 outline-1 outline-border2"}`}
+                            ease-in-out duration-250 ${isCompletedToday() ?  HabitUtil.isSkippedToday(entries, h) ? "outline-1 outline-amber-500 dark:bg-panel2 ": "dark:bg-panel2  outline-1 outline-highlight" : HabitUtil.isDueToday(h, UC.habitsCompletions.get(h.id)) && !settings.dontShowRed ? "outline-red-500 outline-1 dark:bg-panel2 " : "dark:bg-panel2 outline-1 outline-border2"}`}
                             onClick={async (e) => {
                                 triggerHaptic()
                                 e.stopPropagation()
                                 await HandleClick()
                             }}>
                             {loading ? <AiOutlineLoading className={`animate-spin ${getLoadingColor()}`}/> : 
-                                        isSkippedToday() ? <TbPlayerSkipForwardFilled className='text-amber-500' size={10}/> : 
+                                        HabitUtil.isSkippedToday(entries, h) ? <TbPlayerSkipForwardFilled className='text-amber-500' size={10}/> : 
                                         isCompletedToday() ?  <FaCheck className={`dark:text-highlight text-highlight`}/> 
                                         : <FiClipboard className={`${HabitUtil.isDueToday(h, UC.habitsCompletions.get(h.id)) && !settings.dontShowRed ? "text-red-500" :  "text-subtext2 dark:text-subtext2" }`}/>}
                         </button>
@@ -180,43 +169,7 @@ export default function HabitLogCard({habit: h}: HabitProps) {
                         </div>
                     </Model>
                      <Model open={openSkip} onClose={() => setOpenSkip(false)}>
-                        <div onClick={e => e.stopPropagation()} className='w-[90%] max-w-[400px] bg-panel1 p-7 rounded-2xl outline-1 outline-border flex flex-col gap-3'>
-                            <p className='text-title font-semibold'>
-                                Skip Habit Today
-                            </p>
-                            <p className='text-subtext2 text-xs'>
-                                This will skip your habit today without loosing your streak or other related stats.
-                            </p>
-                             <p className='text-subtext2 text-xs'>
-                                Note: if you skip this habit it will remove all other entries for this habit that happened today.
-                            </p>
-                            <div className='flex items-center w-full mt-2 gap-4'>
-                                <ButtonComp
-                                    name={<>
-                                        {loading ? (
-                                        <AiOutlineLoading className={`animate-spin ${getLoadingColor()} text-btn-text`} />
-                                        ) : (
-                                        isSkippedToday() ? "UnSkip" : "Skip"
-                                        )}
-                                        {!UC.loading && <TbPlayerSkipForwardFilled />}
-                                    </>}
-                                    highlight={true}
-                                    noAnimation={true}
-                                    style='w-full'
-                                    short={true}
-                                    onSubmit={async () => {
-                                        await handleSkip()
-                                        setOpenSkip(false)
-                                    }}/>
-                                <ButtonComp
-                                    name={"Exit"}
-                                    noAnimation={true}
-                                    short={true}
-                                    highlight={false}
-                                    onSubmit={() => setOpenSkip(false)}/>
-
-                            </div>
-                        </div>
+                        <SkipNotePanel habit={h} setOpenSkip={setOpenSkip}/>
                     </Model>
                 </div>
             </div>

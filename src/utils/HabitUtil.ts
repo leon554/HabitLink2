@@ -567,15 +567,16 @@ export namespace HabitUtil{
 
     }
 
-    export type compDaysType = {day: Date, done: boolean, complete: boolean, habitCreation: boolean, existed: boolean, skip: boolean}
+    export type compDaysType = {day: Date, done: boolean, complete: boolean, habitCreation: boolean, existed: boolean, skip: boolean, note: string}
     export function getCompletionDaysThisPeriod(habit: HabitType, completions: HabitCompletionType[] = []){
-        let output = Array(113).fill(null).map(() => ({day: new Date(), done: false, complete: false, habitCreation: false, existed: true, skip: false})) 
+        let output = Array(113).fill(null).map(() => ({day: new Date(), done: false, complete: false, habitCreation: false, existed: true, skip: false, note: ""})) 
 
         let subarrs: compDaysType[][] = [] 
         let date = dateUtils.getEndOfWeekDate()
         for(let i = 0; i < output.length; i++){
             output[i].day = date
-            
+            output[i].note = completions.filter(c => dateUtils.isDatesSameDay(date, new Date(Number(c.date)))).map(c => c.notes).join(",")
+
             if(isBefore(date, new Date(Number(habit.creationDate)))) output[i].existed = false
             if(dateUtils.isDatesSameDay(date, new Date(Number(habit.creationDate)))) output[i].habitCreation = true
 
@@ -768,6 +769,10 @@ export namespace HabitUtil{
         })
 
         return Array.from(compsPerMonth).map(c => ({month: c[0], data: c[1]}))
+    }
+    export function isSkippedToday(habitsCompletions: HabitCompletionType[] | undefined, habit: HabitType | undefined){
+        if(!habitsCompletions || !habit) return false
+        return habitsCompletions.some(c => c.skip && dateUtils.isDatesSameDay(new Date(Number(c.date)), new Date()))
     }
 
 }

@@ -20,6 +20,7 @@ import SkipChart from "@/components/StatsComponents/SkipChart";
 import ButtonComp from "@/components/primatives/ButtonComp";
 import SEO from "@/components/SEO";
 import { useIsMobile } from "@/components/Hooks/useIsMobile";
+import Notes from "@/components/StatsComponents/Notes";
 
 export default function StatsPage() {
     const HC = useContext(UserContext)
@@ -124,6 +125,7 @@ export default function StatsPage() {
                         <Summary/>
                         <CompletionThisWeek/>
                         <CompletionsMonth/>
+                        <Notes habitId={HC.currentHabit!.id}/>
                         <div className={`flex flex-col  gap-3 w-full  `}>
                             <MostCommonDays habitId={HC.currentHabit!.id}/>
                             <ConsistencyOverTime/>
