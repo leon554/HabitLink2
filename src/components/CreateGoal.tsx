@@ -417,7 +417,7 @@ export default function CreateGoal() {
                 </div>
             </Model>
             <Model open={showNewHabitModal} onClose={() => setShowNewHabitModal(false)}>
-                <div className="w-[90%]  max-w-[900px]  max-md:max-w-[500px] max-h-[80dvh] rounded-2xl overflow-scroll no-scrollbar" 
+                <div className="w-[90%]  max-w-[900px]  max-md:max-w-[500px] max-h-[70dvh] rounded-2xl overflow-scroll no-scrollbar" 
                  onClick={e => e.stopPropagation()}>
                     <Create compact={true} onCreate={() => setShowNewHabitModal(false)} initialName={habitName}/>
                 </div>

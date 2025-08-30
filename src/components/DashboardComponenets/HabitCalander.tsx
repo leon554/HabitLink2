@@ -144,21 +144,23 @@ export default function HabitCalander() {
                     <p className="text-lg text-title font-medium">
                         Calendar Info
                     </p>
-                    <p className="text-sm text-subtext2">
-                        To view the info of any square simply just hover over that square.
-                    </p>
-                    <p className="text-sm text-subtext2 mt-2">
-                        When hovering over a square you will see these emojis: ❌✅📊
-                    </p>
-                    <p className="text-sm text-subtext2 mt-2">
-                        ❌ Represents all the habits that was set to be completed but wasn't on a specific day.
-                    </p>
-                    <p className="text-sm text-subtext2 mt-2">
-                        ✅ Represents all the habits that was completed regardless if they were due or not.
-                    </p>
-                    <p className="text-sm text-subtext2 mt-2">
-                        📊 Represents the total number of habits you have on a given day. Note: ✅ + ❌ may not equal 📊 because some habits are defined by a weekly target (e.g., 3 times per week) rather than fixed days (e.g., Mon/Wed/Fri). If such a habit isn't completed, the system cannot determine which specific days were missed, only that the weekly goal was unmet.
-                    </p>
+                    <div className="flex flex-col gap-2 max-h-[40svh] overflow-y-scroll no-scrollbar">
+                        <p className="text-sm text-subtext2">
+                            To view the info of any square simply just hover over that square.
+                        </p>
+                        <p className="text-sm text-subtext2 mt-2">
+                            When hovering over a square you will see these emojis: ❌✅📊
+                        </p>
+                        <p className="text-sm text-subtext2 mt-2">
+                            ❌ Represents all the habits that was set to be completed but wasn't on a specific day.
+                        </p>
+                        <p className="text-sm text-subtext2 mt-2">
+                            ✅ Represents all the habits that was completed regardless if they were due or not.
+                        </p>
+                        <p className="text-sm text-subtext2 mt-2">
+                            📊 Represents the total number of habits you have on a given day. Note: ✅ + ❌ may not equal 📊 because some habits are defined by a weekly target (e.g., 3 times per week) rather than fixed days (e.g., Mon/Wed/Fri). If such a habit isn't completed, the system cannot determine which specific days were missed, only that the weekly goal was unmet.
+                        </p>
+                    </div>
                     <ButtonComp
                         name={"Done"}
                         highlight={true}

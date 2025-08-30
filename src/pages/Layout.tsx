@@ -14,7 +14,6 @@ export default function Layout() {
     
     return (
         <div >
-            <div className="absolute inset-0  opacity-20 dark:opacity-10 pointer-events-none -z-30 h-screen" />
             <Alert/>
             <Navbar/>
             {auth.loading || theme.loading? 

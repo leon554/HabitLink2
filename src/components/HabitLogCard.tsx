@@ -41,6 +41,8 @@ export default function HabitLogCard({habit: h}: HabitProps) {
         isCompletedToday()
     }, [])
 
+
+
     const startValue = UC.getCurrentGoal()?.startValue ?? 0
     const currenValue = useCurrentGoalValue()
     const targetValue = UC.getCurrentGoal()?.targetValue ?? 0

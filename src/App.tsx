@@ -25,7 +25,7 @@ import Achievements from "./pages/Achievements"
 
 function App() {
   return (
-    <div className="h-[100dvh] overflow-y-auto overscroll-none no-scrollbar">
+    <div className="h-[100svh] overflow-y-auto overscroll-none no-scrollbar">
       <HelmetProvider>
         <Router>
           <SettingsProvider>
