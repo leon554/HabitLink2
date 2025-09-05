@@ -61,6 +61,7 @@ export default function BestHabits() {
                      <Select items={items}
                             selectedItem={items[filter]} 
                             setSelectedItem={(id) => setFilter(id)}
+                            showIcon={true}
                             style="shadow-sm shadow-gray-200 dark:shadow-none text-xs bg-panel2 text-subtext3 px-2 py-0.5 rounded-lg border-1 border-border2 z-10"/>
                     
                 </div>

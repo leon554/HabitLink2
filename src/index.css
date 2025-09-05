@@ -7,6 +7,7 @@
 
 @theme {
   --color-panel1: hsl(0, 0%, 100%); 
+  --color-panel3: hsl(0, 0%, 96%);
   --color-panel2: hsl(210, 100%, 100%); 
   --color-progress-panel: hsl(0, 0%, 95%); 
   --color-btn-text: hsl(0, 0%, 100%);   
@@ -14,7 +15,7 @@
   --color-title: oklch(21% 0.034 264.665);      
   --color-subtext1: hsl(0, 0%, 13%);   
   --color-subtext2:hsl(0, 0%, 13%);    
-  --color-subtext3:hsl(0, 0%, 13%);   
+  --color-subtext3:hsl(0, 0%, 30%);   
   --color-border: hsl(0, 0%, 85%);   
   --color-border2: hsl(0, 0%, 85%);   
   --color-highlight: hsl(217, 91%, 60%);   
@@ -33,6 +34,7 @@
 .dark {
   --color-panel1: hsl(0, 0%, 8%);
   --color-panel2: hsl(0, 0%, 10%);
+  --color-panel3: hsl(0, 0%, 12%);
   --color-progress-panel: hsl(0, 0%, 13%);
 
   --color-btn-text: oklch(26.9% 0 0);

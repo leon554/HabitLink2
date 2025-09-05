@@ -29,7 +29,7 @@ export default function AssociatedHabits() {
                 {[...habits].map((h, i) => {
                     if(h){
                         return(
-                            <div key={i} className={`shadow-sm shadow-gray-200 dark:shadow-none flex items-center bg-panel2 p-2 rounded-xl border-1 border-border2 justify-between hover:cursor-pointer hover:scale-99 transition-all duration-100 ease-in-out`} 
+                            <div key={i} className={` bg-panel3 flex items-center dark:bg-panel2 p-2 rounded-xl border-1 border-border2 justify-between hover:cursor-pointer hover:scale-99 transition-all duration-100 ease-in-out`} 
                                 onClick={() => {
                                     HC.setCurrentHabit(h)
                                     navigate("/stats")

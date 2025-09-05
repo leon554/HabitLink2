@@ -139,14 +139,16 @@ export default function UserProvider(props: Props) {
         
         const fetchData = async () => {
             lock()
-            await getHabits()
-            await getGoals()
-            await getHabitsCompletions()
-            await getGoalsCompletions()
-            await getAchievementData()
-            await checkAchievements()
+            await Promise.all([
+                getHabits(),
+                getGoals(),
+                getHabitsCompletions(),
+                getGoalsCompletions(),
+                getAchievementData(),
+                checkAchievements(),
+                getIssues()
+            ]);
             unLock()
-            await getIssues()
             setUpdatedStats(!updatedStats)
             hasRanRef.current = true
         }

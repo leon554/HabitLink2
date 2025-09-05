@@ -176,6 +176,7 @@ export default function CompsPerWeek(p: Props) {
                     <Select items={items}
                         selectedItem={items[filter == Filter.month ? 1 : 0]} 
                         setSelectedItem={(id) => setFilter(id == 0 ? Filter.week : Filter.month)}
+                        showIcon={true}
                         style="shadow-sm shadow-gray-200 dark:shadow-none text-xs bg-panel2 text-subtext3 px-2 py-0.5 rounded-lg border-1 border-border2 z-10"/>
                     <IoInformationCircleOutline size={14} color="#57534E" className="hover:cursor-pointer" onClick={() => {
                         setOpen(true)

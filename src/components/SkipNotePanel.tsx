@@ -24,7 +24,10 @@ export default function SkipNotePanel({setOpenSkip, habit: h} : Props) {
     const [note, setNote] = useState("")
 
     const entries = HC.habitsCompletions.get(h.id)
-    const selectionItems = [{id: 0, name: "Skip"}, {id: 1, name: "Add Note"}]
+    const selectionItems = [
+        {id: 0, name: "Skip"}, 
+        {id: 1, name: "Add Note"}
+    ]
     
     async function handleSkip(){
         if(loading) return
@@ -67,7 +70,8 @@ export default function SkipNotePanel({setOpenSkip, habit: h} : Props) {
                             setSelectedItem={(id) => setSelectedId(id)}
                             blur={blur}
                             setBlur={setBlur}
-                            style="shadow-sm shadow-gray-200 dark:shadow-none text-xs  text-subtext3 px-2 py-0.5 rounded-lg border-1 border-border2 z-10"/>
+                            showIcon={true}
+                            style="shadow-sm bg-panel2 shadow-gray-200 dark:shadow-none text-xs  text-subtext3 px-2 py-0.5 rounded-lg border-1 border-border2 z-10"/>
                     
                 </div>
             </div>
@@ -107,7 +111,7 @@ export default function SkipNotePanel({setOpenSkip, habit: h} : Props) {
                 </div>
             </> :
             <>
-                <p className='text-subtext2 text-xs'>
+                <p className='text-subtext2 text-xs mb-1'>
                     Note when you add a note it will attach your note to your most recent entry for this habit regardless if its a skip or completion.
                 </p>
                 <TextBoxLimited

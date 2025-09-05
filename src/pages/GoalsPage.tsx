@@ -40,7 +40,7 @@ export default function GoalsPage() {
     const [timeLeft, setTimeLeft] = useState(Array.from(HC.goals.values())
         .filter(v => !v.archived)
         .map(v => {
-            return (v.completionDate ?? 0) - Date.now()
+            return Math.abs((v.completionDate ?? 0) - Date.now())
         })
     );
     const startTime = Array.from(HC.goals.values()).map(g => new Date(g.created_at).getTime())
@@ -53,7 +53,7 @@ export default function GoalsPage() {
             setTimeLeft(Array.from(HC.goals.values())
             .filter(v => !v.archived)
             .map(v => {
-                return (v.completionDate ?? 0) - Date.now()
+                return Math.abs((v.completionDate ?? 0) - Date.now())
             }))
         }
 
@@ -111,14 +111,14 @@ export default function GoalsPage() {
                                     </p>
                                     <div className="hover:cursor-pointer w-[25%] ">
                                         <ToolTip tooltip={
-                                            <div className="bg-panel1 rounded-2xl outline-1 outline-border p-3 flex flex-col items-center gap-2">
-                                                <p className="text-xs text-center text-subtext2 whitespace-nowrap">
+                                            <div className="bg-panel1 rounded-2xl outline-1 outline-border p-3 flex flex-col items-center gap-1">
+                                                <p className="text-xs text-center text-subtext3 whitespace-nowrap">
                                                     Goal Time Progress
                                                 </p>
                                                 <p className="text-sm font-medium text-subtext2">
                                                     {Math.round((1 - (timeLeft[i])/(completionTime[i] - startTime[i])) * 100*1000)/1000}%
                                                 </p>
-                                                <p className="text-xs text-center text-subtext2 whitespace-nowrap">
+                                                <p className="text-xs text-center text-subtext3 whitespace-nowrap mt-1">
                                                     Goal Progress
                                                 </p>
                                                 <p className="text-sm font-medium text-subtext2">
@@ -128,12 +128,19 @@ export default function GoalsPage() {
                                         }>
                                             <div className="w-full flex flex-col gap-2">
                                                 {Math.round(HC.goalProgress.get(g.id) ?? 0) >= 100 ? 
-                                                <div className="flex items-center gap-2 justify-center outline-1 py-2 rounded-lg outline-highlight/30">
+                                                <div className="flex items-center gap-2 justify-center outline-1 py-1.5 rounded-lg outline-highlight/30 bg-highlight/20 dark:bg-panel1">
                                                     <p className="text-sm  text-highlight flex items-center gap-3 text-center">
                                                         Completed
                                                     </p>
                                                     
                                                 </div> :
+                                                (1 - (timeLeft[i])/(completionTime[i] - startTime[i])) * 100 >= 100 ?
+                                                 <div className="flex items-center gap-2 justify-center outline-1 py-1.5 rounded-lg outline-red-500/30 bg-red-500/20 dark:bg-panel1">
+                                                    <p className="text-sm text-red-500 flex items-center gap-3 text-center">
+                                                        Times Up
+                                                    </p>
+                                                </div>
+                                                :
                                                 <>
                                                     <div className="flex w-full  items-center gap-5">
                                                         <p className="text-sm w-3">
@@ -160,14 +167,14 @@ export default function GoalsPage() {
                             )
                         })}
                         {Array.from(HC.goals.values()).some(g => g.archived) ? 
-                        <div className=" max-w-[600px] bg-panel1 w-full rounded-2xl p-5  outline-1 outline-border">
+                        <div className="shadow-md shadow-gray-200 dark:shadow-none max-w-[600px] bg-panel1 w-full rounded-2xl p-5  outline-1 outline-border">
                             <p className="text-subtext1 font-medium">
                                 Archived Goals
                             </p>
                             <div className="mt-3 flex  flex-wrap gap-3">
                                 {Array.from(HC.goals.values()).filter(g => g.archived).map(g => {
                                     return(
-                                        <div className="outline-1 outline-border2 rounded-md p-1.5 px-2 hover:cursor-pointer hover:bg-panel2 transition-all duration-200 ease-in-out"
+                                        <div className="outline-1 outline-border2 bg-panel3 rounded-md p-1.5 px-2 hover:cursor-pointer  transition-all duration-200 ease-in-out"
                                             onClick={() => HC.setCurrentGoal(g.id)}>
                                             <p className="text-xs font-medium text-subtext2">
                                                 {g.name}

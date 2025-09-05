@@ -37,7 +37,7 @@ export default function Dashboard() {
     useEffect(() => {
         const newAvgHabitComp = Util.avgNumArr(habitStats.map(h => h.compRate)) * 100;
         const newAvgHabitStrength = Util.avgNumArr(habitStats.map(h => h.strength));
-        const newAvgGoalProgress = Util.avgNumArr(Util.fetchAllMapItems(HC.goalProgress));
+        const newAvgGoalProgress = Util.avgNumArr(Util.fetchAllMapItems(HC.goalProgress).filter(p => p < 100));
 
         setAvgHabitComp(newAvgHabitComp);
         setAvgHabitStrength(newAvgHabitStrength);
