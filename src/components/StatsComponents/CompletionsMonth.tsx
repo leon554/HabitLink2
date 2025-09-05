@@ -77,7 +77,7 @@ export default function CompletionsMonth() {
                                                     <p className=" text-xs text-center text-subtext2 w-full">
                                                         {dateUtils.formatDate(v.day)} {getDayStatus(v)} {dateUtils.isDatesSameDay(v.day , new Date()) ? "Today" : ""} {dateUtils.isDatesSameDay(new Date(Number(HC.currentHabit?.creationDate)) , v.day) ? "Creation Date" : ""}
                                                     </p>
-                                                    {v.note != "" ? 
+                                                    {v.note != "" && v.note !== null? 
                                                         <ButtonComp
                                                             name={"Notes"}
                                                             xs={true}

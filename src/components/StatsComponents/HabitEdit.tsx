@@ -125,7 +125,7 @@ export default function HabitEdit() {
                             <div className="flex flex-col max-h-[200px] overflow-y-scroll w-full no-scrollbar gap-1.5 rounded-md">
                                 {Array.from(HC.habitsCompletions.get(HC.currentHabit!.id) ?? []).sort((a, b) => a.date - b.data).map((c,i) => {
                                     return(
-                                        <div className="shadow-sm bg-panel2 shadow-gray-200 dark:shadow-none rounded-md border-border2 border-1 p-1 px-2 flex justify-between items-center h-7" key={i}>
+                                        <div className="shadow-sm  shadow-gray-200 dark:shadow-none rounded-md border-border2 border-1 p-1 px-2 flex justify-between items-center h-7" key={i}>
                                             <p className="text-xs" >
                                                 {dateUtils.formatDate(new Date(Number(c.date)))} | Data: {Util.pretifyData(c.data, HC.currentHabit!.type as HabitTypeE)}
                                             </p>

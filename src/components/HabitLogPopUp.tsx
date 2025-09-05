@@ -6,6 +6,7 @@ import { HabitTypeE, type HabitType } from '../utils/types';
 import { AiOutlineLoading } from "react-icons/ai";
 import { useEffect, useRef, useState } from 'react';
 import ButtonComp from './primatives/ButtonComp';
+import { NO_GOAL_HABIT_TARGET } from '@/utils/Constants';
 
 interface Props{
     habit: HabitType
@@ -43,9 +44,9 @@ export default function HabitLogPopUp(p: Props) {
                         <TimeInput setDuration={p.setValue} duration={p.value}/> 
                         : 
                         p.habit.type == HabitTypeE.Distance_Based ? 
-                        <DistanceInput distance={p.value} setDistance={p.setValue} max={Number(p.habit.target)}/>
+                        <DistanceInput distance={p.value} setDistance={p.setValue} max={Number(p.habit.target) == NO_GOAL_HABIT_TARGET ? 200 : Number(p.habit.target)}/>
                         :
-                        <AmountInput amount={p.value} setAmount={p.setValue} max={Number(p.habit.target)}/> 
+                        <AmountInput amount={p.value} setAmount={p.setValue} max={Number(p.habit.target) == NO_GOAL_HABIT_TARGET ? 50 : Number(p.habit.target)}/> 
                         }
                 </div>
                 <div className='flex w-full gap-3'>

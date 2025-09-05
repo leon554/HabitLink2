@@ -20,6 +20,7 @@ import { FiClipboard } from "react-icons/fi";
 import { TbPlayerSkipForwardFilled } from "react-icons/tb";
 import { IoFlame } from 'react-icons/io5';
 import SkipNotePanel from './SkipNotePanel';
+import { NO_GOAL_HABIT_TARGET } from '@/utils/Constants';
 
 
 interface HabitProps{
@@ -126,6 +127,10 @@ export default function HabitLogCard({habit: h}: HabitProps) {
                 <div className='flex gap-4 items-center'>
                     <div className='flex items-center gap-1'>
                         {!settings.showDetails && !isNormalHabit()? 
+                        h.target == NO_GOAL_HABIT_TARGET ?
+                         <p className='text-subtext1 dark:text-subtext2  text-[11px] '>
+                                [{Util.pretifyData(`${HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))}`, h.type as HabitTypeE)}]
+                        </p>  :
                         <p className='text-subtext1 dark:text-subtext2  text-[11px] '>
                                 [{Util.pretifyData(`${HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))}`, h.type as HabitTypeE)}]/[{Util.pretifyData(h.target, h.type as HabitTypeE)}]
                         </p> : ""}
@@ -178,16 +183,26 @@ export default function HabitLogCard({habit: h}: HabitProps) {
             {settings.showDetails ? 
             !isNormalHabit()?
                 <div className='ml-4 mr-3 mb-3 flex mt-[-5px]  gap-2 flex-col max-w-[70%]'>
-                    <div className='flex items-center gap-2 mt-1 justify-stretch overflow-scroll no-scrollbar'>   
-                        <p className='text-subtext3 dark:text-subtext3   text-[11px]'>
-                            {Math.round(HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))/Number(h.target)*100*100)/100}%
-                        </p>
-                        <p className='text-xs text-subtext3/40 mb-0.5'>
-                            |
-                        </p>
+                    <div className='flex items-center gap-2 mt-1 justify-stretch overflow-scroll no-scrollbar'> 
+                        {h.target == NO_GOAL_HABIT_TARGET ? null :
+                        <>
+                            <p className='text-subtext3 dark:text-subtext3   text-[11px]'>
+                                {Math.round(HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))/Number(h.target)*100*100)/100}%
+                            </p>
+                            <p className='text-xs text-subtext3/40 mb-0.5'>
+                                |
+                            </p>
+                        </>
+                        }  
+                        {h.target == NO_GOAL_HABIT_TARGET ? 
+                        <p className='text-subtext2 dark:text-subtext3  text-[11px] whitespace-nowrap'>
+                            [{Util.pretifyData(`${HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))}`, h.type as HabitTypeE)}]
+                        </p>:
                         <p className='text-subtext2 dark:text-subtext3  text-[11px] whitespace-nowrap'>
                             [{Util.pretifyData(`${HabitUtil.getCompletionValueSumToday(UC.habitsCompletions.get(h.id))}`, h.type as HabitTypeE)}]/[{Util.pretifyData(h.target, h.type as HabitTypeE)}]
                         </p>
+                        }
+                        
                          <p className='text-xs text-subtext3/40 mb-0.5'>
                             |
                         </p>

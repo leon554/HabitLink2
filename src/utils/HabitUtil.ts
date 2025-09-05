@@ -575,7 +575,7 @@ export namespace HabitUtil{
         let date = dateUtils.getEndOfWeekDate()
         for(let i = 0; i < output.length; i++){
             output[i].day = date
-            output[i].note = completions.filter(c => dateUtils.isDatesSameDay(date, new Date(Number(c.date)))).map(c => c.notes).join(",")
+            output[i].note = completions.filter(c => dateUtils.isDatesSameDay(date, new Date(Number(c.date))) && c.notes !== null).map(c => c.notes).join(",")
 
             if(isBefore(date, new Date(Number(habit.creationDate)))) output[i].existed = false
             if(dateUtils.isDatesSameDay(date, new Date(Number(habit.creationDate)))) output[i].habitCreation = true

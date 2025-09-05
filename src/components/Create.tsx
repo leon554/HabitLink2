@@ -11,6 +11,8 @@ import { RiAiGenerate } from "react-icons/ri";
 import { triggerHaptic } from "tactus";
 import TextBoxLimited from "./primatives/TextBoxLimited";
 import ButtonComp from "./primatives/ButtonComp";
+import Switch from "./InputComponents/Switch";
+import { NO_GOAL_HABIT_TARGET } from "@/utils/Constants";
 
 
 
@@ -29,6 +31,7 @@ export default function Create({compact, onCreate, initialName} : Props){
     const [distance, setDistance] = useState(0)
     const [amount, setAmount] = useState(0)
     const [description, setDescription] = useState("")
+    const [noGoal, setNoGoal] = useState(false)
     const habitEmojis = [
         "💪","📖","🧘","📝","🥗","🚰","😴","📚","🏃","🧹",
         "🛏️","🪥","💻","🎨","🎵","☀️","📅","💸","📵","🧼",
@@ -59,14 +62,14 @@ export default function Create({compact, onCreate, initialName} : Props){
     async function createHabit(){
         
         const completionDaysString = (compsPerWeek == 0) ? getCompDaysString() : `${compsPerWeek}`
-        const target = getTarget()
+        let target = getTarget()
 
         if(name.trim() == "") {alert("Habit needs a name"); return}
         if(completionDaysString == "" || completionDaysString == "0000000") {alert("Select days to complete the habit on"); return}
         if(selectedTypeIndex == -1) {alert("Select a habit type before creating a habit"); return}
-        if(target == 0 && habitTypes[selectedTypeIndex] != "Normal") {alert("Habit daily goal can't be 0"); return}
+        if(target == 0 && habitTypes[selectedTypeIndex] != "Normal" && noGoal == false) {alert("Habit daily goal can't be 0"); return}
         if(selectedEmojiIndex == -1) {alert("Select a habit emoji to continue"); return}
-
+        if(noGoal) target = NO_GOAL_HABIT_TARGET
 
         await HC.createHabit(name, description, completionDaysString, habitEmojis[selectedEmojiIndex], habitTypes[selectedTypeIndex], target)
         resetValues()
@@ -207,14 +210,20 @@ export default function Create({compact, onCreate, initialName} : Props){
                     {habitTypes[selectedTypeIndex] != "Normal" &&  habitTypes[selectedTypeIndex] != undefined? 
                     <div className="w-[90%] mb-6  max-w-[450px]">
                         <p className="text-sm font-medium  text-subtext1 mb-2">Daily Goal</p>
-                        
-                        {habitTypes[selectedTypeIndex] == "Time Based" ? 
-                            <TimeInput setDuration={setTime}/> 
-                        : habitTypes[selectedTypeIndex] == "Distance Based" ? 
-                            <DistanceInput setDistance={setDistance} distance={distance} />
-                        : 
-                            <NumberInput setAmount={setAmount} amount={amount} />
+                        {noGoal ? null :
+                            habitTypes[selectedTypeIndex] == "Time Based" ? 
+                                <TimeInput setDuration={setTime}/> 
+                            : habitTypes[selectedTypeIndex] == "Distance Based" ? 
+                                <DistanceInput setDistance={setDistance} distance={distance} />
+                            : 
+                                <NumberInput setAmount={setAmount} amount={amount} />
                         }
+                        <div className="flex w-full items-center gap-2 justify-between mt-3 outline-1 rounded-md outline-border2 py-1.5 p-2">
+                            <p className="text-xs font-medium text-subtext1">
+                                No daily goal
+                            </p>
+                            <Switch ticked={noGoal} setStatus={setNoGoal}/>
+                        </div>
                     </div> : ""}
                 </div>
 
