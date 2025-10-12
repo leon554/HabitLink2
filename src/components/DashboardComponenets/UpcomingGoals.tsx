@@ -46,54 +46,6 @@ export default function UpcomingGoals() {
             <div className="flex flex-col gap-3">
                 <div className="flex items-center gap-4 mb-2">
                     <div className="shadow-sm shadow-gray-200 dark:shadow-none bg-panel2 text-subtext2 outline-1 outline-border2 p-1.5 rounded-lg">
-                        <TbTargetArrow />
-                    </div>
-                    <p className="text-lg text-title font-semibold leading-none pb-1">
-                        Upcoming Goals
-                    </p>
-                </div>
-                {HC.isCalculating.current.isLoading() ? 
-                <div>
-                    <p className="text-xs text-subtext2 animate-pulse">
-                        Fetching you're upcoming goals…
-                    </p>
-                </div> :
-                <div className="w-full flex flex-col gap-2">
-                    {upcommingGoals.length == 0 ?
-                    <div className="flex flex-col items-start gap-3 flex-wrap">
-                        <p className="text-subtext2 text-sm">
-                            No upcoming goals, try and create a new goal
-                        </p>
-                        <ButtonComp
-                            name={"New Goal"}
-                            highlight={false}
-                            onSubmit={() => navigate("/creategoal")}
-                            small={true}/>
-                    </div>
-                    :
-                    upcommingGoals.map((g, i) => {
-                        return(
-                            <div className={`bg-panel2 px-2 rounded-xl border-1 border-border2 hover:cursor-pointer hover:scale-99 transition-all duration-150 ease-in-out text-sm  py-2  flex justify-between items-center gap-2 shadow-sm shadow-gray-200 dark:shadow-none`} key={i}
-                                onClick={() => {
-                                    HC.setCurrentGoal(g.id)
-                                    navigate("/goals")
-                                }}>
-                                <p className="text-subtext2 truncate overflow-hidden whitespace-nowrap">
-                                    🎯 {Util.capitilizeFirst(g.name)}
-                                </p>
-                                <p className="text-subtext3 text-xs flex items-center gap-1 whitespace-nowrap">
-                                  <FaHourglassHalf size={9} className="mt-[1px]"/> {dateUtils.formatTime(timeLeft[i], true)}
-                                </p>
-                            </div>
-                        )
-                    })
-                    }
-                </div>
-                }
-            </div>
-            <div className="mt-3 flex flex-col gap-3">
-                <div className="flex items-center gap-4 mb-2 mt-2">
-                    <div className="shadow-sm shadow-gray-200 dark:shadow-none bg-panel2 text-subtext2 outline-1 outline-border2 p-1.5 rounded-lg">
                         <TbCalendarCheck className=""/>
                     </div>
                     <p className="text-lg text-title font-semibold leading-none pb-1">
@@ -140,6 +92,54 @@ export default function UpcomingGoals() {
                             </>
                         )
                     })}
+                </div>
+                }
+            </div>
+            <div className="flex flex-col gap-3 mt-4">
+                <div className="flex items-center gap-4 mb-2">
+                    <div className="shadow-sm shadow-gray-200 dark:shadow-none bg-panel2 text-subtext2 outline-1 outline-border2 p-1.5 rounded-lg">
+                        <TbTargetArrow />
+                    </div>
+                    <p className="text-lg text-title font-semibold leading-none pb-1">
+                        Upcoming Goals
+                    </p>
+                </div>
+                {HC.isCalculating.current.isLoading() ? 
+                <div>
+                    <p className="text-xs text-subtext2 animate-pulse">
+                        Fetching you're upcoming goals…
+                    </p>
+                </div> :
+                <div className="w-full flex flex-col gap-2">
+                    {upcommingGoals.length == 0 ?
+                    <div className="flex flex-col items-start gap-3 flex-wrap">
+                        <p className="text-subtext2 text-sm">
+                            No upcoming goals, try and create a new goal
+                        </p>
+                        <ButtonComp
+                            name={"New Goal"}
+                            highlight={false}
+                            onSubmit={() => navigate("/creategoal")}
+                            small={true}/>
+                    </div>
+                    :
+                    upcommingGoals.map((g, i) => {
+                        return(
+                            <div className={`bg-panel2 px-2 rounded-xl border-1 border-border2 hover:cursor-pointer hover:scale-99 transition-all duration-150 ease-in-out text-sm  py-2  flex justify-between items-center gap-2 shadow-sm shadow-gray-200 dark:shadow-none`} key={i}
+                                onClick={() => {
+                                    HC.setCurrentGoal(g.id)
+                                    navigate("/goals")
+                                }}>
+                                <p className="text-subtext2 truncate overflow-hidden whitespace-nowrap">
+                                    🎯 {Util.capitilizeFirst(g.name)}
+                                </p>
+                                <p className="text-subtext3 text-xs flex items-center gap-1 whitespace-nowrap">
+                                  <FaHourglassHalf size={9} className="mt-[1px]"/> {dateUtils.formatTime(timeLeft[i], true)}
+                                </p>
+                            </div>
+                        )
+                    })
+                    }
                 </div>
                 }
             </div>
