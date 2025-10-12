@@ -107,15 +107,16 @@ export default function HabitLogCard({habit: h}: HabitProps) {
     return (
         <div className='shadow-sm shadow-gray-200 dark:shadow-none bg-panel1 dark:bg-panel1 relative dark:border-border border-border border-1 rounded-2xl w-[100%] max-w-[600px] overflow-auto'>
             <div className={`flex justify-between items-center`}>
-                <div className='flex items-center'>
-                    <p className={`text-subtext1  p-3 pr-2 pt-3   ${settings.showDetails ? "pb-2" : ""} hover:cursor-pointer font-medium flex gap-2.5 items-center`}
+                <div className={`flex items-center ${settings.showDetails ? "max-w-[65%]" : " min-w-0"}  min-w-0 w-fit ml-3 `}>
+                    <p className='mt-0.5'>
+                        {h.icon}
+                    </p>
+                    <p className={`text-subtext1  pl-2 p-3 pr-1.5   ${settings.showDetails ? "pb-2" : ""} hover:cursor-pointer font-medium  gap-2.5 truncate overflow-ellipsis `}
                         onClick={() => {
                             UC.setCurrentHabit(h)
                             navigate("/stats")
                         }}>
-                        {settings.showRanks ? 
-                        "missing"
-                        : h.icon} {Util.capitilizeFirst(h.name)} 
+                        {Util.capitilizeFirst(h.name)} 
                     </p>
                     {settings.dontShowStreaks ? 
                     null :
@@ -124,8 +125,8 @@ export default function HabitLogCard({habit: h}: HabitProps) {
                         </p>
                     }
                 </div>
-                <div className='flex gap-4 items-center'>
-                    <div className='flex items-center gap-1'>
+                <div className='ml-5 flex gap-4 items-center'>
+                    <div className='flex items-center gap-1 '>
                         {!settings.showDetails && !isNormalHabit()? 
                         h.target == NO_GOAL_HABIT_TARGET ?
                          <p className='text-subtext1 dark:text-subtext2  text-[11px] '>
